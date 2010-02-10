@@ -1,0 +1,33 @@
+Source: libquvi
+Section: libs
+Priority: extra
+Maintainer: Alejandro Garrido Mota <garridomota@gmail.com>
+Build-Depends: debhelper (>= 7), autotools-dev, libcurl4-dev, libpcre3-dev
+Standards-Version: 3.8.4
+Homepage: http://code.google.com/p/quvi
+
+Package: libquvi0
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: library for parsing video download links runtime libraries
+ The library is written in C and lets to parse video download links.
+ It supports Youtube and other similar video websites
+
+Package: libquvi0-dev
+Section: libdevel
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: library for parsing video download links development package
+ The library is written in C and lets to parse video download links.
+ It supports Youtube and other similar video websites
+ .
+ This package provides the files necessary to compile programs which
+ use libquvi0
+
+Package: quvi
+Section: utils
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: command line tool for parsing video download links
+ command line tool written in C for parsing video download links.
+ It supports Youtube and other similar video websites

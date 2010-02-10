@@ -1,0 +1,14 @@
+libquvi.so.0 libquvi0 #MINVER#
+ VER_0.1.0@VER_0.1.0 0.1.3
+ quvi_close@VER_0.1.0 0.1.3
+ quvi_getinfo@VER_0.1.0 0.1.3
+ quvi_getprop@VER_0.1.0 0.1.3
+ quvi_init@VER_0.1.0 0.1.3
+ quvi_next_host@VER_0.1.0 0.1.3
+ quvi_next_videolink@VER_0.1.0 0.1.3
+ quvi_parse@VER_0.1.0 0.1.3
+ quvi_parse_close@VER_0.1.0 0.1.3
+ quvi_setopt@VER_0.1.0 0.1.3
+ quvi_strerror@VER_0.1.0 0.1.3
+ quvi_version@VER_0.1.0 0.1.3
+ quvi_write_callback_default@VER_0.1.0 0.1.3

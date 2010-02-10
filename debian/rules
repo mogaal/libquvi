@@ -1,0 +1,5 @@
+#!/usr/bin/make -f
+export NO_INTERNET=1
+
+%:
+	dh  $@
