@@ -1,0 +1,31 @@
+
+Howto: Help with the project
+============================
+
+About
+-----
+
+libquvi is developed under Linux (x86) and occasionally tested under
+FreeBSD (x86). It is impossible for us to detect and fix errors on
+all different system configurations without help. Therefore feedback
+and help is greatly appreciated.
+
+If you are a downstream maintainer, and you think the upstream and
+others could benefit from your patches, please consider submitting
+them to the upstream.
+
+* Report bugs (http://quvi.googlecode.com/)
+  - Check for duplicates before you submit
+
+* Write fixes
+  - Check the issue tracker for open issues
+  - Write fixes for yet unreported issues
+
+* Write support for additional websites
+  - See HowtoAddSupport
+
+* Gather and report website specific data
+  - You make a good candidate if you can run Adobe flash player
+  - TCP traffic, etc. (there are a number of tools to do this these days)
+  - This data could be used to figure out how the videos can be extracted
+  - See http://code.google.com/p/clive/issues/detail?id=6#c7 (for an example)

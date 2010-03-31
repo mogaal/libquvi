@@ -1,0 +1,26 @@
+
+Version 0.1.2
+-------------
+
+Adds quvi_callback_write support, tweaks quvi_callback_status
+support (abort if the callback returns a non-zero value).
+
+Adds --enable-broken.
+
+Tests now include use of "-f best" where applicable.
+
+Minor (unlisted) tweaks and bugfixes to quvi tool.
+
+Marks as broken: ehrensenf.de, spyfilms.com, see TODO.
+
+
+Version 0.1.1
+-------------
+
+Fixes the issues that have been plaguing the users on 64bit
+systems. See ChangeLog for the details.
+
+Dailymotion format IDs were renamed to reflect the website
+changes. See ChangeLog for the details.
+
+Fixes also Vimeo support.

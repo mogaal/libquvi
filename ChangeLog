@@ -1,0 +1,111 @@
+
+Version 0.1.3
+-------------
+March 25, 2010
+
+Changes:
+  * Add buzzhumor.com support, port from clive
+  * Include stdlib.h in quvi.h
+
+Bugfixes:
+  * dailymotion.com
+    # Change format IDs to reflect website changes (yet again):
+      * h264-hd -> hd
+      * h264-hq -> hq
+      * removed h264 and spark-mini (no longer even listed)
+      * quvi(1) -f option arg support reflects these changes
+    # Parse title from elsewhere
+      * Title was previously parsed from the title HTML tag
+      * Which usually contained more than we cared for
+    # Refuse to work with partner videos (return QUVI_NOSUPPORT)
+  * break.com support, ported from clive, original fix by Werner Elsler
+
+
+(March 12, 2010)
+Version 0.1.2
+-------------
+(March 12, 2010)
+
+Changes:
+  * Bump interface
+  * Add QUVIPROP_VIDEOFORMAT (returns the value set with QUVIOPT_FORMAT)
+  * Add quvi_callback_write support
+  * quvi_callback_status, abort if callback returns != 0
+  * Tests now include "best" format id (where applicable)
+  * Add --enable-broken (configure), see also INSTALL
+  * Mark as broken: spyfilms.com, ehrensenf.de, see TODO
+  * Add docs/howto/HowtoGetDevelopmentCode
+
+Bugfixes:
+  * Liveleak video id parsing
+  * Youjizz support, thanks to anon2u for the fix
+  * quvi: statusfunc: flush stderr
+
+
+Version 0.1.1
+-------------
+(February 13, 2010)
+
+Changes:
+
+  * Add:
+    # NEWS file
+    # quvi.1 (+pod)
+
+  * quvi:
+    # Add ~/.quvirc support
+    # Implement --quiet
+    # Spew messages to stderr
+
+  * w32/make-w32.sh:
+    # Add manual (html)
+    # Use install-strip
+
+  * configure:
+    # Add "make cmdline"
+    # Add pod2man, pod2html and Pod::Checker checks
+    # Add --without-man
+
+  * tests/
+    # support-cctv.pl: skip unless utf8 locale code is set
+    # pod-check.pl: add
+
+  * Youtube: list the fmtNN IDs
+    # (lib)quvi previously reported the "common aliases" only (e.g. "hd")
+
+Bugfixes:
+
+  * Dailymotion: reflect the format ID changes:
+    # vp6-hd -> h264-hd
+    # vp6-hq -> h264-hq
+    # vp6    -> h264
+
+  * tests/ (expected file length)
+    # support-vimeo.pl
+    # support-dailymotion.pl
+    # support-youtube.pl
+
+  * Segfault: _getprop (quvi.c:352)
+    # Add missing va_end()s
+    # Thanks to nix@esperi.org.uk for getting knee-deep and cooking up the fix
+    # Reported on 64bit systems
+    # Closes issue #1
+
+  * Segfault: regexp_capture (util.c:114)
+    # Terminate stdarg lists with a proper null pointer (0 -> (void*)0)
+    # Thanks to nix@esperi.org.uk for the fix
+    # Reported on 64bit systems
+    # Closes issue #2
+
+  * Vimeo support, symptoms:
+    # length: 20
+    # suffix: html; charset=UTF-8
+    # content-type: text/html; charset=UTF-8
+
+
+Version 0.1.0
+-------------
+
+  * Initial release
+
+

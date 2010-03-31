@@ -1,0 +1,89 @@
+package "quvi"
+version ""
+
+option "version"
+    v "Print version and exit"
+    optional
+option "hosts"
+    - "Show supported hosts"
+    optional
+
+option "quiet"
+    q "Turn off all output"
+    optional
+option "debug"
+    - "Turn on libcurl verbose mode"
+    optional
+
+option "no-verify"
+    n "Do not verify video link"
+    optional
+
+option "page-title"
+    - "Expected video page title"
+    string typestr="<string>"
+    optional
+option "video-id"
+    - "Expected video id"
+    string typestr="<string>"
+    optional
+option "file-length"
+    - "Expected video file length"
+    double typestr="<length>"
+    optional
+option "file-suffix"
+    - "Expected video file suffix"
+    string typestr="<string>"
+    optional
+
+option "test-all"
+    a "Run built-in tests"
+    optional
+option "test"
+    t "Match regexp to a built-in test link"
+    string typestr="<regexp>"
+    optional
+option "dump"
+    d "Dump video details when running tests"
+    dependon="test-all"
+    optional
+
+option "agent"
+    - "Identify cclive as string to servers"
+    string typestr="<string>"
+    default="Mozilla/5.0"
+    optional
+option "proxy"
+    - "Use specified proxy"
+    string typestr="<host[:port]>"
+    optional
+option "connect-timeout"
+    - "Max seconds allowed connection to server take"
+    int typestr="<s>"
+    default="30"
+    optional
+
+option "format"
+    f "Query video format"
+    values="flv","best",
+        # youtube:
+        "fmt17","fmt18","fmt22", "fmt34","fmt35","hq","3gp",
+        # vimeo:
+        "hd",
+        # google:
+        "mp4",
+        # golem:
+        "high", "ipod",
+        # spiegel:
+        "vp6_576", "vp6_928", "h264_1400"
+    default="flv"
+    typestr="<format_id>"
+    optional
+
+text "\nExamples:\n\n"
+text "  quvi -a         # run all built-in tests\n"
+text "  quvi URL        # test URL\n"
+text "  quvi -t youtube # match 'youtube' to built-in links and test it\n"
+text "  quvi URL -f mp4 # query 'mp4' format of the video\n"
+
+

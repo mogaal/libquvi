@@ -1,0 +1,6 @@
+VER_0.1.0 {
+    global: quvi_*;
+    local: *;
+};
+
+

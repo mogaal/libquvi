@@ -1,0 +1,192 @@
+=pod
+
+=head1 NAME
+
+quvi - query video tool
+
+=head1 SYNOPSIS
+
+quvi [options] [url...]
+
+=head1 DESCRIPTION
+
+quvi is a command line tool for parsing video download links.
+It supports Youtube and other similar video websites.
+
+=head1 OPTIONS
+
+=over 4
+
+=item B<-h, --help>
+
+Print help and exit.
+
+=item B<-v, --version>
+
+Print program version and exit.
+
+=item B<--hosts>
+
+Print supported hosts and exit.
+
+=item B<-q, --quiet>
+
+Turn off all output.
+
+=item B<--debug>
+
+Turn on libcurl verbose mode.
+
+=item B<-n, --no-verify>
+
+Do not verify video link. Note that quvi will not report
+video file length, content-type or file suffix if this
+option is used.
+
+=item B<--page-title>=I<string>
+
+Match parsed video page title to I<string>.
+
+=item B<--video-id>=I<string>
+
+Match parsed video ID to I<string>.
+
+=item B<--file-length>=I<length>
+
+Match parsed video file length to I<length>.
+
+=item B<--file-suffix>=I<string>
+
+Match parsed video file suffix to I<string>.
+
+=item B<-a, --test-all>
+
+Run all built-in tests. quvi will test all
+built-in video page links.
+
+=item B<-t, --test>=I<pattern>
+
+Match I<pattern> to a built-in test page link
+and test it.
+
+=item B<-d, --dump>
+
+Dump video details when running tests. To be used
+with B<--test-all>.
+
+=item B<--agent>=I<string>
+
+Identify quvi as I<string> to servers. Default
+is "Mozilla/5.0".
+
+=item B<--proxy>=I<host[:port]>
+
+Use the specified HTTP proxy. Note that quvi will
+use http_proxy environment setting if it is set.
+
+=item B<--connect-timeout>=I<seconds>
+
+Maximum seconds allowed connection to server take.
+Default is 30.
+
+=item B<-f, --format>[=]I<format_id>
+
+Query video format, I<format_id> depends on the host,
+see B<--hosts> output.
+
+=back
+
+=head1 EXAMPLES
+
+=over 4
+
+=item quvi URL
+
+Test URL.
+
+=item quvi -a
+
+Run all built-in host tests.
+
+=item quvi -t youtube
+
+Match 'youtube' string to built-in video page links
+and test it.
+
+=item quvi URL -f mp4
+
+Query 'mp4' of the video from the URL.
+
+=back
+
+=head1 BUGS
+
+Sure to be some. Please report them.
+
+  <http://quvi.googlecode.com/>
+
+=head1 DEBUGGING TIPS
+
+=over 4
+
+=item quvi --debug URL
+
+Spew out libcurl verbose mode messages.
+
+=back
+
+=head1 FILES
+
+=over 4
+
+=item B<$QUVI_HOME|$HOME/.quvirc>
+
+ agent = some_agent/1.0     # --agent
+ proxy = http://foo:1234    # --proxy
+ no-verify                  # --no-verify
+ debug                      # --debug
+
+You can define most of the command line options in the
+config file.
+
+=back
+
+=head1 EXIT STATUS
+
+quvi exits with 0 on success and E<gt>0 if an error occurred.
+
+  QUVI_OK               = 0x00
+  QUVI_MEM              = 0x01, Memory allocation failed
+  QUVI_BADHANDLE        = 0x02, Bad session handle
+  QUVI_INVARG           = 0x03, Invalid function argument
+  QUVI_CURLINIT         = 0x04, libcurl initialization failed
+  QUVI_LAST             = 0x05, Indicates end of list iteration
+  _INTERNAL_QUVI_LAST   = 0x06, For library internal use only
+  QUVI_PCRE             = 0x40, libpcre error occurred
+  QUVI_NOSUPPORT        = 0x41, libquvi does not support the video host
+  QUVI_CURL             = 0x42, libcurl error occurred
+  QUVI_ICONV            = 0x43, libiconv error occurred
+
+=head1 OTHER
+
+=over 4
+
+=item Project page:
+
+<http://quvi.googlecode.com/>
+
+=item FAQ:
+
+<http://code.google.com/p/quvi/wiki/FAQ>
+
+=item Development code:
+
+% git clone git://repo.or.cz/quvi.git
+
+=back
+
+=head1 AUTHOR
+
+Toni Gundogdu <legatvs@gmail.com> et al.
+
+=cut
