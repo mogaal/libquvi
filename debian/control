@@ -16,7 +16,7 @@ Description: library for parsing video download links runtime libraries
 Package: libquvi-dev
 Section: libdevel
 Architecture: any
-Depends: ${misc:Depends}, (= ${binary:Version})
+Depends: ${misc:Depends}, libquvi0
 Description: library for parsing video download links development package
  The library is written in C and lets to parse video download links.
  It supports Youtube and other similar video websites
