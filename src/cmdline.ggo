@@ -67,7 +67,7 @@ option "format"
     f "Query video format"
     values="flv","best",
         # youtube:
-        "fmt17","fmt18","fmt22", "fmt34","fmt35","hq","3gp",
+        "fmt17","fmt18","fmt22", "fmt34","fmt35", "fmt37","hq","3gp",
         # vimeo:
         "hd",
         # google:

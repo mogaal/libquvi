@@ -18,12 +18,18 @@
 #include "host.h"
 
 _host_constants(youtube,
-    "youtube.com", "flv|3gp|mp4|hq|hd|fmt34|fmt17|fmt18|fmt35|fmt22");
+    "youtube.com",
+    /*
+     * Not in any specific order, note that this "array" contains
+     * also (for a number of historical reasons) the aliases for
+     * (some of) the fmt IDs.
+     */
+    "flv|3gp|mp4|hq|hd|fmt34|fmt17|fmt18|fmt35|fmt22|fmt37");
 
-_host_re(re_id,     "(?i)\"video_id\": \"(.*?)\"");
+_host_re(re_id,     "(?i)&video_id=(.*?)&");
 _host_re(re_title,  "(?i)<meta name=\"title\" content=\"(.*?)\"");
-_host_re(re_t,      "(?i)\"t\": \"(.*?)\"");
-_host_re(re_fmap,   "(?i)\"fmt_map\": \"(\\d+)");
+_host_re(re_t,      "(?i)&t=(.*?)&");
+_host_re(re_fmap,   "(?i)&fmt_map=(\\d+)");
 
 QUVIcode
 handle_youtube(const char *url, _quvi_video_t video) {
@@ -55,6 +61,8 @@ handle_youtube(const char *url, _quvi_video_t video) {
         return (rc);
     }
 
+    t = unescape(video->quvi, t);
+
     /* fmt_map */
     rc = regexp_capture(
         video->quvi,
@@ -66,6 +74,9 @@ handle_youtube(const char *url, _quvi_video_t video) {
         (void *) 0
     );
 
+    if (rc != QUVI_OK)
+        fmap = 0; /* This is still OK, just make sure it's a NULL. */
+
     /* video link */
     asprintf(&lnk,
         "http://youtube.com/get_video?video_id=%s&t=%s", video->id, t);
@@ -74,34 +85,38 @@ handle_youtube(const char *url, _quvi_video_t video) {
     _free(content);
 
     /* format */
-    format = video->quvi->format;
+    format  = video->quvi->format;
     fmt_lnk = 0;
 
     if (format) {
-        char *fmt = 0;
 
         /*
-        * Youtube/Google likes to rehash these from time to time.
-        *
-        * It's not uncommon that some formats are available only
-        * for some videos. The following lists aliases for the
-        * supported "fmt" strings, e.g. fmt22=hd.
-        *
-        * fmt22 = HD [1280x720]
-        * fmt35 = HQ  [640x380]
-        * fmt18 = mp4 [480x360]
-        * fmt34 = -   [320x180] quality reportedly varies
-        * fmt17 = 3gp [176x144]
-        *
-        * If --format is unused, we default to whatever youtube
-        * defaults to by leaving "&fmt=" from the video link.
-        */
+         * See the format array notes above. Note that not all formats
+         * are available for all videos. For example, some of the older
+         * videos have only some of the formats available.
+         *
+         * The following aliases that are supported for historical
+         * reasons only:
+         *
+         * Alias   ID
+         *   hd .. fmt22 (1280x720)
+         *   hq .. fmt35  (640x380)
+         *  mp4 .. fmt18  (480x360)
+         *  3gp .. fmt17  (176x144)
+         *
+         * The resolutions may vary. We have no accurate or reliable
+         * info available.
+         */
+
+        char *fmt = 0;
 
         if (rc == QUVI_OK && !strcmp(format, "best") && fmap)
             fmt = fmap;
         else {
             if (!strcmp(format, "fmt18") || !strcmp(format, "mp4"))
                 fmt = "18";
+            else if (!strcmp(format, "fmt37"))
+                fmt = "37";
             else if (!strcmp(format, "fmt34"))
                 fmt = "34";
             else if (!strcmp(format, "fmt35") || !strcmp(format, "hq"))
@@ -112,10 +127,8 @@ handle_youtube(const char *url, _quvi_video_t video) {
                 fmt = "17";
         }
 
-        if (fmt) {
-            _free(fmt_lnk);
+        if (fmt)
             asprintf(&fmt_lnk, "%s&fmt=%s", lnk, fmt);
-        }
     }
 
     _free(fmap);
@@ -127,6 +140,7 @@ handle_youtube(const char *url, _quvi_video_t video) {
             : lnk);
     }
 
+    _free(fmt_lnk);
     _free(lnk);
 
     return (QUVI_OK);
