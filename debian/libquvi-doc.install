@@ -1,2 +1,2 @@
-docs/*
-examples/*
+docs/* debian/tmp/usr/share/doc/libquvi-doc
+examples/* debian/tmp/usr/share/doc/libquvi-doc
