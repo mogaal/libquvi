@@ -1,5 +1,13 @@
+libquvi (0.1.4-2) unstable; urgency=low
+
+  * d/libquvi-dev.install:
+       Include the header and pkg-config files in libquvi-dev, which are
+       necessary to build cclive. (Thanks to Stanley Pinchak).
+
+ -- Alejandro Garrido Mota <garridomota@gmail.com>  Thu, 08 Apr 2010 21:49:18 -0430
+
 libquvi (0.1.4-1) unstable; urgency=low
 
-  * Initial release (Closes: #575888)
+  * Initial release (Closes: #575888).
 
  -- Alejandro Garrido Mota <garridomota@gmail.com>  Tue, 09 Feb 2010 21:13:37 -0430
