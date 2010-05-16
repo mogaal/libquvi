@@ -2,7 +2,7 @@ Source: libquvi
 Section: libs
 Priority: extra
 Maintainer: Alejandro Garrido Mota <garridomota@gmail.com>
-Build-Depends: debhelper (>= 7.0.50~), libcurl4-dev, libpcre3-dev
+Build-Depends: debhelper (>= 7.0.50~), libcurl4-dev, libpcre3-dev, liblua5.1-0-dev
 Standards-Version: 3.8.4
 Homepage: http://code.google.com/p/quvi
 
