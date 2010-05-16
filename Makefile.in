@@ -57,6 +57,12 @@ mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = config.h
 CONFIG_CLEAN_FILES = libquvi.pc doxygen.conf
 CONFIG_CLEAN_VPATH_FILES =
+AM_V_GEN = $(am__v_GEN_$(V))
+am__v_GEN_ = $(am__v_GEN_$(AM_DEFAULT_VERBOSITY))
+am__v_GEN_0 = @echo "  GEN   " $@;
+AM_V_at = $(am__v_at_$(V))
+am__v_at_ = $(am__v_at_$(AM_DEFAULT_VERBOSITY))
+am__v_at_0 = @
 SOURCES =
 DIST_SOURCES =
 RECURSIVE_TARGETS = all-recursive check-recursive dvi-recursive \
@@ -138,6 +144,7 @@ distuninstallcheck_listfiles = find . -type f -print
 distcleancheck_listfiles = find . -type f -print
 ACLOCAL = @ACLOCAL@
 AMTAR = @AMTAR@
+AM_DEFAULT_VERBOSITY = @AM_DEFAULT_VERBOSITY@
 AR = @AR@
 AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
@@ -250,6 +257,8 @@ libcurl_CFLAGS = @libcurl_CFLAGS@
 libcurl_LIBS = @libcurl_LIBS@
 libdir = @libdir@
 libexecdir = @libexecdir@
+liblua_CFLAGS = @liblua_CFLAGS@
+liblua_LIBS = @liblua_LIBS@
 libpcre_CFLAGS = @libpcre_CFLAGS@
 libpcre_LIBS = @libpcre_LIBS@
 localedir = @localedir@
@@ -279,15 +288,12 @@ EXTRA_DIST = \
 libquvi.pc.in \
 libquvi.ver \
 doxygen.conf.in \
-docs/howto/HowtoHelp \
-docs/howto/HowtoAddSupport \
-docs/howto/HowtoSubmitPatches \
 quvi.pod
 
 @WITH_MAN_TRUE@dist_man_MANS = quvi.1
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libquvi.pc
-SUBDIRS = include lib src examples tests
+SUBDIRS = include lib src examples tests share doc
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
@@ -876,7 +882,7 @@ man:
 @HAVE_POD2HTML_FALSE@	@echo "error: configure did not find pod2html command"
 dox:
 @HAVE_DOXYGEN_TRUE@	@$(DOXYGEN) $(top_builddir)/doxygen.conf
-@HAVE_DOXYGEN_TRUE@	@echo doxygen generated pages can be found in docs/ subdir
+@HAVE_DOXYGEN_TRUE@	@echo doxygen generated pages can be found in doc/ subdir
 @HAVE_DOXYGEN_FALSE@	@echo configure did not find doxygen
 cmdline:
 @HAVE_GENGETOPT_TRUE@	@GENGETOPT@ < $(top_srcdir)/src/cmdline.ggo -C --unamed-opts=URL \

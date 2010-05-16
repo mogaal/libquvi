@@ -56,12 +56,15 @@ QUVI_INVARG,            /**< Invalid function argument */
 QUVI_CURLINIT,          /**< libcurl initialization failed */
 QUVI_LAST,              /**< Indicates end of list iteration */
 QUVI_ABORTEDBYCALLBACK, /**< Aborted by callback function */
+QUVI_LUAINIT,           /**< Lua initialization failure */
+QUVI_NOLUAWEBSITE,      /**< Failed to find lua website scripts */
 _INTERNAL_QUVI_LAST,    /**< For library internal use only */
 /* Dynamically generated errors */
 QUVI_PCRE = 0x40, /**< libpcre error occurred */
 QUVI_NOSUPPORT,   /**< libquvi does not support the video host */
 QUVI_CURL,        /**< libcurl error occurred */
 QUVI_ICONV,       /**< libiconv error occurred */
+QUVI_LUA,         /**< lua error occurred */
 } QUVIcode;
 
 /** @enum QUVIstatus Status codes */
@@ -253,6 +256,18 @@ extern "C" {
 
 /**
 * @brief Start a new libquvi session
+*
+* Initializes a new session handle and locates the website scripts
+* used to parse the video page links. The library searches the
+* following paths in the following order:
+*
+*   - $QUVI_BASEDIR defined path
+*   - Current working directory (./lua/website/)
+*   - $HOME./quvi/
+*   - $HOME/.config/quvi/
+*   - $HOME/.local/share/quvi/
+*   - --datadir=DIR (and pkgdatadir) specified with configure (script)
+*     - These directories are typically $prefix/share/ and $prefix/share/quvi/
 *
 * @param quvi Pointer to a new handle
 *
@@ -495,24 +510,46 @@ void quvi_parse_close(quvi_video_t *video);
  * @{
  */
 
-/** 
-* @brief Next supported video host
+/**
+* @brief Return next supported video website
 *
-* Iterate over the list of the supported video hosts.
-* 
-* @param domain Pointer to a null-terminated string (e.g. youtube.com)
-* @param formats Pointer to a null-terminated string (e.g. flv, delim. '|')
+* This function can be used to iterate the supported websites.
 *
-* @return Non-zero if end of list was reached (QUVI_LAST) or an error occurred
+* @param quvi Handle to a session
+* @param domain Pointer to a null-terminated string (e.g. "youtube.com")
+* @param formats Pointer to a null-terminated string (e.g. "default|best|hq|hd")
 *
-* @warning Do not attempt to free the memory returned by this function
+* @return QUVI_OK or a non-zero value if an error occurred
+*   - QUVI_LAST indicates end of the list of the websites
+*   - Any other returned non-zero value indicates an actual error and should be handled accordingly (e.g. relaying the return code to \a quvi_strerror)
+*
+* @note
+*   - Both domain and formats string must be quvi_free()d after use
+*   - Return value QUVI_LAST is a non-zero value and indicates the end iteration
+*   - Consider handling errors
 *
 * Example:
 * @code
-* char *domain=0, *formats=0;
-* while (quvi_next_host(&domain, &formats) == QUVI_OK)
+* while (quvi_next_supported_website(quvi, &domain, &formats) == QUVI_OK) {
 *   printf("%s\t%s\n", domain, formats);
+*   quvi_free(domain);
+*   quvi_free(formats);
+* }
 * @endcode
+*/
+QUVIcode quvi_next_supported_website(quvi_t quvi, char **domain, char **formats);
+
+/** 
+* @brief Next supported video host
+*
+* Iterate the list of the supported video hosts.
+* 
+* @param domain Pointer to a null-terminated string
+* @param formats Pointer to a null-terminated string
+*
+* @return QUVI_LAST (always)
+*
+* @deprecated since 0.2.0, use quvi_next_supported_website() instead
 */
 QUVIcode quvi_next_host(char **domain, char **formats);
 
@@ -554,6 +591,13 @@ char *quvi_strerror(quvi_t quvi, QUVIcode code);
 * @endcode
 */
 char *quvi_version(QUVIversion type);
+
+/**
+* @brief Free allocated memory
+*
+* @param ptr Pointer to data
+*/
+void quvi_free(void *ptr);
 
 /** @} */ /* End of libquvi_misc group. */
 /** @} */ /* End of libquvi_api group. */

@@ -18,6 +18,8 @@
 #ifndef internal_h
 #define internal_h
 
+#include <lua.h>
+
 #include "platform.h"
 #include "llst.h"
 
@@ -58,6 +60,9 @@ struct _quvi_s {
     long httpcode;
     long curlcode;
     char *errmsg;
+    llst_node_t scripts;
+    llst_node_t curr_next_host;
+    lua_State *lua;
 };
 
 typedef struct _quvi_s *_quvi_t;
@@ -83,6 +88,13 @@ struct _quvi_video_s {
 };
 
 typedef struct _quvi_video_s *_quvi_video_t;
+
+struct _quvi_lua_script_s {
+    char *basename;
+    char *path;
+};
+
+typedef struct _quvi_lua_script_s *_quvi_lua_script_t;
 
 #endif
 

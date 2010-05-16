@@ -9,6 +9,10 @@ src = \
 hdr = \
     cmdline.h
 
+if NO_ASPRINTF
+src += $(top_srcdir)/lib/vasprintf.c $(top_srcdir)/lib/asprintf.c
+endif
+
 bin_PROGRAMS = quvi
 quvi_SOURCES = $(src) $(hdr)
 

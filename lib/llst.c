@@ -56,7 +56,6 @@ int
 llst_size (llst_node_t head) {
     llst_node_t curr = head;
     int n = 0;
-    assert(head);
     while (curr) {
         curr = curr->next;
         ++n;

@@ -39,11 +39,6 @@ target_triplet = @target@
 @NO_ASPRINTF_TRUE@am__append_2 = vasprintf.c asprintf.c
 @NO_STRUPR_TRUE@am__append_3 = strupr.c
 @NO_STRTOK_R_TRUE@am__append_4 = strtok_r.c
-@ENABLE_SMUT_TRUE@am__append_5 = \
-@ENABLE_SMUT_TRUE@host/tube8.c \
-@ENABLE_SMUT_TRUE@host/xvideos.c \
-@ENABLE_SMUT_TRUE@host/youjizz.c
-
 subdir = lib
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -81,37 +76,24 @@ am__base_list = \
 am__installdirs = "$(DESTDIR)$(libdir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 libquvi_la_LIBADD =
-am__libquvi_la_SOURCES_DIST = quvi.c util.c curl.c strepl.c llst.c \
-	vasprintf.c asprintf.c strupr.c strtok_r.c host/break.c \
-	host/cctv.c host/clipfish.c host/evisor.c host/funnyhub.c \
-	host/golem.c host/google.c host/liveleak.c host/myubo.c \
-	host/sevenload.c host/vimeo.c host/spiegel.c host/ehrensenf.c \
-	host/dailymotion.c host/spyfilms.c host/youtube.c \
-	host/buzzhumor.c host/tube8.c host/xvideos.c host/youjizz.c \
-	curl.h host.h internal.h util.h platform.h llst.h
+am__libquvi_la_SOURCES_DIST = quvi.c util.c curl_wrap.c lua_wrap.c \
+	strepl.c llst.c vasprintf.c asprintf.c strupr.c strtok_r.c \
+	curl_wrap.h lua_wrap.h internal.h util.h platform.h llst.h
 @NO_ASPRINTF_TRUE@am__objects_1 = libquvi_la-vasprintf.lo \
 @NO_ASPRINTF_TRUE@	libquvi_la-asprintf.lo
 @NO_STRUPR_TRUE@am__objects_2 = libquvi_la-strupr.lo
 @NO_STRTOK_R_TRUE@am__objects_3 = libquvi_la-strtok_r.lo
 am__objects_4 = libquvi_la-quvi.lo libquvi_la-util.lo \
-	libquvi_la-curl.lo libquvi_la-strepl.lo libquvi_la-llst.lo \
-	$(am__objects_1) $(am__objects_2) $(am__objects_3)
-@ENABLE_SMUT_TRUE@am__objects_5 = libquvi_la-tube8.lo \
-@ENABLE_SMUT_TRUE@	libquvi_la-xvideos.lo libquvi_la-youjizz.lo
-am__objects_6 = libquvi_la-break.lo libquvi_la-cctv.lo \
-	libquvi_la-clipfish.lo libquvi_la-evisor.lo \
-	libquvi_la-funnyhub.lo libquvi_la-golem.lo \
-	libquvi_la-google.lo libquvi_la-liveleak.lo \
-	libquvi_la-myubo.lo libquvi_la-sevenload.lo \
-	libquvi_la-vimeo.lo libquvi_la-spiegel.lo \
-	libquvi_la-ehrensenf.lo libquvi_la-dailymotion.lo \
-	libquvi_la-spyfilms.lo libquvi_la-youtube.lo \
-	libquvi_la-buzzhumor.lo $(am__objects_5)
-am__objects_7 =
-am_libquvi_la_OBJECTS = $(am__objects_4) $(am__objects_6) \
-	$(am__objects_7)
+	libquvi_la-curl_wrap.lo libquvi_la-lua_wrap.lo \
+	libquvi_la-strepl.lo libquvi_la-llst.lo $(am__objects_1) \
+	$(am__objects_2) $(am__objects_3)
+am__objects_5 =
+am_libquvi_la_OBJECTS = $(am__objects_4) $(am__objects_5)
 libquvi_la_OBJECTS = $(am_libquvi_la_OBJECTS)
-libquvi_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
+AM_V_lt = $(am__v_lt_$(V))
+am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
+am__v_lt_0 = --silent
+libquvi_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(libquvi_la_CFLAGS) \
 	$(CFLAGS) $(libquvi_la_LDFLAGS) $(LDFLAGS) -o $@
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
@@ -120,13 +102,26 @@ am__depfiles_maybe = depfiles
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-LTCOMPILE = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
-	--mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
-	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+LTCOMPILE = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) \
+	$(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
+	$(AM_CFLAGS) $(CFLAGS)
+AM_V_CC = $(am__v_CC_$(V))
+am__v_CC_ = $(am__v_CC_$(AM_DEFAULT_VERBOSITY))
+am__v_CC_0 = @echo "  CC    " $@;
+AM_V_at = $(am__v_at_$(V))
+am__v_at_ = $(am__v_at_$(AM_DEFAULT_VERBOSITY))
+am__v_at_0 = @
 CCLD = $(CC)
-LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
-	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
-	$(LDFLAGS) -o $@
+LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
+	$(AM_LDFLAGS) $(LDFLAGS) -o $@
+AM_V_CCLD = $(am__v_CCLD_$(V))
+am__v_CCLD_ = $(am__v_CCLD_$(AM_DEFAULT_VERBOSITY))
+am__v_CCLD_0 = @echo "  CCLD  " $@;
+AM_V_GEN = $(am__v_GEN_$(V))
+am__v_GEN_ = $(am__v_GEN_$(AM_DEFAULT_VERBOSITY))
+am__v_GEN_0 = @echo "  GEN   " $@;
 SOURCES = $(libquvi_la_SOURCES)
 DIST_SOURCES = $(am__libquvi_la_SOURCES_DIST)
 ETAGS = etags
@@ -134,6 +129,7 @@ CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 AMTAR = @AMTAR@
+AM_DEFAULT_VERBOSITY = @AM_DEFAULT_VERBOSITY@
 AR = @AR@
 AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
@@ -246,6 +242,8 @@ libcurl_CFLAGS = @libcurl_CFLAGS@
 libcurl_LIBS = @libcurl_LIBS@
 libdir = @libdir@
 libexecdir = @libexecdir@
+liblua_CFLAGS = @liblua_CFLAGS@
+liblua_LIBS = @liblua_LIBS@
 libpcre_CFLAGS = @libpcre_CFLAGS@
 libpcre_LIBS = @libpcre_LIBS@
 localedir = @localedir@
@@ -270,31 +268,30 @@ target_vendor = @target_vendor@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-src = quvi.c util.c curl.c strepl.c llst.c $(am__append_2) \
-	$(am__append_3) $(am__append_4)
-src_host = host/break.c host/cctv.c host/clipfish.c host/evisor.c \
-	host/funnyhub.c host/golem.c host/google.c host/liveleak.c \
-	host/myubo.c host/sevenload.c host/vimeo.c host/spiegel.c \
-	host/ehrensenf.c host/dailymotion.c host/spyfilms.c \
-	host/youtube.c host/buzzhumor.c $(am__append_5)
+src = quvi.c util.c curl_wrap.c lua_wrap.c strepl.c llst.c \
+	$(am__append_2) $(am__append_3) $(am__append_4)
 hdr = \
-curl.h \
-host.h \
+curl_wrap.h \
+lua_wrap.h \
 internal.h \
 util.h \
 platform.h \
 llst.h
 
 lib_LTLIBRARIES = libquvi.la
-libquvi_la_SOURCES = $(src) $(src_host) $(hdr)
+libquvi_la_SOURCES = $(src) $(hdr)
 libquvi_la_CFLAGS = \
 -I$(top_builddir)/include \
+-DDATADIR='"$(datadir)"' \
+-DPKGDATADIR='"$(pkgdatadir)"' \
 $(libcurl_CFLAGS) \
-$(libpcre_CFLAGS)
+$(libpcre_CFLAGS) \
+$(liblua_CFLAGS)
 
 libquvi_la_LDFLAGS = \
 $(libcurl_LIBS) \
 $(libpcre_LIBS) \
+$(liblua_LIBS) \
 $(LIBICONV) \
 $(LTLIBICONV) \
 -version-info $(QUVI_CURRENT):$(QUVI_REVISION):$(QUVI_AGE) \
@@ -366,7 +363,7 @@ clean-libLTLIBRARIES:
 	  rm -f "$${dir}/so_locations"; \
 	done
 libquvi.la: $(libquvi_la_OBJECTS) $(libquvi_la_DEPENDENCIES) 
-	$(libquvi_la_LINK) -rpath $(libdir) $(libquvi_la_OBJECTS) $(libquvi_la_LIBADD) $(LIBS)
+	$(AM_V_CCLD)$(libquvi_la_LINK) -rpath $(libdir) $(libquvi_la_OBJECTS) $(libquvi_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -375,258 +372,119 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libquvi_la-asprintf.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libquvi_la-break.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libquvi_la-buzzhumor.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libquvi_la-cctv.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libquvi_la-clipfish.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libquvi_la-curl.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libquvi_la-dailymotion.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libquvi_la-ehrensenf.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libquvi_la-evisor.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libquvi_la-funnyhub.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libquvi_la-golem.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libquvi_la-google.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libquvi_la-liveleak.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libquvi_la-curl_wrap.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libquvi_la-llst.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libquvi_la-myubo.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libquvi_la-lua_wrap.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libquvi_la-quvi.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libquvi_la-sevenload.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libquvi_la-spiegel.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libquvi_la-spyfilms.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libquvi_la-strepl.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libquvi_la-strtok_r.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libquvi_la-strupr.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libquvi_la-tube8.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libquvi_la-util.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libquvi_la-vasprintf.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libquvi_la-vimeo.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libquvi_la-xvideos.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libquvi_la-youjizz.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libquvi_la-youtube.Plo@am__quote@
 
 .c.o:
-@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(COMPILE) -c $<
 
 .c.obj:
-@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(COMPILE) -c `$(CYGPATH_W) '$<'`
 
 .c.lo:
-@am__fastdepCC_TRUE@	$(LTCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LTCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $<
 
 libquvi_la-quvi.lo: quvi.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -MT libquvi_la-quvi.lo -MD -MP -MF $(DEPDIR)/libquvi_la-quvi.Tpo -c -o libquvi_la-quvi.lo `test -f 'quvi.c' || echo '$(srcdir)/'`quvi.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libquvi_la-quvi.Tpo $(DEPDIR)/libquvi_la-quvi.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -MT libquvi_la-quvi.lo -MD -MP -MF $(DEPDIR)/libquvi_la-quvi.Tpo -c -o libquvi_la-quvi.lo `test -f 'quvi.c' || echo '$(srcdir)/'`quvi.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libquvi_la-quvi.Tpo $(DEPDIR)/libquvi_la-quvi.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='quvi.c' object='libquvi_la-quvi.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -c -o libquvi_la-quvi.lo `test -f 'quvi.c' || echo '$(srcdir)/'`quvi.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -c -o libquvi_la-quvi.lo `test -f 'quvi.c' || echo '$(srcdir)/'`quvi.c
 
 libquvi_la-util.lo: util.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -MT libquvi_la-util.lo -MD -MP -MF $(DEPDIR)/libquvi_la-util.Tpo -c -o libquvi_la-util.lo `test -f 'util.c' || echo '$(srcdir)/'`util.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libquvi_la-util.Tpo $(DEPDIR)/libquvi_la-util.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -MT libquvi_la-util.lo -MD -MP -MF $(DEPDIR)/libquvi_la-util.Tpo -c -o libquvi_la-util.lo `test -f 'util.c' || echo '$(srcdir)/'`util.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libquvi_la-util.Tpo $(DEPDIR)/libquvi_la-util.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='util.c' object='libquvi_la-util.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -c -o libquvi_la-util.lo `test -f 'util.c' || echo '$(srcdir)/'`util.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -c -o libquvi_la-util.lo `test -f 'util.c' || echo '$(srcdir)/'`util.c
 
-libquvi_la-curl.lo: curl.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -MT libquvi_la-curl.lo -MD -MP -MF $(DEPDIR)/libquvi_la-curl.Tpo -c -o libquvi_la-curl.lo `test -f 'curl.c' || echo '$(srcdir)/'`curl.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libquvi_la-curl.Tpo $(DEPDIR)/libquvi_la-curl.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='curl.c' object='libquvi_la-curl.lo' libtool=yes @AMDEPBACKSLASH@
+libquvi_la-curl_wrap.lo: curl_wrap.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -MT libquvi_la-curl_wrap.lo -MD -MP -MF $(DEPDIR)/libquvi_la-curl_wrap.Tpo -c -o libquvi_la-curl_wrap.lo `test -f 'curl_wrap.c' || echo '$(srcdir)/'`curl_wrap.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libquvi_la-curl_wrap.Tpo $(DEPDIR)/libquvi_la-curl_wrap.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='curl_wrap.c' object='libquvi_la-curl_wrap.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -c -o libquvi_la-curl.lo `test -f 'curl.c' || echo '$(srcdir)/'`curl.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -c -o libquvi_la-curl_wrap.lo `test -f 'curl_wrap.c' || echo '$(srcdir)/'`curl_wrap.c
+
+libquvi_la-lua_wrap.lo: lua_wrap.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -MT libquvi_la-lua_wrap.lo -MD -MP -MF $(DEPDIR)/libquvi_la-lua_wrap.Tpo -c -o libquvi_la-lua_wrap.lo `test -f 'lua_wrap.c' || echo '$(srcdir)/'`lua_wrap.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libquvi_la-lua_wrap.Tpo $(DEPDIR)/libquvi_la-lua_wrap.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='lua_wrap.c' object='libquvi_la-lua_wrap.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -c -o libquvi_la-lua_wrap.lo `test -f 'lua_wrap.c' || echo '$(srcdir)/'`lua_wrap.c
 
 libquvi_la-strepl.lo: strepl.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -MT libquvi_la-strepl.lo -MD -MP -MF $(DEPDIR)/libquvi_la-strepl.Tpo -c -o libquvi_la-strepl.lo `test -f 'strepl.c' || echo '$(srcdir)/'`strepl.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libquvi_la-strepl.Tpo $(DEPDIR)/libquvi_la-strepl.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -MT libquvi_la-strepl.lo -MD -MP -MF $(DEPDIR)/libquvi_la-strepl.Tpo -c -o libquvi_la-strepl.lo `test -f 'strepl.c' || echo '$(srcdir)/'`strepl.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libquvi_la-strepl.Tpo $(DEPDIR)/libquvi_la-strepl.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='strepl.c' object='libquvi_la-strepl.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -c -o libquvi_la-strepl.lo `test -f 'strepl.c' || echo '$(srcdir)/'`strepl.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -c -o libquvi_la-strepl.lo `test -f 'strepl.c' || echo '$(srcdir)/'`strepl.c
 
 libquvi_la-llst.lo: llst.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -MT libquvi_la-llst.lo -MD -MP -MF $(DEPDIR)/libquvi_la-llst.Tpo -c -o libquvi_la-llst.lo `test -f 'llst.c' || echo '$(srcdir)/'`llst.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libquvi_la-llst.Tpo $(DEPDIR)/libquvi_la-llst.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -MT libquvi_la-llst.lo -MD -MP -MF $(DEPDIR)/libquvi_la-llst.Tpo -c -o libquvi_la-llst.lo `test -f 'llst.c' || echo '$(srcdir)/'`llst.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libquvi_la-llst.Tpo $(DEPDIR)/libquvi_la-llst.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='llst.c' object='libquvi_la-llst.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -c -o libquvi_la-llst.lo `test -f 'llst.c' || echo '$(srcdir)/'`llst.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -c -o libquvi_la-llst.lo `test -f 'llst.c' || echo '$(srcdir)/'`llst.c
 
 libquvi_la-vasprintf.lo: vasprintf.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -MT libquvi_la-vasprintf.lo -MD -MP -MF $(DEPDIR)/libquvi_la-vasprintf.Tpo -c -o libquvi_la-vasprintf.lo `test -f 'vasprintf.c' || echo '$(srcdir)/'`vasprintf.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libquvi_la-vasprintf.Tpo $(DEPDIR)/libquvi_la-vasprintf.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -MT libquvi_la-vasprintf.lo -MD -MP -MF $(DEPDIR)/libquvi_la-vasprintf.Tpo -c -o libquvi_la-vasprintf.lo `test -f 'vasprintf.c' || echo '$(srcdir)/'`vasprintf.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libquvi_la-vasprintf.Tpo $(DEPDIR)/libquvi_la-vasprintf.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='vasprintf.c' object='libquvi_la-vasprintf.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -c -o libquvi_la-vasprintf.lo `test -f 'vasprintf.c' || echo '$(srcdir)/'`vasprintf.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -c -o libquvi_la-vasprintf.lo `test -f 'vasprintf.c' || echo '$(srcdir)/'`vasprintf.c
 
 libquvi_la-asprintf.lo: asprintf.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -MT libquvi_la-asprintf.lo -MD -MP -MF $(DEPDIR)/libquvi_la-asprintf.Tpo -c -o libquvi_la-asprintf.lo `test -f 'asprintf.c' || echo '$(srcdir)/'`asprintf.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libquvi_la-asprintf.Tpo $(DEPDIR)/libquvi_la-asprintf.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -MT libquvi_la-asprintf.lo -MD -MP -MF $(DEPDIR)/libquvi_la-asprintf.Tpo -c -o libquvi_la-asprintf.lo `test -f 'asprintf.c' || echo '$(srcdir)/'`asprintf.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libquvi_la-asprintf.Tpo $(DEPDIR)/libquvi_la-asprintf.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='asprintf.c' object='libquvi_la-asprintf.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -c -o libquvi_la-asprintf.lo `test -f 'asprintf.c' || echo '$(srcdir)/'`asprintf.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -c -o libquvi_la-asprintf.lo `test -f 'asprintf.c' || echo '$(srcdir)/'`asprintf.c
 
 libquvi_la-strupr.lo: strupr.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -MT libquvi_la-strupr.lo -MD -MP -MF $(DEPDIR)/libquvi_la-strupr.Tpo -c -o libquvi_la-strupr.lo `test -f 'strupr.c' || echo '$(srcdir)/'`strupr.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libquvi_la-strupr.Tpo $(DEPDIR)/libquvi_la-strupr.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -MT libquvi_la-strupr.lo -MD -MP -MF $(DEPDIR)/libquvi_la-strupr.Tpo -c -o libquvi_la-strupr.lo `test -f 'strupr.c' || echo '$(srcdir)/'`strupr.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libquvi_la-strupr.Tpo $(DEPDIR)/libquvi_la-strupr.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='strupr.c' object='libquvi_la-strupr.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -c -o libquvi_la-strupr.lo `test -f 'strupr.c' || echo '$(srcdir)/'`strupr.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -c -o libquvi_la-strupr.lo `test -f 'strupr.c' || echo '$(srcdir)/'`strupr.c
 
 libquvi_la-strtok_r.lo: strtok_r.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -MT libquvi_la-strtok_r.lo -MD -MP -MF $(DEPDIR)/libquvi_la-strtok_r.Tpo -c -o libquvi_la-strtok_r.lo `test -f 'strtok_r.c' || echo '$(srcdir)/'`strtok_r.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libquvi_la-strtok_r.Tpo $(DEPDIR)/libquvi_la-strtok_r.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -MT libquvi_la-strtok_r.lo -MD -MP -MF $(DEPDIR)/libquvi_la-strtok_r.Tpo -c -o libquvi_la-strtok_r.lo `test -f 'strtok_r.c' || echo '$(srcdir)/'`strtok_r.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libquvi_la-strtok_r.Tpo $(DEPDIR)/libquvi_la-strtok_r.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='strtok_r.c' object='libquvi_la-strtok_r.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -c -o libquvi_la-strtok_r.lo `test -f 'strtok_r.c' || echo '$(srcdir)/'`strtok_r.c
-
-libquvi_la-break.lo: host/break.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -MT libquvi_la-break.lo -MD -MP -MF $(DEPDIR)/libquvi_la-break.Tpo -c -o libquvi_la-break.lo `test -f 'host/break.c' || echo '$(srcdir)/'`host/break.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libquvi_la-break.Tpo $(DEPDIR)/libquvi_la-break.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='host/break.c' object='libquvi_la-break.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -c -o libquvi_la-break.lo `test -f 'host/break.c' || echo '$(srcdir)/'`host/break.c
-
-libquvi_la-cctv.lo: host/cctv.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -MT libquvi_la-cctv.lo -MD -MP -MF $(DEPDIR)/libquvi_la-cctv.Tpo -c -o libquvi_la-cctv.lo `test -f 'host/cctv.c' || echo '$(srcdir)/'`host/cctv.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libquvi_la-cctv.Tpo $(DEPDIR)/libquvi_la-cctv.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='host/cctv.c' object='libquvi_la-cctv.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -c -o libquvi_la-cctv.lo `test -f 'host/cctv.c' || echo '$(srcdir)/'`host/cctv.c
-
-libquvi_la-clipfish.lo: host/clipfish.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -MT libquvi_la-clipfish.lo -MD -MP -MF $(DEPDIR)/libquvi_la-clipfish.Tpo -c -o libquvi_la-clipfish.lo `test -f 'host/clipfish.c' || echo '$(srcdir)/'`host/clipfish.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libquvi_la-clipfish.Tpo $(DEPDIR)/libquvi_la-clipfish.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='host/clipfish.c' object='libquvi_la-clipfish.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -c -o libquvi_la-clipfish.lo `test -f 'host/clipfish.c' || echo '$(srcdir)/'`host/clipfish.c
-
-libquvi_la-evisor.lo: host/evisor.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -MT libquvi_la-evisor.lo -MD -MP -MF $(DEPDIR)/libquvi_la-evisor.Tpo -c -o libquvi_la-evisor.lo `test -f 'host/evisor.c' || echo '$(srcdir)/'`host/evisor.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libquvi_la-evisor.Tpo $(DEPDIR)/libquvi_la-evisor.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='host/evisor.c' object='libquvi_la-evisor.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -c -o libquvi_la-evisor.lo `test -f 'host/evisor.c' || echo '$(srcdir)/'`host/evisor.c
-
-libquvi_la-funnyhub.lo: host/funnyhub.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -MT libquvi_la-funnyhub.lo -MD -MP -MF $(DEPDIR)/libquvi_la-funnyhub.Tpo -c -o libquvi_la-funnyhub.lo `test -f 'host/funnyhub.c' || echo '$(srcdir)/'`host/funnyhub.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libquvi_la-funnyhub.Tpo $(DEPDIR)/libquvi_la-funnyhub.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='host/funnyhub.c' object='libquvi_la-funnyhub.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -c -o libquvi_la-funnyhub.lo `test -f 'host/funnyhub.c' || echo '$(srcdir)/'`host/funnyhub.c
-
-libquvi_la-golem.lo: host/golem.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -MT libquvi_la-golem.lo -MD -MP -MF $(DEPDIR)/libquvi_la-golem.Tpo -c -o libquvi_la-golem.lo `test -f 'host/golem.c' || echo '$(srcdir)/'`host/golem.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libquvi_la-golem.Tpo $(DEPDIR)/libquvi_la-golem.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='host/golem.c' object='libquvi_la-golem.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -c -o libquvi_la-golem.lo `test -f 'host/golem.c' || echo '$(srcdir)/'`host/golem.c
-
-libquvi_la-google.lo: host/google.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -MT libquvi_la-google.lo -MD -MP -MF $(DEPDIR)/libquvi_la-google.Tpo -c -o libquvi_la-google.lo `test -f 'host/google.c' || echo '$(srcdir)/'`host/google.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libquvi_la-google.Tpo $(DEPDIR)/libquvi_la-google.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='host/google.c' object='libquvi_la-google.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -c -o libquvi_la-google.lo `test -f 'host/google.c' || echo '$(srcdir)/'`host/google.c
-
-libquvi_la-liveleak.lo: host/liveleak.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -MT libquvi_la-liveleak.lo -MD -MP -MF $(DEPDIR)/libquvi_la-liveleak.Tpo -c -o libquvi_la-liveleak.lo `test -f 'host/liveleak.c' || echo '$(srcdir)/'`host/liveleak.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libquvi_la-liveleak.Tpo $(DEPDIR)/libquvi_la-liveleak.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='host/liveleak.c' object='libquvi_la-liveleak.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -c -o libquvi_la-liveleak.lo `test -f 'host/liveleak.c' || echo '$(srcdir)/'`host/liveleak.c
-
-libquvi_la-myubo.lo: host/myubo.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -MT libquvi_la-myubo.lo -MD -MP -MF $(DEPDIR)/libquvi_la-myubo.Tpo -c -o libquvi_la-myubo.lo `test -f 'host/myubo.c' || echo '$(srcdir)/'`host/myubo.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libquvi_la-myubo.Tpo $(DEPDIR)/libquvi_la-myubo.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='host/myubo.c' object='libquvi_la-myubo.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -c -o libquvi_la-myubo.lo `test -f 'host/myubo.c' || echo '$(srcdir)/'`host/myubo.c
-
-libquvi_la-sevenload.lo: host/sevenload.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -MT libquvi_la-sevenload.lo -MD -MP -MF $(DEPDIR)/libquvi_la-sevenload.Tpo -c -o libquvi_la-sevenload.lo `test -f 'host/sevenload.c' || echo '$(srcdir)/'`host/sevenload.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libquvi_la-sevenload.Tpo $(DEPDIR)/libquvi_la-sevenload.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='host/sevenload.c' object='libquvi_la-sevenload.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -c -o libquvi_la-sevenload.lo `test -f 'host/sevenload.c' || echo '$(srcdir)/'`host/sevenload.c
-
-libquvi_la-vimeo.lo: host/vimeo.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -MT libquvi_la-vimeo.lo -MD -MP -MF $(DEPDIR)/libquvi_la-vimeo.Tpo -c -o libquvi_la-vimeo.lo `test -f 'host/vimeo.c' || echo '$(srcdir)/'`host/vimeo.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libquvi_la-vimeo.Tpo $(DEPDIR)/libquvi_la-vimeo.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='host/vimeo.c' object='libquvi_la-vimeo.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -c -o libquvi_la-vimeo.lo `test -f 'host/vimeo.c' || echo '$(srcdir)/'`host/vimeo.c
-
-libquvi_la-spiegel.lo: host/spiegel.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -MT libquvi_la-spiegel.lo -MD -MP -MF $(DEPDIR)/libquvi_la-spiegel.Tpo -c -o libquvi_la-spiegel.lo `test -f 'host/spiegel.c' || echo '$(srcdir)/'`host/spiegel.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libquvi_la-spiegel.Tpo $(DEPDIR)/libquvi_la-spiegel.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='host/spiegel.c' object='libquvi_la-spiegel.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -c -o libquvi_la-spiegel.lo `test -f 'host/spiegel.c' || echo '$(srcdir)/'`host/spiegel.c
-
-libquvi_la-ehrensenf.lo: host/ehrensenf.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -MT libquvi_la-ehrensenf.lo -MD -MP -MF $(DEPDIR)/libquvi_la-ehrensenf.Tpo -c -o libquvi_la-ehrensenf.lo `test -f 'host/ehrensenf.c' || echo '$(srcdir)/'`host/ehrensenf.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libquvi_la-ehrensenf.Tpo $(DEPDIR)/libquvi_la-ehrensenf.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='host/ehrensenf.c' object='libquvi_la-ehrensenf.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -c -o libquvi_la-ehrensenf.lo `test -f 'host/ehrensenf.c' || echo '$(srcdir)/'`host/ehrensenf.c
-
-libquvi_la-dailymotion.lo: host/dailymotion.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -MT libquvi_la-dailymotion.lo -MD -MP -MF $(DEPDIR)/libquvi_la-dailymotion.Tpo -c -o libquvi_la-dailymotion.lo `test -f 'host/dailymotion.c' || echo '$(srcdir)/'`host/dailymotion.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libquvi_la-dailymotion.Tpo $(DEPDIR)/libquvi_la-dailymotion.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='host/dailymotion.c' object='libquvi_la-dailymotion.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -c -o libquvi_la-dailymotion.lo `test -f 'host/dailymotion.c' || echo '$(srcdir)/'`host/dailymotion.c
-
-libquvi_la-spyfilms.lo: host/spyfilms.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -MT libquvi_la-spyfilms.lo -MD -MP -MF $(DEPDIR)/libquvi_la-spyfilms.Tpo -c -o libquvi_la-spyfilms.lo `test -f 'host/spyfilms.c' || echo '$(srcdir)/'`host/spyfilms.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libquvi_la-spyfilms.Tpo $(DEPDIR)/libquvi_la-spyfilms.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='host/spyfilms.c' object='libquvi_la-spyfilms.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -c -o libquvi_la-spyfilms.lo `test -f 'host/spyfilms.c' || echo '$(srcdir)/'`host/spyfilms.c
-
-libquvi_la-youtube.lo: host/youtube.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -MT libquvi_la-youtube.lo -MD -MP -MF $(DEPDIR)/libquvi_la-youtube.Tpo -c -o libquvi_la-youtube.lo `test -f 'host/youtube.c' || echo '$(srcdir)/'`host/youtube.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libquvi_la-youtube.Tpo $(DEPDIR)/libquvi_la-youtube.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='host/youtube.c' object='libquvi_la-youtube.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -c -o libquvi_la-youtube.lo `test -f 'host/youtube.c' || echo '$(srcdir)/'`host/youtube.c
-
-libquvi_la-buzzhumor.lo: host/buzzhumor.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -MT libquvi_la-buzzhumor.lo -MD -MP -MF $(DEPDIR)/libquvi_la-buzzhumor.Tpo -c -o libquvi_la-buzzhumor.lo `test -f 'host/buzzhumor.c' || echo '$(srcdir)/'`host/buzzhumor.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libquvi_la-buzzhumor.Tpo $(DEPDIR)/libquvi_la-buzzhumor.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='host/buzzhumor.c' object='libquvi_la-buzzhumor.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -c -o libquvi_la-buzzhumor.lo `test -f 'host/buzzhumor.c' || echo '$(srcdir)/'`host/buzzhumor.c
-
-libquvi_la-tube8.lo: host/tube8.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -MT libquvi_la-tube8.lo -MD -MP -MF $(DEPDIR)/libquvi_la-tube8.Tpo -c -o libquvi_la-tube8.lo `test -f 'host/tube8.c' || echo '$(srcdir)/'`host/tube8.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libquvi_la-tube8.Tpo $(DEPDIR)/libquvi_la-tube8.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='host/tube8.c' object='libquvi_la-tube8.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -c -o libquvi_la-tube8.lo `test -f 'host/tube8.c' || echo '$(srcdir)/'`host/tube8.c
-
-libquvi_la-xvideos.lo: host/xvideos.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -MT libquvi_la-xvideos.lo -MD -MP -MF $(DEPDIR)/libquvi_la-xvideos.Tpo -c -o libquvi_la-xvideos.lo `test -f 'host/xvideos.c' || echo '$(srcdir)/'`host/xvideos.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libquvi_la-xvideos.Tpo $(DEPDIR)/libquvi_la-xvideos.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='host/xvideos.c' object='libquvi_la-xvideos.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -c -o libquvi_la-xvideos.lo `test -f 'host/xvideos.c' || echo '$(srcdir)/'`host/xvideos.c
-
-libquvi_la-youjizz.lo: host/youjizz.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -MT libquvi_la-youjizz.lo -MD -MP -MF $(DEPDIR)/libquvi_la-youjizz.Tpo -c -o libquvi_la-youjizz.lo `test -f 'host/youjizz.c' || echo '$(srcdir)/'`host/youjizz.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libquvi_la-youjizz.Tpo $(DEPDIR)/libquvi_la-youjizz.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='host/youjizz.c' object='libquvi_la-youjizz.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -c -o libquvi_la-youjizz.lo `test -f 'host/youjizz.c' || echo '$(srcdir)/'`host/youjizz.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libquvi_la_CFLAGS) $(CFLAGS) -c -o libquvi_la-strtok_r.lo `test -f 'strtok_r.c' || echo '$(srcdir)/'`strtok_r.c
 
 mostlyclean-libtool:
 	-rm -f *.lo

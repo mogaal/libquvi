@@ -113,9 +113,9 @@ Run all built-in host tests.
 Match 'youtube' string to built-in video page links
 and test it.
 
-=item quvi URL -f mp4
+=item quvi URL -f best
 
-Query 'mp4' of the video from the URL.
+Query 'best' of the video from the URL.
 
 =back
 
@@ -125,7 +125,7 @@ Sure to be some. Please report them.
 
   <http://quvi.googlecode.com/>
 
-=head1 DEBUGGING TIPS
+=head1 DEBUGGING
 
 =over 4
 
@@ -133,21 +133,34 @@ Sure to be some. Please report them.
 
 Spew out libcurl verbose mode messages.
 
+=item $prefix/share/quvi/lua/README
+
+=item $prefix/share/quvi/lua/website/README
+
+Contain details about working with the quvi Lua scripts (e.g. website
+rules). If video link parsing breaks, have a look at these files.
+
+=item $prefix/share/doc/quvi
+
+Various HOWTOs can be found in this directory.
+
 =back
 
 =head1 FILES
 
 =over 4
 
-=item B<$QUVI_HOME|$HOME/.quvirc>
+=item B<$HOME/.quvirc>
+
+You can define most of the command line options in the
+config file. For example:
 
  agent = some_agent/1.0     # --agent
  proxy = http://foo:1234    # --proxy
  no-verify                  # --no-verify
  debug                      # --debug
 
-You can define most of the command line options in the
-config file.
+Note that you can also define QUVI_HOME and use it instead.
 
 =back
 
@@ -161,11 +174,15 @@ quvi exits with 0 on success and E<gt>0 if an error occurred.
   QUVI_INVARG           = 0x03, Invalid function argument
   QUVI_CURLINIT         = 0x04, libcurl initialization failed
   QUVI_LAST             = 0x05, Indicates end of list iteration
-  _INTERNAL_QUVI_LAST   = 0x06, For library internal use only
+  QUVI_ABORTEDBYCALLBACK= 0x06, Aborted by callback function
+  QUVI_LUAINIT          = 0x07, Lua initialization failure
+  QUVI_NOLUAWEBSITE     = 0x08, Failed to find lua website scripts
+  --
   QUVI_PCRE             = 0x40, libpcre error occurred
   QUVI_NOSUPPORT        = 0x41, libquvi does not support the video host
   QUVI_CURL             = 0x42, libcurl error occurred
   QUVI_ICONV            = 0x43, libiconv error occurred
+  QUVI_LUA              = 0x44, lua error occurred
 
 =head1 OTHER
 
@@ -187,6 +204,6 @@ quvi exits with 0 on success and E<gt>0 if an error occurred.
 
 =head1 AUTHOR
 
-Toni Gundogdu <legatvs@gmail.com> et al.
+Toni Gundogdu.
 
 =cut

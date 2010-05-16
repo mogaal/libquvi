@@ -92,6 +92,14 @@ AC_DEFINE_UNQUOTED([BUILD_DATE], "$build_date", [...])
 AM_ICONV
 PKG_CHECK_MODULES(libcurl, libcurl >= 7.18.0)
 PKG_CHECK_MODULES(libpcre, libpcre >= 7.8)
+PKG_CHECK_MODULES(liblua, lua >= 5.1, [], [
+    PKG_CHECK_MODULES(liblua, lua51 >= 5.1, [], [
+        PKG_CHECK_MODULES(liblua, lua5.1 >= 5.1, [], [
+            PKG_CHECK_MODULES(liblua, lua-5.1 >= 5.1)
+        ])
+    ])
+])
+AM_SILENT_RULES([yes])
 
 # Checks for header files.
 AC_HEADER_STDC # `stdlib.h', `stdarg.h', `string.h', ...
@@ -109,7 +117,7 @@ if [ test x"$host_w32" = "xno" ]; then
     AC_FUNC_MALLOC
     AC_FUNC_REALLOC
 fi
-AC_CHECK_FUNCS([memset strdup strstr strtol strerror strcspn])
+AC_CHECK_FUNCS([memset strdup strstr strtol strerror strcspn getcwd])
 AC_FUNC_STRTOD
 
 have_asprintf=no
@@ -133,10 +141,18 @@ fi
 # --enable-quvi
 AC_ARG_ENABLE([quvi],
     [AS_HELP_STRING([--enable-quvi],
-        [build quvi(1) program @<:@default=yes@:>@])],
+        [build quvi command line tool@<:@default=yes@:>@])],
     [],
     [enable_quvi=yes])
 AM_CONDITIONAL([ENABLE_QUVI], [test x"$enable_quvi" != "xno"])
+
+# --enable-examples
+AC_ARG_ENABLE([examples],
+    [AS_HELP_STRING([--enable-examples],
+        [build examples @<:@default=no@:>@])],
+    [],
+    [enable_examples=no])
+AM_CONDITIONAL([ENABLE_EXAMPLES], [test x"$enable_examples" != "xno"])
 
 # --enable-smut
 AC_ARG_ENABLE([smut],
@@ -171,6 +187,14 @@ AC_ARG_WITH([man],
     [with_man=yes])
 AM_CONDITIONAL([WITH_MAN], [test x"$with_man" != "xno"])
 
+# --with-doc
+AC_ARG_WITH([doc],
+    [AS_HELP_STRING([--with-doc],
+        [install documentation @<:@default=yes@:>@])],
+    [],
+    [with_doc=yes])
+AM_CONDITIONAL([WITH_DOC], [test x"$with_doc" != "xno"])
+
 # GNU ld?
 AM_CONDITIONAL([HAVE_GNU_LD], [test x"$with_gnu_ld" = "xyes"])
 
@@ -180,6 +204,8 @@ AC_CONFIG_FILES([
     include/quvi/Makefile
     include/quvi/quvi.h
     lib/Makefile
+    share/Makefile
+    doc/Makefile
     src/Makefile
     examples/Makefile
     tests/Makefile
@@ -201,9 +227,11 @@ AC_MSG_NOTICE([Configured to build quvi/libquvi:
 Options:
     build libquvi:  shared=${enable_shared} static=${enable_static}
     build quvi:     ${enable_quvi}
+    build examples: ${enable_examples}
     adult support:  ${enable_smut}
     broken support: ${enable_broken}
     install manual: ${with_man}
+    install docs:   ${with_doc}
 
 Other:
     gengetopt:      ${GENGETOPT}

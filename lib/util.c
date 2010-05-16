@@ -32,7 +32,7 @@
 
 #include "quvi/quvi.h"
 #include "internal.h"
-#include "curl.h"
+#include "curl_wrap.h"
 #include "util.h"
 
 QUVIcode
@@ -335,7 +335,7 @@ unescape(_quvi_t quvi, char *s) {
     assert(quvi != 0);
     assert(quvi->curl != 0);
 
-    tmp = curl_easy_unescape(quvi->curl, s, 0, 0);
+    tmp = curl_easy_unescape(quvi->curl, s, 0, NULL);
     assert(tmp != 0);
     ret = strdup(tmp);
     curl_free(tmp);
@@ -451,28 +451,6 @@ add_video_link(llst_node_t *lst, const char *fmt, ...) {
     }
 
     return (llst_add(lst, qvl));
-}
-
-void
-from_embed_link (_quvi_video_t video) {
-    struct embed_lookup_s {
-        char *from;
-        char *to;
-    };
-    static const struct embed_lookup_s lookup[] = {
-        {"/v/",                     "/watch?v="}, /* youtube */
-        {"googleplayer.swf",        "videoplay"}, /* google */
-        {"/pl/",                    "/videos/"},  /* sevenload */
-        {"/e/",                     "/view?i="},  /* liveleak */
-        {"/moogaloop.swf?clip_id=", "/"},         /* vimeo */
-        {NULL, NULL}
-    };
-    int i;
-
-    for (i=0; lookup[i].from; ++i) {
-        video->page_link =
-            strepl(video->page_link, lookup[i].from, lookup[i].to);
-    }
 }
 
 

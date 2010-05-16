@@ -1,6 +1,83 @@
 
+Version 0.2.0
+=============
+
+Contents
+
+  1. Notes
+  2. Introducing Lua
+  3. Format ID changes
+  4. API changes
+  5. Distribution changes
+
+
+1. Notes
+--------
+
+Developers:
+* Read these changes carefully, especially "4. API changes"
+
+Packagers/downstream maintainers/whatnot:
+* Read (at least) the "5. Distribution changes"
+
+
+2. Introducing Lua
+------------------
+
+Introduce Lua <http://lua.org> scripts to the project. Video link parsing
+was completely reworked. All of the parsing is now done in website specific
+Lua scripts. This has some advantages to the old design:
+
+  * No need to tweak the library GNU Autotools files or C source code
+  * Scripts can be edited, dropped in, removed and reloaded
+  * Less likely to introduce memory leaks
+  * Lua language and syntax
+
+
+3. Format ID changes
+--------------------
+
+Common:
+* "flv" -> "default", not all websites default to "flv" (Adobe flash video)
+
+Youtube:
+* Reworked the format ID array
+
+Google (Video):
+* Removed "mp4" format ID
+
+Spiegel:
+* Reworked the format ID array
+* New default (vp6_64 -> vp_388)
+
+
+4. API changes
+--------------
+
+Changes:
+* Added additional QUVIcodes for Lua
+* Added quvi_free
+* Added quvi_next_supported_website
+  - Deprecates quvi_next_host (see below)
+
+Deprecated:
+* quvi_next_host
+
+
+5. Distribution changes
+-----------------------
+
+Changes:
+* Additional dependency for Lua 5.1 (library)
+* Additional files installed from doc/ and share/
+  - See doc/Makefile.am and share/Makefile.am for a complete list
+* Options for configure:
+  - --with-doc (default:yes)
+  - --enable-examples (default:no)
+
+
 Version 0.1.2
--------------
+=============
 
 Adds quvi_callback_write support, tweaks quvi_callback_status
 support (abort if the callback returns a non-zero value).

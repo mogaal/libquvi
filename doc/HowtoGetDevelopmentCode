@@ -1,0 +1,7 @@
+Howto: Get the development code
+===============================
+
+% git clone git://repo.or.cz/quvi.git
+
+You can pull the changes from the repo with:
+% cd quvi; git pull

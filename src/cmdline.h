@@ -69,7 +69,7 @@ struct gengetopt_args_info
   int connect_timeout_arg;	/**< @brief Max seconds allowed connection to server take (default='30').  */
   char * connect_timeout_orig;	/**< @brief Max seconds allowed connection to server take original value given at command line.  */
   const char *connect_timeout_help; /**< @brief Max seconds allowed connection to server take help description.  */
-  char * format_arg;	/**< @brief Query video format (default='flv').  */
+  char * format_arg;	/**< @brief Query video format (default='default').  */
   char * format_orig;	/**< @brief Query video format original value given at command line.  */
   const char *format_help; /**< @brief Query video format help description.  */
   
@@ -238,8 +238,6 @@ int cmdline_parser_config_file (const char *filename,
  */
 int cmdline_parser_required (struct gengetopt_args_info *args_info,
   const char *prog_name);
-
-extern const char *cmdline_parser_format_values[];  /**< @brief Possible values for format. */
 
 
 #ifdef __cplusplus

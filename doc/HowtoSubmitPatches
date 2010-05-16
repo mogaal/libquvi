@@ -1,0 +1,16 @@
+
+Howto: Submit patches
+=====================
+
+If you are using git:
+  * Check for unnecessary whitespace with "git diff --check" and fix them
+  * Use "git format-patch -M" to create the patch
+
+If you are working with diff use "diff -u" at very least when you generate
+your patches.
+
+Submit to either <http://code.google.com/p/quvi/issues/> issue tracker,
+or <legatvs@gmail.com>. If you need to discuss the changes,
+email (above) the patch instead.
+
+Thanks!

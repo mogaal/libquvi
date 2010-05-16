@@ -64,9 +64,6 @@ from_html_entities(char *src);
 int
 add_video_link(llst_node_t *lst, const char *fmt, ...);
 
-void
-from_embed_link(_quvi_video_t);
-
 #endif
 
 
