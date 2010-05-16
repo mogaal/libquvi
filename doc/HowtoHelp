@@ -1,0 +1,39 @@
+
+Howto: Help with the project
+============================
+
+1. Notes
+--------
+
+quvi is developed on Linux (i686) and sometimes tested under
+FreeBSD (i386). It is impossible for us to detect and fix errors on
+all different system configurations without help.
+
+If you are a downstream maintainer, and you think the upstream could
+benefit from your patches, please consider submitting them to the
+upstream. See $prefix/share/doc/quvi/HowtoSubmitPatches for contact
+details.
+
+
+2. What you can do
+------------------
+
+* Report bugs (http://quvi.googlecode.com/)
+  - Check for duplicates before you submit
+  - We may have addressed/closed the issue already
+
+* Write fixes
+  - Check the issue tracker for open issues
+  - Write fixes for yet unreported issues
+  - See also $prefix/share/doc/quvi/HowtoSubmitPatches
+
+* Write support for an additional website
+  - See $prefix/share/doc/quvi/HowtoContributeCode
+
+* Gather and report website specific data
+  - You make a good candidate if you can execute Adobe Flash object code (e.g. player)
+  - TCP traffic, etc. (there are a number of tools to do this these days)
+  - See $prefix/share/doc/quvi/HowtoContributeCode, which discusses this briefly
+
+* Read the Developers page in the wiki for the latest notes
+  - http://code.google.com/p/quvi/wiki/Development

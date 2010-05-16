@@ -105,13 +105,27 @@ version(opts_s opts) {
 }
 
 static void
-supports(opts_s opts) {
-    char *domain, *formats;
+supports(quvi_t quvi, opts_s opts) {
+    int done = 0;
 
-    while (quvi_next_host(&domain, &formats) == QUVI_OK)
-        printf("%s\t%s\n", domain, formats);
+    while (!done) {
+        char *domain, *formats;
+        QUVIcode rc = quvi_next_supported_website (quvi, &domain, &formats);
 
+        switch (rc) {
+        case QUVI_OK:
+            printf("%s\t%s\n", domain, formats);
+            quvi_free(domain);
+            quvi_free(formats);
+            break;
+        case QUVI_LAST: done = 1; break;
+        default       : fprintf(stderr, "%s\n", quvi_strerror(quvi, rc)); break;
+        }
+    }
+
+    quvi_close(&quvi);
     cmdline_parser_free(&opts);
+
     exit (0);
 }
 
@@ -223,7 +237,7 @@ dump_error(quvi_t quvi, QUVIcode rc, opts_s opts) {
     quvi_getinfo(quvi, QUVIINFO_HTTPCODE, &httpcode);
     quvi_getinfo(quvi, QUVIINFO_CURLCODE, &curlcode);
 
-    fprintf(stderr, "error: %s (http/%ld, curl/%ld)\n",
+    fprintf(stderr, "\nerror: %s (http/%ld, curl/%ld)\n",
         quvi_strerror(quvi,rc),
         httpcode, curlcode);
 
@@ -362,8 +376,6 @@ init_quvi(opts_s opts) {
     quvi_t quvi;
     CURL *curl;
 
-    spew(":: Init ...");
-
     if ( (rc = quvi_init(&quvi)) != QUVI_OK )
         dump_error(quvi, rc, opts);
     assert(quvi != 0);
@@ -395,8 +407,6 @@ init_quvi(opts_s opts) {
 
     curl_easy_setopt(curl,
         CURLOPT_CONNECTTIMEOUT, opts.connect_timeout_arg);
-
-    spew("done.\n");
 
     return (quvi);
 }
@@ -468,9 +478,6 @@ main (int argc, char *argv[]) {
     if (opts.version_given)
         version(opts);
 
-    if (opts.hosts_given)
-        supports(opts);
-
     /* Other */
 
     verbose_flag = !opts.quiet_given;
@@ -478,6 +485,10 @@ main (int argc, char *argv[]) {
     /* Init quvi. */
 
     quvi = init_quvi(opts);
+
+    /* --hosts */
+    if (opts.hosts_given)
+        supports(quvi, opts);
 
     /* Handle input. */
     if (opts.test_all_given)
@@ -510,14 +521,10 @@ main (int argc, char *argv[]) {
 
     /* Cleanup. */
 
-    spew(":: Cleanup.\n");
-
     quvi_close(&quvi);
     assert(quvi == 0);
 
     cmdline_parser_free(&opts);
-
-    spew(":: Exit.\n");
 
     return (QUVI_OK);
 }

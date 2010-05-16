@@ -30,7 +30,8 @@ our @ISA       = qw(Exporter);
 our @EXPORT    = ();
 our @EXPORT_OK = qw(run run_t pod_checks check_codeset);
 
-my $QUVI_PATH = "@top_builddir@/src/quvi";
+my $QUVI_PATH      = "@top_builddir@/src/quvi";
+$ENV{QUVI_BASEDIR} = "@top_srcdir@/share";
 
 # Exit test if NO_INTERNET is set.
 sub no_internet {
@@ -72,9 +73,6 @@ sub run_t {
 
     my @args    = ("-t", @_);
     my @formats = parse_formats($_[0]);
-
-    push @formats, "best"
-        if scalar @formats > 1;
 
     my $rc;
     foreach (@formats) {

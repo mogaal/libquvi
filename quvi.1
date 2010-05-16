@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "quvi 1"
-.TH quvi 1 "2010-02-13" "0.1.3" "quvi manual"
+.TH quvi 1 "2010-04-26" "0.2.0" "quvi manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -212,9 +212,9 @@ Run all built-in host tests.
 .IX Item "quvi -t youtube"
 Match 'youtube' string to built-in video page links
 and test it.
-.IP "quvi \s-1URL\s0 \-f mp4" 4
-.IX Item "quvi URL -f mp4"
-Query 'mp4' of the video from the \s-1URL\s0.
+.IP "quvi \s-1URL\s0 \-f best" 4
+.IX Item "quvi URL -f best"
+Query 'best' of the video from the \s-1URL\s0.
 .SH "BUGS"
 .IX Header "BUGS"
 Sure to be some. Please report them.
@@ -222,16 +222,33 @@ Sure to be some. Please report them.
 .Vb 1
 \&  <http://quvi.googlecode.com/>
 .Ve
-.SH "DEBUGGING TIPS"
-.IX Header "DEBUGGING TIPS"
+.SH "DEBUGGING"
+.IX Header "DEBUGGING"
 .IP "quvi \-\-debug \s-1URL\s0" 4
 .IX Item "quvi --debug URL"
 Spew out libcurl verbose mode messages.
+.ie n .IP "$prefix/share/quvi/lua/README" 4
+.el .IP "\f(CW$prefix\fR/share/quvi/lua/README" 4
+.IX Item "$prefix/share/quvi/lua/README"
+.PD 0
+.ie n .IP "$prefix/share/quvi/lua/website/README" 4
+.el .IP "\f(CW$prefix\fR/share/quvi/lua/website/README" 4
+.IX Item "$prefix/share/quvi/lua/website/README"
+.PD
+Contain details about working with the quvi Lua scripts (e.g. website
+rules). If video link parsing breaks, have a look at these files.
+.ie n .IP "$prefix/share/doc/quvi" 4
+.el .IP "\f(CW$prefix\fR/share/doc/quvi" 4
+.IX Item "$prefix/share/doc/quvi"
+Various HOWTOs can be found in this directory.
 .SH "FILES"
 .IX Header "FILES"
-.ie n .IP "\fB\fB$QUVI_HOME\fB|$HOME/.quvirc\fR" 4
-.el .IP "\fB\f(CB$QUVI_HOME\fB|$HOME/.quvirc\fR" 4
-.IX Item "$QUVI_HOME|$HOME/.quvirc"
+.ie n .IP "\fB\fB$HOME\fB/.quvirc\fR" 4
+.el .IP "\fB\f(CB$HOME\fB/.quvirc\fR" 4
+.IX Item "$HOME/.quvirc"
+You can define most of the command line options in the
+config file. For example:
+.Sp
 .Vb 4
 \& agent = some_agent/1.0     # \-\-agent
 \& proxy = http://foo:1234    # \-\-proxy
@@ -239,24 +256,27 @@ Spew out libcurl verbose mode messages.
 \& debug                      # \-\-debug
 .Ve
 .Sp
-You can define most of the command line options in the
-config file.
+Note that you can also define \s-1QUVI_HOME\s0 and use it instead.
 .SH "EXIT STATUS"
 .IX Header "EXIT STATUS"
 quvi exits with 0 on success and >0 if an error occurred.
 .PP
-.Vb 11
+.Vb 10
 \&  QUVI_OK               = 0x00
 \&  QUVI_MEM              = 0x01, Memory allocation failed
 \&  QUVI_BADHANDLE        = 0x02, Bad session handle
 \&  QUVI_INVARG           = 0x03, Invalid function argument
 \&  QUVI_CURLINIT         = 0x04, libcurl initialization failed
 \&  QUVI_LAST             = 0x05, Indicates end of list iteration
-\&  _INTERNAL_QUVI_LAST   = 0x06, For library internal use only
+\&  QUVI_ABORTEDBYCALLBACK= 0x06, Aborted by callback function
+\&  QUVI_LUAINIT          = 0x07, Lua initialization failure
+\&  QUVI_NOLUAWEBSITE     = 0x08, Failed to find lua website scripts
+\&  \-\-
 \&  QUVI_PCRE             = 0x40, libpcre error occurred
 \&  QUVI_NOSUPPORT        = 0x41, libquvi does not support the video host
 \&  QUVI_CURL             = 0x42, libcurl error occurred
 \&  QUVI_ICONV            = 0x43, libiconv error occurred
+\&  QUVI_LUA              = 0x44, lua error occurred
 .Ve
 .SH "OTHER"
 .IX Header "OTHER"
@@ -271,4 +291,4 @@ quvi exits with 0 on success and >0 if an error occurred.
 % git clone git://repo.or.cz/quvi.git
 .SH "AUTHOR"
 .IX Header "AUTHOR"
-Toni Gundogdu <legatvs@gmail.com> et al.
+Toni Gundogdu.

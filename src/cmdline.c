@@ -48,8 +48,8 @@ const char *gengetopt_args_info_help[] = {
   "      --agent=<string>        Identify cclive as string to servers  \n                                (default=`Mozilla/5.0')",
   "      --proxy=<host[:port]>   Use specified proxy",
   "      --connect-timeout=<s>   Max seconds allowed connection to server take  \n                                (default=`30')",
-  "  -f, --format=<format_id>    Query video format  (possible values=\"flv\", \n                                \"best\", \"fmt17\", \"fmt18\", \"fmt22\", \n                                \"fmt34\", \"fmt35\", \"fmt37\", \"hq\", \n                                \"3gp\", \"hd\", \"mp4\", \"high\", \"ipod\", \n                                \"vp6_576\", \"vp6_928\", \"h264_1400\" \n                                default=`flv')",
-  "\nExamples:\n\n  quvi -a         # run all built-in tests\n  quvi URL        # test URL\n  quvi -t youtube # match 'youtube' to built-in links and test it\n  quvi URL -f mp4 # query 'mp4' format of the video\n",
+  "  -f, --format=<format_id>    Query video format  (default=`default')",
+  "\nExamples:\n\n  quvi -a         # run all built-in tests\n  quvi URL        # test URL\n  quvi -t youtube # match 'youtube' to built-in links and test it\n  quvi URL -f mp4 # query 'mp4' format of the video\n  quvi --hosts    # dump a list of supported websites and format ids",
     0
 };
 
@@ -95,8 +95,6 @@ free_cmd_list(void)
 }
 
 
-const char *cmdline_parser_format_values[] = {"flv", "best", "fmt17", "fmt18", "fmt22", "fmt34", "fmt35", "fmt37", "hq", "3gp", "hd", "mp4", "high", "ipod", "vp6_576", "vp6_928", "h264_1400", 0}; /*< Possible values for format. */
-
 static char *
 gengetopt_strdup (const char *s);
 
@@ -141,7 +139,7 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->proxy_orig = NULL;
   args_info->connect_timeout_arg = 30;
   args_info->connect_timeout_orig = NULL;
-  args_info->format_arg = gengetopt_strdup ("flv");
+  args_info->format_arg = gengetopt_strdup ("default");
   args_info->format_orig = NULL;
   
 }
@@ -278,54 +276,13 @@ cmdline_parser_release (struct gengetopt_args_info *args_info)
   clear_given (args_info);
 }
 
-/**
- * @param val the value to check
- * @param values the possible values
- * @return the index of the matched value:
- * -1 if no value matched,
- * -2 if more than one value has matched
- */
-static int
-check_possible_values(const char *val, const char *values[])
-{
-  int i, found, last;
-  size_t len;
-
-  if (!val)   /* otherwise strlen() crashes below */
-    return -1; /* -1 means no argument for the option */
-
-  found = last = 0;
-
-  for (i = 0, len = strlen(val); values[i]; ++i)
-    {
-      if (strncmp(val, values[i], len) == 0)
-        {
-          ++found;
-          last = i;
-          if (strlen(values[i]) == len)
-            return i; /* exact macth no need to check more */
-        }
-    }
-
-  if (found == 1) /* one match: OK */
-    return last;
-
-  return (found ? -2 : -1); /* return many values or none matched */
-}
-
 
 static void
 write_into_file(FILE *outfile, const char *opt, const char *arg, const char *values[])
 {
-  int found = -1;
+  FIX_UNUSED (values);
   if (arg) {
-    if (values) {
-      found = check_possible_values(arg, values);      
-    }
-    if (found >= 0)
-      fprintf(outfile, "%s=\"%s\" # %s\n", opt, arg, values[found]);
-    else
-      fprintf(outfile, "%s=\"%s\"\n", opt, arg);
+    fprintf(outfile, "%s=\"%s\"\n", opt, arg);
   } else {
     fprintf(outfile, "%s\n", opt);
   }
@@ -376,7 +333,7 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
   if (args_info->connect_timeout_given)
     write_into_file(outfile, "connect-timeout", args_info->connect_timeout_orig, 0);
   if (args_info->format_given)
-    write_into_file(outfile, "format", args_info->format_orig, cmdline_parser_format_values);
+    write_into_file(outfile, "format", args_info->format_orig, 0);
   
 
   i = EXIT_SUCCESS;
@@ -558,18 +515,7 @@ int update_arg(void *field, char **orig_field,
       return 1; /* failure */
     }
 
-  if (possible_values && (found = check_possible_values((value ? value : default_value), possible_values)) < 0)
-    {
-      if (short_opt != '-')
-        fprintf (stderr, "%s: %s argument, \"%s\", for option `--%s' (`-%c')%s\n", 
-          package_name, (found == -2) ? "ambiguous" : "invalid", value, long_opt, short_opt,
-          (additional_error ? additional_error : ""));
-      else
-        fprintf (stderr, "%s: %s argument, \"%s\", for option `--%s'%s\n", 
-          package_name, (found == -2) ? "ambiguous" : "invalid", value, long_opt,
-          (additional_error ? additional_error : ""));
-      return 1; /* failure */
-    }
+  FIX_UNUSED (default_value);
     
   if (field_given && *field_given && ! override)
     return 0;
@@ -777,7 +723,7 @@ cmdline_parser_internal (
         
           if (update_arg( (void *)&(args_info->format_arg), 
                &(args_info->format_orig), &(args_info->format_given),
-              &(local_args_info.format_given), optarg, cmdline_parser_format_values, "flv", ARG_STRING,
+              &(local_args_info.format_given), optarg, 0, "default", ARG_STRING,
               check_ambiguity, override, 0, 0,
               "format", 'f',
               additional_error))

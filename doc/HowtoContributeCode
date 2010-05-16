@@ -1,0 +1,115 @@
+Howto: Contribute code
+======================
+
+1. Checklist
+------------
+
+  1) We do not include websites to quvi that
+     - Already allow downloading
+     - Use the RTMP protocol
+  2) If you are proposing a change to the library API
+     - Consider carefully the change, and how it will change
+     - We try not to make too many changes to the API unless really, *really* required
+
+
+2. Getting knee-deep
+--------------------
+
+Writing the website scripts (rules) is typically the easy part.
+Figuring out how those video links have to be put together is
+usually the part you will spend most of your time on.
+
+Some websites do little to hide the URL to the video in video page
+HTML, others may go great lengths hiding it. For example of simple
+see the buzzhumor.lua script. For a comparison see youtube.lua
+script.
+
+Those that hide the video details, require 
+
+  * Running the Adobe Flash object code and logging TCP traffic for analysis
+
+    For an example of this, see:
+      http://code.google.com/p/clive/issues/detail?id=6#c7
+
+    Note that even though at the above link the thread discusses
+    clive, much of the same applies to quvi development.
+
+  * As noted above (see the checklist), we do not deal with those
+  websites that rely on RTMP, while some argue for it, there's a
+  reason why some websites use it -- and we do not
+
+    We are strictly HTTP. You can find other projects that support RTMP.
+
+
+3. The creative process of writing
+----------------------------------
+
+The example below demonstrates how you can reuse a script and drop it in
+the quvi's search path without having to fiddle with the library C source
+code (or the existing scripts).
+
+We use git in the example below, but you could just as well use any other SCM.
+The primary reason we use it is just to create the patch which you can then
+submit to the project.
+
+Example:
+
+  mkdir -p foo/lua/website/; cd foo
+  cp $prefix/share/quvi/lua/website/buzzhumor.lua lua/website/bar.lua
+  git init; git add .; git commit -am 'initial.'
+  (
+    * edit lua/website/bar.lua
+    * run "quvi" in the working directory, e.g. "quvi TEST_URL"
+    * repeat above two until happy
+  )
+  git commit -am 'add support for foo.'
+  git format-patch -M -1
+  (submit your patch, see below)
+
+You can read more about the script search paths from
+$prefix/share/quvi/lua/README file.
+
+If you prefer to work with the development code (recommended):
+
+  git clone git://repo.or.cz/quvi.git
+  cd quvi
+  mkdir tmp; cd tmp
+  ../configure
+  make
+  (edit ../share/lua/website/your-script.lua)
+  QUVI_BASEDIR=../share ./src/quvi "$TEST_URL_FOR_YOUR_SCRIPT"
+
+Make a note of QUVI_BASEDIR, you can define the base directory
+from which libquvi should start looking for lua/website/
+directory.
+
+
+4. Checklist #2
+---------------
+
+* Does the website support multiple formats?
+  - If yes, then consider adding support for them as well
+    - If there's limited or no data available as regards to this, skip
+    - You can look into this later when/if more data unfolds
+
+* Does your code parse everything correctly?
+  - Video ID
+  - Video title
+  - Video link
+
+* Does your code cleanup the video title?
+  - We want the video title *only*
+  - Anything else, e.g. domain name should be excluded from the title
+
+* Did you confirm that all of the above works?
+  - e.g. cd tmp; QUVI_BASEDIR=../share ./src/quvi URL
+
+* Add your name to the copyright notice
+  - We will otherwise add the following line to the source code:
+    "Copyright (C) (year) quvi team"
+
+
+5. Submit your patch
+--------------------
+
+See $prefix/share/doc/quvi/HowtoSubmitPatches for details.

@@ -65,19 +65,19 @@ option "connect-timeout"
 
 option "format"
     f "Query video format"
-    values="flv","best",
-        # youtube:
-        "fmt17","fmt18","fmt22", "fmt34","fmt35", "fmt37","hq","3gp",
-        # vimeo:
-        "hd",
-        # google:
-        "mp4",
-        # golem:
-        "high", "ipod",
-        # spiegel:
-        "vp6_576", "vp6_928", "h264_1400"
-    default="flv"
-    typestr="<format_id>"
+    string typestr="<format_id>"
+#    values="default","best",
+#        # youtube:
+#        "fmt17","fmt18","fmt22", "fmt34","fmt35", "fmt37","hq","3gp",
+#        # vimeo:
+#        "hd",
+#        # google:
+#        "mp4",
+#        # golem:
+#        "high", "ipod",
+#        # spiegel:
+#        "vp6_576", "vp6_928", "h264_1400"
+    default="default"
     optional
 
 text "\nExamples:\n\n"
@@ -85,5 +85,6 @@ text "  quvi -a         # run all built-in tests\n"
 text "  quvi URL        # test URL\n"
 text "  quvi -t youtube # match 'youtube' to built-in links and test it\n"
 text "  quvi URL -f mp4 # query 'mp4' format of the video\n"
+text "  quvi --hosts    # dump a list of supported websites and format ids"
 
 

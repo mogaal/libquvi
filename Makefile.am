@@ -4,9 +4,6 @@ EXTRA_DIST = \
 libquvi.pc.in \
 libquvi.ver \
 doxygen.conf.in \
-docs/howto/HowtoHelp \
-docs/howto/HowtoAddSupport \
-docs/howto/HowtoSubmitPatches \
 quvi.pod
 
 if WITH_MAN
@@ -16,7 +13,7 @@ endif
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libquvi.pc
 
-SUBDIRS = include lib src examples tests
+SUBDIRS = include lib src examples tests share doc
 
 .PHONY: man dox cmdline
 man:
@@ -36,7 +33,7 @@ endif
 dox:
 if HAVE_DOXYGEN
 	@$(DOXYGEN) $(top_builddir)/doxygen.conf
-	@echo doxygen generated pages can be found in docs/ subdir
+	@echo doxygen generated pages can be found in doc/ subdir
 else
 	@echo configure did not find doxygen
 endif
