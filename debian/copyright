@@ -8,12 +8,6 @@ Files: *
 Copyright: 2009,2010 Toni Gundogdu <legatvs@gmail.com>
 License: GPL-3+
 
-Files: lib/host/xvideos.c,
-       lib/host/tube8.c,
-       lib/host/youjizz.c
-Copyright: 2010, anon2u.
-License: GPL-3+
-
 Files: lib/strepl.c
 Copyright: 2009, Toni Gundogdu <legatvs@gmail.com>
            2009, Laird Shaw.

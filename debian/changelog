@@ -1,8 +1,9 @@
-libquvi (0.2.0-2) unstable; urgency=low
+libquvi (0.2.0-1.1) unstable; urgency=low
 
-  * Fix d/watch file (Closes: #585550), thanks Guilhem Bonnefille
+  * Non-maintainer upload.
+  * Update Youtube support (Closes: #589976)
 
- -- Alejandro Garrido Mota <garridomota@gmail.com>  Sat, 19 Jun 2010 16:22:40 -0430
+ -- Moritz Muehlenhoff <jmm@debian.org>  Thu, 05 Aug 2010 11:50:07 -0400
 
 libquvi (0.2.0-1) unstable; urgency=low
 
