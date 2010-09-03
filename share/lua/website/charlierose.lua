@@ -1,5 +1,5 @@
 
--- Copyright (C) 2010 Toni Gundogdu.
+-- Copyright (C) 2010 quvi team.
 --
 -- This file is part of quvi <http://quvi.googlecode.com/>.
 --
@@ -19,45 +19,26 @@
 -- Identify the script.
 function ident (page_url)
     local t   = {}
-    t.domain  = "golem.de"
-    t.formats = "default|best|ipod|high"
+    t.domain  = "charlierose.com"
+    t.formats = "default"
     t.handles = (page_url ~= nil and page_url:find(t.domain) ~= nil)
     return t
 end
 
 -- Parse video URL.
 function parse (video)
-    video.host_id = "golem"
+    video.host_id = "charlierose"
     local page    = quvi.fetch(video.page_url)
 
-    local _,_,s = page:find('"id", "(.-)"')
-    video.id    = s or error ("no match: video id")
-
-    local config_url =
-        string.format("http://video.golem.de/xml/%s", video.id)
-
-    local config = quvi.fetch(config_url, "config")
-
-    local _,_,s = config:find("<title>(.-)</")
+    local _,_,s = page:find("<title>Charlie Rose%s+-%s+(.-)</title>")
     video.title = s or error ("no match: video title")
 
-    video_url =
-        string.format("http://video.golem.de/download/%s", video.id)
+    local _,_,s = page:find('view%/content%/(.-)"')
+    video.id    = s or error ("no match: video id")
 
-    format = "medium" -- This is the default.
-
-    if (video.requested_format == "best") then
-        format = "high"
-    else
-        for _,v in pairs({"ipod","high"}) do
-            if (v == video.requested_format) then
-                format = v
-                break
-            end
-        end
-    end
-
-    video.url = {video_url .. "?q=" .. format}
+    local _,_,s = page:find('url":"(.-)"')
+    s           = s or error ("no match: flv url")
+    video.url   = {quvi.unescape(s)}
 
     return video
 end

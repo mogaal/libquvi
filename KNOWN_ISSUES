@@ -1,0 +1,11 @@
+* Dailymotion ("make check") expected file length fails randomly
+
+    error: file length:
+      expected: "3539445"
+      got: "3538963"
+
+      -> child: normal termination (1)
+    FAIL: support-dailymotion.pl
+
+  No idea what's causing the difference. No point switching the values
+  either, since this random. Ignore for now.

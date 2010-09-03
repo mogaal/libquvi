@@ -83,6 +83,9 @@ Make a note of QUVI_BASEDIR, you can define the base directory
 from which libquvi should start looking for lua/website/
 directory.
 
+Note that you can have libquvi dump (to stderr) the scanned directory
+paths by setting QUVI_SHOW_SCANDIR environment variable.
+
 
 4. Checklist #2
 ---------------

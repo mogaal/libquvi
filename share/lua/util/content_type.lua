@@ -16,30 +16,25 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
--- Identify the script.
-function ident (page_url)
-    local t   = {}
-    t.domain  = "myubo.com"
-    t.formats = "default"
-    t.handles = (page_url ~= nil and page_url:find(t.domain) ~= nil)
-    return t
-end
+-- Parse file suffix (extension) from content-type string.
+function suffix_from_contenttype (ctype)
 
--- Parse video URL.
-function parse (video)
-    video.host_id = "myubo"
-    local page    = quvi.fetch(video.page_url)
+    -- Ideally, we'd parse these from /etc/mime-types.
+    -- In reality we need a more cross-platform solution.
 
-    local _,_,s = page:find('<div id="movieDetail"><h1>(.-)</')
-    video.title = s or error ("no match: video title")
+    local _,_,s = ctype:find("/(.-)$")
+    s = s or error ("no match: content type")
+    s = s:gsub("^x%-","")
 
-    local _,_,s = page:find('movieid=(.-)"')
-    video.id    = s or error ("no match: video id")
+    if (s:find("octet")
+        or s:find("swf")
+        or s:find("flash")
+        or s:find("plain"))
+    then
+        s = "flv"
+    end
 
-    local _,_,s = page:find("writeFlashPlayer%('(.-)'")
-    video.url   = {s or error ("no match: writeFlashPlayer")}
-
-    return video
+    return s
 end
 
 

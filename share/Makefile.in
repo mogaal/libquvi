@@ -40,7 +40,9 @@ target_triplet = @target@
 @ENABLE_SMUT_TRUE@lua/website/xvideos.lua \
 @ENABLE_SMUT_TRUE@lua/website/youjizz.lua
 
-@ENABLE_BROKEN_TRUE@am__append_2 = 
+@ENABLE_BROKEN_TRUE@am__append_2 = \
+@ENABLE_BROKEN_TRUE@lua/website/cctv.lua
+
 subdir = share
 DIST_COMMON = $(am__nobase_dist_pkgdata_DATA_DIST) \
 	$(srcdir)/Makefile.am $(srcdir)/Makefile.in
@@ -63,16 +65,19 @@ am__v_at_ = $(am__v_at_$(AM_DEFAULT_VERBOSITY))
 am__v_at_0 = @
 SOURCES =
 DIST_SOURCES =
-am__nobase_dist_pkgdata_DATA_DIST = lua/README lua/website/README \
-	lua/website/break.lua lua/website/buzzhumor.lua \
-	lua/website/cctv.lua lua/website/clipfish.lua \
-	lua/website/dailymotion.lua lua/website/evisor.lua \
-	lua/website/funnyhub.lua lua/website/golem.lua \
+am__nobase_dist_pkgdata_DATA_DIST = lua/README \
+	lua/util/content_type.lua lua/util/charset.lua \
+	lua/website/README lua/website/break.lua \
+	lua/website/buzzhumor.lua lua/website/charlierose.lua \
+	lua/website/clipfish.lua lua/website/dailymotion.lua \
+	lua/website/evisor.lua lua/website/funnyhub.lua \
+	lua/website/funnyordie.lua lua/website/golem.lua \
 	lua/website/google.lua lua/website/liveleak.lua \
 	lua/website/myubo.lua lua/website/sevenload.lua \
-	lua/website/spiegel.lua lua/website/vimeo.lua \
-	lua/website/youtube.lua lua/website/tube8.lua \
-	lua/website/xvideos.lua lua/website/youjizz.lua
+	lua/website/spiegel.lua lua/website/theonion.lua \
+	lua/website/vimeo.lua lua/website/youtube.lua \
+	lua/website/tube8.lua lua/website/xvideos.lua \
+	lua/website/youjizz.lua lua/website/cctv.lua
 am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
 am__vpath_adj = case $$p in \
     $(srcdir)/*) f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`;; \
@@ -163,6 +168,8 @@ PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
 PERL = @PERL@
 PKG_CONFIG = @PKG_CONFIG@
+PKG_CONFIG_LIBDIR = @PKG_CONFIG_LIBDIR@
+PKG_CONFIG_PATH = @PKG_CONFIG_PATH@
 POD2HTML = @POD2HTML@
 POD2MAN = @POD2MAN@
 POW_LIB = @POW_LIB@
@@ -218,7 +225,6 @@ libpcre_CFLAGS = @libpcre_CFLAGS@
 libpcre_LIBS = @libpcre_LIBS@
 localedir = @localedir@
 localstatedir = @localstatedir@
-lt_ECHO = @lt_ECHO@
 mandir = @mandir@
 mkdir_p = @mkdir_p@
 oldincludedir = @oldincludedir@
@@ -238,13 +244,15 @@ target_vendor = @target_vendor@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-DIST_lua = lua/README lua/website/README lua/website/break.lua \
-	lua/website/buzzhumor.lua lua/website/cctv.lua \
+DIST_lua = lua/README lua/util/content_type.lua lua/util/charset.lua \
+	lua/website/README lua/website/break.lua \
+	lua/website/buzzhumor.lua lua/website/charlierose.lua \
 	lua/website/clipfish.lua lua/website/dailymotion.lua \
 	lua/website/evisor.lua lua/website/funnyhub.lua \
-	lua/website/golem.lua lua/website/google.lua \
-	lua/website/liveleak.lua lua/website/myubo.lua \
-	lua/website/sevenload.lua lua/website/spiegel.lua \
+	lua/website/funnyordie.lua lua/website/golem.lua \
+	lua/website/google.lua lua/website/liveleak.lua \
+	lua/website/myubo.lua lua/website/sevenload.lua \
+	lua/website/spiegel.lua lua/website/theonion.lua \
 	lua/website/vimeo.lua lua/website/youtube.lua $(am__append_1) \
 	$(am__append_2)
 EXTRA_DIST = $(DIST_lua)

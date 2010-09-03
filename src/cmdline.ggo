@@ -4,10 +4,16 @@ version ""
 option "version"
     v "Print version and exit"
     optional
+option "license"
+    - "Print license and exit"
+    optional
 option "hosts"
     - "Show supported hosts"
     optional
 
+option "xml"
+    - "Print details in XML"
+    optional
 option "quiet"
     q "Turn off all output"
     optional

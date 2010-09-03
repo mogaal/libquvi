@@ -51,10 +51,10 @@ Returns:
       - Include "best" when/if possible/expected, e.g. multiple
       format IDs supported
 
-    - will_handle (boolean)
+    - handles (boolean)
 
       - If the script can handle the URL provided in the page_url
-      variable, it should set "will_handle" to true, otherwise set
+      variable, it should set "handles" to true, otherwise set
       it to false
 
 

@@ -1,4 +1,51 @@
 
+Version 0.2.3
+September 2, 2010
+
+Changes:
+  * Curl errors now contain response, connection codes
+    - response code was previously printed as http code
+  * Add theonion support, thanks to mkolve for the script (#12)
+  * Add charlierose support, thanks to mkolve for the script (#11)
+  * Print video details to stdout, everything else to stderr
+  * Add --xml
+  * Bump autoconf prereq. to 2.67
+
+Bugfixes:
+  * Add missing funnyordie.lua to DIST_lua (share/Makefile.am)
+  * Unexpected Youtube video titles, if ampersands used
+
+
+Version 0.2.2
+August 12, 2010
+
+Changes:
+  * add --license option
+  * QUVI_BASEDIR is now exclusive
+  * Document QUVI_BASEDIR, QUVI_HOME in quvi(1) manual page
+  * Add --enable-tests (configure, disabled by default, related to #10)
+  * Add KNOWN_ISSUES file
+
+
+Version 0.2.1
+July 25, 2010
+
+Changes:
+  * Bump autoconf prereq. to 2.66
+  * Add funnyordie support, thanks to mkolve for the script
+  * [youtube] do not revert to fetch page if error==150
+  * Add QUVI_NOLUAUTIL error code
+  * Additional Lua scripts (content_type.lua, charset.lua)
+  * _istype (lua_wrap.c) print script path in errors
+  * Mark cctv support as broken
+
+Bugfixes:
+  * [youtube] http/404, fix by Daniel Schaal
+  * _istype (lua_wrap.c) stringifying
+  * Break.com support, ported from clive, fix by Werner Elsler (clive #57)
+  * Memory leak in find_host_script (6d3016e)
+
+
 Version 0.2.0
 May 6, 2010
 

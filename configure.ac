@@ -1,7 +1,7 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_PREREQ([2.65])
+AC_PREREQ([2.67])
 
 m4_include([m4/version.m4])
 AC_INIT([quvi], [_QUVI_VERSION], [legatvs@gmail.com])
@@ -166,6 +166,14 @@ if [ test x"$enable_smut" != "xno" ]; then
     AC_DEFINE([ENABLE_SMUT], [1], [Define to enable smut])
 fi
 
+# --enable-tests
+AC_ARG_ENABLE([tests],
+    [AS_HELP_STRING([--enable-tests],
+        [enable tests @<:@default=no@:>@])],
+    [],
+    [enable_tests=no])
+AM_CONDITIONAL([ENABLE_TESTS], [test x"$enable_tests" != "xno"])
+
 # --enable-broken
 AC_ARG_ENABLE([broken],
     [AS_HELP_STRING([--enable-broken],
@@ -177,7 +185,6 @@ AM_CONDITIONAL([ENABLE_BROKEN], [test x"$enable_broken" != "xno"])
 if [ test x"$enable_broken" != "xno" ]; then
     AC_DEFINE([ENABLE_BROKEN], [1], [Define to enable broken support])
 fi
-
 
 # --with-man
 AC_ARG_WITH([man],
@@ -229,6 +236,7 @@ Options:
     build quvi:     ${enable_quvi}
     build examples: ${enable_examples}
     adult support:  ${enable_smut}
+    enable tests:   ${enable_tests}
     broken support: ${enable_broken}
     install manual: ${with_man}
     install docs:   ${with_doc}

@@ -16,30 +16,10 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
--- Identify the script.
-function ident (page_url)
-    local t   = {}
-    t.domain  = "myubo.com"
-    t.formats = "default"
-    t.handles = (page_url ~= nil and page_url:find(t.domain) ~= nil)
-    return t
-end
-
--- Parse video URL.
-function parse (video)
-    video.host_id = "myubo"
-    local page    = quvi.fetch(video.page_url)
-
-    local _,_,s = page:find('<div id="movieDetail"><h1>(.-)</')
-    video.title = s or error ("no match: video title")
-
-    local _,_,s = page:find('movieid=(.-)"')
-    video.id    = s or error ("no match: video id")
-
-    local _,_,s = page:find("writeFlashPlayer%('(.-)'")
-    video.url   = {s or error ("no match: writeFlashPlayer")}
-
-    return video
+-- Parse charset from data.
+function charset_from_data (data)
+    local _,_,s = data:lower():find('charset="?([%w-_]+)')
+    return (s)
 end
 
 

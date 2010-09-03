@@ -22,7 +22,7 @@
  * This documentation describes the libquvi C API.
  *
  * @author Toni Gundogdu
- * @version 0.2.0
+ * @version 0.2.3
  * @example quvi.c
  * @example simple.c
  */
@@ -58,6 +58,7 @@ QUVI_LAST,              /**< Indicates end of list iteration */
 QUVI_ABORTEDBYCALLBACK, /**< Aborted by callback function */
 QUVI_LUAINIT,           /**< Lua initialization failure */
 QUVI_NOLUAWEBSITE,      /**< Failed to find lua website scripts */
+QUVI_NOLUAUTIL,         /**< Failed to find lua util scripts */
 _INTERNAL_QUVI_LAST,    /**< For library internal use only */
 /* Dynamically generated errors */
 QUVI_PCRE = 0x40, /**< libpcre error occurred */
@@ -261,13 +262,16 @@ extern "C" {
 * used to parse the video page links. The library searches the
 * following paths in the following order:
 *
-*   - $QUVI_BASEDIR defined path
+*   - $QUVI_BASEDIR defined path (exclusive, overrides default search paths)
 *   - Current working directory (./lua/website/)
 *   - $HOME./quvi/
 *   - $HOME/.config/quvi/
 *   - $HOME/.local/share/quvi/
 *   - --datadir=DIR (and pkgdatadir) specified with configure (script)
 *     - These directories are typically $prefix/share/ and $prefix/share/quvi/
+*
+* Note that you can have libquvi dump (to stderr) the scanned directory paths
+* by setting the QUVI_SHOW_SCANDIR environment variable.
 *
 * @param quvi Pointer to a new handle
 *

@@ -60,7 +60,8 @@ struct _quvi_s {
     long httpcode;
     long curlcode;
     char *errmsg;
-    llst_node_t scripts;
+    llst_node_t util_scripts;
+    llst_node_t website_scripts;
     llst_node_t curr_next_host;
     lua_State *lua;
 };

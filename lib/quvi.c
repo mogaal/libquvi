@@ -80,11 +80,23 @@ quvi_close (quvi_t *handle) {
     quvi = (_quvi_t *)handle;
 
     if (quvi && *quvi) {
+
         free_lua(quvi);
+        assert((*quvi)->util_scripts == NULL);
+        assert((*quvi)->website_scripts == NULL);
+
         _free((*quvi)->format);
+        assert((*quvi)->format == NULL);
+
         _free((*quvi)->errmsg);
+        assert((*quvi)->errmsg == NULL);
+
         curl_easy_cleanup((*quvi)->curl);
+        (*quvi)->curl = NULL;
+
         _free(*quvi);
+        assert((*quvi) == NULL);
+
         curl_global_cleanup();
     }
 }
@@ -400,11 +412,11 @@ quvi_next_supported_website (quvi_t handle, char **domain, char **formats) {
     is_invarg(domain);
     is_invarg(formats);
 
-    if (!quvi->scripts)
+    if (!quvi->website_scripts)
         return (QUVI_NOLUAWEBSITE);
 
     if (!curr_host)
-        curr_host = quvi->scripts;
+        curr_host = quvi->website_scripts;
     else {
         curr_host = curr_host->next;
         if (!curr_host)
@@ -454,6 +466,7 @@ quvi_strerror (quvi_t handle, QUVIcode code) {
         "aborted by callback",
         "lua initilization failed",
         "lua website scripts not found",
+        "lua util scripts not found",
         "invalid error code (internal _INTERNAL_QUVI_LAST)"
     };
 
