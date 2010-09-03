@@ -1,0 +1,255 @@
+Description: Upstream changes introduced in version 0.2.0-1.1
+ This patch has been created by dpkg-source during the package build.
+ Here's the last changelog entry, hopefully it gives details on why
+ those changes were made:
+ .
+ libquvi (0.2.0-1.1) unstable; urgency=low
+ .
+   * Non-maintainer upload.
+   * Update Youtube support (Closes: #589976)
+ .
+ The person named in the Author field signed this changelog entry.
+Author: Moritz Muehlenhoff <jmm@debian.org>
+Bug-Debian: http://bugs.debian.org/589976
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: http://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- libquvi-0.2.0.orig/share/lua/website/youtube.lua
++++ libquvi-0.2.0/share/lua/website/youtube.lua
+@@ -1,42 +1,22 @@
+---[[
+-/* 
+-* Copyright (C) 2010 Toni Gundogdu.
+-*
+-* This file is part of quvi, see http://quvi.googlecode.com/
+-*
+-* This program is free software: you can redistribute it and/or modify
+-* it under the terms of the GNU General Public License as published by
+-* the Free Software Foundation, either version 3 of the License, or
+-* (at your option) any later version.
+-*
+-* This program is distributed in the hope that it will be useful,
+-* but WITHOUT ANY WARRANTY; without even the implied warranty of
+-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-* GNU General Public License for more details.
+-*
+-* You should have received a copy of the GNU General Public License
+-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-*/
+-]]--
+-
+--- If you make improvements to this script, drop a line. Thanks.
+---   <http://quvi.googlecode.com/>
+-
+---[[
+-NOTES
+-* This script fetches "video info" first
+-  - Advantages: requires less bandwidth, works around sign-in-to-view
+-  - Disadvantages: fails frequently for still unknown reason
+-* If the above fails
+-  - Dump server returned error to stdout as a warning
+-  - Fetch and parse video page instead
+-  - Advantages: works for most (unrestricted) videos
+-  - Disadvantages:
+-    - Requires (a lot) more bandwidth
+-    - Does not work with videos that require signing-in-to-view
+-]]--
+ 
+--- These are my formats.
++-- Copyright (C) 2010 Toni Gundogdu.
++--
++-- This file is part of quvi <http://quvi.googlecode.com/>.
++--
++-- This program is free software: you can redistribute it and/or modify
++-- it under the terms of the GNU General Public License as published by
++-- the Free Software Foundation, either version 3 of the License, or
++-- (at your option) any later version.
++--
++-- This program is distributed in the hope that it will be useful,
++-- but WITHOUT ANY WARRANTY; without even the implied warranty of
++-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++-- GNU General Public License for more details.
++--
++-- You should have received a copy of the GNU General Public License
++-- along with this program.  If not, see <http://www.gnu.org/licenses/>.
++
++-- Formats.
+ local lookup = {
+     mobile   = "17", --   3gp
+     sd_270p  = "18", --   480x270
+@@ -46,60 +26,39 @@ local lookup = {
+     hd_1080p = "37"  -- 1920x1080
+ }
+ 
+--- Returns script details.
++-- Identify the script.
+ function ident (page_url)
+-    
+-    -- This is what I return.
+-    local t = {}
+-
+-    -- This is my domain.
+-    t.domain = "youtube.com"
+-
+-    -- This is my formats-string.
++    local t   = {}
++    t.domain  = "youtube.com"
+     t.formats = ""
+     for k,_ in pairs (lookup) do
+         t.formats = t.formats .."|".. k
+     end
+     t.formats = "default|best" .. t.formats
+-
+-    -- This is my response to "Will you handle this URL?"
+-    -- Note that page_url may be nil.
+     if (page_url ~= nil) then
+         page_url = youtubify(page_url)
+     end
+     t.will_handle = (page_url ~= nil and page_url:find(t.domain) ~= nil)
+-
+-    -- Here are my details.
+     return t
+-
+ end
+ 
+--- Fetches video page and parses the video URL.
+ function parse (video)
+-
+-    -- This is my "host ID".
+-    video.host_id = "youtube"
+-
+-    -- Page URL.
++    video.host_id  = "youtube"
+     local page_url = youtubify(video.page_url)
+ 
+-    -- This is my video ID.
+     local _,_,s = page_url:find("v=([%w-_]+)")
+     video.id    = s or error ("no match: video id")
+ 
+-    -- Fetch and pray.
+-    video,t,best = get_video_info(video)
+-    if (video.title == nil) then
+-        video,t,best = old_faithful(page_url, video)
++    local t,best = get_video_info (video)
++    if (t == nil) then
++        t,best = old_faithful (page_url, video)
+     end
+ 
+-    -- Construct the video URL.
+     local video_url = 
+         string.format(
+-            "http://youtube.com/get_video?video_id=%s&t=%s",
++            "http://youtube.com/get_video?video_id=%s&t=%s&asv=2",
+                 video.id, quvi.unescape(t))
+ 
+-    -- Choose correct format ID.
+     if (best == nil and video.requested_format == "best") then
+         print ("  > Warning: Unable to find `best' format. Use `default'.")
+     end
+@@ -121,79 +80,66 @@ function parse (video)
+         video_url = video_url .."&fmt=".. fmt_id
+     end
+ 
+-    -- Set my video URL.
+     video.url = {video_url}
+ 
+-    -- Return the updated video properties.
+     return video
+-
+ end
+ 
+--- Youtube video page URL unwrangler.
++-- Youtubify the URL.
+ function youtubify (url)
+     url = url:gsub("-nocookie", "")    -- youtube-nocookie.com
+     url = url:gsub("/v/", "/watch?v=") -- embedded
+     return url
+ end
+ 
+--- The preferred method, uses less bandwidth, fails for some videos.
+--- See also the NOTES above.
+-function get_video_info (video)
++-- Should work around at least some of the videos that require
++-- signing in first. Requires less bandwidth than the "old faithful".
++-- This may, however, fail with some (older?) videos.
++function get_video_info (video, result)
+ 
+-    -- Fetch video info.
+     local config_url = string.format(
+         "http://www.youtube.com/get_video_info?&video_id=%s"
+          .. "&el=detailpage&ps=default&eurl=&gl=US&hl=en", video.id)
+ 
+     local config = quvi.unescape( quvi.fetch(config_url, "config") )
+ 
+-    -- Check response. For still unknown reasons, the above
+-    -- does not work for all videos that I've tried so far.
+     local _,_,s = config:find("&reason=(.-)[?:&]?$")
+     if (s ~= nil) then
+-        print ("  > Warning: get_video_info: " .. s:gsub("+"," "))
+-        print ("  > Warning: Revert to fetch video page instead.")
+-        return video -- This one's for the Old Faithful.
++        local reason   = s:gsub("+"," ")
++        local _,_,code = config:find("&errorcode=(.-)[?:&?$]")
++        if (code == "150") then error (reason) end
++        print ("  > Warning: get_video_info: " .. reason)
++        print ("  > Warning: Fetch video page instead.")
++        return nil -- This one's for the Old Faithful.
+     end
+ 
+-    -- This is my video title.
+     local _,_,s = config:find("&title=(.-)&")
+     video.title = s or error ("no match: video title")
+     video.title = video.title:gsub("+"," ")
+ 
+-    -- This is my t(oken) param used to construct the video URL.
+     local _,_,s = config:find("&token=(.-)&")
+     local t     = s or error ("no match: token parameter")
+ 
+-    -- Best format.
+     local _,_,best = config:find("&fmt_map=(%d+)")
+ 
+-    -- Return parsed details.
+-    return video, t, best
+-
++    return t, best
+ end
+ 
+--- Fetch video page from the user specified URL and parse.
+--- See also the NOTES above.
++-- As long as video is not otherwise retricted (e.g. age check), this function
++-- should work with most videos. Page fetches, however, typically require
++-- a lot more bandwidth compared to the config fetch (above).
+ function old_faithful (page_url, video)
+-
+-    -- Fetch video page.
+     local page = quvi.fetch(page_url)
+ 
+-    -- This is my video title.
+     local _,_,s = page:find('<meta name="title" content="(.-)"')
+     video.title = s or error ("no match: video title")
+ 
+-    -- This is my t param used to construct the video URL.
+     local _,_,s = page:find('&t=(.-)&')
+     local t     = s or error ("no match: t param")
+ 
+-    -- Best format
+     local _,_,best = page:find("&fmt_map=(%d+)")
+ 
+-    -- Return parsed details.
+-    return video, t, best
+-
++    return t, best
+ end
+ 
+ 
