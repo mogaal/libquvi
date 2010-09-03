@@ -1,42 +1,22 @@
---[[
-/* 
-* Copyright (C) 2010 Toni Gundogdu.
-*
-* This file is part of quvi, see http://quvi.googlecode.com/
-*
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-]]--
 
--- If you make improvements to this script, drop a line. Thanks.
---   <http://quvi.googlecode.com/>
+-- Copyright (C) 2010 Toni Gundogdu.
+--
+-- This file is part of quvi <http://quvi.googlecode.com/>.
+--
+-- This program is free software: you can redistribute it and/or modify
+-- it under the terms of the GNU General Public License as published by
+-- the Free Software Foundation, either version 3 of the License, or
+-- (at your option) any later version.
+--
+-- This program is distributed in the hope that it will be useful,
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU General Public License for more details.
+--
+-- You should have received a copy of the GNU General Public License
+-- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
---[[
-NOTES
-* This script fetches "video info" first
-  - Advantages: requires less bandwidth, works around sign-in-to-view
-  - Disadvantages: fails frequently for still unknown reason
-* If the above fails
-  - Dump server returned error to stdout as a warning
-  - Fetch and parse video page instead
-  - Advantages: works for most (unrestricted) videos
-  - Disadvantages:
-    - Requires (a lot) more bandwidth
-    - Does not work with videos that require signing-in-to-view
-]]--
-
--- These are my formats.
+-- Formats.
 local lookup = {
     mobile   = "17", --   3gp
     sd_270p  = "18", --   480x270
@@ -46,62 +26,41 @@ local lookup = {
     hd_1080p = "37"  -- 1920x1080
 }
 
--- Returns script details.
+-- Identify the script.
 function ident (page_url)
-    
-    -- This is what I return.
-    local t = {}
-
-    -- This is my domain.
-    t.domain = "youtube.com"
-
-    -- This is my formats-string.
+    local t   = {}
+    t.domain  = "youtube.com"
     t.formats = ""
     for k,_ in pairs (lookup) do
         t.formats = t.formats .."|".. k
     end
     t.formats = "default|best" .. t.formats
-
-    -- This is my response to "Will you handle this URL?"
-    -- Note that page_url may be nil.
     if (page_url ~= nil) then
         page_url = youtubify(page_url)
     end
-    t.will_handle = (page_url ~= nil and page_url:find(t.domain) ~= nil)
-
-    -- Here are my details.
+    t.handles = (page_url ~= nil and page_url:find(t.domain) ~= nil)
     return t
-
 end
 
--- Fetches video page and parses the video URL.
 function parse (video)
-
-    -- This is my "host ID".
-    video.host_id = "youtube"
-
-    -- Page URL.
+    video.host_id  = "youtube"
     local page_url = youtubify(video.page_url)
 
-    -- This is my video ID.
     local _,_,s = page_url:find("v=([%w-_]+)")
     video.id    = s or error ("no match: video id")
 
-    -- Fetch and pray.
-    video,t,best = get_video_info(video)
-    if (video.title == nil) then
-        video,t,best = old_faithful(page_url, video)
+    local t,best = get_video_info (video)
+    if (t == nil) then
+        t,best = fallback_fetch (page_url, video)
     end
 
-    -- Construct the video URL.
     local video_url = 
         string.format(
-            "http://youtube.com/get_video?video_id=%s&t=%s",
-                video.id, quvi.unescape(t))
+            "http://youtube.com/get_video?video_id=%s&t=%s&asv=2",
+                video.id, t)
 
-    -- Choose correct format ID.
     if (best == nil and video.requested_format == "best") then
-        print ("  > Warning: Unable to find `best' format. Use `default'.")
+        print ("libquvi: Warning: Unable to find `best' format. Use `default'.")
     end
 
     local fmt_id = nil
@@ -121,79 +80,89 @@ function parse (video)
         video_url = video_url .."&fmt=".. fmt_id
     end
 
-    -- Set my video URL.
     video.url = {video_url}
 
-    -- Return the updated video properties.
     return video
-
 end
 
--- Youtube video page URL unwrangler.
+-- Youtubify the URL.
 function youtubify (url)
     url = url:gsub("-nocookie", "")    -- youtube-nocookie.com
     url = url:gsub("/v/", "/watch?v=") -- embedded
     return url
 end
 
--- The preferred method, uses less bandwidth, fails for some videos.
--- See also the NOTES above.
-function get_video_info (video)
+-- Should work around at least some of the videos that require
+-- signing in first. Requires less bandwidth than the "old faithful".
+-- This may, however, fail with some (older?) videos.
+function get_video_info (video, result)
 
-    -- Fetch video info.
     local config_url = string.format(
         "http://www.youtube.com/get_video_info?&video_id=%s"
          .. "&el=detailpage&ps=default&eurl=&gl=US&hl=en", video.id)
 
-    local config = quvi.unescape( quvi.fetch(config_url, "config") )
+    local config = decode ( quvi.fetch(config_url, "config") )
 
-    -- Check response. For still unknown reasons, the above
-    -- does not work for all videos that I've tried so far.
-    local _,_,s = config:find("&reason=(.-)[?:&]?$")
-    if (s ~= nil) then
-        print ("  > Warning: get_video_info: " .. s:gsub("+"," "))
-        print ("  > Warning: Revert to fetch video page instead.")
-        return video -- This one's for the Old Faithful.
+    if (config['reason']) then
+        local reason = unescape (config['reason'])
+        local code = config['errorcode']
+        -- 100, 150 are currently treated as "unrecoverable errors.",
+        -- e.g. we skip the fallback fetch step. This list is obviously
+        -- not complete, so any feedback helps.
+        if (code == '150' or code == '100') then error (reason) end
+        print ("libquvi: Warning: get_video_info: " .. reason)
+        print ("libquvi: Warning: Fetch video page instead.")
+        return nil -- Try fallback fetch.
     end
 
-    -- This is my video title.
-    local _,_,s = config:find("&title=(.-)&")
-    video.title = s or error ("no match: video title")
-    video.title = video.title:gsub("+"," ")
+    video.title = config['title'] or error ('no match: video title')
+    video.title = unescape (video.title)
 
-    -- This is my t(oken) param used to construct the video URL.
-    local _,_,s = config:find("&token=(.-)&")
-    local t     = s or error ("no match: token parameter")
+    local t = config['token'] or error ('no match: token parameter')
+    t = unescape (t)
 
-    -- Best format.
-    local _,_,best = config:find("&fmt_map=(%d+)")
+    local fmt_map = config['fmt_map'] or error ('no match: format map')
+    fmt_map = unescape (fmt_map)
+    local _,_,best = fmt_map:find('(%d+)')
 
-    -- Return parsed details.
-    return video, t, best
-
+    return t, best
 end
 
--- Fetch video page from the user specified URL and parse.
--- See also the NOTES above.
-function old_faithful (page_url, video)
-
-    -- Fetch video page.
+-- As long as video is not otherwise retricted (e.g. age check), this function
+-- should work with most videos. Page fetches, however, typically require
+-- a lot more bandwidth compared to the config fetch (above).
+function fallback_fetch (page_url, video)
     local page = quvi.fetch(page_url)
 
-    -- This is my video title.
     local _,_,s = page:find('<meta name="title" content="(.-)"')
     video.title = s or error ("no match: video title")
 
-    -- This is my t param used to construct the video URL.
     local _,_,s = page:find('&t=(.-)&')
-    local t     = s or error ("no match: t param")
+    local t     = unescape (s) or error ("no match: t param")
 
-    -- Best format
     local _,_,best = page:find("&fmt_map=(%d+)")
 
-    -- Return parsed details.
-    return video, t, best
+    return t, best
+end
 
+-- http://www.lua.org/pil/20.3.html
+function decode (s)
+    r = {}
+    for n,v in s:gfind ("([^&=]+)=([^&=]+)") do
+        n = unescape (n)
+        r[n] = v
+--        print (n,v)
+    end
+    return r
+end
+
+-- http://www.lua.org/pil/20.3.html
+function unescape (s)
+    s = s:gsub ('+', ' ')
+    s = s:gsub ('%%(%x%x)', function (h)
+            return string.char (tonumber (h, 16))
+        end)
+    return s
 end
 
 

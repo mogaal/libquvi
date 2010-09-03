@@ -128,6 +128,8 @@ PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
 PERL = @PERL@
 PKG_CONFIG = @PKG_CONFIG@
+PKG_CONFIG_LIBDIR = @PKG_CONFIG_LIBDIR@
+PKG_CONFIG_PATH = @PKG_CONFIG_PATH@
 POD2HTML = @POD2HTML@
 POD2MAN = @POD2MAN@
 POW_LIB = @POW_LIB@
@@ -183,7 +185,6 @@ libpcre_CFLAGS = @libpcre_CFLAGS@
 libpcre_LIBS = @libpcre_LIBS@
 localedir = @localedir@
 localstatedir = @localstatedir@
-lt_ECHO = @lt_ECHO@
 mandir = @mandir@
 mkdir_p = @mkdir_p@
 oldincludedir = @oldincludedir@
@@ -206,15 +207,17 @@ top_srcdir = @top_srcdir@
 EXTRA_DIST = quviTest.pm.in $(TESTS) $(TESTS_POD) $(TESTS_ADULT)
 @HAVE_PERL_TRUE@TESTS_ENVIRONMENT = $(PERL) -w -mstrict -mquviTest -I $(top_builddir)/tests
 @HAVE_PERL_TRUE@TESTS = nosupport-eval.pl support-break.pl \
-@HAVE_PERL_TRUE@	support-cctv.pl support-clipfish.pl \
+@HAVE_PERL_TRUE@	support-charlierose.pl support-clipfish.pl \
 @HAVE_PERL_TRUE@	support-dailymotion.pl support-evisor.pl \
-@HAVE_PERL_TRUE@	support-funnyhub.pl support-golem.pl \
-@HAVE_PERL_TRUE@	support-liveleak.pl support-myubo.pl \
-@HAVE_PERL_TRUE@	support-sevenload.pl support-spiegel.pl \
+@HAVE_PERL_TRUE@	support-funnyhub.pl support-funnyordie.pl \
+@HAVE_PERL_TRUE@	support-golem.pl support-liveleak.pl \
+@HAVE_PERL_TRUE@	support-myubo.pl support-sevenload.pl \
+@HAVE_PERL_TRUE@	support-spiegel.pl support-theonion.pl \
 @HAVE_PERL_TRUE@	support-vimeo.pl support-youtube.pl \
 @HAVE_PERL_TRUE@	$(am__append_1) $(am__append_2) \
 @HAVE_PERL_TRUE@	$(am__append_3)
 @HAVE_PERL_TRUE@TESTS_BROKEN = \
+@HAVE_PERL_TRUE@support-cctv.pl\
 @HAVE_PERL_TRUE@support-ehrensenf.pl\
 @HAVE_PERL_TRUE@support-spyfilms.pl
 

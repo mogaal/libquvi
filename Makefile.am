@@ -4,7 +4,8 @@ EXTRA_DIST = \
 libquvi.pc.in \
 libquvi.ver \
 doxygen.conf.in \
-quvi.pod
+quvi.pod \
+KNOWN_ISSUES
 
 if WITH_MAN
 dist_man_MANS = quvi.1
@@ -13,7 +14,11 @@ endif
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libquvi.pc
 
-SUBDIRS = include lib src examples tests share doc
+SUBDIRS = include lib src examples share doc
+
+if ENABLE_TESTS
+SUBDIRS += tests
+endif
 
 .PHONY: man dox cmdline
 man:

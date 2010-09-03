@@ -3,6 +3,7 @@ This directory contains the quvi Lua scripts. If you are new to Lua,
 <http://www.lua.org/pil/> is a good place to start.
 
   website/ subdir contains the website specific scripts (rules)
+  util/ subdir contains the utility scripts
 
 
 Debugging tips
@@ -12,12 +13,11 @@ Make a note of the search paths that quvi scans for the scripts.
 The paths are search in the following order:
 
   1) $QUVI_BASEDIR defined path
-  2) Current working directory (./lua/website/)
+  2) Current working directory
   3) $HOME./quvi/
   4) $HOME/.config/quvi/
   5) $HOME/.local/share/quvi/
   6) --datadir=DIR (and pkgdatadir) specified with configure (script)
      - These directories are typically $prefix/share/ and $prefix/share/quvi/
 
-If you define QUVI_BASEDIR, make sure it points to a directory
-containing lua/website/.
+If you define QUVI_BASEDIR, make sure it points to a directory containing lua/.

@@ -13,6 +13,9 @@ quvi [options] [url...]
 quvi is a command line tool for parsing video download links.
 It supports Youtube and other similar video websites.
 
+The video details are printed to standard output, everything
+else is printed to standard error.
+
 =head1 OPTIONS
 
 =over 4
@@ -28,6 +31,10 @@ Print program version and exit.
 =item B<--hosts>
 
 Print supported hosts and exit.
+
+=item B<--xml>
+
+Print details in XML. The details are escaped.
 
 =item B<-q, --quiet>
 
@@ -108,6 +115,10 @@ Test URL.
 
 Run all built-in host tests.
 
+=item quvi -aqd --xml
+
+Same but run in quiet mode. Print video details in XML (to stdout).
+
 =item quvi -t youtube
 
 Match 'youtube' string to built-in video page links
@@ -161,6 +172,33 @@ config file. For example:
  debug                      # --debug
 
 Note that you can also define QUVI_HOME and use it instead.
+
+=back
+
+=head1 ENVIRONMENT
+
+=over 4
+
+=item B<QUVI_HOME>
+
+Defines path to a directory containing the configuration file.
+Similar to $HOME found on Unix-like systems, but can be used
+to override the $HOME setting (if any).
+
+=item B<QUVI_BASEDIR>
+
+Defines an exlusive path to the directory from which quvi searches
+for the essential quvi files, e.g. the lua scripts. Exclusive here
+means that by setting B<QUVI_BASEDIR> the user can override all of
+the default search paths.
+
+Not to be confused with B<QUVI_HOME> which is strictly a C<quvi(1)>
+variable whereas B<QUVI_BASEDIR> is a libquvi variable.
+
+=item B<QUVI_SHOW_SCANDIR>
+
+You can have libquvi dump (to stderr) the scanned directory
+paths by setting this environment variable.
 
 =back
 

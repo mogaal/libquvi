@@ -1,5 +1,5 @@
 
--- Copyright (C) 2010 Toni Gundogdu.
+-- Copyright (C) 2010 quvi team.
 --
 -- This file is part of quvi <http://quvi.googlecode.com/>.
 --
@@ -16,48 +16,41 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+-- "The onion provides two version, one for the ipad and a flv
+-- The ipad version has the pre and post roll, the flv has just the
+-- video segment (the postroll) is a seperate flv. There is likely 
+-- a more elegant way to do the option, but this works for me."
+      -- mkolve, in http://code.google.com/p/quvi/issues/detail?id=12
+
 -- Identify the script.
 function ident (page_url)
     local t   = {}
-    t.domain  = "golem.de"
-    t.formats = "default|best|ipod|high"
+    t.domain  = "theonion.com"
+    t.formats = "default|ipad"
     t.handles = (page_url ~= nil and page_url:find(t.domain) ~= nil)
     return t
 end
 
 -- Parse video URL.
 function parse (video)
-    video.host_id = "golem"
+    video.host_id = "theonion"
     local page    = quvi.fetch(video.page_url)
 
-    local _,_,s = page:find('"id", "(.-)"')
-    video.id    = s or error ("no match: video id")
-
-    local config_url =
-        string.format("http://video.golem.de/xml/%s", video.id)
-
-    local config = quvi.fetch(config_url, "config")
-
-    local _,_,s = config:find("<title>(.-)</")
+    local _,_,s = page:find("<title>(.-) |")
     video.title = s or error ("no match: video title")
 
-    video_url =
-        string.format("http://video.golem.de/download/%s", video.id)
+    local _,_,s = page:find("afns_video_id = (.-);")
+    video.id    = s or error ("no match: video id")
 
-    format = "medium" -- This is the default.
+    local _,_,s = page:find('video_url = "(.-)"')
+    s           = s or error ("no match: flv url")
 
-    if (video.requested_format == "best") then
-        format = "high"
-    else
-        for _,v in pairs({"ipod","high"}) do
-            if (v == video.requested_format) then
-                format = v
-                break
-            end
-        end
+    if (video.requested_format == "ipad") then
+        _,_,s = page:find('autoplay src="(.-)"')
+        s     = s or error ("no match: ipad url")
     end
 
-    video.url = {video_url .. "?q=" .. format}
+    video.url   = {quvi.unescape(s)}
 
     return video
 end

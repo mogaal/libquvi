@@ -26,6 +26,7 @@
 #include "quvi/quvi.h"
 #include "internal.h"
 #include "util.h"
+#include "lua_wrap.h"
 #include "curl_wrap.h"
 
 static void *
@@ -60,9 +61,9 @@ fetch_to_mem(
     const QUVIstatusType type,
     char **dst)
 {
+    long respcode, conncode;
     CURLcode curlcode;
     struct mem_s mem;
-    long httpcode;
     _quvi_t quvi;
     QUVIcode rc;
 
@@ -102,43 +103,54 @@ fetch_to_mem(
         csetopt(CURLOPT_WRITEFUNCTION, quvi_write_callback_default);
 
     curlcode = curl_easy_perform(quvi->curl);
-    httpcode  = 0;
-    rc        = QUVI_OK;
+    respcode = 0;
+    conncode = 0;
+    rc       = QUVI_OK;
 
-    if (curlcode == CURLE_OK) {
+    curl_easy_getinfo(quvi->curl,
+        CURLINFO_RESPONSE_CODE, &respcode);
 
-        curl_easy_getinfo(quvi->curl,
-            CURLINFO_RESPONSE_CODE, &httpcode);
+    curl_easy_getinfo (quvi->curl,
+        CURLINFO_HTTP_CONNECTCODE, &conncode);
 
-        if (httpcode == 200) {
-            if (quvi->status_func) {
-                if ( quvi->status_func(
-                    makelong(QUVISTATUS_FETCH, QUVISTATUSTYPE_DONE),
-                    0
-                ) != QUVI_OK)
-                {
-                    rc = QUVI_ABORTEDBYCALLBACK;
-                }
+    if (curlcode == CURLE_OK && respcode == 200) {
+
+        if (quvi->status_func) {
+
+            if ( quvi->status_func(
+                makelong(QUVISTATUS_FETCH, QUVISTATUSTYPE_DONE),
+                0
+            ) != QUVI_OK)
+            {
+                rc = QUVI_ABORTEDBYCALLBACK;
             }
+
         }
-        else {
-            seterr("server returned http/%ld", httpcode);
-            rc = QUVI_CURL;
-        }
+
     }
+
     else {
-        seterr("%s (curlcode=%d)",
-            curl_easy_strerror(curlcode), curlcode);
+
+        if (curlcode == CURLE_OK) {
+            seterr ("server response code %ld (conncode=%ld)",
+                respcode, conncode);
+        }
+
+        else {
+            seterr ("%s (curlcode=%d, conncode=%ld)",
+                curl_easy_strerror(curlcode), curlcode, conncode);
+        }
+
         rc = QUVI_CURL;
     }
 
     if (mem.p) {
         *dst = mem.p;
-        if (rc == QUVI_OK) /* charset */
-            parse_charset(video, mem.p);
+        if (rc == QUVI_OK && !video->charset) /* charset */
+            run_lua_charset_func(video, mem.p);
     }
 
-    video->quvi->httpcode = httpcode;
+    video->quvi->httpcode = respcode;
     video->quvi->curlcode = curlcode;
 
     return (rc);
@@ -146,10 +158,10 @@ fetch_to_mem(
 
 QUVIcode
 query_file_length(_quvi_t quvi, llst_node_t lnk) {
+    long respcode, conncode;
     _quvi_video_link_t qvl;
     CURLcode curlcode;
     struct mem_s mem;
-    long httpcode;
     QUVIcode rc;
 
     if (!quvi)
@@ -191,15 +203,20 @@ query_file_length(_quvi_t quvi, llst_node_t lnk) {
 
     csetopt(CURLOPT_HTTPGET, 1L); /* reset: head -> get */
 
-    httpcode = 0;
+    respcode = 0;
+    conncode = 0;
     rc       = QUVI_OK;
+
+    curl_easy_getinfo(quvi->curl,
+        CURLINFO_RESPONSE_CODE, &respcode);
+
+    curl_easy_getinfo (quvi->curl,
+        CURLINFO_HTTP_CONNECTCODE, &conncode);
 
     if (curlcode == CURLE_OK) {
 
-        curl_easy_getinfo(quvi->curl,
-            CURLINFO_RESPONSE_CODE, &httpcode);
+        if (respcode == 200 || respcode == 206) {
 
-        if (httpcode == 200 || httpcode == 206) {
             const char *ct;
 
             curl_easy_getinfo(quvi->curl,
@@ -223,21 +240,22 @@ query_file_length(_quvi_t quvi, llst_node_t lnk) {
 
             if (rc == QUVI_OK) {
                 /* Content-Type -> suffix. */
-                rc = contenttype_to_suffix(quvi, qvl);
+                rc = run_lua_suffix_func(quvi, qvl);
             }
         }
         else {
-            seterr("server returned http/%ld", httpcode);
+            seterr ("server response code %ld (conncode=%ld)",
+                respcode, conncode);
             rc = QUVI_CURL;
         }
     }
     else {
-        seterr("%s (curlcode=%d)",
-            curl_easy_strerror(curlcode), curlcode);
+        seterr ("%s (curlcode=%d, conncode=%ld)",
+            curl_easy_strerror(curlcode), curlcode, conncode);
         rc = QUVI_CURL;
     }
 
-    quvi->httpcode = httpcode;
+    quvi->httpcode = respcode;
     quvi->curlcode = curlcode;
 
     if (mem.p)
