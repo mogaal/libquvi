@@ -1,6 +1,7 @@
 libquvi (0.2.3-1) unstable; urgency=low
 
   * New upstream release (Closes: #590328)
+  * Remove Moritz's patch, was fixed in the last release. 
 
  -- Alejandro Garrido Mota <garridomota@gmail.com>  Fri, 03 Sep 2010 00:32:56 -0430
 
