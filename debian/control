@@ -45,5 +45,5 @@ Section: utils
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: command line tool for parsing video download links
- command line tool for parsing Adobe flash video download links. It
+ command line tool for parsing video download links. It
  supports Youtube and other similar video websites.
