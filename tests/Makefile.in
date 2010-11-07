@@ -83,6 +83,7 @@ CYGPATH_W = @CYGPATH_W@
 DATE = @DATE@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
+DLLTOOL = @DLLTOOL@
 DOXYGEN = @DOXYGEN@
 DSYMUTIL = @DSYMUTIL@
 DUMPBIN = @DUMPBIN@
@@ -94,6 +95,7 @@ EXEEXT = @EXEEXT@
 EXTRA_LIBQUVI_LDFLAGS = @EXTRA_LIBQUVI_LDFLAGS@
 FGREP = @FGREP@
 GENGETOPT = @GENGETOPT@
+GIT = @GIT@
 GREP = @GREP@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
@@ -111,6 +113,7 @@ LN_S = @LN_S@
 LTLIBICONV = @LTLIBICONV@
 LTLIBOBJS = @LTLIBOBJS@
 MAKEINFO = @MAKEINFO@
+MANIFEST_TOOL = @MANIFEST_TOOL@
 MKDIR_P = @MKDIR_P@
 NM = @NM@
 NMEDIT = @NMEDIT@
@@ -146,6 +149,7 @@ abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
 abs_top_srcdir = @abs_top_srcdir@
+ac_ct_AR = @ac_ct_AR@
 ac_ct_CC = @ac_ct_CC@
 ac_ct_CXX = @ac_ct_CXX@
 ac_ct_DUMPBIN = @ac_ct_DUMPBIN@
@@ -206,16 +210,20 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 EXTRA_DIST = quviTest.pm.in $(TESTS) $(TESTS_POD) $(TESTS_ADULT)
 @HAVE_PERL_TRUE@TESTS_ENVIRONMENT = $(PERL) -w -mstrict -mquviTest -I $(top_builddir)/tests
-@HAVE_PERL_TRUE@TESTS = nosupport-eval.pl support-break.pl \
-@HAVE_PERL_TRUE@	support-charlierose.pl support-clipfish.pl \
+@HAVE_PERL_TRUE@TESTS = nosupport-eval.pl support-bloomberg.pl \
+@HAVE_PERL_TRUE@	support-break.pl support-charlierose.pl \
+@HAVE_PERL_TRUE@	support-clipfish.pl support-collegehumor.pl \
 @HAVE_PERL_TRUE@	support-dailymotion.pl support-evisor.pl \
 @HAVE_PERL_TRUE@	support-funnyhub.pl support-funnyordie.pl \
 @HAVE_PERL_TRUE@	support-golem.pl support-liveleak.pl \
 @HAVE_PERL_TRUE@	support-myubo.pl support-sevenload.pl \
 @HAVE_PERL_TRUE@	support-spiegel.pl support-theonion.pl \
 @HAVE_PERL_TRUE@	support-vimeo.pl support-youtube.pl \
-@HAVE_PERL_TRUE@	$(am__append_1) $(am__append_2) \
-@HAVE_PERL_TRUE@	$(am__append_3)
+@HAVE_PERL_TRUE@	support-academicearth.pl $(am__append_1) \
+@HAVE_PERL_TRUE@	$(am__append_2) $(am__append_3)
+
+# NOTE: academicearth.pl has to come after youtube.
+# The former uses youtube for hosting some of its videos.
 @HAVE_PERL_TRUE@TESTS_BROKEN = \
 @HAVE_PERL_TRUE@support-cctv.pl\
 @HAVE_PERL_TRUE@support-ehrensenf.pl\

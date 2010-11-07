@@ -2,23 +2,31 @@ package "quvi"
 version ""
 
 option "version"
-    v "Print version and exit"
+    - "Print version and exit"
     optional
 option "license"
     - "Print license and exit"
     optional
-option "hosts"
-    - "Show supported hosts"
+option "support"
+    - "Print supported websites and exit"
     optional
 
 option "xml"
     - "Print details in XML"
     optional
-option "quiet"
-    q "Turn off all output"
+option "old"
+    - "Print details in original format"
     optional
-option "debug"
+option "quiet"
+    q "Turn off output to stderr"
+    optional
+option "verbose-libcurl"
     - "Turn on libcurl verbose mode"
+    optional
+
+option "exec"
+    - "Invoke arg after parsing"
+    string typestr="arg"
     optional
 
 option "no-verify"
@@ -26,71 +34,59 @@ option "no-verify"
     optional
 
 option "page-title"
-    - "Expected video page title"
-    string typestr="<string>"
+    - "Check that parsed page title matches arg"
+    string typestr="arg"
     optional
 option "video-id"
-    - "Expected video id"
-    string typestr="<string>"
+    - "Check that parsed video ID matches arg"
+    string typestr="arg"
     optional
 option "file-length"
-    - "Expected video file length"
-    double typestr="<length>"
+    - "Check that parsed video length matches arg"
+    double typestr="arg"
     optional
 option "file-suffix"
-    - "Expected video file suffix"
-    string typestr="<string>"
+    - "Check that parsed video suffix matches arg"
+    string typestr="arg"
     optional
 
 option "test-all"
     a "Run built-in tests"
     optional
-option "test"
-    t "Match regexp to a built-in test link"
-    string typestr="<regexp>"
-    optional
 option "dump"
-    d "Dump video details when running tests"
+    d "Dump video details with --test-all"
     dependon="test-all"
     optional
-
-option "agent"
-    - "Identify cclive as string to servers"
-    string typestr="<string>"
-    default="Mozilla/5.0"
-    optional
-option "proxy"
-    - "Use specified proxy"
-    string typestr="<host[:port]>"
-    optional
-option "connect-timeout"
-    - "Max seconds allowed connection to server take"
-    int typestr="<s>"
-    default="30"
+option "test"
+    t "Pattern to match to built-in test URLs"
+    string typestr="arg"
     optional
 
 option "format"
-    f "Query video format"
-    string typestr="<format_id>"
-#    values="default","best",
-#        # youtube:
-#        "fmt17","fmt18","fmt22", "fmt34","fmt35", "fmt37","hq","3gp",
-#        # vimeo:
-#        "hd",
-#        # google:
-#        "mp4",
-#        # golem:
-#        "high", "ipod",
-#        # spiegel:
-#        "vp6_576", "vp6_928", "h264_1400"
+    f "Video format to query"
+    string typestr="arg"
     default="default"
     optional
 
-text "\nExamples:\n\n"
-text "  quvi -a         # run all built-in tests\n"
-text "  quvi URL        # test URL\n"
-text "  quvi -t youtube # match 'youtube' to built-in links and test it\n"
-text "  quvi URL -f mp4 # query 'mp4' format of the video\n"
-text "  quvi --hosts    # dump a list of supported websites and format ids"
+option "agent"
+    - "Identify as arg"
+    string typestr="arg"
+    default="Mozilla/5.0"
+    optional
+option "proxy"
+    - "Use proxy for HTTP connections"
+    string typestr="arg"
+    optional
+option "no-proxy"
+    - "Disable use of HTTP proxy"
+    optional
+option "connect-timeout"
+    - "Seconds connecting allowed to take"
+    int typestr="arg"
+    default="30"
+    optional
+
+text "\nExample: quvi YOUTUBE_URL -f sd_270p"
+text "\n         quvi URL --exec \"/usr/bin/vlc %u\""
 
 

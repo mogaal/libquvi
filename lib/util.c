@@ -171,7 +171,7 @@ to_utf8(_quvi_video_t video) {
 #ifdef HAVE_STRERROR
             seterr("iconv_open: %s", strerror(errno));
 #else
-            perror("iconv_popen");
+            perror("iconv_open");
 #endif
         }
 

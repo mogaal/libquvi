@@ -70,6 +70,7 @@ The function is expected set the following video details.
   * title (string)
   * id (string)
   * url (array of strings)
+  * redirect (string) [see notes below]
 
 Each of these belong to the `video' table passed to the function
 as a parameter. e.g. "video.host_id = 'youtube'"
@@ -82,6 +83,12 @@ Parameters:
 Returns:
   * `video' table containing the updated details
 
+Notes:
+  * "redirect", special field, if set (default:empty):
+    - quvi skips link checking, and parses the specified (redirect) URL instead
+    - note that this replaces the original page URL (set by quvi_parse)
+    - for an example of this, see the academicearth.lua script
+
 
 3. Lua API
 ==========
@@ -90,18 +97,22 @@ All of the functions exposed to the lua scripts are in the "quvi" object,
 e.g. "quvi.fetch(url)".
 
 
-3.1. Function: string quvi.fetch (url, what)
---------------------------------------------
+3.1. Function: string quvi.fetch (url, what, arbitrary_cookie)
+--------------------------------------------------------------
 
 Fetches URL.
 
 Parameters:
   * url (string) - URL to fetch
   * what (string) - "page", "config" or "playlist" (optional)
+  * arbitrary_cookie (string) - e.g. "foo=bar" (optional)
 
 `what' will be translated to a QUVIstatusType defined in the
-quvi.h header file. If what is undefined (nil), quvi will
+quvi.h header file. If that is undefined (nil), quvi will
 default to "page".
+
+arbitrary_cookie value is passed to libcurl, see:
+  http://curl.haxx.se/libcurl/c/curl_easy_setopt.html#CURLOPTCOOKIE
 
 Returns:
   * Fetched contents of the URL

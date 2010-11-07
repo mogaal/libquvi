@@ -7,9 +7,11 @@ TESTS_ENVIRONMENT = $(PERL) -w -mstrict -mquviTest -I $(top_builddir)/tests
 
 TESTS =\
 nosupport-eval.pl\
+support-bloomberg.pl\
 support-break.pl\
 support-charlierose.pl\
 support-clipfish.pl\
+support-collegehumor.pl\
 support-dailymotion.pl\
 support-evisor.pl\
 support-funnyhub.pl\
@@ -21,7 +23,11 @@ support-sevenload.pl\
 support-spiegel.pl\
 support-theonion.pl\
 support-vimeo.pl\
-support-youtube.pl
+support-youtube.pl\
+support-academicearth.pl
+
+# NOTE: academicearth.pl has to come after youtube.
+# The former uses youtube for hosting some of its videos.
 
 TESTS_BROKEN =\
 support-cctv.pl\
