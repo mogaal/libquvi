@@ -23,7 +23,9 @@ local lookup = {
     sd_360p  = "34", --   640x360
     hq_480p  = "35", --   854x480
     hd_720p  = "22", --  1280x720
-    hd_1080p = "37"  -- 1920x1080
+    hd_1080p = "37", -- 1920x1080
+    webm_480p= "43", --   854x480
+    webm_720p= "45"  --  1280x720
 }
 
 -- Identify the script.
@@ -38,7 +40,9 @@ function ident (page_url)
     if (page_url ~= nil) then
         page_url = youtubify(page_url)
     end
-    t.handles = (page_url ~= nil and page_url:find(t.domain) ~= nil)
+    t.handles = (page_url ~= nil
+        and (page_url:find(t.domain) ~= nil
+            or page_url:find("youtu.be") ~= nil))
     return t
 end
 
@@ -89,6 +93,7 @@ end
 function youtubify (url)
     url = url:gsub("-nocookie", "")    -- youtube-nocookie.com
     url = url:gsub("/v/", "/watch?v=") -- embedded
+    url = url:gsub("youtu.be/", "youtube.com/watch?v=") -- shortened
     return url
 end
 

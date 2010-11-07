@@ -18,6 +18,7 @@
 #include "config.h"
 
 #include <assert.h>
+#include <string.h>
 
 #include <pcre.h>
 #include <curl/curl.h>
@@ -122,9 +123,19 @@ quvi_parse (quvi_t quvi, char *url, quvi_video_t *dst) {
 
     setvid(video->page_link, "%s", url);
 
-    rc = find_host_script(video);
-    if (rc != QUVI_OK)
-        return (rc);
+    while (1) {
+        rc = find_host_script (video);
+        if (rc != QUVI_OK)
+            return (rc);
+        else {
+            if (strlen (video->redirect)) { /* Found a redirect. */
+                setvid (video->page_link, "%s", video->redirect);
+                continue;
+            }
+            else
+                break;
+        }
+    }
 
 #ifdef HAVE_ICONV /* Convert character set encoding to utf8. */
     if (video->charset)
@@ -176,6 +187,7 @@ quvi_parse_close (quvi_video_t *handle) {
         _free((*video)->charset);
         _free((*video)->page_link);
         _free((*video)->host_id);
+        _free((*video)->redirect);
 
         _free(*video);
     }
@@ -490,23 +502,36 @@ char *
 quvi_version (QUVIversion type) {
     static const char version[] = PACKAGE_VERSION;
     static const char version_long[] =
+
+#ifdef GIT_DESCRIBE
+    GIT_DESCRIBE
+#else
     PACKAGE_VERSION
-    " ("
+#endif
+
 #ifdef BUILD_DATE
-    BUILD_DATE"-"
+    " built on "
+    BUILD_DATE
 #endif
+
+    " for "
     CANONICAL_TARGET
-    ") "
+
+    " ("
 #ifdef HAVE_ICONV
-    "*iconv "
+    "i"
 #endif
+
 #ifdef ENABLE_BROKEN
-    "*broken "
+    "b"
 #endif
+
 #ifdef ENABLE_SMUT
-    "*smut "
+    "s"
 #endif
-    ;
+
+    ")";
+
     if (type == QUVI_VERSION_LONG)
         return ((char *)version_long);
     return ((char *)version);

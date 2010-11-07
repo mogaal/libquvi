@@ -4,7 +4,8 @@ EXTRA_DIST = \
 
 src = \
     quvi.c \
-    cmdline.c
+    cmdline.c \
+    $(top_srcdir)/lib/strepl.c
 
 hdr = \
     cmdline.h

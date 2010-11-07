@@ -58,6 +58,7 @@ QUVIcode
 fetch_to_mem(
     _quvi_video_t video,
     const char *url,
+    const char *cookie_header,
     const QUVIstatusType type,
     char **dst)
 {
@@ -101,6 +102,9 @@ fetch_to_mem(
         csetopt(CURLOPT_WRITEFUNCTION, (curl_write_callback)quvi->write_func);
     else
         csetopt(CURLOPT_WRITEFUNCTION, quvi_write_callback_default);
+
+    if ( cookie_header != NULL && *cookie_header != '\0' )
+        csetopt(CURLOPT_COOKIE, cookie_header);
 
     curlcode = curl_easy_perform(quvi->curl);
     respcode = 0;

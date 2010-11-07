@@ -1,0 +1,337 @@
+=pod
+
+=head1 NAME
+
+quvi - query video tool
+
+=head1 SYNOPSIS
+
+quvi [options] [url...]
+
+=head1 DESCRIPTION
+
+quvi is a command line tool for parsing video download links.
+It supports Youtube and other similar video websites.
+
+The video details are printed to standard output (in JSON),
+everything else is printed to standard error.
+
+=head1 OPTIONS
+
+=over 4
+
+=item B<-h, --help>
+
+Print help and exit.
+
+=item B<--version>
+
+Print program version and exit.
+
+=item B<--license>
+
+Print license and exit.
+
+=item B<--support>
+
+Print supported hosts and exit.
+
+=item B<--xml>
+
+Print the details in XML (instead of JSON). URLs are escaped (URL encoded,
+unlike in JSON). Encoding is always UTF-8 (like in JSON).
+
+=item B<--old>
+
+Print the details in the previously used default output format
+(0.2.3 and earlier).
+
+=item B<-q, --quiet>
+
+Turn off output to stderr (excl. errors, libcurl). Video details will
+be printed to stdout as they would be normally.
+
+=item B<--verbose-libcurl>
+
+Turn on libcurl verbose mode.
+
+=item B<--exec> I<arg>
+
+Invoke I<arg> for each (successfully) parsed video. You can use the following
+specifiers in I<arg>:
+
+    %u  Video download URL
+
+Note that I<all> occurences of the specifier will be replaced,
+and each new value will be quoted ("").
+
+=item B<-n, --no-verify>
+
+Do not verify video link after parsing it. Normally this serves two
+purposes: check that the link actually works, and get content-length
+as well as content-type for the video.
+
+If this switch used, the program will report invalid values for those
+video details (e.g. 0 file length, empty string for content-type, etc.)
+but saves some bandwidth if those details are not obligatory.
+
+=item B<--page-title> I<arg>
+
+Check that the parsed video title matches the I<arg>.
+The libquvi tests typically make use of this option.
+
+=item B<--video-id> I<arg>
+
+Check that the parsed video ID matches the I<arg>.
+The libquvi tests typically make use of this option.
+
+=item B<--file-length> I<length>
+
+Check that the parsed video file length matches the I<arg>.
+The libquvi tests typically make use of this option.
+
+=item B<--file-suffix> I<arg>
+
+Check that the parsed video file suffix matches the I<arg>.
+The libquvi tests typically make use of this option.
+
+=item B<-a, --test-all>
+
+quvi holds a number of built-in video URLs that can be tested
+with this switch.
+
+=item B<-d, --dump>
+
+Dump video details while when running the program with C<--test-all>.
+
+=item B<-t, --test> I<arg>
+
+quvi holds a number of built-in video URLs that can be matched
+with this option. Some examples:
+
+    % quvi -t youtube
+    % quvi -t yout
+
+Both would match the same built-in test URL for Youtube. Some
+more examples:
+    % quvi -t livel
+    % quvi -t liveleak
+    % quvi -t col
+    % quvi -t collegehumor
+
+As long as the built-in URL contains the pattern, it can be
+matched. Like C<--page-title> and friends, this feature is
+intended to be used by libquvi tests.
+
+=item B<-f, --format> I<arg>
+
+Query for video format I<arg>. You can get a list of the formats
+that each website (should) support by running the program with
+C<--support>.
+
+=item B<--agent> I<arg>
+
+Identify quvi as I<arg> to servers. Default is "Mozilla/5.0".
+
+=item B<--proxy> I<arg>
+
+Use proxy for HTTP connections, e.g. "http://foo:1234".
+You can also define http_proxy environment setting to
+achieve the same.
+
+=item B<--no-proxy>
+
+Disable use of HTTP proxy completely. Proxy will not
+be used even if defined in http_proxy.
+
+=item B<--connect-timeout> I<seconds>
+
+Maximum seconds allowed connection to server take.
+Default is 30.
+
+=back
+
+=head1 EXAMPLES
+
+=over 4
+
+=item quvi URL
+
+Test URL.
+
+=item quvi -a
+
+Run all built-in host tests.
+
+=item quvi -aqd --xml
+
+Same but run in quiet mode. Print video details in XML (to stdout).
+
+=item quvi -t youtube
+
+Match pattern "youtube" to a built-in video URL and test it.
+
+=item quvi YOUTUBE_URL -f best
+
+Query YOUTUBE_URL for "best" format of the video.
+
+Run quvi with C<--support> to get a list of the websites
+and which formats they support.
+
+=back
+
+=head1 FILES
+
+=over 4
+
+=item B<~/.quvirc>
+
+You can define most of the command line options in the
+config file. For example:
+
+ agent = some_agent/1.0     # --agent
+ proxy = http://foo:1234    # --proxy
+ no-verify                  # --no-verify
+ verbose-libcurl            # --verbose-libcurl
+
+Note that you can also define $QUVI_HOME and use it instead of $HOME (~).
+
+=back
+
+=head1 ENVIRONMENT
+
+=over 4
+
+=item B<QUVI_HOME>
+
+Path to the directory containing the configuration file (.quvirc).
+Mimics $HOME found on Unix-like systems. Note that using this
+overrides the use of $HOME.
+
+=item B<QUVI_BASEDIR>
+
+Exclusive path to the directory holding the essential libquvi files,
+or the Lua scripts.
+
+Exlusivity here means that by setting this variable, the user
+can override all other built-in and default search paths.
+
+Not to be confused with B<QUVI_HOME> which is strictly for
+C<quvi(1)>, whereas B<QUVI_BASEDIR> is for libquvi.
+
+=item B<QUVI_SHOW_SCANDIR>
+
+Set this variable if you need libquvi to report the scanned
+directory paths. Each scanned path is printed to stderr.
+
+=back
+
+=head1 EXIT STATUS
+
+quvi exits with 0 on success and E<gt>0 if an error occurred.
+
+  QUVI_OK               = 0x00
+  QUVI_MEM              = 0x01, Memory allocation failed
+  QUVI_BADHANDLE        = 0x02, Bad session handle
+  QUVI_INVARG           = 0x03, Invalid function argument
+  QUVI_CURLINIT         = 0x04, libcurl initialization failed
+  QUVI_LAST             = 0x05, Indicates end of list iteration
+  QUVI_ABORTEDBYCALLBACK= 0x06, Aborted by callback function
+  QUVI_LUAINIT          = 0x07, Lua initialization failure
+  QUVI_NOLUAWEBSITE     = 0x08, Failed to find lua website scripts
+  --
+  QUVI_PCRE             = 0x40, libpcre error occurred
+  QUVI_NOSUPPORT        = 0x41, libquvi does not support the video host
+  QUVI_CURL             = 0x42, libcurl error occurred
+  QUVI_ICONV            = 0x43, libiconv error occurred
+  QUVI_LUA              = 0x44, lua error occurred
+
+=head1 CONTRIBUTING
+
+=over 4
+
+=item B<Add support for another website>
+
+On most systems you can find the READMEs and HOWTOs from $prefix/share/quvi
+and $prefix/share/doc/quvi directories. You can find the same files in
+release source tarballs, and at:
+
+    <http://repo.or.cz/w/quvi.git/tree/HEAD:/doc>
+    <http://repo.or.cz/w/quvi.git/tree/HEAD:/share/lua>
+    <http://repo.or.cz/w/quvi.git/tree/HEAD:/share/lua/website>
+
+=item B<Submitting patches>
+
+If you have cooked up a patch, please submit it to the tracker (see L</BUGS>).
+
+If you are working with git and you have established a repo from which
+we can pull the changes from, you can use the same tracker for leaving
+pull requests.
+
+=back
+
+=head1 BUGS
+
+=over 4
+
+=item B<Trackers>
+
+Bugs, support, patches, etc. trackers for these can be found at:
+  <http://sourceforge.net/projects/quvi/support>
+
+=back
+
+=head1 DEBUGGING TIPS
+
+=over 4
+
+=item B<--verbose-libcurl>
+
+You can use this switch to amp up libcurl verbosity.
+
+=item B<Debug symbols>
+
+Compile quvi with C<-g> (see C<g++(1)>) for debug symbols.
+
+=item B<Other tools>
+
+Make use of such tools as C<strace(1)>, C<gdb(1)> and C<valgrind(1)>.
+They may prove invaluable.
+
+=back
+
+=head1 OTHER
+
+=over 4
+
+=item B<Project>
+
+<http://quvi.googlecode.com/>
+
+<http://quvi.sourceforge.net/> -- redirects to the above
+
+=item B<Files>
+
+The downloadable files (e.g. source tarballs) can be found at:
+
+<http://quvi.googlecode.com/>
+
+<http://sourceforge.net/projects/quvi/files/> -- mirror
+
+=item B<Development repository>
+
+git clone git://repo.or.cz/quvi.git
+
+=back
+
+=head1 AUTHOR
+
+Toni Gundogdu <legatvs at sign gmail com>.
+
+Thanks to all those who have contributed to the project
+by sending patches, reporting bugs and writing feedback.
+You know who you are.
+
+See also L</BUGS>, L</DEBUGGING TIPS> and L</CONTRIBUTING>.
+
+=cut

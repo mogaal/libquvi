@@ -21,6 +21,7 @@
 QUVIcode
 fetch_to_mem(_quvi_video_t video,
              const char *url,
+             const char *cookie_header,
              const QUVIstatusType type,
              char **dst);
 

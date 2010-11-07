@@ -1,3 +1,68 @@
+Revision history for quvi.
+
+Version 0.2.7  Wed Oct 20 2010
+
+Changes:
+  * Overhaul manual page for quvi(1)
+  * Rename --debug to --verbose-libcurl
+  * Rename --hosts to --support
+  * Add --exec
+  * Add support for bloomberg.com, thanks to mkolve for the patch (#3089307)
+  * Thanks to Lionel Elie Mamane for the following patches:
+    * add support for colleghumor.com (#3088339)
+    * vimeo: more lax parsing for player.vimeo.com URLs (#3086884)
+    * vimeo: handle player.vimeo.com URLs, too (#3086884)
+
+
+Version 0.2.6
+October 11, 2010
+
+Changes:
+  * --version displays "quvi $version built on $date for $host ($features)"
+  * QUVI_VERSION_LONG displays "git describe" value if detected at configure
+  * Thanks to Lionel Elie Mamane for:
+    * dailymotion: disable family filter (3084289)
+    * allow lua scripts to set arbitrary cookie (3084289)
+  * Accept youtu.be URLs (3084014)
+  * Add academicearth support
+  * Lua website scripts can now use "redirect" field
+  * Bump autoconf prereq. to 2.68 (from 2.67)
+  * Reconfigure for libtool 2.4 (from 2.2.10)
+
+Bugfixes:
+  * Memory leak, l_quvi_fetch (lua_wrap.c:71)
+  * warning: AC_LANG_CONFTEST: no AC_LANG_SOURCE call detected in body (...)
+    * Using Autoconf 2.68 would evoke this along with many other warnings
+
+
+Version 0.2.5
+September 30, 2010
+
+Changes:
+  * Tweak title parsing for theonion
+  * Migrated issue tracker to sf.net (read more: <http://is.gd/fmNnQ>)
+  * Add support for webm_480p, webm_720p [youtube]
+    * Ported from clive patch submitted by Mark Weaver, <http://is.gd/fmwv5>
+
+
+Version 0.2.4
+September 10, 2010
+
+Changes:
+  * New Youtube test URL
+  * Add --old
+  * Add --no-proxy
+  * Update --quiet help string and manual entry
+  * Cleanup examples in --help output
+  * Change default details output to JSON
+  * --xml
+    * Escape (URL encode) URLs only 
+    * Tweak XML prolog
+
+Bugfixes:
+  * Vimeo support (http/404), port changes from clive
+    * Original fix by Jonas Smedegaard, <http://bugs.debian.org/595486>
+
 
 Version 0.2.3
 September 2, 2010

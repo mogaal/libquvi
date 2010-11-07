@@ -66,7 +66,7 @@ sub remove_checks {
     return @tmp;
 }
 
-# Wraps "-t $fmt", parses quvi --hosts output, and
+# Wraps "-t -f $fmt", parses quvi --support output, and
 # tests all host supported formats.
 sub run_t {
     no_internet();
@@ -153,10 +153,10 @@ sub run {
     return $rc;
 }
 
-# Parses quvi --hosts output. First argument is
+# Parses quvi --support output. First argument is
 # expected to be the host id, e.g. "youtube".
 sub parse_formats {
-    my $output = `$QUVI_PATH --hosts`;
+    my $output = `$QUVI_PATH --support`;
     my $host = shift;
     my @r = ();
     if ($output =~ /$host\.(?:\w+\s+|\s+)(.*)/i) {
@@ -168,7 +168,7 @@ sub parse_formats {
 # Check the pod markup.
 sub pod_checks {
     require Pod::Checker;
-    my $rc = Pod::Checker::podchecker("@top_srcdir@/quvi.pod");
+    my $rc = Pod::Checker::podchecker("@top_srcdir@/man1/quvi.1.pod");
     return $rc;
 }
 

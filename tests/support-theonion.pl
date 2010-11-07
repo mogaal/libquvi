@@ -5,7 +5,7 @@ exit quviTest::run_t(
 "--video-id",
     "17950",
 "--file-length",
-    "8545248",
+    "8483035",
 "--file-suffix",
-    "flv"
+    "mp4"
 );

@@ -1,11 +1,11 @@
 exit quviTest::run_t(
 "youtube",
 "--page-title",
-    "Alice In Wonderland - Official Trailer [HD]",
+    "Toshiba Camileo S10 HD 1080p Test - Pennie the Jack Russell",
 "--video-id",
-    "DeWsZ2b_pK4",
+    "DUM1284TqFc",
 "--file-length",
-    "4099496",
+    "1759036",
 "--file-suffix",
     "flv",
 );

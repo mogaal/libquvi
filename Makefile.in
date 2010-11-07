@@ -37,14 +37,13 @@ host_triplet = @host@
 target_triplet = @target@
 @ENABLE_TESTS_TRUE@am__append_1 = tests
 subdir = .
-DIST_COMMON = README $(am__configure_deps) $(dist_man_MANS) \
-	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
-	$(srcdir)/config.h.in $(srcdir)/doxygen.conf.in \
-	$(srcdir)/libquvi.pc.in $(top_srcdir)/configure COPYING \
-	ChangeLog INSTALL NEWS TODO config.aux/config.guess \
-	config.aux/config.rpath config.aux/config.sub \
-	config.aux/depcomp config.aux/install-sh config.aux/ltmain.sh \
-	config.aux/missing config.guess
+DIST_COMMON = README $(am__configure_deps) $(srcdir)/Makefile.am \
+	$(srcdir)/Makefile.in $(srcdir)/config.h.in \
+	$(srcdir)/doxygen.conf.in $(srcdir)/libquvi.pc.in \
+	$(top_srcdir)/configure COPYING ChangeLog INSTALL NEWS TODO \
+	config.aux/config.guess config.aux/config.rpath \
+	config.aux/config.sub config.aux/depcomp config.aux/install-sh \
+	config.aux/ltmain.sh config.aux/missing config.guess
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/libtool.m4 \
 	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
@@ -94,10 +93,7 @@ am__nobase_list = $(am__nobase_strip_setup); \
 am__base_list = \
   sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
   sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
-man1dir = $(mandir)/man1
-am__installdirs = "$(DESTDIR)$(man1dir)" "$(DESTDIR)$(pkgconfigdir)"
-NROFF = nroff
-MANS = $(dist_man_MANS)
+am__installdirs = "$(DESTDIR)$(pkgconfigdir)"
 DATA = $(pkgconfig_DATA)
 RECURSIVE_CLEAN_TARGETS = mostlyclean-recursive clean-recursive	\
   distclean-recursive maintainer-clean-recursive
@@ -106,7 +102,7 @@ AM_RECURSIVE_TARGETS = $(RECURSIVE_TARGETS:-recursive=) \
 	distdir dist dist-all distcheck
 ETAGS = etags
 CTAGS = ctags
-DIST_SUBDIRS = include lib src examples share doc tests
+DIST_SUBDIRS = include lib man1 src examples share doc tests
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -164,6 +160,7 @@ CYGPATH_W = @CYGPATH_W@
 DATE = @DATE@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
+DLLTOOL = @DLLTOOL@
 DOXYGEN = @DOXYGEN@
 DSYMUTIL = @DSYMUTIL@
 DUMPBIN = @DUMPBIN@
@@ -175,6 +172,7 @@ EXEEXT = @EXEEXT@
 EXTRA_LIBQUVI_LDFLAGS = @EXTRA_LIBQUVI_LDFLAGS@
 FGREP = @FGREP@
 GENGETOPT = @GENGETOPT@
+GIT = @GIT@
 GREP = @GREP@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
@@ -192,6 +190,7 @@ LN_S = @LN_S@
 LTLIBICONV = @LTLIBICONV@
 LTLIBOBJS = @LTLIBOBJS@
 MAKEINFO = @MAKEINFO@
+MANIFEST_TOOL = @MANIFEST_TOOL@
 MKDIR_P = @MKDIR_P@
 NM = @NM@
 NMEDIT = @NMEDIT@
@@ -227,6 +226,7 @@ abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
 abs_top_srcdir = @abs_top_srcdir@
+ac_ct_AR = @ac_ct_AR@
 ac_ct_CC = @ac_ct_CC@
 ac_ct_CXX = @ac_ct_CXX@
 ac_ct_DUMPBIN = @ac_ct_DUMPBIN@
@@ -290,13 +290,11 @@ EXTRA_DIST = \
 libquvi.pc.in \
 libquvi.ver \
 doxygen.conf.in \
-quvi.pod \
 KNOWN_ISSUES
 
-@WITH_MAN_TRUE@dist_man_MANS = quvi.1
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libquvi.pc
-SUBDIRS = include lib src examples share doc $(am__append_1)
+SUBDIRS = include lib man1 src examples share doc $(am__append_1)
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
@@ -365,44 +363,6 @@ clean-libtool:
 
 distclean-libtool:
 	-rm -f libtool config.lt
-install-man1: $(dist_man_MANS)
-	@$(NORMAL_INSTALL)
-	test -z "$(man1dir)" || $(MKDIR_P) "$(DESTDIR)$(man1dir)"
-	@list=''; test -n "$(man1dir)" || exit 0; \
-	{ for i in $$list; do echo "$$i"; done; \
-	l2='$(dist_man_MANS)'; for i in $$l2; do echo "$$i"; done | \
-	  sed -n '/\.1[a-z]*$$/p'; \
-	} | while read p; do \
-	  if test -f $$p; then d=; else d="$(srcdir)/"; fi; \
-	  echo "$$d$$p"; echo "$$p"; \
-	done | \
-	sed -e 'n;s,.*/,,;p;h;s,.*\.,,;s,^[^1][0-9a-z]*$$,1,;x' \
-	      -e 's,\.[0-9a-z]*$$,,;$(transform);G;s,\n,.,' | \
-	sed 'N;N;s,\n, ,g' | { \
-	list=; while read file base inst; do \
-	  if test "$$base" = "$$inst"; then list="$$list $$file"; else \
-	    echo " $(INSTALL_DATA) '$$file' '$(DESTDIR)$(man1dir)/$$inst'"; \
-	    $(INSTALL_DATA) "$$file" "$(DESTDIR)$(man1dir)/$$inst" || exit $$?; \
-	  fi; \
-	done; \
-	for i in $$list; do echo "$$i"; done | $(am__base_list) | \
-	while read files; do \
-	  test -z "$$files" || { \
-	    echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(man1dir)'"; \
-	    $(INSTALL_DATA) $$files "$(DESTDIR)$(man1dir)" || exit $$?; }; \
-	done; }
-
-uninstall-man1:
-	@$(NORMAL_UNINSTALL)
-	@list=''; test -n "$(man1dir)" || exit 0; \
-	files=`{ for i in $$list; do echo "$$i"; done; \
-	l2='$(dist_man_MANS)'; for i in $$l2; do echo "$$i"; done | \
-	  sed -n '/\.1[a-z]*$$/p'; \
-	} | sed -e 's,.*/,,;h;s,.*\.,,;s,^[^1][0-9a-z]*$$,1,;x' \
-	      -e 's,\.[0-9a-z]*$$,,;$(transform);G;s,\n,.,'`; \
-	test -z "$$files" || { \
-	  echo " ( cd '$(DESTDIR)$(man1dir)' && rm -f" $$files ")"; \
-	  cd "$(DESTDIR)$(man1dir)" && rm -f $$files; }
 install-pkgconfigDATA: $(pkgconfig_DATA)
 	@$(NORMAL_INSTALL)
 	test -z "$(pkgconfigdir)" || $(MKDIR_P) "$(DESTDIR)$(pkgconfigdir)"
@@ -560,19 +520,6 @@ distclean-tags:
 	-rm -f TAGS ID GTAGS GRTAGS GSYMS GPATH tags
 
 distdir: $(DISTFILES)
-	@list='$(MANS)'; if test -n "$$list"; then \
-	  list=`for p in $$list; do \
-	    if test -f $$p; then d=; else d="$(srcdir)/"; fi; \
-	    if test -f "$$d$$p"; then echo "$$d$$p"; else :; fi; done`; \
-	  if test -n "$$list" && \
-	    grep 'ab help2man is required to generate this page' $$list >/dev/null; then \
-	    echo "error: found man pages containing the \`missing help2man' replacement text:" >&2; \
-	    grep -l 'ab help2man is required to generate this page' $$list | sed 's/^/         /' >&2; \
-	    echo "       to fix them, install help2man, remove and regenerate the man pages;" >&2; \
-	    echo "       typically \`make maintainer-clean' will remove them" >&2; \
-	    exit 1; \
-	  else :; fi; \
-	else :; fi
 	$(am__remove_distdir)
 	test -d "$(distdir)" || mkdir "$(distdir)"
 	@srcdirstrip=`echo "$(srcdir)" | sed 's/[].[^$$\\*]/\\\\&/g'`; \
@@ -749,10 +696,10 @@ distcleancheck: distclean
 	       exit 1; } >&2
 check-am: all-am
 check: check-recursive
-all-am: Makefile $(MANS) $(DATA) config.h
+all-am: Makefile $(DATA) config.h
 installdirs: installdirs-recursive
 installdirs-am:
-	for dir in "$(DESTDIR)$(man1dir)" "$(DESTDIR)$(pkgconfigdir)"; do \
+	for dir in "$(DESTDIR)$(pkgconfigdir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-recursive
@@ -802,7 +749,7 @@ info: info-recursive
 
 info-am:
 
-install-data-am: install-man install-pkgconfigDATA
+install-data-am: install-pkgconfigDATA
 
 install-dvi: install-dvi-recursive
 
@@ -818,7 +765,7 @@ install-info: install-info-recursive
 
 install-info-am:
 
-install-man: install-man1
+install-man:
 
 install-pdf: install-pdf-recursive
 
@@ -848,9 +795,7 @@ ps: ps-recursive
 
 ps-am:
 
-uninstall-am: uninstall-man uninstall-pkgconfigDATA
-
-uninstall-man: uninstall-man1
+uninstall-am: uninstall-pkgconfigDATA
 
 .MAKE: $(RECURSIVE_CLEAN_TARGETS) $(RECURSIVE_TARGETS) all \
 	ctags-recursive install-am install-strip tags-recursive
@@ -865,23 +810,24 @@ uninstall-man: uninstall-man1
 	html-am info info-am install install-am install-data \
 	install-data-am install-dvi install-dvi-am install-exec \
 	install-exec-am install-html install-html-am install-info \
-	install-info-am install-man install-man1 install-pdf \
-	install-pdf-am install-pkgconfigDATA install-ps install-ps-am \
-	install-strip installcheck installcheck-am installdirs \
-	installdirs-am maintainer-clean maintainer-clean-generic \
-	mostlyclean mostlyclean-generic mostlyclean-libtool pdf pdf-am \
-	ps ps-am tags tags-recursive uninstall uninstall-am \
-	uninstall-man uninstall-man1 uninstall-pkgconfigDATA
+	install-info-am install-man install-pdf install-pdf-am \
+	install-pkgconfigDATA install-ps install-ps-am install-strip \
+	installcheck installcheck-am installdirs installdirs-am \
+	maintainer-clean maintainer-clean-generic mostlyclean \
+	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
+	tags tags-recursive uninstall uninstall-am \
+	uninstall-pkgconfigDATA
 
 
-.PHONY: man dox cmdline
-man:
+.PHONY: pod2man pod2html dox cmdline
+pod2man:
 @HAVE_POD2MAN_TRUE@	@POD2MAN@ -c "quvi manual" -n quvi \
-@HAVE_POD2MAN_TRUE@		 -s 1 -r @VERSION@ $(top_srcdir)/quvi.pod $(top_builddir)/quvi.1
+@HAVE_POD2MAN_TRUE@		 -s 1 -r @VERSION@ $(top_srcdir)/man1/quvi.1.pod $(top_builddir)/man1/quvi.1
 @HAVE_POD2MAN_FALSE@	@echo "error: configure did not find pod2man command"
+pod2html:
 @HAVE_POD2HTML_TRUE@	@POD2HTML@ --title="quvi manual" \
-@HAVE_POD2HTML_TRUE@		--infile=$(top_srcdir)/quvi.pod \
-@HAVE_POD2HTML_TRUE@        --outfile=$(top_builddir)/quvi.1.html
+@HAVE_POD2HTML_TRUE@		--infile=$(top_srcdir)/man1/quvi.1.pod \
+@HAVE_POD2HTML_TRUE@        --outfile=$(top_builddir)/man1/quvi.1.html
 @HAVE_POD2HTML_FALSE@	@echo "error: configure did not find pod2html command"
 dox:
 @HAVE_DOXYGEN_TRUE@	@$(DOXYGEN) $(top_builddir)/doxygen.conf

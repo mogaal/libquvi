@@ -1,11 +1,11 @@
 exit quviTest::run_t(
-"dailymotion",
+"bloomberg",
 "--page-title",
-    "Battlefield 1943- Coral Sea - Trailer",
+    "Bloomberg Game Changers: Steve Jobs",
 "--video-id",
-    "x9fkzj",
+    "63723194",
 "--file-length",
-    "3538963",
+    "227782432",
 "--file-suffix",
     "flv"
 );

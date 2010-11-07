@@ -4,34 +4,30 @@ EXTRA_DIST = \
 libquvi.pc.in \
 libquvi.ver \
 doxygen.conf.in \
-quvi.pod \
 KNOWN_ISSUES
-
-if WITH_MAN
-dist_man_MANS = quvi.1
-endif
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libquvi.pc
 
-SUBDIRS = include lib src examples share doc
+SUBDIRS = include lib man1 src examples share doc
 
 if ENABLE_TESTS
 SUBDIRS += tests
 endif
 
-.PHONY: man dox cmdline
-man:
+.PHONY: pod2man pod2html dox cmdline
+pod2man:
 if HAVE_POD2MAN
 	@POD2MAN@ -c "quvi manual" -n quvi \
-		 -s 1 -r @VERSION@ $(top_srcdir)/quvi.pod $(top_builddir)/quvi.1
+		 -s 1 -r @VERSION@ $(top_srcdir)/man1/quvi.1.pod $(top_builddir)/man1/quvi.1
 else
 	@echo "error: configure did not find pod2man command"
 endif
+pod2html:
 if HAVE_POD2HTML
 	@POD2HTML@ --title="quvi manual" \
-		--infile=$(top_srcdir)/quvi.pod \
-        --outfile=$(top_builddir)/quvi.1.html
+		--infile=$(top_srcdir)/man1/quvi.1.pod \
+        --outfile=$(top_builddir)/man1/quvi.1.html
 else
 	@echo "error: configure did not find pod2html command"
 endif

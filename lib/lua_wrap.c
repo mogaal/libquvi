@@ -64,11 +64,11 @@ l_quvi_fetch (lua_State *l) {
         else if (strcmp(type, "playlist") == 0)
             st = QUVISTATUSTYPE_PLAYLIST;
 
-        lua_pop(l, 2);
+        lua_remove(l, 2);
     }
-    lua_pop(l, 1);
+    lua_remove(l, 1);
 
-    rc = fetch_to_mem(qv, url, st, &data);
+    rc = fetch_to_mem(qv, url, lua_tostring(l, 1), st, &data);
 
     if (rc == QUVI_OK) {
         luaL_buffinit(l, &b);
@@ -76,8 +76,10 @@ l_quvi_fetch (lua_State *l) {
         luaL_pushresult(&b);
         _free(data);
     }
-    else
+    else {
+        _free(data);
         luaL_error(l, qv->quvi->errmsg);
+    }
 
     return (1);
 }
@@ -569,6 +571,7 @@ run_parse_func (lua_State *l, llst_node_t node, _quvi_video_t video) {
     lua_newtable(l);
     set_field(l, "page_url",         video->page_link);
     set_field(l, "requested_format", video->quvi->format);
+    set_field(l, "redirect",         "");
 #ifdef _1_
     set_field(l, "host_id",  "");
     set_field(l, "title",    "");
@@ -582,10 +585,16 @@ run_parse_func (lua_State *l, llst_node_t node, _quvi_video_t video) {
     }
 
     if (lua_istable(l, -1)) {
-        setvid(video->host_id, "%s", get_field_s(l, qls, "host_id"));
-        setvid(video->title,   "%s", get_field_s(l, qls, "title"));
-        setvid(video->id,      "%s", get_field_s(l, qls, "id"));
-        rc = iter_video_url(l, qls, "url", video);
+
+        setvid(video->redirect, "%s", get_field_s(l, qls, "redirect"));
+
+        if (strlen(video->redirect) == 0) {
+            setvid(video->host_id, "%s", get_field_s(l, qls, "host_id"));
+            setvid(video->title,   "%s", get_field_s(l, qls, "title"));
+            setvid(video->id,      "%s", get_field_s(l, qls, "id"));
+            rc = iter_video_url(l, qls, "url", video);
+        }
+
     }
     else
         luaL_error(l, "expected `ident' function to return a table");
