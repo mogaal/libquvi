@@ -1,7 +1,7 @@
 libquvi (0.2.7-1) unstable; urgency=low
 
   * New upstream release.
-  ************** Configured with "--enable-smut" to enable all websites.
+  * d/rules: Configured with "--enable-smut" to enable all websites.
 
  -- Alejandro Garrido Mota <garridomota@gmail.com>  Sun, 07 Nov 2010 00:18:36 -0430
 
