@@ -71,7 +71,7 @@ sub remove_checks {
 sub run_t {
     no_internet();
 
-    my @args    = ("-t", @_);
+    my @args    = ("--no-shortened", "-t", @_);
     my @formats = parse_formats($_[0]);
 
     my $rc;

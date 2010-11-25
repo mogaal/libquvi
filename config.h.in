@@ -12,8 +12,8 @@
 /* Define to enable broken support */
 #undef ENABLE_BROKEN
 
-/* Define to enable smut */
-#undef ENABLE_SMUT
+/* Define to enable nsfw */
+#undef ENABLE_NSFW
 
 /* We have 'git describe' */
 #undef GIT_DESCRIBE

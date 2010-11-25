@@ -29,6 +29,9 @@ option "exec"
     string typestr="arg"
     optional
 
+option "no-shortened"
+    s "Do not decompress shortened URLs"
+    optional
 option "no-verify"
     n "Do not verify video link"
     optional

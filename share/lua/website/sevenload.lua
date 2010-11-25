@@ -30,7 +30,7 @@ function parse (video)
     video.host_id = "sevenload"
     local page    = quvi.fetch(video.page_url)
 
-    local _,_,s = page:find('<div class="itemTitle">(.-)</')
+    local _,_,s = page:find('<meta name="title" content="(.-)"')
     video.title = s or error ("no match: video title")
 
     local _,_,s      = page:find('configPath=(.-)"')

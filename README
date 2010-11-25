@@ -1,69 +1,77 @@
 
 
-Contents
+TABLE OF CONTENTS
 
-  1. About
-  2. Websites
-  3. Platforms
-  4. Threads
-  5. Getting started
-  6. Contributing
-
-
-1. About
---------
-
-quvi is a command line tool for parsing video download links.
-It supports Youtube and other similar video websites.
-
-libquvi is a library for parsing video download links with
-C API. It is written in C and intended to be a cross-platform
-library.
-
-Home: http://quvi.googlecode.com/
-Repo: git://repo.or.cz/quvi.git
+    1. About
+    2. Websites
+    3. Platforms
+    4. Threads
+    5. Getting started
+    6. Contributing
 
 
-2. Websites
------------
+1. ABOUT
+========
 
-You can get a complete list by running `quvi --hosts'.
-Alternatively, take a look at the scripts in share/lua/website/.
+quvi is a command line tool for parsing video download links. It supports
+Youtube and other similar video websites.
+
+libquvi is a library for parsing video download links with C API. It is
+written in C and intended to be a cross-platform library. libquvi uses
+Lua for embeddable scripting.
+
+1.1. PREMISE
+
+The low memory footprint, small CPU load. quvi and libquvi are free software,
+licensed under the GPLv3. Both quvi and libquvi run on Linux and Unix-like
+operating systems, as well as on MSWindows.
+
+WWW: <http://quvi.googlecode.com/>
+GIT: <git://repo.or.cz/quvi.git>
 
 
-3. Platforms
-------------
+2. WEBSITES
+===========
+
+You can get a complete list by running `quvi --support', or take a look
+at the scripts in share/lua/website/.
+
+
+3. PLATFORMS
+============
 
 quvi and libquvi are confirmed to compile and run on the following
 platforms:
 
   * Linux
   * BSD
-  * W32 (using mingw)
+  * W32 (mingw)
   * OS2
   * Mac
 
 
-4. Threads
-----------
+4. THREADS
+==========
 
 libquvi is not thread-safe.
 
 
-5. Getting started
-------------------
+5. GETTING STARTED
+==================
 
 `quvi --help' and `man quvi' are your friends.
 
 The doxygen generated documentation covers the use of C API (libquvi).
-See also examples/ subdir for a simple example. See the quvi tool
-(src/quvi.c) for a more advanced example.
+Practical examples:
+    * examples/simple.c
+    * src/quvi.c
+    * <http://cclive.googlecode.com/>
 
-The most recent documentation is also available via the project
-website (http://quvi.googlecode.com/).
+The most recent documentation can also be downloaded from:
+    <http://quvi.googlecode.com/>
 
 
-6. Contributing
----------------
+6. CONTRIBUTING
+===============
 
-See doc/ for HOWTOs.
+Please see doc/ for HOWTOs.

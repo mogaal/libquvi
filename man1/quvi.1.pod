@@ -65,6 +65,10 @@ specifiers in I<arg>:
 Note that I<all> occurences of the specifier will be replaced,
 and each new value will be quoted ("").
 
+=item B<-s, --no-shortened>
+
+Do not "decompress" shortened URLs before using them.
+
 =item B<-n, --no-verify>
 
 Do not verify video link after parsing it. Normally this serves two

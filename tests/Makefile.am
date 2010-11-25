@@ -1,5 +1,5 @@
 
-EXTRA_DIST = quviTest.pm.in $(TESTS) $(TESTS_POD) $(TESTS_ADULT)
+EXTRA_DIST = quviTest.pm.in $(TESTS) $(TESTS_POD) $(TESTS_NSFW)
 
 if HAVE_PERL
 
@@ -7,7 +7,7 @@ TESTS_ENVIRONMENT = $(PERL) -w -mstrict -mquviTest -I $(top_builddir)/tests
 
 TESTS =\
 nosupport-eval.pl\
-support-bloomberg.pl\
+support-shortened.pl\
 support-break.pl\
 support-charlierose.pl\
 support-clipfish.pl\
@@ -30,9 +30,8 @@ support-academicearth.pl
 # The former uses youtube for hosting some of its videos.
 
 TESTS_BROKEN =\
-support-cctv.pl\
-support-ehrensenf.pl\
-support-spyfilms.pl
+support-bloomberg.pl\
+support-cctv.pl
 
 if ENABLE_BROKEN
 TESTS += $(TESTS_BROKEN)
@@ -45,13 +44,13 @@ if HAVE_PERL_POD_CHECKER
 TESTS += $(TESTS_POD)
 endif
 
-TESTS_ADULT =\
+TESTS_NSFW =\
 support-tube8.pl\
 support-xvideos.pl\
 support-youjizz.pl
 
-if ENABLE_SMUT
-TESTS += $(TESTS_ADULT)
+if ENABLE_NSFW
+TESTS += $(TESTS_NSFW)
 endif
 
 else # HAVE_PERL

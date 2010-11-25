@@ -19,8 +19,8 @@
 "./configure && make install", typically. See also "./configure --help".
 
     --enable-tests      Enable tests (e.g. "make check")
-    --enable-smut       Enable adult website support
-    --enable-broken     Enable broken website support
+    --enable-nsfw       Enable support for NSFW websites
+    --enable-broken     Enable support for broken websites
     --disable-quvi      Do not build (and install) quvi tool
     --disable-examples  Do not build example(s)
     --without-man       Do not install the manual page(s)

@@ -7,7 +7,8 @@ my $r = quviTest::run(
 "--file-length",
     "419838936",
 "--file-suffix",
-    "flv"
+    "flv",
+"--no-shortened"
 );
 
 exit $r if $r;
@@ -21,5 +22,6 @@ exit quviTest::run(
 "--file-length",
     "78035755",
 "--file-suffix",
-    "flv"
+    "flv",
+"--no-shortened"
 );

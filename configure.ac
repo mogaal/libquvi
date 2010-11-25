@@ -5,8 +5,11 @@ AC_PREREQ([2.68])
 
 m4_include([m4/version.m4])
 
-AC_INIT([quvi], [_QUVI_VERSION],
-    [http://is.gd/fIt4T], [], [http://quvi.googlecode.com/])
+AC_INIT(
+    [quvi], [_QUVI_VERSION],
+    [http://sourceforge.net/projects/quvi/support/],
+    [],
+    [http://quvi.googlecode.com/])
 
 # Interface:
 QUVI_CURRENT=_QUVI_CURRENT
@@ -167,16 +170,16 @@ AC_ARG_ENABLE([examples],
     [enable_examples=no])
 AM_CONDITIONAL([ENABLE_EXAMPLES], [test x"$enable_examples" != "xno"])
 
-# --enable-smut
-AC_ARG_ENABLE([smut],
-    [AS_HELP_STRING([--enable-smut],
+# --enable-nsfw
+AC_ARG_ENABLE([nsfw],
+    [AS_HELP_STRING([--enable-nsfw],
         [build with adult website support @<:@default=no@:>@])],
     [],
-    [enable_smut=no])
-AM_CONDITIONAL([ENABLE_SMUT], [test x"$enable_smut" != "xno"])
+    [enable_nsfw=no])
+AM_CONDITIONAL([ENABLE_NSFW], [test x"$enable_nsfw" != "xno"])
 
-if [ test x"$enable_smut" != "xno" ]; then
-    AC_DEFINE([ENABLE_SMUT], [1], [Define to enable smut])
+if [ test x"$enable_nsfw" != "xno" ]; then
+    AC_DEFINE([ENABLE_NSFW], [1], [Define to enable nsfw])
 fi
 
 # --enable-tests
@@ -249,19 +252,18 @@ Options:
     build libquvi:  shared=${enable_shared} static=${enable_static}
     build quvi:     ${enable_quvi}
     build examples: ${enable_examples}
-    adult support:  ${enable_smut}
+    enable nsfw:    ${enable_nsfw}
+    enable broken:  ${enable_broken}
     enable tests:   ${enable_tests}
-    broken support: ${enable_broken}
     install manual: ${with_man}
     install docs:   ${with_doc}
-
-Other:
-    gengetopt:      ${GENGETOPT}
-    doxygen:        ${DOXYGEN}
-    perl:           ${PERL}
-    Pod::Checker:   ${have_pod_checker}
-    pod2man:        ${POD2MAN}
-    pod2html:       ${POD2HTML}
 ])
 
+#Other:
+#    gengetopt:      ${GENGETOPT}
+#    doxygen:        ${DOXYGEN}
+#    perl:           ${PERL}
+#    Pod::Checker:   ${have_pod_checker}
+#    pod2man:        ${POD2MAN}
+#    pod2html:       ${POD2HTML}
 

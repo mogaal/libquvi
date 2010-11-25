@@ -1,5 +1,24 @@
 Revision history for quvi.
 
+0.2.8  Sat Nov 13 2010  legatvs
+Changes:
+        - Mark as broken: bloomberg.lua
+        - Bump lib interface c+1:0:a+1, backwards compatible with previous release
+        - Add --no-shortened
+        - Add support for shortened URLs (e.g. dai.ly, goo.gl, etc.)
+        - Add share/lua/util/trim.lua
+        - youtube.lua: rename IDs based on <http://is.gd/gIIYL>
+        - youtube.lua: add support for mp4_3072p (4096x3072, fmt38)
+        - Print QUVIPROP_HOSTID
+        - Rename --enable-smut -> --enable-nsfw (configure)
+        - content_type.lua: check for content-type "text/html", assume error
+        - Handle errors generated in util/*.lua scripts more discreetly
+Bugfixes:
+        - theonion.lua: thanks to mkolve for the fix (#3107788)
+        - sevenload.lua: title parsing
+        - JSON: escape double quotation marks in title
+
+
 Version 0.2.7  Wed Oct 20 2010
 
 Changes:

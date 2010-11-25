@@ -28,6 +28,9 @@ fetch_to_mem(_quvi_video_t video,
 QUVIcode
 query_file_length(_quvi_t, llst_node_t);
 
+QUVIcode
+is_shortened_url (_quvi_video_t);
+
 #endif
 
 

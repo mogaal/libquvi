@@ -70,8 +70,9 @@ QUVI_LUA,         /**< lua error occurred */
 
 /** @enum QUVIstatus Status codes */
 typedef enum {
-QUVISTATUS_FETCH  = 0x00,  /**< Status changed to fetch (page, config, etc.) */
-QUVISTATUS_VERIFY,         /**< Status changed to verify video link */
+QUVISTATUS_FETCH  = 0x00,   /**< Status changed to fetch (page, config, etc.) */
+QUVISTATUS_VERIFY,          /**< Status changed to verify video link */
+QUVISTATUS_SHORTENED,       /**< Status changed to check for shortened URL */
 } QUVIstatus;
 
 /** @enum QUVIstatusType Status type codes */
@@ -86,16 +87,22 @@ QUVISTATUSTYPE_DONE,          /**< General purpose "done" status type */
 
 /** @enum QUVIoption Option codes to be used with quvi_setopt()
 *
-* If you use QUVIOPT_NOVERIFY, the library will return zero for video
-* file length and an empty string for video suffix. Both of them are
-* parsed during the video link verification process from the server
-* returned HTTP header fields content-length and content-type.
+* If QUVIOPT_NOSHORTENED is set to >= 1, the library will not "decompress"
+* the shortened URLs before using them.  Unless shortened URLs are
+* "decompressed", the library will report them as "unsupported".
+*
+* If QUVIOPT_NOVERIFY is set to >= 1, the library will not verify the video
+* download URL, and query the video file details (e.g. length in bytes,
+* content type, file suffix). Unless the download URLs are verified, the
+* library will report invalid values (0 or empty strings) for these video
+* details.
 */
 typedef enum {
 QUVIOPT_FORMAT = 0x00,  /**< Requested video file format */
 QUVIOPT_NOVERIFY,       /**< Do not verify video link */
 QUVIOPT_STATUSFUNCTION, /**< Callback function for status updates */
-QUVIOPT_WRITEFUNCTION,   /**< Callback function for writing data */
+QUVIOPT_WRITEFUNCTION,  /**< Callback function for writing data */
+QUVIOPT_NOSHORTENED,    /**< Do not "decompress" shortened URLs */
 } QUVIoption;
 
 #define QUVIINFO_VOID       0x100000 /**< void type */
@@ -173,6 +180,12 @@ typedef void *quvi_video_t;
  *   status = quvi_loword(param);
  *   type   = quvi_hiword(param);
  *   switch (status) {
+ *   case QUVISTATUS_SHORTENED:
+ *     switch (type) {
+ *       default: printf (":: Check for shortened URL ..."); break;
+ *       case QUVISTATUSTYPE_DONE: puts ("done."); break;
+ *     }
+ *     break;
  *   case QUVISTATUS_FETCH:
  *     switch (type) {
  *        default: printf(":: Fetch %s ...", (char *)data); break;

@@ -16,32 +16,20 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
--- Parse file suffix (extension) from content-type string.
-function suffix_from_contenttype (ctype)
-
-    -- Ideally, we'd parse these from /etc/mime-types.
-    -- In reality, we need a more cross-platform solution.
-
-    if (ctype:find ("text/html")) then
-        error (
-            'content-type cannot be "' ..ctype.. '" for a video. '
-            .. 'The rule script for this website is either buggy or incomplete.'
-        )
+function trim_fields (video)
+    for k,v in pairs (video) do
+        if (type (v) == 'table') then
+            video[k] = trim_fields (v)
+        else
+            video[k] = trim (v)
+        end
     end
+    return video
+end
 
-    local _,_,s = ctype:find("/(.-)$")
-    s = s or error ("no match: content type")
-    s = s:gsub("^x%-","")
-
-    if (s:find("octet")
-        or s:find("swf")
-        or s:find("flash")
-        or s:find("plain"))
-    then
-        s = "flv"
-    end
-
-    return s
+function trim (s) -- Based on http://lua-users.org/wiki/StringTrim (trim1)
+    s = (s:gsub ("^%s*(.-)%s*$", "%1"))
+    return (s:gsub ("%s%s+", " "))
 end
 
 

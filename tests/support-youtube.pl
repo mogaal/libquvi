@@ -1,11 +1,11 @@
 exit quviTest::run_t(
 "youtube",
 "--page-title",
-    "Toshiba Camileo S10 HD 1080p Test - Pennie the Jack Russell",
+    "Surf NYC (4K resolution)",
 "--video-id",
-    "DUM1284TqFc",
+    "9dgSa4wmMzk",
 "--file-length",
-    "1759036",
+    "5287707",
 "--file-suffix",
-    "flv",
+    "flv"
 );

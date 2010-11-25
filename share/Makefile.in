@@ -35,12 +35,13 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 target_triplet = @target@
-@ENABLE_SMUT_TRUE@am__append_1 = \
-@ENABLE_SMUT_TRUE@lua/website/tube8.lua \
-@ENABLE_SMUT_TRUE@lua/website/xvideos.lua \
-@ENABLE_SMUT_TRUE@lua/website/youjizz.lua
+@ENABLE_NSFW_TRUE@am__append_1 = \
+@ENABLE_NSFW_TRUE@lua/website/tube8.lua \
+@ENABLE_NSFW_TRUE@lua/website/xvideos.lua \
+@ENABLE_NSFW_TRUE@lua/website/youjizz.lua
 
 @ENABLE_BROKEN_TRUE@am__append_2 = \
+@ENABLE_BROKEN_TRUE@lua/website/bloomberg.lua \
 @ENABLE_BROKEN_TRUE@lua/website/cctv.lua
 
 subdir = share
@@ -67,8 +68,8 @@ SOURCES =
 DIST_SOURCES =
 am__nobase_dist_pkgdata_DATA_DIST = lua/README \
 	lua/util/content_type.lua lua/util/charset.lua \
-	lua/website/README lua/website/academicearth.lua \
-	lua/website/bloomberg.lua lua/website/break.lua \
+	lua/util/trim.lua lua/website/README \
+	lua/website/academicearth.lua lua/website/break.lua \
 	lua/website/buzzhumor.lua lua/website/collegehumor.lua \
 	lua/website/charlierose.lua lua/website/clipfish.lua \
 	lua/website/dailymotion.lua lua/website/evisor.lua \
@@ -79,7 +80,7 @@ am__nobase_dist_pkgdata_DATA_DIST = lua/README \
 	lua/website/theonion.lua lua/website/vimeo.lua \
 	lua/website/youtube.lua lua/website/tube8.lua \
 	lua/website/xvideos.lua lua/website/youjizz.lua \
-	lua/website/cctv.lua
+	lua/website/bloomberg.lua lua/website/cctv.lua
 am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
 am__vpath_adj = case $$p in \
     $(srcdir)/*) f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`;; \
@@ -251,8 +252,8 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 DIST_lua = lua/README lua/util/content_type.lua lua/util/charset.lua \
-	lua/website/README lua/website/academicearth.lua \
-	lua/website/bloomberg.lua lua/website/break.lua \
+	lua/util/trim.lua lua/website/README \
+	lua/website/academicearth.lua lua/website/break.lua \
 	lua/website/buzzhumor.lua lua/website/collegehumor.lua \
 	lua/website/charlierose.lua lua/website/clipfish.lua \
 	lua/website/dailymotion.lua lua/website/evisor.lua \

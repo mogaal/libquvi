@@ -36,7 +36,7 @@ host_triplet = @host@
 target_triplet = @target@
 @ENABLE_BROKEN_TRUE@@HAVE_PERL_TRUE@am__append_1 = $(TESTS_BROKEN)
 @HAVE_PERL_POD_CHECKER_TRUE@@HAVE_PERL_TRUE@am__append_2 = $(TESTS_POD)
-@ENABLE_SMUT_TRUE@@HAVE_PERL_TRUE@am__append_3 = $(TESTS_ADULT)
+@ENABLE_NSFW_TRUE@@HAVE_PERL_TRUE@am__append_3 = $(TESTS_NSFW)
 subdir = tests
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(srcdir)/quviTest.pm.in
@@ -208,9 +208,9 @@ target_vendor = @target_vendor@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-EXTRA_DIST = quviTest.pm.in $(TESTS) $(TESTS_POD) $(TESTS_ADULT)
+EXTRA_DIST = quviTest.pm.in $(TESTS) $(TESTS_POD) $(TESTS_NSFW)
 @HAVE_PERL_TRUE@TESTS_ENVIRONMENT = $(PERL) -w -mstrict -mquviTest -I $(top_builddir)/tests
-@HAVE_PERL_TRUE@TESTS = nosupport-eval.pl support-bloomberg.pl \
+@HAVE_PERL_TRUE@TESTS = nosupport-eval.pl support-shortened.pl \
 @HAVE_PERL_TRUE@	support-break.pl support-charlierose.pl \
 @HAVE_PERL_TRUE@	support-clipfish.pl support-collegehumor.pl \
 @HAVE_PERL_TRUE@	support-dailymotion.pl support-evisor.pl \
@@ -225,14 +225,13 @@ EXTRA_DIST = quviTest.pm.in $(TESTS) $(TESTS_POD) $(TESTS_ADULT)
 # NOTE: academicearth.pl has to come after youtube.
 # The former uses youtube for hosting some of its videos.
 @HAVE_PERL_TRUE@TESTS_BROKEN = \
-@HAVE_PERL_TRUE@support-cctv.pl\
-@HAVE_PERL_TRUE@support-ehrensenf.pl\
-@HAVE_PERL_TRUE@support-spyfilms.pl
+@HAVE_PERL_TRUE@support-bloomberg.pl\
+@HAVE_PERL_TRUE@support-cctv.pl
 
 @HAVE_PERL_TRUE@TESTS_POD = \
 @HAVE_PERL_TRUE@pod-check.pl
 
-@HAVE_PERL_TRUE@TESTS_ADULT = \
+@HAVE_PERL_TRUE@TESTS_NSFW = \
 @HAVE_PERL_TRUE@support-tube8.pl\
 @HAVE_PERL_TRUE@support-xvideos.pl\
 @HAVE_PERL_TRUE@support-youjizz.pl

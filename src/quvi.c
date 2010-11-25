@@ -71,13 +71,21 @@ spew (const char *fmt, ...) {
 typedef struct gengetopt_args_info opts_s;
 
 static int
-status_callback(long param, void *data) {
-    quvi_word status,type;
+status_callback (long param, void *data) {
+    quvi_word status, type;
 
     status = quvi_loword(param);
-    type  = quvi_hiword(param);
+    type   = quvi_hiword(param);
 
     switch (status) {
+
+    case QUVISTATUS_SHORTENED: /* check for shortened URL */
+        switch (type) {
+        default: spew_qe (":: Check for shortened URL ..."); break;
+        case QUVISTATUSTYPE_DONE    : spew_qe ("done.\n"); break;
+        }
+        break;
+
     case QUVISTATUS_FETCH: /* handle fetch */
         switch (type) {
         default: spew_qe (":: Fetch %s ...", (char *)data); break;
@@ -239,22 +247,24 @@ dump_video_links (quvi_video_t video, opts_s opts, CURL *curl) {
 
 static void
 dump_video(quvi_video_t video, opts_s opts, CURL *curl) {
-    char *page_link, *page_title, *video_id, *format;
+    char *page_link, *page_title, *video_id, *format, *host;
 
-    quvi_getprop(video, QUVIPROP_PAGEURL, &page_link);
-    quvi_getprop(video, QUVIPROP_PAGETITLE, &page_title);
-    quvi_getprop(video, QUVIPROP_VIDEOID, &video_id);
-    quvi_getprop(video, QUVIPROP_VIDEOFORMAT, &format);
+    quvi_getprop (video, QUVIPROP_HOSTID,       &host);
+    quvi_getprop (video, QUVIPROP_PAGEURL,      &page_link);
+    quvi_getprop (video, QUVIPROP_PAGETITLE,    &page_title);
+    quvi_getprop (video, QUVIPROP_VIDEOID,      &video_id);
+    quvi_getprop (video, QUVIPROP_VIDEOFORMAT,  &format);
 
     if (opts.xml_given) {
         char *url = curl_easy_escape (curl, page_link, 0);
         spew (
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-        "<video id=\"%s\">\n"
+        "<video id=\"%s\" host=\"%s\">\n"
         "   <format_requested>%s</format_requested>\n"
         "   <page_title>%s</page_title>\n"
         "   <page_url>%s</page_url>\n",
             video_id,
+            host,
             format,
             page_title,
             url
@@ -269,23 +279,29 @@ dump_video(quvi_video_t video, opts_s opts, CURL *curl) {
     else if (opts.old_given) {
         spew (
             " > Dump video:\n"
+            "host    : %s\n"
             "url     : %s\n"
             "title   : %s\n"
             "id      : %s\n"
             "format  : %s (requested)\n",
-            page_link, page_title, video_id, format
+            host, page_link, page_title, video_id, format
         );
     }
     else { /* JSON, default. */
+        char *t = strdup (page_title);
+        t = strepl (t, "\"", "\\\"");
         spew (
             "{\n"
+             "  \"host\": \"%s\",\n"
              "  \"page_title\": \"%s\",\n"
              "  \"page_url\": \"%s\",\n"
              "  \"id\": \"%s\",\n"
              "  \"format_requested\": \"%s\",\n"
              "  \"link\": [\n",
-            page_title, page_link, video_id, format
+            host, t, page_link, video_id, format
         );
+        free (t);
+        t = NULL;
     }
 
     dump_video_links (video, opts, curl);
@@ -363,7 +379,7 @@ dump_error(quvi_t quvi, QUVIcode rc, opts_s opts) {
 }
 
 static const char *tests[] = {
-"http://www.dailymotion.com/hd/video/x9fkzj_battlefield-1943-coral-sea-trailer_videogames",
+"http://www.dailymotion.com/video/xdpig1_city-of-scars_shortfilms",
 "http://www.spiegel.de/video/video-1012582.html",
 "http://vimeo.com/1485507",
 "http://en.sevenload.com/videos/IUL3gda-Funny-Football-Clips",
@@ -373,22 +389,22 @@ static const char *tests[] = {
 "http://video.golem.de/internet/2174/firefox-3.5-test.html",
 "http://www.funnyhub.com/videos/pages/crazy-hole-in-one.html",
 "http://www.clipfish.de/video/3100131/matratzendomino/",
-"http://www.youtube.com/watch?v=DUM1284TqFc",
+"http://www.youtube.com/watch?v=9dgSa4wmMzk",
 "http://break.com/index/beach-tackle-whip-lash.html",
 "http://www.evisor.tv/tv/rennstrecken/1-runde-oschersleben-14082008--6985.htm",
 "http://www.buzzhumor.com/videos/32561/Girl_Feels_Shotgun_Power",
 "http://www.funnyordie.com/videos/776d200b1c/etiquette-ninjas-episode-5-dicks-on-elevators",
 "http://www.charlierose.com/view/interview/11125",
-"http://www.theonion.com/video/time-announces-new-version-of-magazine-aimed-at-ad,17950/",
 "http://www.academicearth.org/lectures/building-dynamic-websites-http",
 "http://www.academicearth.org/lectures/intro-roman-architecture", /* uses "redirect". */
 "http://www.collegehumor.com/video:1942317",
-"http://www.bloomberg.com/video/63722844/",
+"http://www.theonion.com/video/time-announces-new-version-of-magazine-aimed-at-ad,17950/",
 #ifdef ENABLE_BROKEN
+"http://www.bloomberg.com/video/63722844/",
 "http://space.tv.cctv.com/video/VIDE1212909276513233", /* single-segment */
 "http://space.tv.cctv.com/video/VIDE1247468077860061", /* multi-segment */
 #endif
-#ifdef ENABLE_SMUT
+#ifdef ENABLE_NSFW
 "http://www.tube8.com/fetish/japanese-melon-gal-censored/186133/",
 "http://www.xvideos.com/video243887/devi_emmerson_body_painting",
 "http://www.youjizz.com/videos/glamour-girls---melissa-125602.html",
@@ -510,13 +526,13 @@ init_quvi(opts_s opts, CURL **curl) {
     /* Set quvi options. */
 
     if (opts.format_given)
-        quvi_setopt(quvi, QUVIOPT_FORMAT, opts.format_arg);
+        quvi_setopt (quvi, QUVIOPT_FORMAT, opts.format_arg);
 
-    if (opts.no_verify_given)
-        quvi_setopt(quvi, QUVIOPT_NOVERIFY, 1L);
+    quvi_setopt (quvi, QUVIOPT_NOSHORTENED, opts.no_shortened_given);
+    quvi_setopt (quvi, QUVIOPT_NOVERIFY,    opts.no_verify_given);
 
-    quvi_setopt(quvi, QUVIOPT_STATUSFUNCTION, status_callback);
-    quvi_setopt(quvi, QUVIOPT_WRITEFUNCTION, write_callback);
+    quvi_setopt (quvi, QUVIOPT_STATUSFUNCTION, status_callback);
+    quvi_setopt (quvi, QUVIOPT_WRITEFUNCTION, write_callback);
 
     /* We can use the quvi created cURL handle for our means. */
 

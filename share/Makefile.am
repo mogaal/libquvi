@@ -3,9 +3,9 @@ DIST_lua = \
 lua/README \
 lua/util/content_type.lua \
 lua/util/charset.lua \
+lua/util/trim.lua \
 lua/website/README \
 lua/website/academicearth.lua \
-lua/website/bloomberg.lua \
 lua/website/break.lua \
 lua/website/buzzhumor.lua \
 lua/website/collegehumor.lua \
@@ -25,7 +25,7 @@ lua/website/theonion.lua \
 lua/website/vimeo.lua \
 lua/website/youtube.lua
 
-if ENABLE_SMUT
+if ENABLE_NSFW
 DIST_lua += \
 lua/website/tube8.lua \
 lua/website/xvideos.lua \
@@ -34,6 +34,7 @@ endif
 
 if ENABLE_BROKEN
 DIST_lua += \
+lua/website/bloomberg.lua \
 lua/website/cctv.lua
 endif
 
