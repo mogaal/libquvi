@@ -16,16 +16,23 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
--- Formats.
+-- http://en.wikipedia.org/wiki/YouTube#Quality_and_codecs
+-- $container_$maxwidth = '$fmt_id'
 local lookup = {
-    mobile   = "17", --   3gp
-    sd_270p  = "18", --   480x270
-    sd_360p  = "34", --   640x360
-    hq_480p  = "35", --   854x480
-    hd_720p  = "22", --  1280x720
-    hd_1080p = "37", -- 1920x1080
-    webm_480p= "43", --   854x480
-    webm_720p= "45"  --  1280x720
+    -- flv
+    flv_240p =  '5',
+    flv_360p = '34',
+    flv_480p = '35',
+    -- mp4
+     mp4_360p = '18',
+     mp4_720p = '22',
+    mp4_1080p = '37',
+    mp4_3072p = '38',
+    -- webm
+    webm_480p = '43',
+    webm_720p = '45',
+    -- 3gp, use 'tgp' since lua won't accept '3gp'
+    tgp_144p  = '17'
 }
 
 -- Identify the script.
@@ -40,9 +47,7 @@ function ident (page_url)
     if (page_url ~= nil) then
         page_url = youtubify(page_url)
     end
-    t.handles = (page_url ~= nil
-        and (page_url:find(t.domain) ~= nil
-            or page_url:find("youtu.be") ~= nil))
+    t.handles = (page_url ~= nil and page_url:find (t.domain) ~= nil)
     return t
 end
 
@@ -93,7 +98,6 @@ end
 function youtubify (url)
     url = url:gsub("-nocookie", "")    -- youtube-nocookie.com
     url = url:gsub("/v/", "/watch?v=") -- embedded
-    url = url:gsub("youtu.be/", "youtube.com/watch?v=") -- shortened
     return url
 end
 

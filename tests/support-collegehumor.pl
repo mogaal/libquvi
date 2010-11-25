@@ -1,7 +1,7 @@
 exit quviTest::run_t(
 "collegehumor",
 "--page-title",
-    "Porn Tech Support (with CH Star of the Week Kunal Nayyar)",
+    "Porn Tech Support (with Kunal Nayyar)",
 "--video-id",
     "1942317",
 "--file-length",

@@ -41,6 +41,7 @@ const char *gengetopt_args_info_help[] = {
   "  -q, --quiet                Turn off output to stderr",
   "      --verbose-libcurl      Turn on libcurl verbose mode",
   "      --exec=arg             Invoke arg after parsing",
+  "  -s, --no-shortened         Do not decompress shortened URLs",
   "  -n, --no-verify            Do not verify video link",
   "      --page-title=arg       Check that parsed page title matches arg",
   "      --video-id=arg         Check that parsed video ID matches arg",
@@ -115,6 +116,7 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->quiet_given = 0 ;
   args_info->verbose_libcurl_given = 0 ;
   args_info->exec_given = 0 ;
+  args_info->no_shortened_given = 0 ;
   args_info->no_verify_given = 0 ;
   args_info->page_title_given = 0 ;
   args_info->video_id_given = 0 ;
@@ -170,19 +172,20 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->quiet_help = gengetopt_args_info_help[6] ;
   args_info->verbose_libcurl_help = gengetopt_args_info_help[7] ;
   args_info->exec_help = gengetopt_args_info_help[8] ;
-  args_info->no_verify_help = gengetopt_args_info_help[9] ;
-  args_info->page_title_help = gengetopt_args_info_help[10] ;
-  args_info->video_id_help = gengetopt_args_info_help[11] ;
-  args_info->file_length_help = gengetopt_args_info_help[12] ;
-  args_info->file_suffix_help = gengetopt_args_info_help[13] ;
-  args_info->test_all_help = gengetopt_args_info_help[14] ;
-  args_info->dump_help = gengetopt_args_info_help[15] ;
-  args_info->test_help = gengetopt_args_info_help[16] ;
-  args_info->format_help = gengetopt_args_info_help[17] ;
-  args_info->agent_help = gengetopt_args_info_help[18] ;
-  args_info->proxy_help = gengetopt_args_info_help[19] ;
-  args_info->no_proxy_help = gengetopt_args_info_help[20] ;
-  args_info->connect_timeout_help = gengetopt_args_info_help[21] ;
+  args_info->no_shortened_help = gengetopt_args_info_help[9] ;
+  args_info->no_verify_help = gengetopt_args_info_help[10] ;
+  args_info->page_title_help = gengetopt_args_info_help[11] ;
+  args_info->video_id_help = gengetopt_args_info_help[12] ;
+  args_info->file_length_help = gengetopt_args_info_help[13] ;
+  args_info->file_suffix_help = gengetopt_args_info_help[14] ;
+  args_info->test_all_help = gengetopt_args_info_help[15] ;
+  args_info->dump_help = gengetopt_args_info_help[16] ;
+  args_info->test_help = gengetopt_args_info_help[17] ;
+  args_info->format_help = gengetopt_args_info_help[18] ;
+  args_info->agent_help = gengetopt_args_info_help[19] ;
+  args_info->proxy_help = gengetopt_args_info_help[20] ;
+  args_info->no_proxy_help = gengetopt_args_info_help[21] ;
+  args_info->connect_timeout_help = gengetopt_args_info_help[22] ;
   
 }
 
@@ -337,6 +340,8 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "verbose-libcurl", 0, 0 );
   if (args_info->exec_given)
     write_into_file(outfile, "exec", args_info->exec_orig, 0);
+  if (args_info->no_shortened_given)
+    write_into_file(outfile, "no-shortened", 0, 0 );
   if (args_info->no_verify_given)
     write_into_file(outfile, "no-verify", 0, 0 );
   if (args_info->page_title_given)
@@ -653,6 +658,7 @@ cmdline_parser_internal (
         { "quiet",	0, NULL, 'q' },
         { "verbose-libcurl",	0, NULL, 0 },
         { "exec",	1, NULL, 0 },
+        { "no-shortened",	0, NULL, 's' },
         { "no-verify",	0, NULL, 'n' },
         { "page-title",	1, NULL, 0 },
         { "video-id",	1, NULL, 0 },
@@ -669,7 +675,7 @@ cmdline_parser_internal (
         { 0,  0, 0, 0 }
       };
 
-      c = getopt_long (argc, argv, "hqnadt:f:", long_options, &option_index);
+      c = getopt_long (argc, argv, "hqsnadt:f:", long_options, &option_index);
 
       if (c == -1) break;	/* Exit from `while (1)' loop.  */
 
@@ -688,6 +694,18 @@ cmdline_parser_internal (
               &(local_args_info.quiet_given), optarg, 0, 0, ARG_NO,
               check_ambiguity, override, 0, 0,
               "quiet", 'q',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 's':	/* Do not decompress shortened URLs.  */
+        
+        
+          if (update_arg( 0 , 
+               0 , &(args_info->no_shortened_given),
+              &(local_args_info.no_shortened_given), optarg, 0, 0, ARG_NO,
+              check_ambiguity, override, 0, 0,
+              "no-shortened", 's',
               additional_error))
             goto failure;
         

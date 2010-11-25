@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "quvi 1"
-.TH quvi 1 "2010-10-19" "0.2.7" "quvi manual"
+.TH quvi 1 "2010-11-12" "0.2.8" "quvi manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -181,6 +181,9 @@ specifiers in \fIarg\fR:
 .Sp
 Note that \fIall\fR occurences of the specifier will be replaced,
 and each new value will be quoted ("").
+.IP "\fB\-s, \-\-no\-shortened\fR" 4
+.IX Item "-s, --no-shortened"
+Do not \*(L"decompress\*(R" shortened URLs before using them.
 .IP "\fB\-n, \-\-no\-verify\fR" 4
 .IX Item "-n, --no-verify"
 Do not verify video link after parsing it. Normally this serves two

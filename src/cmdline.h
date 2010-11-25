@@ -48,6 +48,7 @@ struct gengetopt_args_info
   char * exec_arg;	/**< @brief Invoke arg after parsing.  */
   char * exec_orig;	/**< @brief Invoke arg after parsing original value given at command line.  */
   const char *exec_help; /**< @brief Invoke arg after parsing help description.  */
+  const char *no_shortened_help; /**< @brief Do not decompress shortened URLs help description.  */
   const char *no_verify_help; /**< @brief Do not verify video link help description.  */
   char * page_title_arg;	/**< @brief Check that parsed page title matches arg.  */
   char * page_title_orig;	/**< @brief Check that parsed page title matches arg original value given at command line.  */
@@ -89,6 +90,7 @@ struct gengetopt_args_info
   unsigned int quiet_given ;	/**< @brief Whether quiet was given.  */
   unsigned int verbose_libcurl_given ;	/**< @brief Whether verbose-libcurl was given.  */
   unsigned int exec_given ;	/**< @brief Whether exec was given.  */
+  unsigned int no_shortened_given ;	/**< @brief Whether no-shortened was given.  */
   unsigned int no_verify_given ;	/**< @brief Whether no-verify was given.  */
   unsigned int page_title_given ;	/**< @brief Whether page-title was given.  */
   unsigned int video_id_given ;	/**< @brief Whether video-id was given.  */

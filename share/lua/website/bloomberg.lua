@@ -29,13 +29,13 @@ function parse (video)
     video.host_id = "bloomberg"
     local page    = quvi.fetch(video.page_url)
 
-    local _,_,s = page:find("BLOOMBERG._title = \"(.-) \";")
+    local _,_,s = page:find('BLOOMBERG._title = "(.-) ";')
     video.title = s or error ("no match: video title")
 
-    local _,_,s = page:find("videos.bloomberg.com\/(.-).flv")
+    local _,_,s = page:find("videos.bloomberg.com/(.-).flv")
      video.id    = s or error ("no match: video id")
 
-    local _,_,s = page:find("BLOOMBERG._video_url = \"(.-)\";")
+    local _,_,s = page:find('BLOOMBERG._video_url = "(.-)";')
     s           = s or error ("no match: flv url")
     video.url   = {quvi.unescape(s)}
 

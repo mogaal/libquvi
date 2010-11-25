@@ -268,4 +268,103 @@ query_file_length(_quvi_t quvi, llst_node_t lnk) {
     return (rc);
 }
 
+/**
+ * Check if URL is a shortened URL (e.g. dai.ly, goo.gl, etc.) and
+ * replace the (shortened) video page URL with the redirect URL.
+ */
+QUVIcode
+is_shortened_url (_quvi_video_t video) {
+    long respcode, conncode;
+    CURLcode curlcode;
+    struct mem_s mem;
+    _quvi_t quvi;
+    QUVIcode rc;
+
+    assert (video != NULL);
+    quvi = video->quvi;
+    assert (quvi != NULL);
+
+    if (quvi->status_func) {
+
+        const QUVIcode r =
+            quvi->status_func (makelong (QUVISTATUS_SHORTENED,0), 0);
+
+        if (r != QUVI_OK)
+            return (QUVI_ABORTEDBYCALLBACK);
+
+    }
+
+    memset (&mem, 0, sizeof (mem));
+
+    csetopt (CURLOPT_WRITEDATA, &mem);
+
+    if (quvi->write_func)
+        csetopt(CURLOPT_WRITEFUNCTION, (curl_write_callback)quvi->write_func);
+    else
+        csetopt(CURLOPT_WRITEFUNCTION, quvi_write_callback_default);
+
+    csetopt (CURLOPT_URL, video->page_link);
+    csetopt (CURLOPT_FOLLOWLOCATION, 0L);
+    csetopt (CURLOPT_NOBODY, 1L); /* get -> head */
+
+    curlcode = curl_easy_perform (quvi->curl);
+
+    csetopt (CURLOPT_FOLLOWLOCATION, 1L); /* reset */
+    csetopt (CURLOPT_HTTPGET, 1L); /* reset: head -> get */
+
+    respcode = 0;
+    conncode = 0;
+    rc       = QUVI_OK;
+
+    curl_easy_getinfo (quvi->curl,
+        CURLINFO_RESPONSE_CODE, &respcode);
+
+    curl_easy_getinfo (quvi->curl,
+        CURLINFO_HTTP_CONNECTCODE, &conncode);
+
+    if (curlcode == CURLE_OK) {
+
+        if (respcode >= 301 && respcode <= 303) {
+
+            /* A redirect. */
+
+            char *url = NULL;
+
+            curl_easy_getinfo (quvi->curl, CURLINFO_REDIRECT_URL, &url);
+            setvid (video->page_link, "%s", url);
+
+            rc = QUVI_OK;
+
+        } /* respcode >= 301 && respcode <= 303 */
+
+        else {
+            /* Most likely not a shortened URL redirect. Let it pass. */
+            rc = QUVI_OK;
+        }
+
+        if (quvi->status_func) {
+
+            rc = quvi->status_func (
+                makelong (QUVISTATUS_SHORTENED, QUVISTATUSTYPE_DONE), 0);
+
+        }
+
+    }
+    else {
+
+        seterr ("%s (curlcode=%d, conncode=%ld)",
+            curl_easy_strerror (curlcode), curlcode, conncode);
+
+        rc = QUVI_CURL;
+    }
+
+    if (mem.p)
+        _free (mem.p);
+
+    quvi->httpcode = respcode;
+    quvi->curlcode = curlcode;
+
+    return (rc);
+}
+
 
