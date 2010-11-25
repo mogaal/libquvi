@@ -1,7 +1,15 @@
+libquvi (0.2.8-1) unstable; urgency=low
+
+  * New upstream release 
+  * d/rules: Configured with "--enable-smut" to enable all websites
+    (Closes: #599587).
+  * 
+
+ -- Alejandro Garrido Mota <garridomota@gmail.com>  Wed, 24 Nov 2010 23:35:43 -0430
+
 libquvi (0.2.7-1) unstable; urgency=low
 
   * New upstream release.
-  * d/rules: Configured with "--enable-smut" to enable all websites.
 
  -- Alejandro Garrido Mota <garridomota@gmail.com>  Sun, 07 Nov 2010 00:18:36 -0430
 
