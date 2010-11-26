@@ -1,10 +1,9 @@
 libquvi (0.2.8-1) unstable; urgency=low
 
-  * New upstream release 
+  * New upstream release (Closes: #590328) 
   * d/rules: Configured with "--enable-smut" to enable all websites
     (Closes: #599587).
-  * Remove d/libquvi0.docs file (It only has TODO file and It doesnt exist in
-    present release)
+  * Remove d/libquvi0.docs file (It only had TODO file)
 
  -- Alejandro Garrido Mota <garridomota@gmail.com>  Wed, 24 Nov 2010 23:35:43 -0430
 
