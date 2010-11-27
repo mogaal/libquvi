@@ -4,21 +4,9 @@ libquvi (0.2.8-1) unstable; urgency=low
   * d/rules: Configured with "--enable-smut" to enable all websites
     (Closes: #599587).
   * Remove d/libquvi0.docs file (It only had TODO file)
-
- -- Alejandro Garrido Mota <garridomota@gmail.com>  Wed, 24 Nov 2010 23:35:43 -0430
-
-libquvi (0.2.7-1) unstable; urgency=low
-
-  * New upstream release.
-
- -- Alejandro Garrido Mota <garridomota@gmail.com>  Sun, 07 Nov 2010 00:18:36 -0430
-
-libquvi (0.2.3-1) unstable; urgency=low
-
-  * New upstream release (Closes: #590328)
   * Remove Moritz's patch, was fixed in the last release. 
 
- -- Alejandro Garrido Mota <garridomota@gmail.com>  Fri, 03 Sep 2010 00:32:56 -0430
+ -- Alejandro Garrido Mota <garridomota@gmail.com>  Wed, 24 Nov 2010 23:35:43 -0430
 
 libquvi (0.2.0-1.1) unstable; urgency=low
 
