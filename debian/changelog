@@ -1,11 +1,19 @@
 libquvi (0.2.8-1) unstable; urgency=low
 
-  * New upstream release (Closes: #590328), drops the --enable-smut option
-    (Closes: #599587) 
+  * New upstream release (Closes: #590328).
+  * Upstream release drops the --enable-smut option, use
+    "--enable-nsfw" (Closes: #599587) 
   * Remove d/libquvi0.docs file (It only had TODO file)
   * Remove Moritz's patch, was fixed in the last release. 
 
  -- Alejandro Garrido Mota <garridomota@gmail.com>  Wed, 24 Nov 2010 23:35:43 -0430
+
+libquvi (0.2.0-1.2) unstable; urgency=low
+
+   * Non-maintainer upload.
+   * Add 595487.patch thanks to Jonas Smedegaard (Closes: #595487).
+
+ -- Martijn van Brummelen <martijn@brumit.nl>  Fri, 17 Sep 2010 11:07:44 +0200
 
 libquvi (0.2.0-1.1) unstable; urgency=low
 
