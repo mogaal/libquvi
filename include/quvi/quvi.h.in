@@ -61,7 +61,7 @@ QUVI_NOLUAWEBSITE,      /**< Failed to find lua website scripts */
 QUVI_NOLUAUTIL,         /**< Failed to find lua util scripts */
 _INTERNAL_QUVI_LAST,    /**< For library internal use only */
 /* Dynamically generated errors */
-QUVI_PCRE = 0x40, /**< libpcre error occurred */
+QUVI_PCRE = 0x40, /**< libpcre error occurred @deprecated since 0.2.9 */
 QUVI_NOSUPPORT,   /**< libquvi does not support the video host */
 QUVI_CURL,        /**< libcurl error occurred */
 QUVI_ICONV,       /**< libiconv error occurred */
@@ -156,8 +156,9 @@ QUVIPROP_VIDEOFILECONTENTTYPE  = QUVIPROPERTY_STRING + 7, /**< Video file conten
 QUVIPROP_VIDEOFILESUFFIX       = QUVIPROPERTY_STRING + 8, /**< Video file suffix */
 QUVIPROP_HTTPCODE      = QUVIPROPERTY_LONG   + 9, /**< Last libcurl returned HTTP code */
 QUVIPROP_VIDEOFORMAT   = QUVIPROPERTY_STRING + 10, /**< Requested video format, set using QUVIOPT_FORMAT */
+QUVIPROP_STARTTIME     = QUVIPROPERTY_STRING + 11, /**< Start time for video */
 /* Add new ones below. */
-_QUVIPROP_LAST          = 10 /**< Placeholder */
+_QUVIPROP_LAST          = 11 /**< Placeholder */
 } QUVIproperty;
 
 /** @brief libquvi session handle */
@@ -402,7 +403,6 @@ QUVIcode quvi_getinfo(quvi_t quvi, QUVIinfo info, ...);
 
 /** @} */ /* End of libquvi_getinfo group. */
 
-
 /** @defgroup libquvi_parse Parsing video links
  * @{
  */
@@ -466,6 +466,26 @@ QUVIcode quvi_getprop(quvi_video_t video, QUVIproperty prop, ...);
 /** @defgroup libquvi_parse_util Utility functions
  * @{
  */
+
+/**
+* @brief Checks whether the URL would be supported by one of the scripts
+*
+* This function does not require a network connection. This means that this
+* function will return QUVI_NOSUPPORT for most shortened URLs. See also
+* the notes below.
+*
+* @param quvi Handle to session
+* @param url Null-terminated string to an URL
+*
+* @note
+*   - Returns QUVI_NOSUPPORT for most shortened URLs
+*   - Only exceptions are those that have been hardcoded to lua scripts
+*   as "official" shorteners for those websites (e.g. youtu.be or
+*   dai.ly)
+*
+* @return Non-zero if an error occurred
+*/
+QUVIcode quvi_supported(quvi_t quvi, char *url);
 
 /**
 * @brief Move to the next video link (if any)

@@ -1,7 +1,7 @@
 
 -- Copyright (C) 2010 quvi team.
 --
--- This file is part of quvi <http://quvi.googlecode.com/>.
+-- This file is part of quvi <http://quvi.sourceforge.net/>.
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ end
 -- Parse video URL.
 function parse (video)
     video.host_id = "tube8"
-    local page    = quvi.fetch(video.page_url)
+    local page    = quvi.fetch(video.page_url .. "?processdisclaimer")
 
     local _,_,s = page:find("<title>(.-)%s+-")
     video.title = s or error ("no match: video title")

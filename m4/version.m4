@@ -1,5 +1,5 @@
-m4_define([_QUVI_VERSION], [0.2.8])
+m4_define([_QUVI_VERSION], [0.2.10])
 m4_define([_QUVI_CURRENT], [3])
-m4_define([_QUVI_REVISION], [0])
+m4_define([_QUVI_REVISION], [2])
 m4_define([_QUVI_AGE], [3])
 m4_define([_QUVI_BRANCH], [master])

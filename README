@@ -1,18 +1,5 @@
 
 
-TABLE OF CONTENTS
-
-    1. About
-    2. Websites
-    3. Platforms
-    4. Threads
-    5. Getting started
-    6. Contributing
-
-
-1. ABOUT
-========
-
 quvi is a command line tool for parsing video download links. It supports
 Youtube and other similar video websites.
 
@@ -20,58 +7,10 @@ libquvi is a library for parsing video download links with C API. It is
 written in C and intended to be a cross-platform library. libquvi uses
 Lua for embeddable scripting.
 
-1.1. PREMISE
+PREMISE
 
 The low memory footprint, small CPU load. quvi and libquvi are free software,
 licensed under the GPLv3. Both quvi and libquvi run on Linux and Unix-like
 operating systems, as well as on MSWindows.
 
-WWW: <http://quvi.googlecode.com/>
-GIT: <git://repo.or.cz/quvi.git>
-
-
-2. WEBSITES
-===========
-
-You can get a complete list by running `quvi --support', or take a look
-at the scripts in share/lua/website/.
-
-
-3. PLATFORMS
-============
-
-quvi and libquvi are confirmed to compile and run on the following
-platforms:
-
-  * Linux
-  * BSD
-  * W32 (mingw)
-  * OS2
-  * Mac
-
-
-4. THREADS
-==========
-
-libquvi is not thread-safe.
-
-
-5. GETTING STARTED
-==================
-
-`quvi --help' and `man quvi' are your friends.
-
-The doxygen generated documentation covers the use of C API (libquvi).
-Practical examples:
-    * examples/simple.c
-    * src/quvi.c
-    * <http://cclive.googlecode.com/>
-
-The most recent documentation can also be downloaded from:
-    <http://quvi.googlecode.com/>
-
-
-6. CONTRIBUTING
-===============
-
-Please see doc/ for HOWTOs.
+WWW: <http://quvi.sourceforge.net/>

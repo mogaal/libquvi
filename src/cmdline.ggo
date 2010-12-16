@@ -89,7 +89,8 @@ option "connect-timeout"
     default="30"
     optional
 
-text "\nExample: quvi YOUTUBE_URL -f sd_270p"
-text "\n         quvi URL --exec \"/usr/bin/vlc %u\""
-
-
+text "\nExamples:"
+text "\n  quvi YOUTUBE_URL -f webm_720p"
+text "\n  quvi URL --exec \"/usr/bin/vlc %u\""
+text "\n  quvi --support"
+text "\n  quvi --support URL"

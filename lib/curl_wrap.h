@@ -21,16 +21,10 @@
 QUVIcode
 fetch_to_mem(_quvi_video_t video,
              const char *url,
-             const char *cookie_header,
-             const QUVIstatusType type,
-             char **dst);
+             const char *cookie_header, const QUVIstatusType type, char **dst);
 
-QUVIcode
-query_file_length(_quvi_t, llst_node_t);
+QUVIcode query_file_length(_quvi_t, llst_node_t);
 
-QUVIcode
-is_shortened_url (_quvi_video_t);
+QUVIcode is_shortened_url(_quvi_video_t);
 
 #endif
-
-

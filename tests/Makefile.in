@@ -185,8 +185,6 @@ libdir = @libdir@
 libexecdir = @libexecdir@
 liblua_CFLAGS = @liblua_CFLAGS@
 liblua_LIBS = @liblua_LIBS@
-libpcre_CFLAGS = @libpcre_CFLAGS@
-libpcre_LIBS = @libpcre_LIBS@
 localedir = @localedir@
 localstatedir = @localstatedir@
 mandir = @mandir@
@@ -211,12 +209,13 @@ top_srcdir = @top_srcdir@
 EXTRA_DIST = quviTest.pm.in $(TESTS) $(TESTS_POD) $(TESTS_NSFW)
 @HAVE_PERL_TRUE@TESTS_ENVIRONMENT = $(PERL) -w -mstrict -mquviTest -I $(top_builddir)/tests
 @HAVE_PERL_TRUE@TESTS = nosupport-eval.pl support-shortened.pl \
-@HAVE_PERL_TRUE@	support-break.pl support-charlierose.pl \
-@HAVE_PERL_TRUE@	support-clipfish.pl support-collegehumor.pl \
-@HAVE_PERL_TRUE@	support-dailymotion.pl support-evisor.pl \
-@HAVE_PERL_TRUE@	support-funnyhub.pl support-funnyordie.pl \
-@HAVE_PERL_TRUE@	support-golem.pl support-liveleak.pl \
-@HAVE_PERL_TRUE@	support-myubo.pl support-sevenload.pl \
+@HAVE_PERL_TRUE@	support-break.pl support-cbsnews.pl \
+@HAVE_PERL_TRUE@	support-charlierose.pl support-clipfish.pl \
+@HAVE_PERL_TRUE@	support-collegehumor.pl support-dailymotion.pl \
+@HAVE_PERL_TRUE@	support-gaskrank.pl support-funnyhub.pl \
+@HAVE_PERL_TRUE@	support-funnyordie.pl support-golem.pl \
+@HAVE_PERL_TRUE@	support-google.pl support-liveleak.pl \
+@HAVE_PERL_TRUE@	support-sapo.pl support-sevenload.pl \
 @HAVE_PERL_TRUE@	support-spiegel.pl support-theonion.pl \
 @HAVE_PERL_TRUE@	support-vimeo.pl support-youtube.pl \
 @HAVE_PERL_TRUE@	support-academicearth.pl $(am__append_1) \

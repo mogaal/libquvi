@@ -1,7 +1,7 @@
 
 -- Copyright (C) 2010 Toni Gundogdu.
 --
--- This file is part of quvi <http://quvi.googlecode.com/>.
+-- This file is part of quvi <http://quvi.sourceforge.net/>.
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -16,19 +16,38 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+local domains = {
+    "dailymotion.",
+    "dai.ly"
+}
+
+-- Check whether the domain is handled
+function is_handled (page_url)
+    if page_url == nil then
+        return false
+    end
+    for k,domain in pairs(domains) do
+        if page_url:find(domain) ~= nil then
+            return true
+        end
+    end
+    return false
+end
+
 -- Identify the script.
 function ident (page_url)
     local t   = {}
     t.domain  = "dailymotion."
     t.formats = "default|best|hq|hd"
-    t.handles = (page_url ~= nil and page_url:find(t.domain) ~= nil)
+    t.handles = is_handled(page_url)
     return t
 end
 
 -- Parse video URL.
 function parse (video)
-    video.host_id = "dailymotion"
-    local page    = quvi.fetch(video.page_url, "page", "family_filter=off")
+    video.host_id  = "dailymotion"
+    video.page_url = normalize (video.page_url)
+    local page     = quvi.fetch(video.page_url, "page", "family_filter=off")
 
     if (page:find('SWFObject("http:")') ~= nil) then
         error ("Looks like a partner video. Refusing to continue.")
@@ -66,6 +85,14 @@ function parse (video)
     end
 
     return video
+end
+
+function normalize (url)
+    if (url:find ("/swf/")) then
+        url = url:gsub ("/video/", "/")
+        url = url:gsub ("/swf/", "/video/")
+    end
+    return url
 end
 
 

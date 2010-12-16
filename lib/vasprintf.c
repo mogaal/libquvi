@@ -19,20 +19,19 @@
 #include <stdarg.h>
 #include <stdlib.h>
 
-int
-vasprintf(char **dst, const char *fmt, va_list ap) {
-    va_list apc;
-    int len;
-    char *p;
+int vasprintf(char **dst, const char *fmt, va_list ap)
+{
+  va_list apc;
+  int len;
+  char *p;
 
-    va_copy(apc,ap);
-    len = vsnprintf(0,0,fmt,apc)+1;
-    va_end(apc);
+  va_copy(apc, ap);
+  len = vsnprintf(0, 0, fmt, apc) + 1;
+  va_end(apc);
 
-    *dst = p = malloc(len);
-    if (!p)
-        return (-1);
+  *dst = p = malloc(len);
+  if (!p)
+    return (-1);
 
-    return (vsnprintf(p,len,fmt,ap));
+  return (vsnprintf(p, len, fmt, ap));
 }
-

@@ -19,21 +19,17 @@
 #define llst_h
 
 struct _llst_node_s {
-    struct _llst_node_s *next;
-    struct _llst_node_s *prev;
-    void *data;
+  struct _llst_node_s *next;
+  struct _llst_node_s *prev;
+  void *data;
 };
 
 typedef struct _llst_node_s *llst_node_t;
 
-int
-llst_add (llst_node_t *, void *);
+int llst_add(llst_node_t *, void *);
 
-int
-llst_size (llst_node_t);
+int llst_size(llst_node_t);
 
-void
-llst_free (llst_node_t *);
+void llst_free(llst_node_t *);
 
 #endif
-

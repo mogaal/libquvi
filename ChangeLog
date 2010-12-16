@@ -1,276 +1,768 @@
-Revision history for quvi.
+commit c947216ff12d1010b49e3066d3c728af52bc9953
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Fri Dec 10 09:51:29 2010 +0200
 
-0.2.8  Sat Nov 13 2010  legatvs
-Changes:
-        - Mark as broken: bloomberg.lua
-        - Bump lib interface c+1:0:a+1, backwards compatible with previous release
-        - Add --no-shortened
-        - Add support for shortened URLs (e.g. dai.ly, goo.gl, etc.)
-        - Add share/lua/util/trim.lua
-        - youtube.lua: rename IDs based on <http://is.gd/gIIYL>
-        - youtube.lua: add support for mp4_3072p (4096x3072, fmt38)
-        - Print QUVIPROP_HOSTID
-        - Rename --enable-smut -> --enable-nsfw (configure)
-        - content_type.lua: check for content-type "text/html", assume error
-        - Handle errors generated in util/*.lua scripts more discreetly
-Bugfixes:
-        - theonion.lua: thanks to mkolve for the fix (#3107788)
-        - sevenload.lua: title parsing
-        - JSON: escape double quotation marks in title
+    Add NEWS.txt, bump ChangeLog (w32)
 
+ w32/ChangeLog.w32.txt |    6 +++++-
+ w32/make-w32.sh       |    1 +
+ 2 files changed, 6 insertions(+), 1 deletions(-)
 
-Version 0.2.7  Wed Oct 20 2010
+commit 53524877f9f8f9f892e0420dacdc982be8d5fd31
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Fri Dec 10 09:08:48 2010 +0200
 
-Changes:
-  * Overhaul manual page for quvi(1)
-  * Rename --debug to --verbose-libcurl
-  * Rename --hosts to --support
-  * Add --exec
-  * Add support for bloomberg.com, thanks to mkolve for the patch (#3089307)
-  * Thanks to Lionel Elie Mamane for the following patches:
-    * add support for colleghumor.com (#3088339)
-    * vimeo: more lax parsing for player.vimeo.com URLs (#3086884)
-    * vimeo: handle player.vimeo.com URLs, too (#3086884)
+    Replace rindex(3) with strrchr(3) for conformation
+    
+    4.3BSD; marked as LEGACY in POSIX.1-2001. POSIX.1-2008 removes the
+    specification of rindex(), recommending strrchr(3) instead.
 
+ config.h.in    |    3 +++
+ configure      |    2 +-
+ configure.ac   |    2 +-
+ lib/lua_wrap.c |    2 +-
+ 4 files changed, 6 insertions(+), 3 deletions(-)
 
-Version 0.2.6
-October 11, 2010
+commit 6bd39173e9b3999fb7a3632e3c9d608492d873bd
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Fri Dec 10 08:57:38 2010 +0200
 
-Changes:
-  * --version displays "quvi $version built on $date for $host ($features)"
-  * QUVI_VERSION_LONG displays "git describe" value if detected at configure
-  * Thanks to Lionel Elie Mamane for:
-    * dailymotion: disable family filter (3084289)
-    * allow lua scripts to set arbitrary cookie (3084289)
-  * Accept youtu.be URLs (3084014)
-  * Add academicearth support
-  * Lua website scripts can now use "redirect" field
-  * Bump autoconf prereq. to 2.68 (from 2.67)
-  * Reconfigure for libtool 2.4 (from 2.2.10)
+    Bump interface revision for 0.2.10
 
-Bugfixes:
-  * Memory leak, l_quvi_fetch (lua_wrap.c:71)
-  * warning: AC_LANG_CONFTEST: no AC_LANG_SOURCE call detected in body (...)
-    * Using Autoconf 2.68 would evoke this along with many other warnings
+ configure     |    2 +-
+ m4/version.m4 |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
+commit f27014660fde2f8612ceb25d08697fb02fbdc8a2
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Fri Dec 10 08:52:49 2010 +0200
 
-Version 0.2.5
-September 30, 2010
+    Set release details for 0.2.10
 
-Changes:
-  * Tweak title parsing for theonion
-  * Migrated issue tracker to sf.net (read more: <http://is.gd/fmNnQ>)
-  * Add support for webm_480p, webm_720p [youtube]
-    * Ported from clive patch submitted by Mark Weaver, <http://is.gd/fmwv5>
+ NEWS |    7 ++++++-
+ 1 files changed, 6 insertions(+), 1 deletions(-)
 
+commit 4aa4070dce27c88a6838c09c17a8917bad373387
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Dec 9 21:11:28 2010 +0200
 
-Version 0.2.4
-September 10, 2010
+    youtube.lua: Replace if..then for url with error
 
-Changes:
-  * New Youtube test URL
-  * Add --old
-  * Add --no-proxy
-  * Update --quiet help string and manual entry
-  * Cleanup examples in --help output
-  * Change default details output to JSON
-  * --xml
-    * Escape (URL encode) URLs only 
-    * Tweak XML prolog
+ share/lua/website/youtube.lua |    4 +---
+ 1 files changed, 1 insertions(+), 3 deletions(-)
 
-Bugfixes:
-  * Vimeo support (http/404), port changes from clive
-    * Original fix by Jonas Smedegaard, <http://bugs.debian.org/595486>
+commit 02aab776cd58f75feaaf8f4cc0342536f93dc712
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Dec 9 21:09:31 2010 +0200
 
+    funnyordie.lua: Fix video URL == nil check
 
-Version 0.2.3
-September 2, 2010
+ share/lua/website/funnyordie.lua |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-Changes:
-  * Curl errors now contain response, connection codes
-    - response code was previously printed as http code
-  * Add theonion support, thanks to mkolve for the script (#12)
-  * Add charlierose support, thanks to mkolve for the script (#11)
-  * Print video details to stdout, everything else to stderr
-  * Add --xml
-  * Bump autoconf prereq. to 2.67
+commit 13ccc003cd9d884cc41333baa1d6d83ecb465d9f
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Dec 9 21:02:37 2010 +0200
 
-Bugfixes:
-  * Add missing funnyordie.lua to DIST_lua (share/Makefile.am)
-  * Unexpected Youtube video titles, if ampersands used
+    Fix lua_files_only to include *.lua files only
+    
+    The function scanned file names containing ".lua". Make the function
+    include only files that end in that extension.
 
+ lib/lua_wrap.c |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
 
-Version 0.2.2
-August 12, 2010
+commit 13b3f806c81f8461ff78cb45df8282a218157623
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Dec 9 20:56:57 2010 +0200
 
-Changes:
-  * add --license option
-  * QUVI_BASEDIR is now exclusive
-  * Document QUVI_BASEDIR, QUVI_HOME in quvi(1) manual page
-  * Add --enable-tests (configure, disabled by default, related to #10)
-  * Add KNOWN_ISSUES file
+    HowtoContributeCode: Document QUVI_SHOW_SCRIPT
+    
+    - Add QUVI_SHOW_SCRIPT tip
+    - Add --verbose-libcurl tip
 
+ doc/HowtoContributeCode |   18 ++++++++++++++----
+ 1 files changed, 14 insertions(+), 4 deletions(-)
 
-Version 0.2.1
-July 25, 2010
+commit 10acea08998440498d458b7d057953c542cc0155
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Dec 9 20:55:49 2010 +0200
 
-Changes:
-  * Bump autoconf prereq. to 2.66
-  * Add funnyordie support, thanks to mkolve for the script
-  * [youtube] do not revert to fetch page if error==150
-  * Add QUVI_NOLUAUTIL error code
-  * Additional Lua scripts (content_type.lua, charset.lua)
-  * _istype (lua_wrap.c) print script path in errors
-  * Mark cctv support as broken
+    Add QUVI_SHOW_SCRIPT
 
-Bugfixes:
-  * [youtube] http/404, fix by Daniel Schaal
-  * _istype (lua_wrap.c) stringifying
-  * Break.com support, ported from clive, fix by Werner Elsler (clive #57)
-  * Memory leak in find_host_script (6d3016e)
+ lib/lua_wrap.c |    6 +++++-
+ 1 files changed, 5 insertions(+), 1 deletions(-)
 
+commit 12f23b12172c76ca645e7c376ebd70f99641b84c
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Dec 9 20:16:28 2010 +0200
 
-Version 0.2.0
-May 6, 2010
+    YouTube: Fix server response code 404 [#5]
+    
+    - Fix libquvi: server response code 404 (conncode=0)
+    - Use get_video_info only; remove old fallback parser
+    - Note: webm_480p, webm_720p, tgp_144p not found in config URLs
+    - http://sourceforge.net/apps/trac/quvi/ticket/5
 
-Changes:
-  * [Youtube] work around age verification (issue #4)
-  * Introduce Lua scripts to the project
-    - Used to parse the video links
-    - New dependency, (lib)lua 5.1+, covered in INSTALL file
-    - See NEWS file for complete list of the changes
-  * API changes
-    - Deprecated quvi_next_host, use quvi_next_supported_website instead
-    - Added quvi_free
-    - See NEWS file for complete list of the changes
-  * [quvi] --format no longer accepts only hard-coded values
-  * AM_SILENT_RULES([yes])
-  * New configure options --with-doc and --enable-examples
+ share/lua/website/youtube.lua |  124 ++++++++++++++++++-----------------------
+ 1 files changed, 55 insertions(+), 69 deletions(-)
 
-Notes:
-  * Developers, downstream maintainers, see NEWS file
+commit 05bb6ebc4acbb443da79e39a0ca6b2ad81a777b7
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Wed Dec 8 00:10:10 2010 +0200
 
+    Add cbsnews support
 
-Version 0.1.4
--------------
-April 3, 2010
+ NEWS                          |    5 ++
+ share/Makefile.am             |    1 +
+ share/Makefile.in             |   42 +++++++++++----------
+ share/lua/website/cbsnews.lua |   82 +++++++++++++++++++++++++++++++++++++++++
+ src/quvi.c                    |    1 +
+ tests/Makefile.am             |    1 +
+ tests/Makefile.in             |   22 +++++-----
+ tests/support-cbsnews.pl      |   11 +++++
+ 8 files changed, 134 insertions(+), 31 deletions(-)
 
-Changes:
-  * Add fmt37 (Youtube) support
+commit c3efc03dc2ed0f77d697018ad2bc71a5f31fb0dd
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Tue Dec 7 18:44:42 2010 +0200
 
-Bugfixes:
-  * Memory leak when -f was used with youtube
-  * Youtube, update patterns to reflect website changes
-    # symptom, no match: (?i)"video_id": "(.*?)"
+    Fix a typo in HowtoContributeCode example path
 
+ doc/HowtoContributeCode |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-Version 0.1.3
--------------
-March 25, 2010
+commit c75c77cb9d182905ba71fa9830eee027c6e28bf6
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Tue Dec 7 18:29:43 2010 +0200
 
-Changes:
-  * Add buzzhumor.com support, port from clive
-  * Include stdlib.h in quvi.h
+    Bump version to 0.2.10
 
-Bugfixes:
-  * dailymotion.com
-    # Change format IDs to reflect website changes (yet again):
-      * h264-hd -> hd
-      * h264-hq -> hq
-      * removed h264 and spark-mini (no longer even listed)
-      * quvi(1) -f option arg support reflects these changes
-    # Parse title from elsewhere
-      * Title was previously parsed from the title HTML tag
-      * Which usually contained more than we cared for
-    # Refuse to work with partner videos (return QUVI_NOSUPPORT)
-  * break.com support, ported from clive, original fix by Werner Elsler
+ configure     |   20 ++++++++++----------
+ m4/version.m4 |    2 +-
+ 2 files changed, 11 insertions(+), 11 deletions(-)
 
+commit 10a1eb349288c8f7afe0ccfbe8f1a1a07c1f403a
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Tue Dec 7 17:53:00 2010 +0200
 
-(March 12, 2010)
-Version 0.1.2
--------------
-(March 12, 2010)
+    Bump interface revision for 0.2.9
 
-Changes:
-  * Bump interface
-  * Add QUVIPROP_VIDEOFORMAT (returns the value set with QUVIOPT_FORMAT)
-  * Add quvi_callback_write support
-  * quvi_callback_status, abort if callback returns != 0
-  * Tests now include "best" format id (where applicable)
-  * Add --enable-broken (configure), see also INSTALL
-  * Mark as broken: spyfilms.com, ehrensenf.de, see TODO
-  * Add docs/howto/HowtoGetDevelopmentCode
+ configure     |    2 +-
+ m4/version.m4 |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-Bugfixes:
-  * Liveleak video id parsing
-  * Youjizz support, thanks to anon2u for the fix
-  * quvi: statusfunc: flush stderr
+commit 7e08ded09f48d552322af6c3df8d4f413dc9dd57
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Tue Dec 7 17:10:20 2010 +0200
 
+    Set 0.2.9 release date
 
-Version 0.1.1
--------------
-(February 13, 2010)
+ NEWS |   10 ++++++----
+ 1 files changed, 6 insertions(+), 4 deletions(-)
 
-Changes:
+commit ed6c1e72f7deab1d86812e222187e21c6685ed98
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Tue Dec 7 16:11:51 2010 +0200
 
-  * Add:
-    # NEWS file
-    # quvi.1 (+pod)
+    Remove myubo support: dead site
 
-  * quvi:
-    # Add ~/.quvirc support
-    # Implement --quiet
-    # Spew messages to stderr
+ share/Makefile.am           |    1 -
+ share/Makefile.in           |   22 +++++++++-----------
+ share/lua/website/myubo.lua |   45 -------------------------------------------
+ src/quvi.c                  |    1 -
+ tests/Makefile.am           |    1 -
+ tests/Makefile.in           |   12 +++++-----
+ tests/support-myubo.pl      |   11 ----------
+ 7 files changed, 16 insertions(+), 77 deletions(-)
 
-  * w32/make-w32.sh:
-    # Add manual (html)
-    # Use install-strip
+commit d3351c6b41f4940c89e695479f3f133840f33b7a
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Tue Dec 7 15:31:39 2010 +0200
 
-  * configure:
-    # Add "make cmdline"
-    # Add pod2man, pod2html and Pod::Checker checks
-    # Add --without-man
+    Set new home WWW
 
-  * tests/
-    # support-cctv.pl: skip unless utf8 locale code is set
-    # pod-check.pl: add
+ INSTALL                             |    2 +-
+ README                              |   65 +---------------------------------
+ configure                           |   28 +++++++-------
+ configure.ac                        |    4 +-
+ doc/HowtoContributeCode             |    2 +-
+ libquvi.pc.in                       |    2 +-
+ man1/quvi.1                         |   20 ++--------
+ man1/quvi.1.pod                     |   64 +++-------------------------------
+ share/lua/util/charset.lua          |    2 +-
+ share/lua/util/content_type.lua     |    2 +-
+ share/lua/util/trim.lua             |    2 +-
+ share/lua/website/academicearth.lua |    2 +-
+ share/lua/website/bloomberg.lua     |    2 +-
+ share/lua/website/break.lua         |    2 +-
+ share/lua/website/buzzhumor.lua     |    2 +-
+ share/lua/website/cctv.lua          |    2 +-
+ share/lua/website/charlierose.lua   |    2 +-
+ share/lua/website/clipfish.lua      |    2 +-
+ share/lua/website/collegehumor.lua  |    2 +-
+ share/lua/website/dailymotion.lua   |    2 +-
+ share/lua/website/funnyhub.lua      |    2 +-
+ share/lua/website/funnyordie.lua    |    2 +-
+ share/lua/website/gaskrank.lua      |    2 +-
+ share/lua/website/golem.lua         |    2 +-
+ share/lua/website/google.lua        |    2 +-
+ share/lua/website/liveleak.lua      |    2 +-
+ share/lua/website/myubo.lua         |    2 +-
+ share/lua/website/sapo.lua          |    2 +-
+ share/lua/website/sevenload.lua     |    2 +-
+ share/lua/website/spiegel.lua       |    2 +-
+ share/lua/website/theonion.lua      |    2 +-
+ share/lua/website/tube8.lua         |    2 +-
+ share/lua/website/vimeo.lua         |    2 +-
+ share/lua/website/xvideos.lua       |    2 +-
+ share/lua/website/youjizz.lua       |    2 +-
+ share/lua/website/youtube.lua       |    2 +-
+ 36 files changed, 59 insertions(+), 184 deletions(-)
 
-  * Youtube: list the fmtNN IDs
-    # (lib)quvi previously reported the "common aliases" only (e.g. "hd")
+commit 3ebcfc32c7e896878e4ed893f78f88a9236bab6a
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sat Dec 4 14:23:07 2010 +0200
 
-Bugfixes:
+    Remove dangling strtok_r.c
 
-  * Dailymotion: reflect the format ID changes:
-    # vp6-hd -> h264-hd
-    # vp6-hq -> h264-hq
-    # vp6    -> h264
+ NEWS            |    1 +
+ config.h.in     |    6 ----
+ configure       |   44 +---------------------------------
+ configure.ac    |   11 +-------
+ lib/Makefile.am |    4 ---
+ lib/Makefile.in |   25 +++++--------------
+ lib/platform.h  |    4 ---
+ lib/strtok_r.c  |   70 -------------------------------------------------------
+ 8 files changed, 11 insertions(+), 154 deletions(-)
 
-  * tests/ (expected file length)
-    # support-vimeo.pl
-    # support-dailymotion.pl
-    # support-youtube.pl
+commit e0f27df25d1e94ab3553de9a2b640735a0d696b6
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sat Dec 4 14:22:40 2010 +0200
 
-  * Segfault: _getprop (quvi.c:352)
-    # Add missing va_end()s
-    # Thanks to nix@esperi.org.uk for getting knee-deep and cooking up the fix
-    # Reported on 64bit systems
-    # Closes issue #1
+    make-w32.sh: generate ChangeLog
 
-  * Segfault: regexp_capture (util.c:114)
-    # Terminate stdarg lists with a proper null pointer (0 -> (void*)0)
-    # Thanks to nix@esperi.org.uk for the fix
-    # Reported on 64bit systems
-    # Closes issue #2
+ w32/make-w32.sh |    7 ++++---
+ 1 files changed, 4 insertions(+), 3 deletions(-)
 
-  * Vimeo support, symptoms:
-    # length: 20
-    # suffix: html; charset=UTF-8
-    # content-type: text/html; charset=UTF-8
+commit 1dfbdf9c5f019b895e9fe9c3727ff89743f84e21
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sat Dec 4 13:33:23 2010 +0200
 
+    Fix: quvi URL --exec does nothing (b#3125018)
 
-Version 0.1.0
--------------
+ NEWS       |    1 +
+ src/quvi.c |    8 ++++++++
+ 2 files changed, 9 insertions(+), 0 deletions(-)
 
-  * Initial release
+commit fa173b81ce35dc0d278ee45e5abaf2402464e9b6
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sat Dec 4 13:22:30 2010 +0200
 
+    Remove ChangeLog from repo.
+    
+    - Generate ChangeLog from git log (b015df8)
+    - List significant changes in NEWS
 
+ ChangeLog |  275 -------------------------------------------------------------
+ 1 files changed, 0 insertions(+), 275 deletions(-)
+
+commit e9609b5d3ebc583b382fe452313fbf3e872fb5ac
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Fri Dec 3 20:17:52 2010 +0200
+
+    HowtoContributeCode: add gitconfig note
+
+ doc/HowtoContributeCode |    6 +++++-
+ 1 files changed, 5 insertions(+), 1 deletions(-)
+
+commit cdb9d634367e5f44686c960f6bd9eb8992c51257
+Merge: b015df8 8a117b8
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Fri Dec 3 01:57:10 2010 +0200
+
+    Merge branch 'doc_rewrite'
+
+commit b015df8c62625955000657751525d143095e9e4c
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Fri Dec 3 01:47:53 2010 +0200
+
+    Generate ChangeLog from gitlog
+    
+    Copied from totem. Respect.
+
+ ChangeLog.pre-gitlog |  275 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ Makefile.am          |   12 ++-
+ Makefile.in          |   12 ++-
+ 3 files changed, 297 insertions(+), 2 deletions(-)
+
+commit 452e4b3b1adf583853dfd1fe21f001cbc66038a7
+Author: legatvs <legatvs.git@gmail.com>
+Date:   Fri Dec 3 01:25:33 2010 +0200
+
+    NEWS: Move 0.2.9 details from ChangeLog
+
+ ChangeLog |   20 --------------------
+ NEWS      |   21 ++++++++++++++++-----
+ 2 files changed, 16 insertions(+), 25 deletions(-)
+
+commit 8a117b87a3722a3c70790c93cf646120cf27aa07
+Author: legatvs <legatvs.git@gmail.com>
+Date:   Fri Dec 3 00:30:45 2010 +0200
+
+    HowtoContributeCode: rewrite
+
+ doc/HowtoContributeCode |  292 ++++++++++++++++++++++++++++++++++-------------
+ 1 files changed, 210 insertions(+), 82 deletions(-)
+
+commit 9fd54c5b0d9dc181e7b22ad8d2bedee94147e5bc
+Author: legatvs <legatvs.git@gmail.com>
+Date:   Thu Dec 2 22:48:55 2010 +0200
+
+    HowtoHelp: cleanup
+
+ doc/HowtoHelp |   29 ++++++-----------------------
+ 1 files changed, 6 insertions(+), 23 deletions(-)
+
+commit a893b16d6409bc2ca4c7c4493ebf0be18998e1be
+Author: legatvs <legatvs.git@gmail.com>
+Date:   Thu Dec 2 21:47:21 2010 +0200
+
+    CodingStyle: add git-hooks
+
+ doc/CodingStyle |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
+
+commit 4eb360063c021e6b8ef299b324b6678dc145f449
+Author: legatvs <legatvs.git@gmail.com>
+Date:   Tue Nov 30 13:09:11 2010 +0200
+
+    tests/support-google.pl
+    
+    - Change google test URL
+
+ ChangeLog               |    1 +
+ src/quvi.c              |    2 +-
+ tests/Makefile.am       |    1 +
+ tests/Makefile.in       |   14 +++++++-------
+ tests/support-google.pl |   11 +++++++++++
+ 5 files changed, 21 insertions(+), 8 deletions(-)
+
+commit aaaab0f0ce652b33b1ba3aa90386c7766bf3fe7d
+Author: legatvs <legatvs.git@gmail.com>
+Date:   Mon Nov 29 19:01:48 2010 +0200
+
+    ChangeLog: tube8.lua fix: add credit
+
+ ChangeLog |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 7c51144b6f03a35fdbc8aa0e4030de64b93b9b26
+Author: legatvs <legatvs.git@gmail.com>
+Date:   Mon Nov 29 18:59:17 2010 +0200
+
+    tube8.lua: fix fetch (p#3121928)
+
+ ChangeLog                   |    1 +
+ share/lua/website/tube8.lua |    2 +-
+ 2 files changed, 2 insertions(+), 1 deletions(-)
+
+commit 7932e21ab9a9bdc87dd39f02e67ea1be8deaf1a8
+Author: legatvs <legatvs.git@gmail.com>
+Date:   Fri Nov 26 23:03:46 2010 +0200
+
+    tweak examples in --help output
+
+ src/cmdline.c   |    2 +-
+ src/cmdline.ggo |    9 +++++----
+ 2 files changed, 6 insertions(+), 5 deletions(-)
+
+commit eed828948b664fc06b5bd754f9c7f7eddc8ef710
+Author: legatvs <legatvs.git@gmail.com>
+Date:   Fri Nov 26 22:54:42 2010 +0200
+
+    nosupport-eval.pl: add extended --support tests
+
+ tests/nosupport-eval.pl |    9 +++++++--
+ 1 files changed, 7 insertions(+), 2 deletions(-)
+
+commit 091ca3d5471299a42cee485aa5921abf304c9398
+Author: legatvs <legatvs.git@gmail.com>
+Date:   Fri Nov 26 22:52:15 2010 +0200
+
+    prepend newline only if rc != QUVI_NOSUPPORT
+
+ src/quvi.c |    4 +++-
+ 1 files changed, 3 insertions(+), 1 deletions(-)
+
+commit ed933a53c53e2c70f21f61d06a3d9a26664024ad
+Author: legatvs <legatvs.git@gmail.com>
+Date:   Fri Nov 26 22:43:00 2010 +0200
+
+    quvi: set QUVIOPT_NOSHORTENED=1 for built-in tests
+
+ src/quvi.c |    6 ++++++
+ 1 files changed, 6 insertions(+), 0 deletions(-)
+
+commit 7eb800efacbd08cb4ef32e1ae2703f4d11afadcb
+Author: legatvs <legatvs.git@gmail.com>
+Date:   Fri Nov 26 22:41:24 2010 +0200
+
+    Fix gasgrank.pl
+
+ tests/support-gaskrank.pl |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 1d26af4bb67d5d509c46e5eae704ac251d659da0
+Author: legatvs <legatvs.git@gmail.com>
+Date:   Fri Nov 26 22:07:03 2010 +0200
+
+    ChangeLog: add "extend --support"
+
+ ChangeLog |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
+
+commit 576ae74e1c7fcae4a4674d363342f7be10d7dfae
+Author: legatvs <legatvs.git@gmail.com>
+Date:   Fri Nov 26 21:59:12 2010 +0200
+
+    Extend --support to use quvi_supported
+
+ man1/quvi.1     |   13 ++++++++++-
+ man1/quvi.1.pod |   13 +++++++++++-
+ src/cmdline.ggo |    2 +
+ src/quvi.c      |   56 +++++++++++++++++++++++++++++++++++++++---------------
+ 4 files changed, 65 insertions(+), 19 deletions(-)
+
+commit 079de7f665301e197213b1e543a695fded96672f
+Author: legatvs <legatvs.git@gmail.com>
+Date:   Fri Nov 26 21:57:18 2010 +0200
+
+    Dox: quvi_supported: remove close handle note
+
+ include/quvi/quvi.h.in |    1 -
+ 1 files changed, 0 insertions(+), 1 deletions(-)
+
+commit 5679a95adebe2df8651a3a2206ae07488a41d32c
+Author: legatvs <legatvs.git@gmail.com>
+Date:   Fri Nov 26 21:35:27 2010 +0200
+
+    find_host_script_node: Rewrite to use param rc
+    
+    Rewrite find_host_script_node to use param rc. Make minor style/syntax
+    tweaks to find_host_script* functions.
+
+ lib/lua_wrap.c |   35 ++++++++++++++---------------------
+ 1 files changed, 14 insertions(+), 21 deletions(-)
+
+commit e94472042d4312f57e7201687443ad2d71780c4f
+Author: legatvs <legatvs.git@gmail.com>
+Date:   Fri Nov 26 21:33:17 2010 +0200
+
+    Fix: quvi_supported: free with quvi_parse_close
+    
+    We need to release everything in _quvi_video_t. Fix a memleak.
+
+ lib/quvi.c |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
+
+commit 679a23a90529d7045c18f84c8924d77a89bb91b3
+Author: legatvs <legatvs.git@gmail.com>
+Date:   Fri Nov 26 20:43:37 2010 +0200
+
+    Dox: quvi_supported: add notes, change group
+    
+    - Move to (parse) "Utility functions" doxy group
+    - Add network, shortened URL notes
+
+ include/quvi/quvi.h.in |   33 +++++++++++++++++++++------------
+ 1 files changed, 21 insertions(+), 12 deletions(-)
+
+commit bf9e7428e51c6980d87d2b0fb5aef25673cc305a
+Author: legatvs <legatvs.git@gmail.com>
+Date:   Fri Nov 26 20:01:55 2010 +0200
+
+    Fix: QUVI_NOSUPPORT: set errstr dynamically
+    
+    Error string for QUVI_NOSUPPORT is set dynamically as indicated in the
+    quvi.h header. This type of errors are dynamic because we add the URL to
+    the human readable error strings.
+    
+    * Make minor return statement coding style changes
+    
+    * Fix quvi_strerror with quvi_supported
+
+ lib/lua_wrap.c |   13 ++++++-------
+ 1 files changed, 6 insertions(+), 7 deletions(-)
+
+commit a3af0995cc20ae59f108786c34732be2865e8cd1
+Author: legatvs <legatvs.git@gmail.com>
+Date:   Fri Nov 26 19:09:57 2010 +0200
+
+    cmdline.ggo: revert to original style
+
+ src/cmdline.ggo |   87 ++++++++++++++++++++++++++++++------------------------
+ 1 files changed, 48 insertions(+), 39 deletions(-)
+
+commit 0c262fbf725750a61f788c09d831d701c43d4870
+Author: Bastien Nocera <hadess@hadess.net>
+Date:   Fri Nov 26 16:47:13 2010 +0000
+
+    Never do network access in quvi_supported()
+    
+    Which could break YouTube and Dailymotion's URL shortener services.
+    So add claim we handle those short URLs in the scripts.
+
+ lib/quvi.c                        |    5 -----
+ share/lua/website/dailymotion.lua |   20 +++++++++++++++++++-
+ share/lua/website/youtube.lua     |   21 ++++++++++++++++++++-
+ 3 files changed, 39 insertions(+), 7 deletions(-)
+
+commit 4b2bbd1eb90d7831d5cb2f197ba82dbf5eb5f207
+Author: legatvs <legatvs.git@gmail.com>
+Date:   Fri Nov 26 01:02:49 2010 +0200
+
+    ChangeLog: document Bastien's patches
+
+ ChangeLog |    7 +++++--
+ 1 files changed, 5 insertions(+), 2 deletions(-)
+
+commit e0fb07e8c15c8a5e2a2dc96acc3448b34baf33e8
+Author: legatvs <legatvs.git@gmail.com>
+Date:   Thu Nov 25 17:36:08 2010 +0200
+
+    fix: memory leak: starttime
+
+ lib/quvi.c |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+commit 90bf34493d2b9700c2c1a923d23fc672e0d9e148
+Author: Bastien Nocera <hadess@hadess.net>
+Date:   Thu Nov 25 14:54:21 2010 +0000
+
+    Add starttime for YouTube videos
+
+ share/lua/website/youtube.lua |    3 +++
+ 1 files changed, 3 insertions(+), 0 deletions(-)
+
+commit ca1d8d887cc4d09ee701df03a19c35d4d20ce8dd
+Author: Bastien Nocera <hadess@hadess.net>
+Date:   Thu Nov 25 14:10:01 2010 +0000
+
+    Add QUVIPROP_STARTTIME property
+    
+    Exported through video.starttime for LUA.
+
+ include/quvi/quvi.h.in |    3 ++-
+ lib/internal.h         |    1 +
+ lib/lua_wrap.c         |    2 ++
+ lib/quvi.c             |    2 ++
+ 4 files changed, 7 insertions(+), 1 deletions(-)
+
+commit de6a5fb04457e7bbfd2e1fa6632fdbcef720d3b2
+Author: legatvs <legatvs.git@gmail.com>
+Date:   Thu Nov 25 17:11:49 2010 +0200
+
+    dailymotion: accept swf urls
+
+ share/lua/website/dailymotion.lua |   13 +++++++++++--
+ 1 files changed, 11 insertions(+), 2 deletions(-)
+
+commit 9bcd12dd8ca466a388349e86f62724c54c7e2544
+Author: legatvs <legatvs.git@gmail.com>
+Date:   Thu Nov 25 15:30:55 2010 +0200
+
+    ChangeLog: add quvi_supported
+
+ ChangeLog |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
+
+commit 0b3365bbe7b874ef3fed6ad832965b10fcff736a
+Author: legatvs <legatvs.git@gmail.com>
+Date:   Thu Nov 25 14:02:58 2010 +0200
+
+    add pre-commit hook example
+
+ examples/git-hooks/pre-commit |   19 +++++++++++++++++++
+ 1 files changed, 19 insertions(+), 0 deletions(-)
+
+commit a9a9e81effb2252abcc7e952df909ff4fb47b5fc
+Merge: 7f53a97 f0f0cc5
+Author: legatvs <legatvs.git@gmail.com>
+Date:   Thu Nov 25 14:02:28 2010 +0200
+
+    Merge branch 'quvi_supported'
+
+commit f0f0cc5a29d6b954312c486b2f28dbca868bc01c
+Author: legatvs <legatvs.git@gmail.com>
+Date:   Thu Nov 25 13:27:55 2010 +0200
+
+    apply coding style fixes made by indent
+
+ lib/lua_wrap.c |    5 ++---
+ lib/quvi.c     |    2 --
+ 2 files changed, 2 insertions(+), 5 deletions(-)
+
+commit 0fa6dbb568eafd728d91cc0b269c52c18f161a4f
+Author: Bastien Nocera <hadess@hadess.net>
+Date:   Wed Nov 24 17:47:42 2010 +0000
+
+    Add quvi_supported() public function
+
+ include/quvi/quvi.h.in |   13 ++++++++++++-
+ lib/lua_wrap.c         |   47 ++++++++++++++++++++++++++++++++++++++++++-----
+ lib/lua_wrap.h         |    2 ++
+ lib/quvi.c             |   33 ++++++++++++++++++++++++++++++++-
+ 4 files changed, 88 insertions(+), 7 deletions(-)
+
+commit 7f53a97fa9c32e04ba6f65d6d84ce12063cecc70
+Merge: e67e31a 5ca17df
+Author: legatvs <legatvs.git@gmail.com>
+Date:   Tue Nov 23 11:34:45 2010 +0200
+
+    Merge branch 'no_pcre'
+
+commit 5ca17df456b6d06c41f8689ab0f207e86e4f0b93
+Author: legatvs <legatvs.git@gmail.com>
+Date:   Tue Nov 23 11:34:17 2010 +0200
+
+    remove pcre dependency
+
+ ChangeLog                        |    1 +
+ INSTALL                          |    6 +--
+ Makefile.in                      |    2 -
+ NEWS                             |    8 +++
+ configure                        |   97 -----------------------------------
+ configure.ac                     |    1 -
+ doc/Makefile.in                  |    2 -
+ examples/Makefile.in             |    2 -
+ include/Makefile.in              |    2 -
+ include/quvi/Makefile.in         |    2 -
+ include/quvi/quvi.h.in           |    2 +-
+ lib/Makefile.am                  |    2 -
+ lib/Makefile.in                  |    4 --
+ lib/quvi.c                       |    1 -
+ lib/util.c                       |  103 --------------------------------------
+ man1/Makefile.in                 |    2 -
+ man1/quvi.1                      |    6 +-
+ man1/quvi.1.pod                  |    4 +-
+ share/Makefile.in                |    2 -
+ src/Makefile.am                  |    4 +-
+ src/Makefile.in                  |    8 +--
+ src/quvi.c                       |   51 +++++--------------
+ tests/Makefile.in                |    2 -
+ w32/ChangeLog.w32.txt            |    3 +
+ w32/licenses/libpcre-LICENSE.TXT |   68 -------------------------
+ w32/make-w32.sh                  |    4 --
+ 26 files changed, 37 insertions(+), 352 deletions(-)
+
+commit e67e31a7eb122ffc073c5a47a013061cb9541570
+Author: legatvs <legatvs.git@gmail.com>
+Date:   Fri Nov 19 20:06:30 2010 +0200
+
+    ChangeLog: add coding style changes
+
+ ChangeLog |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+commit 20d47b5575c840cae74ea3d4f2b8de57effe3262
+Author: legatvs <legatvs.git@gmail.com>
+Date:   Fri Nov 19 20:02:39 2010 +0200
+
+    add doc/CodingStyle
+
+ doc/CodingStyle |   11 +++++++++++
+ doc/Makefile.am |    3 ++-
+ doc/Makefile.in |    3 ++-
+ 3 files changed, 15 insertions(+), 2 deletions(-)
+
+commit d0db9e2a30d8721dc5c5fdbcadeb1a30acdde5f6
+Author: legatvs <legatvs.git@gmail.com>
+Date:   Fri Nov 19 19:44:25 2010 +0200
+
+    apply new coding style
+
+ examples/simple.c |   46 +-
+ lib/asprintf.c    |   17 +-
+ lib/curl_wrap.c   |  441 ++++++++---------
+ lib/curl_wrap.h   |   12 +-
+ lib/internal.h    |   58 +--
+ lib/llst.c        |   87 ++--
+ lib/llst.h        |   16 +-
+ lib/lua_wrap.c    |  893 ++++++++++++++++-----------------
+ lib/lua_wrap.h    |   28 +-
+ lib/platform.h    |    2 -
+ lib/quvi.c        |  711 +++++++++++++-------------
+ lib/strepl.c      |   65 ++--
+ lib/strtok_r.c    |   66 ++--
+ lib/strupr.c      |   18 +-
+ lib/util.c        |  447 ++++++++---------
+ lib/util.h        |   53 +--
+ lib/vasprintf.c   |   25 +-
+ src/Makefile.am   |    9 +-
+ src/Makefile.in   |   32 +-
+ src/cmdline.c     | 1470 +++++++++++++++++++++++++----------------------------
+ src/cmdline.ggo   |   91 ++--
+ src/cmdline.h     |  254 +++++-----
+ src/license.c     |   34 ++
+ src/quvi.c        | 1098 +++++++++++++++++++++-------------------
+ 24 files changed, 2946 insertions(+), 3027 deletions(-)
+
+commit cecd2c2d52f9d46ff2f87d38bfe96dec70c7e53c
+Author: legatvs <legatvs.git@gmail.com>
+Date:   Fri Nov 19 16:39:27 2010 +0200
+
+    evisor.lua -> gaskrank.lua
+
+ ChangeLog                      |    1 +
+ share/Makefile.am              |    2 +-
+ share/Makefile.in              |    4 +-
+ share/lua/website/evisor.lua   |   45 ----------------------------------------
+ share/lua/website/gaskrank.lua |   45 ++++++++++++++++++++++++++++++++++++++++
+ tests/Makefile.am              |    2 +-
+ tests/Makefile.in              |    2 +-
+ tests/support-evisor.pl        |   11 ---------
+ tests/support-gaskrank.pl      |   11 +++++++++
+ 9 files changed, 62 insertions(+), 61 deletions(-)
+
+commit 6a9c0d37f7b4b46334fa032c465240abeb079812
+Author: legatvs <legatvs.git@gmail.com>
+Date:   Tue Nov 16 20:32:42 2010 +0200
+
+    ChangeLog: add videos.sapo.pt support
+
+ ChangeLog |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
+
+commit f091b9d88cd601c821904d08dfcc9d03e6e1e387
+Author: legatvs <legatvs.git@gmail.com>
+Date:   Tue Nov 16 20:32:22 2010 +0200
+
+    add videos.sapo.pt support
+
+ share/Makefile.am          |    1 +
+ share/Makefile.in          |   18 +++++++------
+ share/lua/website/sapo.lua |   58 ++++++++++++++++++++++++++++++++++++++++++++
+ src/quvi.c                 |    1 +
+ tests/Makefile.am          |    1 +
+ tests/Makefile.in          |   11 ++++----
+ tests/support-sapo.pl      |   11 ++++++++
+ 7 files changed, 88 insertions(+), 13 deletions(-)
+
+commit 129d64aaf0da376e7f8801d0b85f45038acdaa23
+Author: legatvs <legatvs.git@gmail.com>
+Date:   Sun Nov 14 11:04:32 2010 +0200
+
+    ChangeLog: add data != NULL fix
+
+ ChangeLog |    5 +++++
+ 1 files changed, 5 insertions(+), 0 deletions(-)
+
+commit 53e79ff9bd1f4550a587f7e262a0dc6085ddb545
+Author: legatvs <legatvs.git@gmail.com>
+Date:   Sun Nov 14 11:03:50 2010 +0200
+
+    l_quvi_fetch: check data != NULL
+
+ lib/lua_wrap.c |   25 +++++++++++++++++++++----
+ 1 files changed, 21 insertions(+), 4 deletions(-)

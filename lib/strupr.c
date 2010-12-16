@@ -19,14 +19,12 @@
 
 #include "platform.h"
 
-char *
-strupr(char *s) {
-    char *r = s;
-    while (*s) {
-        *s = toupper(*s);
-        ++s;
-    }
-    return (r);
+char *strupr(char *s)
+{
+  char *r = s;
+  while (*s) {
+    *s = toupper(*s);
+    ++s;
+  }
+  return (r);
 }
-
-

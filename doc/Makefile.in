@@ -203,8 +203,6 @@ libdir = @libdir@
 libexecdir = @libexecdir@
 liblua_CFLAGS = @liblua_CFLAGS@
 liblua_LIBS = @liblua_LIBS@
-libpcre_CFLAGS = @libpcre_CFLAGS@
-libpcre_LIBS = @libpcre_LIBS@
 localedir = @localedir@
 localstatedir = @localstatedir@
 mandir = @mandir@
@@ -230,7 +228,8 @@ top_srcdir = @top_srcdir@
 @WITH_DOC_TRUE@HowtoContributeCode \
 @WITH_DOC_TRUE@HowtoGetDevelopmentCode \
 @WITH_DOC_TRUE@HowtoHelp \
-@WITH_DOC_TRUE@HowtoSubmitPatches
+@WITH_DOC_TRUE@HowtoSubmitPatches \
+@WITH_DOC_TRUE@CodingStyle
 
 EXTRA_DIST = $(doc_DATA)
 all: all-am

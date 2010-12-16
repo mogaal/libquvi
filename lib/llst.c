@@ -24,58 +24,55 @@
 #include "llst.h"
 #include "quvi/quvi.h"
 
-int
-llst_add (llst_node_t *node, void *data) {
-    struct _llst_node_s *n = 0;
+int llst_add(llst_node_t * node, void *data)
+{
+  struct _llst_node_s *n = 0;
 
-    assert(node);
+  assert(node);
 
-    n = calloc(1, sizeof(*n));
-    if (!n)
-        return (QUVI_MEM);
+  n = calloc(1, sizeof(*n));
+  if (!n)
+    return (QUVI_MEM);
 
-    if (*node) { /* insert after the last. */
-        llst_node_t curr = *node;
-        while (curr->next)
-            curr = curr->next;
-        curr->next = n;
-        /* without the above, we would add the node to the beginning,
-        see the else-block below. */
-    }
-    else { /* add first node. */
-        n->next = *node;
-        *node = n;
-    }
+  if (*node) {                  /* insert after the last. */
+    llst_node_t curr = *node;
+    while (curr->next)
+      curr = curr->next;
+    curr->next = n;
+    /* without the above, we would add the node to the beginning,
+       see the else-block below. */
+  } else {                      /* add first node. */
+    n->next = *node;
+    *node = n;
+  }
 
-    n->data = data;
+  n->data = data;
 
-    return (QUVI_OK);
+  return (QUVI_OK);
 }
 
-int
-llst_size (llst_node_t head) {
-    llst_node_t curr = head;
-    int n = 0;
-    while (curr) {
-        curr = curr->next;
-        ++n;
-    }
-    return (n);
+int llst_size(llst_node_t head)
+{
+  llst_node_t curr = head;
+  int n = 0;
+  while (curr) {
+    curr = curr->next;
+    ++n;
+  }
+  return (n);
 }
 
-void
-llst_free (llst_node_t *head) {
-    llst_node_t curr = *head;
-    assert(head);
-    while (curr) {
-        llst_node_t next = curr->next;
-        free(curr->data);
-        curr->data = 0;
-        free(curr);
-        curr = 0;
-        curr = next;
-    }
-    *head = 0;
+void llst_free(llst_node_t * head)
+{
+  llst_node_t curr = *head;
+  assert(head);
+  while (curr) {
+    llst_node_t next = curr->next;
+    free(curr->data);
+    curr->data = 0;
+    free(curr);
+    curr = 0;
+    curr = next;
+  }
+  *head = 0;
 }
-
-

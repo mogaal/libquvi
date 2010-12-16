@@ -7,9 +7,9 @@ m4_include([m4/version.m4])
 
 AC_INIT(
     [quvi], [_QUVI_VERSION],
-    [http://sourceforge.net/projects/quvi/support/],
+    [http://sourceforge.net/apps/trac/quvi],
     [],
-    [http://quvi.googlecode.com/])
+    [http://quvi.sourceforge.net/])
 
 # Interface:
 QUVI_CURRENT=_QUVI_CURRENT
@@ -107,7 +107,6 @@ fi
 # Checks for libraries.
 AM_ICONV
 PKG_CHECK_MODULES(libcurl, libcurl >= 7.18.0)
-PKG_CHECK_MODULES(libpcre, libpcre >= 7.8)
 PKG_CHECK_MODULES(liblua, lua >= 5.1, [], [
     PKG_CHECK_MODULES(liblua, lua51 >= 5.1, [], [
         PKG_CHECK_MODULES(liblua, lua5.1 >= 5.1, [], [
@@ -133,7 +132,8 @@ if [ test x"$host_w32" = "xno" ]; then
     AC_FUNC_MALLOC
     AC_FUNC_REALLOC
 fi
-AC_CHECK_FUNCS([memset strdup strstr strtol strerror strcspn getcwd])
+AC_CHECK_FUNCS(
+[memset strdup strstr strtol strerror strcspn getcwd strchr strrchr strspn])
 AC_FUNC_STRTOD
 
 have_asprintf=no
@@ -145,14 +145,6 @@ AM_CONDITIONAL([NO_ASPRINTF], [test x"$have_asprintf" != "xyes"])
 have_strupr=no
 AC_CHECK_FUNCS([strupr], [have_strupr=yes])
 AM_CONDITIONAL([NO_STRUPR], [test x"$have_strupr" != "xyes"])
-
-have_strtok_r=no
-AC_CHECK_FUNCS([strtok_r], [have_strtok_r=yes])
-AM_CONDITIONAL([NO_STRTOK_R], [test x"$have_strtok_r" != "xyes"])
-
-if [ test x"$have_strtok_r" = "xno" ]; then
-    AC_CHECK_FUNCS([strchr strpbrk strspn])
-fi
 
 # --enable-quvi
 AC_ARG_ENABLE([quvi],

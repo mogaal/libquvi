@@ -34,10 +34,4 @@ int asprintf(char **dst, const char *fmt, ...);
 char *strupr(char *src);
 #endif
 
-#ifndef HAVE_STRTOK_R
-char *strtok_r(char *str, const char *delim, char **saveptr);
 #endif
-
-#endif
-
-

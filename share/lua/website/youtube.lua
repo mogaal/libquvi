@@ -1,7 +1,7 @@
 
 -- Copyright (C) 2010 Toni Gundogdu.
 --
--- This file is part of quvi <http://quvi.googlecode.com/>.
+-- This file is part of quvi <http://quvi.sourceforge.net/>.
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
 
 -- http://en.wikipedia.org/wiki/YouTube#Quality_and_codecs
 -- $container_$maxwidth = '$fmt_id'
-local lookup = {
+local fmt_id_lookup = {
     -- flv
     flv_240p =  '5',
     flv_360p = '34',
@@ -35,19 +35,38 @@ local lookup = {
     tgp_144p  = '17'
 }
 
+local domains = {
+    "youtube.com",
+    "youtube-nocookie.com",
+    "youtu.be"
+}
+
+-- Check whether the domain is handled
+function is_handled (page_url)
+    if page_url == nil then
+        return false
+    end
+    for k,domain in pairs(domains) do
+        if page_url:find(domain) ~= nil then
+            return true
+        end
+    end
+    return false
+end
+
 -- Identify the script.
 function ident (page_url)
     local t   = {}
     t.domain  = "youtube.com"
     t.formats = ""
-    for k,_ in pairs (lookup) do
+    for k,_ in pairs (fmt_id_lookup) do
         t.formats = t.formats .."|".. k
     end
     t.formats = "default|best" .. t.formats
     if (page_url ~= nil) then
         page_url = youtubify(page_url)
     end
-    t.handles = (page_url ~= nil and page_url:find (t.domain) ~= nil)
+    t.handles = is_handled(page_url)
     return t
 end
 
@@ -58,40 +77,10 @@ function parse (video)
     local _,_,s = page_url:find("v=([%w-_]+)")
     video.id    = s or error ("no match: video id")
 
-    local t,best = get_video_info (video)
-    if (t == nil) then
-        t,best = fallback_fetch (page_url, video)
-    end
+    local _,_,s = page_url:find('#t=(.+)')
+    video.starttime = s or ''
 
-    local video_url = 
-        string.format(
-            "http://youtube.com/get_video?video_id=%s&t=%s&asv=2",
-                video.id, t)
-
-    if (best == nil and video.requested_format == "best") then
-        print ("libquvi: Warning: Unable to find `best' format. Use `default'.")
-    end
-
-    local fmt_id = nil
-
-    if (video.requested_format == "best") then
-        fmt_id = best or fmt_id
-    else
-        for k,v in pairs (lookup) do
-            if (k == video.requested_format) then
-                fmt_id = v
-                break
-            end
-        end
-    end
-
-    if (fmt_id ~= nil) then
-        video_url = video_url .."&fmt=".. fmt_id
-    end
-
-    video.url = {video_url}
-
-    return video
+    return get_video_info (video)
 end
 
 -- Youtubify the URL.
@@ -101,57 +90,75 @@ function youtubify (url)
     return url
 end
 
--- Should work around at least some of the videos that require
--- signing in first. Requires less bandwidth than the "old faithful".
--- This may, however, fail with some (older?) videos.
 function get_video_info (video, result)
 
-    local config_url = string.format(
-        "http://www.youtube.com/get_video_info?&video_id=%s"
-         .. "&el=detailpage&ps=default&eurl=&gl=US&hl=en", video.id)
+    local config_url =
+        "http://www.youtube.com/get_video_info?&video_id="
+         .. video.id
+         .. "&el=detailpage&ps=default&eurl=&gl=US&hl=en"
 
-    local config = decode ( quvi.fetch(config_url, "config") )
+    local config = decode (quvi.fetch (config_url, "config"))
 
     if (config['reason']) then
         local reason = unescape (config['reason'])
-        local code = config['errorcode']
-        -- 100, 150 are currently treated as "unrecoverable errors.",
-        -- e.g. we skip the fallback fetch step. This list is obviously
-        -- not complete, so any feedback helps.
-        if (code == '150' or code == '100') then error (reason) end
-        print ("libquvi: Warning: get_video_info: " .. reason)
-        print ("libquvi: Warning: Fetch video page instead.")
-        return nil -- Try fallback fetch.
+        local code   = config['errorcode']
+        error (reason..' (code='..code..')')
     end
 
     video.title = config['title'] or error ('no match: video title')
     video.title = unescape (video.title)
 
-    local t = config['token'] or error ('no match: token parameter')
-    t = unescape (t)
+    local fmt_url_map =
+        config['fmt_url_map'] or error ("no match: fmt_url_map")
 
-    local fmt_map = config['fmt_map'] or error ('no match: format map')
-    fmt_map = unescape (fmt_map)
-    local _,_,best = fmt_map:find('(%d+)')
+    fmt_url_map = unescape (fmt_url_map) .. ','
 
-    return t, best
+    -- Assume first found URL to be the 'best'.
+    local best  = nil
+    local t     = {}
+
+    for fmt,url in fmt_url_map:gfind ('(%d+)%|(.-),') do
+        if (best == nil) then best = url end
+        t[fmt] = url
+    end
+
+    -- Choose URL.
+    local url = nil
+
+    if (video.requested_format == 'best') then
+        url = best
+    else
+        url = to_url (video.requested_format, t)
+        if (url == nil and video.requested_format ~= 'default') then
+            -- Fallback to our 'default'.
+            url = to_url ('default', t)
+        end
+    end
+
+    video.url = {url or error ("no match: video url")}
+
+    return video
 end
 
--- As long as video is not otherwise retricted (e.g. age check), this function
--- should work with most videos. Page fetches, however, typically require
--- a lot more bandwidth compared to the config fetch (above).
-function fallback_fetch (page_url, video)
-    local page = quvi.fetch(page_url)
+function to_url (fmt, t)
 
-    local _,_,s = page:find('<meta name="title" content="(.-)"')
-    video.title = s or error ("no match: video title")
+    if (fmt == 'default') then
+        fmt = 'flv_240p'
+    end
 
-    local _,_,s = page:find('&t=(.-)&')
-    local t     = unescape (s) or error ("no match: t param")
+    -- Match format ID alias to YouTube fmt ID.
+    local id = nil
 
-    local _,_,best = page:find("&fmt_map=(%d+)")
+    table.foreach (fmt_id_lookup,
+        function (k,v) if (k == fmt) then id = v end end)
 
-    return t, best
+    -- Match fmt ID to available fmt IDs.
+    local url = nil
+
+    table.foreach (t,
+        function (k,v) if (id == k) then url = v end end)
+
+    return url
 end
 
 -- http://www.lua.org/pil/20.3.html
@@ -160,7 +167,6 @@ function decode (s)
     for n,v in s:gfind ("([^&=]+)=([^&=]+)") do
         n = unescape (n)
         r[n] = v
---        print (n,v)
     end
     return r
 end

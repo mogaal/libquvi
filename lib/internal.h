@@ -52,53 +52,52 @@
     curl_easy_setopt(quvi->curl,opt,param)
 
 struct _quvi_s {
-    char *format;
-    int no_verify;
-    int no_shortened;
-    quvi_callback_status status_func;
-    quvi_callback_write  write_func;
-    void *curl;
-    long httpcode;
-    long curlcode;
-    char *errmsg;
-    llst_node_t util_scripts;
-    llst_node_t website_scripts;
-    llst_node_t curr_next_host;
-    lua_State *lua;
+  char *format;
+  int no_verify;
+  int no_shortened;
+  quvi_callback_status status_func;
+  quvi_callback_write write_func;
+  void *curl;
+  long httpcode;
+  long curlcode;
+  char *errmsg;
+  llst_node_t util_scripts;
+  llst_node_t website_scripts;
+  llst_node_t curr_next_host;
+  lua_State *lua;
 };
 
 typedef struct _quvi_s *_quvi_t;
 
 struct _quvi_video_link_s {
-    char *url;
-    char *suffix;
-    char *content_type;
-    double length;
+  char *url;
+  char *suffix;
+  char *content_type;
+  double length;
 };
 
 typedef struct _quvi_video_link_s *_quvi_video_link_t;
 
 struct _quvi_video_s {
-    _quvi_t quvi;
-    char *id;
-    char *title;
-    char *charset;
-    char *page_link;
-    llst_node_t link; /* holds all essential to video links */
-    llst_node_t curr; /* current (link) node */
-    char *host_id;
-    char *redirect;
+  _quvi_t quvi;
+  char *id;
+  char *title;
+  char *starttime;
+  char *charset;
+  char *page_link;
+  llst_node_t link;             /* holds all essential to video links */
+  llst_node_t curr;             /* current (link) node */
+  char *host_id;
+  char *redirect;
 };
 
 typedef struct _quvi_video_s *_quvi_video_t;
 
 struct _quvi_lua_script_s {
-    char *basename;
-    char *path;
+  char *basename;
+  char *path;
 };
 
 typedef struct _quvi_lua_script_s *_quvi_lua_script_t;
 
 #endif
-
-
