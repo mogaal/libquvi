@@ -1,4 +1,37 @@
 
+0.2.10  Fri Dec 10 2010     Toni Gundogdu
+Changes:
+        - Add QUVI_SHOW_SCRIPT
+        - Add cbsnews support, thanks to mkolve for the script
+Bugfixes:
+        - lib/lua_wrap.c: lua_files_only to include *.lua files only
+        - youtube.lua: server response code 404 [#5]
+        - funnyordie.lua: video URL == nil check
+
+
+0.2.9   Tue Dec 07 2010     Toni Gundogdu
+Changes:
+        - Set <http://quvi.sourceforge.net/> as new home
+        - Add tests/support-google.pl
+        - Add support for videos.sapo.pt (f#3106606)
+        - Extend --support to use quvi_supported
+        - Remove dangling lib/strtok_r.c
+        - Remove PCRE dependency
+        - Remove myubo.lua: dead site
+        - Thanks to Bastien Nocera for the following patches:
+            - Never do network access in quvi_supported()
+            - Dailymotion: Handle embed URLs
+            - Add starttime for YouTube videos
+            - Add QUVIPROP_STARTTIME property
+            - Add quvi_supported() public function
+        - Coding style changes, added doc/CodingStyle
+        - evisor.lua -> gasgrank.lua
+Bugfixes:
+        - quvi URL --exec does nothing (b#3125018)
+        - tube8.lua: fix fetch (p#3121928), thanks to wurpcore for patch
+        - l_quvi_fetch: check data != NULL
+
+
 Version 0.2.0
 =============
 

@@ -34,7 +34,8 @@ Print license and exit.
 
 =item B<--support>
 
-Print supported hosts and exit.
+Print supported hosts and exit. To check if an URL is supported, specify
+an URL as an argument to the program. See L</EXAMPLES>.
 
 =item B<--xml>
 
@@ -125,7 +126,7 @@ more examples:
 
 As long as the built-in URL contains the pattern, it can be
 matched. Like C<--page-title> and friends, this feature is
-intended to be used by libquvi tests.
+intended to be used by the libquvi package tests primarily.
 
 =item B<-f, --format> I<arg>
 
@@ -162,6 +163,16 @@ Default is 30.
 =item quvi URL
 
 Test URL.
+
+=item quvi --support
+
+Dump all supported websites.
+
+=item quvi --support URL
+
+Check if URL is supported. Note that some of the shortened URLs will
+fail with this. quvi exit status will be the last exit status of the
+last checked URL. See also L</EXIT STATUS>.
 
 =item quvi -a
 
@@ -244,46 +255,11 @@ quvi exits with 0 on success and E<gt>0 if an error occurred.
   QUVI_LUAINIT          = 0x07, Lua initialization failure
   QUVI_NOLUAWEBSITE     = 0x08, Failed to find lua website scripts
   --
-  QUVI_PCRE             = 0x40, libpcre error occurred
+  QUVI_PCRE             = 0x40, libpcre error occurred, deprecated 0.2.9+
   QUVI_NOSUPPORT        = 0x41, libquvi does not support the video host
   QUVI_CURL             = 0x42, libcurl error occurred
   QUVI_ICONV            = 0x43, libiconv error occurred
   QUVI_LUA              = 0x44, lua error occurred
-
-=head1 CONTRIBUTING
-
-=over 4
-
-=item B<Add support for another website>
-
-On most systems you can find the READMEs and HOWTOs from $prefix/share/quvi
-and $prefix/share/doc/quvi directories. You can find the same files in
-release source tarballs, and at:
-
-    <http://repo.or.cz/w/quvi.git/tree/HEAD:/doc>
-    <http://repo.or.cz/w/quvi.git/tree/HEAD:/share/lua>
-    <http://repo.or.cz/w/quvi.git/tree/HEAD:/share/lua/website>
-
-=item B<Submitting patches>
-
-If you have cooked up a patch, please submit it to the tracker (see L</BUGS>).
-
-If you are working with git and you have established a repo from which
-we can pull the changes from, you can use the same tracker for leaving
-pull requests.
-
-=back
-
-=head1 BUGS
-
-=over 4
-
-=item B<Trackers>
-
-Bugs, support, patches, etc. trackers for these can be found at:
-  <http://sourceforge.net/projects/quvi/support>
-
-=back
 
 =head1 DEBUGGING TIPS
 
@@ -295,7 +271,8 @@ You can use this switch to amp up libcurl verbosity.
 
 =item B<Debug symbols>
 
-Compile quvi with C<-g> (see C<g++(1)>) for debug symbols.
+Compile quvi with C<-g>, refer to C<gcc(1)> documentation for the
+details.
 
 =item B<Other tools>
 
@@ -304,29 +281,13 @@ They may prove invaluable.
 
 =back
 
-=head1 OTHER
+=head1 WWW
 
-=over 4
+<http://quvi.sourceforge.net/>
 
-=item B<Project>
+=head1 CONTRIBUTE
 
-<http://quvi.googlecode.com/>
-
-<http://quvi.sourceforge.net/> -- redirects to the above
-
-=item B<Files>
-
-The downloadable files (e.g. source tarballs) can be found at:
-
-<http://quvi.googlecode.com/>
-
-<http://sourceforge.net/projects/quvi/files/> -- mirror
-
-=item B<Development repository>
-
-git clone git://repo.or.cz/quvi.git
-
-=back
+<http://repo.or.cz/w/quvi.git/tree/HEAD:/doc>
 
 =head1 AUTHOR
 
@@ -335,7 +296,5 @@ Toni Gundogdu <legatvs at sign gmail com>.
 Thanks to all those who have contributed to the project
 by sending patches, reporting bugs and writing feedback.
 You know who you are.
-
-See also L</BUGS>, L</DEBUGGING TIPS> and L</CONTRIBUTING>.
 
 =cut

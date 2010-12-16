@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "quvi 1"
-.TH quvi 1 "2010-11-12" "0.2.8" "quvi manual"
+.TH quvi 1 "2010-12-07" "0.2.9" "quvi manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -154,7 +154,8 @@ Print program version and exit.
 Print license and exit.
 .IP "\fB\-\-support\fR" 4
 .IX Item "--support"
-Print supported hosts and exit.
+Print supported hosts and exit. To check if an \s-1URL\s0 is supported, specify
+an \s-1URL\s0 as an argument to the program. See \*(L"\s-1EXAMPLES\s0\*(R".
 .IP "\fB\-\-xml\fR" 4
 .IX Item "--xml"
 Print the details in \s-1XML\s0 (instead of \s-1JSON\s0). URLs are escaped (\s-1URL\s0 encoded,
@@ -235,7 +236,7 @@ more examples:
 .Sp
 As long as the built-in \s-1URL\s0 contains the pattern, it can be
 matched. Like \f(CW\*(C`\-\-page\-title\*(C'\fR and friends, this feature is
-intended to be used by libquvi tests.
+intended to be used by the libquvi package tests primarily.
 .IP "\fB\-f, \-\-format\fR \fIarg\fR" 4
 .IX Item "-f, --format arg"
 Query for video format \fIarg\fR. You can get a list of the formats
@@ -262,6 +263,14 @@ Default is 30.
 .IP "quvi \s-1URL\s0" 4
 .IX Item "quvi URL"
 Test \s-1URL\s0.
+.IP "quvi \-\-support" 4
+.IX Item "quvi --support"
+Dump all supported websites.
+.IP "quvi \-\-support \s-1URL\s0" 4
+.IX Item "quvi --support URL"
+Check if \s-1URL\s0 is supported. Note that some of the shortened URLs will
+fail with this. quvi exit status will be the last exit status of the
+last checked \s-1URL\s0. See also \*(L"\s-1EXIT\s0 \s-1STATUS\s0\*(R".
 .IP "quvi \-a" 4
 .IX Item "quvi -a"
 Run all built-in host tests.
@@ -328,7 +337,7 @@ quvi exits with 0 on success and >0 if an error occurred.
 \&  QUVI_LUAINIT          = 0x07, Lua initialization failure
 \&  QUVI_NOLUAWEBSITE     = 0x08, Failed to find lua website scripts
 \&  \-\-
-\&  QUVI_PCRE             = 0x40, libpcre error occurred
+\&  QUVI_PCRE             = 0x40, libpcre error occurred, deprecated 0.2.9+
 \&  QUVI_NOSUPPORT        = 0x41, libquvi does not support the video host
 \&  QUVI_CURL             = 0x42, libcurl error occurred
 \&  QUVI_ICONV            = 0x43, libiconv error occurred
@@ -374,21 +383,9 @@ Make use of such tools as \f(CWstrace(1)\fR, \f(CWgdb(1)\fR and \f(CWvalgrind(1)
 They may prove invaluable.
 .SH "OTHER"
 .IX Header "OTHER"
-.IP "\fBProject\fR" 4
-.IX Item "Project"
-<http://quvi.googlecode.com/>
-.Sp
-<http://quvi.sourceforge.net/> \*(-- redirects to the above
-.IP "\fBFiles\fR" 4
-.IX Item "Files"
-The downloadable files (e.g. source tarballs) can be found at:
-.Sp
-<http://quvi.googlecode.com/>
-.Sp
-<http://sourceforge.net/projects/quvi/files/> \*(-- mirror
-.IP "\fBDevelopment repository\fR" 4
-.IX Item "Development repository"
-git clone git://repo.or.cz/quvi.git
+.IP "\fB\s-1WWW\s0\fR" 4
+.IX Item "WWW"
+<http://quvi.sourceforge.net/>
 .SH "AUTHOR"
 .IX Header "AUTHOR"
 Toni Gundogdu <legatvs at sign gmail com>.

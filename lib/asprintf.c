@@ -20,15 +20,14 @@
 
 #include "platform.h"
 
-int
-asprintf(char **dst, const char *fmt, ...) {
-    va_list ap;
-    int rc;
+int asprintf(char **dst, const char *fmt, ...)
+{
+  va_list ap;
+  int rc;
 
-    va_start(ap, fmt);
-    rc = vasprintf(dst,fmt,ap);
-    va_end(ap);
+  va_start(ap, fmt);
+  rc = vasprintf(dst, fmt, ap);
+  va_end(ap);
 
-    return (rc);
+  return (rc);
 }
-

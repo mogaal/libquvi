@@ -4,7 +4,8 @@ EXTRA_DIST = \
 libquvi.pc.in \
 libquvi.ver \
 doxygen.conf.in \
-KNOWN_ISSUES
+KNOWN_ISSUES \
+ChangeLog.pre-gitlog
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libquvi.pc
@@ -48,5 +49,14 @@ endif
 
 local-clean:
 	@rm -rf *.tmp *.core *.html
+
+ChangeLog:
+	@if test -f $(top_srcdir)/.git/HEAD; then \
+		git log --stat --after="Sun Nov 14 11:03:50 2010" > $@; \
+	fi
+
+dist: ChangeLog
+
+.PHONY: ChangeLog
 
 distclean-local: local-clean

@@ -4,7 +4,8 @@ doc_DATA = \
 HowtoContributeCode \
 HowtoGetDevelopmentCode \
 HowtoHelp \
-HowtoSubmitPatches
+HowtoSubmitPatches \
+CodingStyle
 endif
 
 EXTRA_DIST = $(doc_DATA)

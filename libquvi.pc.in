@@ -4,7 +4,7 @@ libdir=@libdir@
 includedir=@includedir@
 
 Name: libquvi
-URL: http://quvi.googlecode.com/
+URL: http://quvi.sourceforge.net/
 Description: Query video library for Youtube like websites.
 Version: @VERSION@
 Libs: -L${libdir} -lquvi

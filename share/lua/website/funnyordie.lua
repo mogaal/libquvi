@@ -1,7 +1,7 @@
 
 -- Copyright (C) 2010 quvi team.
 --
--- This file is part of quvi <http://quvi.googlecode.com/>.
+-- This file is part of quvi <http://quvi.sourceforge.net/>.
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ function parse (video)
     video.id    = s or error ("no match: video id")
 
     local _,_,s = page:find('<video src="(.-)"')
-    video.url   = {s} or error ("no match: flv url")
+    video.url   = {s or error ("no match: flv url")}
 
     return video
 end

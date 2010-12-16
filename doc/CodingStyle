@@ -1,0 +1,12 @@
+
+
+Coding style
+================
+
+We use `indent -linux --no-tabs -i2` for C. See also
+$top_srcdir/examples/git-hooks
+
+
+LUA
+
+Liberal, see the snippets in share/lua/ to get an idea.

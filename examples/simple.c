@@ -23,33 +23,31 @@
 #include <stdio.h>
 #include <quvi/quvi.h>
 
-static int
-status_callback(long param, void *data) {
-    quvi_word status, type;
+static int status_callback(long param, void *data)
+{
+  quvi_word status, type;
 
-    status = quvi_loword(param);
-    type  = quvi_hiword(param);
+  status = quvi_loword(param);
+  type = quvi_hiword(param);
 
-    printf("status: %d, type: %d\n", status, type);
+  printf("status: %d, type: %d\n", status, type);
 
-    return (0);
+  return (0);
 }
 
-int
-main (int argc, char **argv) {
-    quvi_t q; /* library handle */
-    quvi_video_t v; /* video handle */
-    char *lnk; /* holds parsed video link */
+int main(int argc, char **argv)
+{
+  quvi_t q;                     /* library handle */
+  quvi_video_t v;               /* video handle */
+  char *lnk;                    /* holds parsed video link */
 
-    quvi_init(&q);
-    quvi_setopt(q, QUVIOPT_STATUSFUNCTION, &status_callback);
-    quvi_parse(q, "http://www.youtube.com/watch?v=DeWsZ2b_pK4", &v);
-    quvi_getprop(v, QUVIPROP_VIDEOURL, &lnk);
-    puts(lnk);
-    quvi_parse_close(&v);
-    quvi_close(&q);
+  quvi_init(&q);
+  quvi_setopt(q, QUVIOPT_STATUSFUNCTION, &status_callback);
+  quvi_parse(q, "http://www.youtube.com/watch?v=DeWsZ2b_pK4", &v);
+  quvi_getprop(v, QUVIPROP_VIDEOURL, &lnk);
+  puts(lnk);
+  quvi_parse_close(&v);
+  quvi_close(&q);
 
-    return (0);
+  return (0);
 }
-
-
