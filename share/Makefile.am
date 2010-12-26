@@ -6,6 +6,7 @@ lua/util/charset.lua \
 lua/util/trim.lua \
 lua/website/README \
 lua/website/academicearth.lua \
+lua/website/bloomberg.lua \
 lua/website/break.lua \
 lua/website/buzzhumor.lua \
 lua/website/cbsnews.lua \
@@ -16,6 +17,7 @@ lua/website/dailymotion.lua \
 lua/website/gaskrank.lua \
 lua/website/funnyhub.lua \
 lua/website/funnyordie.lua \
+lua/website/globo.lua \
 lua/website/golem.lua \
 lua/website/google.lua \
 lua/website/liveleak.lua \
@@ -34,9 +36,7 @@ lua/website/youjizz.lua
 endif
 
 if ENABLE_BROKEN
-DIST_lua += \
-lua/website/bloomberg.lua \
-lua/website/cctv.lua
+DIST_lua +=
 endif
 
 EXTRA_DIST = $(DIST_lua)

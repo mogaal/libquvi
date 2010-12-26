@@ -5,35 +5,36 @@ if HAVE_PERL
 
 TESTS_ENVIRONMENT = $(PERL) -w -mstrict -mquviTest -I $(top_builddir)/tests
 
-TESTS =\
-nosupport-eval.pl\
-support-shortened.pl\
-support-break.pl\
-support-cbsnews.pl\
-support-charlierose.pl\
-support-clipfish.pl\
-support-collegehumor.pl\
-support-dailymotion.pl\
-support-gaskrank.pl\
-support-funnyhub.pl\
-support-funnyordie.pl\
-support-golem.pl\
-support-google.pl\
-support-liveleak.pl\
-support-sapo.pl\
-support-sevenload.pl\
-support-spiegel.pl\
+TESTS = \
+nosupport-eval.pl \
+support-shortened.pl \
+support-academicearth.pl \
+support-bloomberg.pl \
+support-break.pl \
+support-cbsnews.pl \
+support-charlierose.pl \
+support-clipfish.pl \
+support-collegehumor.pl \
+support-dailymotion.pl \
+support-gaskrank.pl \
+support-funnyhub.pl \
+support-funnyordie.pl \
+support-globo.pl \
+support-golem.pl \
+support-google.pl \
+support-buzzhumor.pl \
+support-liveleak.pl \
+support-sapo.pl \
+support-sevenload.pl \
+support-spiegel.pl \
 support-theonion.pl\
-support-vimeo.pl\
-support-youtube.pl\
-support-academicearth.pl
+support-youtube.pl \
+support-vimeo.pl
 
 # NOTE: academicearth.pl has to come after youtube.
 # The former uses youtube for hosting some of its videos.
 
-TESTS_BROKEN =\
-support-bloomberg.pl\
-support-cctv.pl
+TESTS_BROKEN =
 
 if ENABLE_BROKEN
 TESTS += $(TESTS_BROKEN)

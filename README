@@ -1,16 +1,17 @@
 
 
-quvi is a command line tool for parsing video download links. It supports
-Youtube and other similar video websites.
+quvi is a command line tool for parsing flash video download links.
+It supports Youtube and other similar video websites.
 
-libquvi is a library for parsing video download links with C API. It is
-written in C and intended to be a cross-platform library. libquvi uses
-Lua for embeddable scripting.
+libquvi is a library for parsing flash video download links with C API.
+It is written in C and intended to be a cross-platform library. libquvi
+uses Lua for embeddable scripting.
 
-PREMISE
+quvi and libquvi are free software, licensed under the LGPLv2.1+. The
+LUA scripts that quvi uses are considered as programs and using the LUA
+scripts is *linking*.
 
-The low memory footprint, small CPU load. quvi and libquvi are free software,
-licensed under the GPLv3. Both quvi and libquvi run on Linux and Unix-like
-operating systems, as well as on MSWindows.
+Both, quvi and libquvi, run on Linux and Unix-like operating systems,
+as well as on MSWindows.
 
 WWW: <http://quvi.sourceforge.net/>
