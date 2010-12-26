@@ -11,12 +11,10 @@ Howto: Help with the project
   - See also $prefix/share/doc/quvi/HowtoSubmitPatches
 
 * Write support for an additional website
-  - See $prefix/share/doc/quvi/HowtoContributeCode
+  - See $prefix/share/doc/quvi/HowtoWriteWebsiteScript
 
 * Gather and report website specific data
   - TCP traffic, etc. (there are a number of tools to do this these days)
-  - See $prefix/share/doc/quvi/HowtoContributeCode, which discusses this
-    briefly
 
 * Read the Developers page in the wiki for the latest notes
   - <http://code.google.com/p/quvi/wiki/Development>

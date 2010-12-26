@@ -2,10 +2,9 @@
 1. Foreword
 ===========
 
-This directory contains the website specific scripts (rules) that quvi
-uses to parse the video links. Should video link parsing ever break (and
-they shall eventually), these are the scripts that one should take a look
-at first.
+This directory contains the website scripts quvi uses to parse the video
+links. Should video link parsing ever break (and they will eventually),
+these are the scripts that one should take a look at first.
 
 These scripts are written in Lua. If you are new to Lua,
 <http://www.lua.org/pil/> is a good place to start.
@@ -14,7 +13,7 @@ These scripts are written in Lua. If you are new to Lua,
 2. Structure of an quvi website script
 ======================================
 
-Each script (rule) must contain the following functions:
+Each website script must contain the following functions:
   * ident
   * parse
 
@@ -32,40 +31,28 @@ Returns:
   * A table containing the following keys
 
     - domain (string)
-
       - This string is used to match page URL to domain
-
       - Returned to an application with quvi_next_supported_website
-
       - The string must cover any TLDs and additional domain names
-
       - e.g. "youtube.com", "video.google."
 
     - formats (string)
-
-      - An "array" of the supported video format IDs that the website,
-      each separated with '|', e.g. "default|best|hq|hd"
-
+      - An "array" of the supported video format IDs, e.g. "default|best|hq|hd"
       - All scripts should at least define "default" in this string
-
-      - Include "best" when/if possible/expected, e.g. multiple
-      format IDs supported
+      - Should include "best" if there are more than just "default" ID
 
     - handles (boolean)
-
-      - If the script can handle the URL provided in the page_url
-      variable, it should set "handles" to true, otherwise set
-      it to false
+      - Used to check whether the script can handle the user specified URL
 
 
 2.2. function parse (video)
 ---------------------------
 
 quvi calls this function to fetch and parse the user specified URL.
-This function can vary greatly, see youtube.lua and buzzhumor.lua
-scripts for a comparison of this.
+This function looks typically very different for each website. Compare
+buzzhumor.lua and youtube.lua for an example of this.
 
-The function is expected set the following video details.
+The "parse" function is expected set/update the following video details:
   * host_id (string)
   * title (string)
   * id (string)
@@ -73,55 +60,55 @@ The function is expected set the following video details.
   * redirect (string) [see notes below]
 
 Each of these belong to the `video' table passed to the function
-as a parameter. e.g. "video.host_id = 'youtube'"
+as a parameter. e.g. video.host_id = 'youtube' or video.id = '1234'
 
 Parameters:
-  * video (table), contains the following keys
-    - page_url (string)
-    - requested_format (string)
+  * quvi sets the following table keys before it runs the script
+    - page_url (string)         -- user specified URL
+    - requested_format (string) -- user requested video format ID
 
 Returns:
-  * `video' table containing the updated details
+  * The updated `video' table
 
 Notes:
   * "redirect", special field, if set (default:empty):
-    - quvi skips link checking, and parses the specified (redirect) URL instead
-    - note that this replaces the original page URL (set by quvi_parse)
-    - for an example of this, see the academicearth.lua script
+    - Drop user specified URL and follow to the redirect URL instead
+    - This replaces the original user defined URL (set by quvi_parse)
+    - See academicearth.lua script for an example
 
 
-3. Lua API
-==========
+3. Exposed C functions
+======================
 
-All of the functions exposed to the lua scripts are in the "quvi" object,
-e.g. "quvi.fetch(url)".
+quvi exposes the following C functions to the website scripts. Each of
+these are in the "quvi" object, e.g. quvi.fetch.
 
 
-3.1. Function: string quvi.fetch (url, what, arbitrary_cookie)
+3.1. Function: string quvi.fetch (url, options)
 --------------------------------------------------------------
 
-Fetches URL.
+Fetches data from the specified URL.
 
 Parameters:
-  * url (string) - URL to fetch
-  * what (string) - "page", "config" or "playlist" (optional)
-  * arbitrary_cookie (string) - e.g. "foo=bar" (optional)
+  * url (string)                - URL to fetch
+  * options (table)             - Additional options* [optional]
 
-`what' will be translated to a QUVIstatusType defined in the
-quvi.h header file. If that is undefined (nil), quvi will
-default to "page".
+options:
+  * fetch_type       (string)   ("page"|"config"|"playlist") =page
+  * arbitrary_cookie (string)   e.g. "foo=1;bar=2"
+  * user_agent       (string)   e.g. "foo/0.1"
 
-arbitrary_cookie value is passed to libcurl, see:
+arbitrary_cookie value is passed (as it is) to libcurl, see:
   http://curl.haxx.se/libcurl/c/curl_easy_setopt.html#CURLOPTCOOKIE
 
 Returns:
-  * Fetched contents of the URL
+  * Fetched data
 
 
 3.2. Function: string quvi.unescape (string)
 --------------------------------------------
 
-Returns unescaped `string'.
+Returns an unescaped `string'.
 
 Parameters:
   * string

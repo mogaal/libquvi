@@ -34,6 +34,20 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 target_triplet = @target@
+@HAVE_PERL_TRUE@TESTS = nosupport-eval.pl support-shortened.pl \
+@HAVE_PERL_TRUE@	support-academicearth.pl support-bloomberg.pl \
+@HAVE_PERL_TRUE@	support-break.pl support-cbsnews.pl \
+@HAVE_PERL_TRUE@	support-charlierose.pl support-clipfish.pl \
+@HAVE_PERL_TRUE@	support-collegehumor.pl support-dailymotion.pl \
+@HAVE_PERL_TRUE@	support-gaskrank.pl support-funnyhub.pl \
+@HAVE_PERL_TRUE@	support-funnyordie.pl support-globo.pl \
+@HAVE_PERL_TRUE@	support-golem.pl support-google.pl \
+@HAVE_PERL_TRUE@	support-buzzhumor.pl support-liveleak.pl \
+@HAVE_PERL_TRUE@	support-sapo.pl support-sevenload.pl \
+@HAVE_PERL_TRUE@	support-spiegel.pl support-theonion.pl \
+@HAVE_PERL_TRUE@	support-youtube.pl support-vimeo.pl \
+@HAVE_PERL_TRUE@	$(am__EXEEXT_2) $(am__append_2) \
+@HAVE_PERL_TRUE@	$(am__append_3)
 @ENABLE_BROKEN_TRUE@@HAVE_PERL_TRUE@am__append_1 = $(TESTS_BROKEN)
 @HAVE_PERL_POD_CHECKER_TRUE@@HAVE_PERL_TRUE@am__append_2 = $(TESTS_POD)
 @ENABLE_NSFW_TRUE@@HAVE_PERL_TRUE@am__append_3 = $(TESTS_NSFW)
@@ -61,6 +75,8 @@ SOURCES =
 DIST_SOURCES =
 am__tty_colors = \
 red=; grn=; lgn=; blu=; std=
+am__EXEEXT_1 =
+@ENABLE_BROKEN_TRUE@@HAVE_PERL_TRUE@am__EXEEXT_2 = $(am__EXEEXT_1)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 AMTAR = @AMTAR@
@@ -208,25 +224,10 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 EXTRA_DIST = quviTest.pm.in $(TESTS) $(TESTS_POD) $(TESTS_NSFW)
 @HAVE_PERL_TRUE@TESTS_ENVIRONMENT = $(PERL) -w -mstrict -mquviTest -I $(top_builddir)/tests
-@HAVE_PERL_TRUE@TESTS = nosupport-eval.pl support-shortened.pl \
-@HAVE_PERL_TRUE@	support-break.pl support-cbsnews.pl \
-@HAVE_PERL_TRUE@	support-charlierose.pl support-clipfish.pl \
-@HAVE_PERL_TRUE@	support-collegehumor.pl support-dailymotion.pl \
-@HAVE_PERL_TRUE@	support-gaskrank.pl support-funnyhub.pl \
-@HAVE_PERL_TRUE@	support-funnyordie.pl support-golem.pl \
-@HAVE_PERL_TRUE@	support-google.pl support-liveleak.pl \
-@HAVE_PERL_TRUE@	support-sapo.pl support-sevenload.pl \
-@HAVE_PERL_TRUE@	support-spiegel.pl support-theonion.pl \
-@HAVE_PERL_TRUE@	support-vimeo.pl support-youtube.pl \
-@HAVE_PERL_TRUE@	support-academicearth.pl $(am__append_1) \
-@HAVE_PERL_TRUE@	$(am__append_2) $(am__append_3)
 
 # NOTE: academicearth.pl has to come after youtube.
 # The former uses youtube for hosting some of its videos.
-@HAVE_PERL_TRUE@TESTS_BROKEN = \
-@HAVE_PERL_TRUE@support-bloomberg.pl\
-@HAVE_PERL_TRUE@support-cctv.pl
-
+@HAVE_PERL_TRUE@TESTS_BROKEN = 
 @HAVE_PERL_TRUE@TESTS_POD = \
 @HAVE_PERL_TRUE@pod-check.pl
 

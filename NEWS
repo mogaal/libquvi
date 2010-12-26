@@ -1,4 +1,16 @@
 
+0.2.11  Sat Dec 18 2010     Toni Gundogdu
+Changes:
+        - Re-license under LGPLv2.1+ [#9]
+        - Add missing support-buzzhumor.pl
+        - Add globo support, thanks to mkolve for the script [#10]
+        - Extend quvi.fetch to allow setting user-agent [#11]
+        - Skip verification for non-HTTP video URLs [#15]
+Bugfixes:
+        - vimeo.lua: Video ID parsing [#16]
+        - bloomberg.lua: Thanks to mkolve for the fix [#7]
+
+
 0.2.10  Fri Dec 10 2010     Toni Gundogdu
 Changes:
         - Add QUVI_SHOW_SCRIPT

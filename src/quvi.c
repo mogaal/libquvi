@@ -1,19 +1,21 @@
-/* 
-* Copyright (C) 2009,2010 Toni Gundogdu.
-*
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+/* quvi
+ * Copyright (C) 2009,2010  Toni Gundogdu <legatvs@gmail.com>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301  USA
+ */
 
 /* quvi.c - query video tool. */
 
@@ -478,6 +480,7 @@ static int check_values(quvi_video_t video, opts_s opts)
 }
 
 static const char *tests[] = {
+  "http://video.globo.com/Videos/Player/Noticias/0,,GIM1392245-7823-QUATRO+MEDICOS+SAO+PRESOS+POR+VENDER+E+USAR+PRODUTOS+FALSOS+NO+RIO,00.html",
   "http://www.cbsnews.com/video/watch/?id=7118769n",
   "http://videos.sapo.pt/hd4ZBIHG80zFviLc5YEa",
   "http://www.dailymotion.com/video/xdpig1_city-of-scars_shortfilms",
@@ -500,17 +503,13 @@ static const char *tests[] = {
   "http://www.academicearth.org/lectures/intro-roman-architecture",
   "http://www.collegehumor.com/video:1942317",
   "http://www.theonion.com/video/time-announces-new-version-of-magazine-aimed-at-ad,17950/",
-#ifdef ENABLE_BROKEN
   "http://www.bloomberg.com/video/63722844/",
-/* single-segment */
-  "http://space.tv.cctv.com/video/VIDE1212909276513233",
-/* multi-segment */
-  "http://space.tv.cctv.com/video/VIDE1247468077860061",
-#endif
 #ifdef ENABLE_NSFW
   "http://www.tube8.com/fetish/japanese-melon-gal-censored/186133/",
   "http://www.xvideos.com/video243887/devi_emmerson_body_painting",
   "http://www.youjizz.com/videos/glamour-girls---melissa-125602.html",
+#endif
+#ifdef ENABLE_BROKEN
 #endif
 
   NULL

@@ -1,19 +1,24 @@
--- Copyright (C) 2010 quvi team.
+
+-- quvi
+-- Copyright (C) 2010  quvi project
 --
 -- This file is part of quvi <http://quvi.sourceforge.net/>.
 --
--- This program is free software: you can redistribute it and/or modify
--- it under the terms of the GNU General Public License as published by
--- the Free Software Foundation, either version 3 of the License, or
--- (at your option) any later version.
+-- This library is free software; you can redistribute it and/or
+-- modify it under the terms of the GNU Lesser General Public
+-- License as published by the Free Software Foundation; either
+-- version 2.1 of the License, or (at your option) any later version.
 --
--- This program is distributed in the hope that it will be useful,
+-- This library is distributed in the hope that it will be useful,
 -- but WITHOUT ANY WARRANTY; without even the implied warranty of
--- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
--- GNU General Public License for more details.
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+-- Lesser General Public License for more details.
 --
--- You should have received a copy of the GNU General Public License
--- along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-- You should have received a copy of the GNU Lesser General Public
+-- License along with this library; if not, write to the Free Software
+-- Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+-- 02110-1301  USA
+--
 
 -- Identify the script.
 function ident (page_url)
@@ -32,11 +37,14 @@ function parse (video)
     local _,_,s = page:find('BLOOMBERG._title = "(.-) ";')
     video.title = s or error ("no match: video title")
 
-    local _,_,s = page:find("videos.bloomberg.com/(.-).flv")
+    local _,_,s = page:find('BLOOMBERG._fvid_id = "(.-)";')
      video.id    = s or error ("no match: video id")
 
-    local _,_,s = page:find('BLOOMBERG._video_url = "(.-)";')
+    local _,_,s = page:find('BLOOMBERG._fvid_id = "(.-)";')
     s           = s or error ("no match: flv url")
+    s           = 'http://videos.bloomberg.com/'
+                  .. video.id
+                  .. '.flv'
     video.url   = {quvi.unescape(s)}
 
     return video

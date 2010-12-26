@@ -1,3 +1,362 @@
+commit a37852eccf92113595026378fb6b1f70e1460e91
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sat Dec 18 01:21:37 2010 +0200
+
+    Bump library interface revision
+
+ configure     |    2 +-
+ m4/version.m4 |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+commit 9c6fb729b153c2856b39a103ad8cc15faa1a5c85
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sat Dec 18 01:19:45 2010 +0200
+
+    Set release details for 0.2.11
+
+ NEWS |   12 ++++++++++++
+ 1 files changed, 12 insertions(+), 0 deletions(-)
+
+commit 62f26cfe60e09d782720cc7d8a2eede98022ad81
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Fri Dec 17 23:09:00 2010 +0200
+
+    vimeo.lua: Fix video ID parsing
+
+ share/lua/website/vimeo.lua |   13 +++++++++----
+ 1 files changed, 9 insertions(+), 4 deletions(-)
+
+commit 96a775780857d222985712eb45cd25c5ac563b85
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Fri Dec 17 22:57:34 2010 +0200
+
+    Skip verification for any non-HTTP video URLs
+
+ lib/curl_wrap.c |   18 ++++++++++++------
+ 1 files changed, 12 insertions(+), 6 deletions(-)
+
+commit 162d6332950db7bd05ca2c79d3c5b3d628ab315a
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Fri Dec 17 20:18:45 2010 +0200
+
+    doc/: Add test URL notes
+
+ doc/HowtoSubmitPatches      |    3 +++
+ doc/HowtoWriteWebsiteScript |   18 ++++++++++++------
+ 2 files changed, 15 insertions(+), 6 deletions(-)
+
+commit fdf221354b8295f785bb1d4e5c6c58a1e0dc4d65
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Tue Dec 14 23:39:11 2010 +0200
+
+    Add missing support-buzzhumor.pl test
+
+ tests/Makefile.am          |   47 ++++++++++++++++++++++---------------------
+ tests/Makefile.in          |   21 ++++++++++---------
+ tests/support-buzzhumor.pl |   11 ++++++++++
+ 3 files changed, 46 insertions(+), 33 deletions(-)
+
+commit 0f97a09e1fa96da2aa22fa75f944d1ab95cbc3b3
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Tue Dec 14 22:39:08 2010 +0200
+
+    Add globo support [#10]
+    
+    - http://sourceforge.net/apps/trac/quvi/ticket/10
+    - Contributed by mkolve
+
+ share/Makefile.am           |    1 +
+ share/Makefile.in           |   24 +++++++++-------
+ share/lua/website/globo.lua |   63 +++++++++++++++++++++++++++++++++++++++++++
+ src/quvi.c                  |    1 +
+ tests/Makefile.am           |    1 +
+ tests/Makefile.in           |   14 +++++-----
+ tests/support-globo.pl      |   11 +++++++
+ 7 files changed, 97 insertions(+), 18 deletions(-)
+
+commit 159bebbbf4a0735b92687eca6343f7b153259d11
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Tue Dec 14 20:40:33 2010 +0200
+
+    buzzhumor.lua: Cleanup
+
+ share/lua/website/buzzhumor.lua |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 277efead0540237ad822c8d87e42342ad64f285a
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Tue Dec 14 19:30:27 2010 +0200
+
+    Remove broken cctv support and test
+
+ share/Makefile.am          |    3 +-
+ share/Makefile.in          |    7 +---
+ share/lua/website/cctv.lua |   69 --------------------------------------------
+ src/quvi.c                 |    8 +----
+ tests/Makefile.am          |    3 +-
+ tests/Makefile.in          |   32 ++++++++++----------
+ tests/support-cctv.pl      |   19 ------------
+ 7 files changed, 22 insertions(+), 119 deletions(-)
+
+commit 833b4a052039a1745f92dfe3dcfd80d129e3c9a3
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Tue Dec 14 14:17:31 2010 +0200
+
+    Extend quvi.fetch to allow setting user-agent [11]
+    
+    Modify quvi.fetch so that the options can be passed in a table instead
+    of args.
+    
+    - http://sourceforge.net/apps/trac/quvi/ticket/11
+
+ lib/curl_wrap.c                    |   36 +++++++++++++++++++++++----
+ lib/curl_wrap.h                    |    4 +--
+ lib/lua_wrap.c                     |   47 +++++++++++++++--------------------
+ share/lua/website/README           |   11 ++++----
+ share/lua/website/cbsnews.lua      |    2 +-
+ share/lua/website/clipfish.lua     |    2 +-
+ share/lua/website/collegehumor.lua |    2 +-
+ share/lua/website/dailymotion.lua  |    4 ++-
+ share/lua/website/golem.lua        |    7 ++---
+ share/lua/website/liveleak.lua     |    6 +++-
+ share/lua/website/sevenload.lua    |    2 +-
+ share/lua/website/spiegel.lua      |    5 +--
+ share/lua/website/vimeo.lua        |    2 +-
+ share/lua/website/youtube.lua      |    3 +-
+ 14 files changed, 76 insertions(+), 57 deletions(-)
+
+commit 8d5737f3ef0239e66bbbca97ccd78cb9d7febc57
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Tue Dec 14 11:42:15 2010 +0200
+
+    HowtoSubmitPatches: Add license note
+
+ doc/HowtoSubmitPatches |   18 +++++++++---------
+ 1 files changed, 9 insertions(+), 9 deletions(-)
+
+commit f2688d8d0d199647b285d8989208e4e2f02118d3
+Merge: d4c1c73 642a014
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Tue Dec 14 11:02:14 2010 +0200
+
+    Merge branch 'relicense_lgplv2+'
+
+commit 642a0146436f00d80916b8b5e3fd946f8b8a11fe
+Author: legatvs <legatvs.git@gmail.com>
+Date:   Thu Dec 2 17:22:32 2010 +0200
+
+    tests/quviTest.pm.in: change to lgpl
+
+ tests/quviTest.pm.in |   24 +++++++++++++-----------
+ 1 files changed, 13 insertions(+), 11 deletions(-)
+
+commit 5bb83af7d89a9fcea1f6fc79b23f1f0abae045eb
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Tue Dec 14 10:54:41 2010 +0200
+
+    w32: change to lgpl
+
+ w32/ChangeLog.w32.txt         |    3 +
+ w32/licenses/quvi-COPYING.TXT | 1130 +++++++++++++++++------------------------
+ 2 files changed, 482 insertions(+), 651 deletions(-)
+
+commit 23fe3a58dbe8bd7ba8bd366b36536e53bdf3dacf
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Tue Dec 14 10:53:24 2010 +0200
+
+    w32/: Rename quvi license file
+
+ w32/licenses/libquvi-COPYING.TXT |  674 --------------------------------------
+ w32/licenses/quvi-COPYING.TXT    |  674 ++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 674 insertions(+), 674 deletions(-)
+
+commit 808be3ae437f2feb0979c68aaa7898bd4b3f3adc
+Author: legatvs <legatvs.git@gmail.com>
+Date:   Thu Dec 2 17:19:50 2010 +0200
+
+    COPYING: change to lgpl
+
+ COPYING | 1130 +++++++++++++++++++++++++++------------------------------------
+ 1 files changed, 479 insertions(+), 651 deletions(-)
+
+commit 95d7ebfeee55b6966be9378d997fc4b6b93901d8
+Author: legatvs <legatvs.git@gmail.com>
+Date:   Thu Dec 2 17:17:35 2010 +0200
+
+    lib/: change to lgpl
+
+ lib/asprintf.c  |   34 ++++++++++++++++++----------------
+ lib/curl_wrap.c |   34 ++++++++++++++++++----------------
+ lib/curl_wrap.h |   34 ++++++++++++++++++----------------
+ lib/internal.h  |   34 ++++++++++++++++++----------------
+ lib/llst.c      |   34 ++++++++++++++++++----------------
+ lib/llst.h      |   34 ++++++++++++++++++----------------
+ lib/lua_wrap.c  |   34 ++++++++++++++++++----------------
+ lib/lua_wrap.h  |   34 ++++++++++++++++++----------------
+ lib/platform.h  |   34 ++++++++++++++++++----------------
+ lib/quvi.c      |   34 ++++++++++++++++++----------------
+ lib/strupr.c    |   34 ++++++++++++++++++----------------
+ lib/util.c      |   34 ++++++++++++++++++----------------
+ lib/util.h      |   34 ++++++++++++++++++----------------
+ lib/vasprintf.c |   34 ++++++++++++++++++----------------
+ 14 files changed, 252 insertions(+), 224 deletions(-)
+
+commit 5e7b03e7797c0ce9adb5e0dd29e4904a78437f98
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Tue Dec 14 10:44:12 2010 +0200
+
+    README: change to lgpl, add lua linking note
+
+ README |   19 ++++++++++---------
+ 1 files changed, 10 insertions(+), 9 deletions(-)
+
+commit 52c0cf28698e6975ed32776851e7495e053e69fc
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Tue Dec 14 10:37:19 2010 +0200
+
+    share/lua/: change to lgpl
+
+ share/lua/util/charset.lua          |   24 ++++++++++++++----------
+ share/lua/util/content_type.lua     |   24 ++++++++++++++----------
+ share/lua/util/trim.lua             |   24 ++++++++++++++----------
+ share/lua/website/academicearth.lua |   24 ++++++++++++++----------
+ share/lua/website/bloomberg.lua     |   25 +++++++++++++++----------
+ share/lua/website/break.lua         |   24 ++++++++++++++----------
+ share/lua/website/buzzhumor.lua     |   24 ++++++++++++++----------
+ share/lua/website/cbsnews.lua       |   30 ++++++++++++++++--------------
+ share/lua/website/cctv.lua          |   24 ++++++++++++++----------
+ share/lua/website/charlierose.lua   |   24 ++++++++++++++----------
+ share/lua/website/clipfish.lua      |   24 ++++++++++++++----------
+ share/lua/website/collegehumor.lua  |   24 ++++++++++++++----------
+ share/lua/website/dailymotion.lua   |   24 ++++++++++++++----------
+ share/lua/website/funnyhub.lua      |   24 ++++++++++++++----------
+ share/lua/website/funnyordie.lua    |   24 ++++++++++++++----------
+ share/lua/website/gaskrank.lua      |   24 ++++++++++++++----------
+ share/lua/website/golem.lua         |   24 ++++++++++++++----------
+ share/lua/website/google.lua        |   24 ++++++++++++++----------
+ share/lua/website/liveleak.lua      |   24 ++++++++++++++----------
+ share/lua/website/sapo.lua          |   24 ++++++++++++++----------
+ share/lua/website/sevenload.lua     |   24 ++++++++++++++----------
+ share/lua/website/spiegel.lua       |   24 ++++++++++++++----------
+ share/lua/website/theonion.lua      |   24 ++++++++++++++----------
+ share/lua/website/tube8.lua         |   24 ++++++++++++++----------
+ share/lua/website/vimeo.lua         |   24 ++++++++++++++----------
+ share/lua/website/xvideos.lua       |   24 ++++++++++++++----------
+ share/lua/website/youjizz.lua       |   24 ++++++++++++++----------
+ share/lua/website/youtube.lua       |   24 ++++++++++++++----------
+ 28 files changed, 395 insertions(+), 284 deletions(-)
+
+commit c9afe5510111b24edc759727bc47228264d50338
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Tue Dec 14 10:35:39 2010 +0200
+
+    lua/website/README: Cleanup
+
+ share/lua/website/README |   76 +++++++++++++++++++---------------------------
+ 1 files changed, 31 insertions(+), 45 deletions(-)
+
+commit 3cbc7653164c3a380a7187a9bfd862bd7d6f3165
+Author: legatvs <legatvs.git@gmail.com>
+Date:   Thu Dec 2 16:52:12 2010 +0200
+
+    src/: change to lgpl
+
+ src/license.c |   67 +++++++++++++++++++++++++++++---------------------------
+ src/quvi.c    |   34 +++++++++++++++-------------
+ 2 files changed, 53 insertions(+), 48 deletions(-)
+
+commit f51b794f1923f880ace5c50d671945ce432e6b70
+Author: legatvs <legatvs.git@gmail.com>
+Date:   Thu Dec 2 16:50:08 2010 +0200
+
+    include/: change to lgpl
+
+ include/quvi/quvi.h.in |   34 ++++++++++++++++++----------------
+ 1 files changed, 18 insertions(+), 16 deletions(-)
+
+commit e99db5520e8b6749c24c8bd859e693b90ec2ee58
+Author: legatvs <legatvs.git@gmail.com>
+Date:   Thu Dec 2 16:48:55 2010 +0200
+
+    examples/: change to lgpl
+
+ examples/simple.c |   40 +++++++++++++++++++++-------------------
+ 1 files changed, 21 insertions(+), 19 deletions(-)
+
+commit d4c1c733065488282faee54c0054258025294b63
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Mon Dec 13 23:59:30 2010 +0200
+
+    Bump version to 0.2.11
+
+ configure     |   20 ++++++++++----------
+ m4/version.m4 |    2 +-
+ 2 files changed, 11 insertions(+), 11 deletions(-)
+
+commit 252114bd38c3195a234e75a71aa660330f6ad849
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Mon Dec 13 23:47:13 2010 +0200
+
+    HowtoGetDevelopmentCode: Add WWW URL
+
+ doc/HowtoGetDevelopmentCode |    6 +++---
+ 1 files changed, 3 insertions(+), 3 deletions(-)
+
+commit d459870c454688c7dc8a8c0d8b8cbe63ff340519
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Mon Dec 13 23:45:33 2010 +0200
+
+    HowtoSubmitPathces: Fix URL
+
+ doc/HowtoSubmitPatches |    6 +++---
+ 1 files changed, 3 insertions(+), 3 deletions(-)
+
+commit e158ca2cd2b042956aff9c941229838334376258
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Mon Dec 13 23:43:10 2010 +0200
+
+    mv HowtoContributeCode to HowtoWriteWebsiteScript
+
+ doc/HowtoContributeCode     |  248 -------------------------------------------
+ doc/HowtoHelp               |    4 +-
+ doc/HowtoWriteWebsiteScript |  248 +++++++++++++++++++++++++++++++++++++++++++
+ doc/Makefile.am             |    2 +-
+ doc/Makefile.in             |    2 +-
+ 5 files changed, 251 insertions(+), 253 deletions(-)
+
+commit 14bc9d82f3ae9135d73d9d100ca7d33cb07eaffa
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Mon Dec 13 23:38:28 2010 +0200
+
+    HowtoContributeCode: Cleanup
+
+ doc/HowtoContributeCode |   34 +++++++++++-----------------------
+ 1 files changed, 11 insertions(+), 23 deletions(-)
+
+commit 1740ea3218c535b55bd11cc01fe193df687d66f5
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Fri Dec 10 21:55:50 2010 +0200
+
+    bloomberg.lua: Re-enable, clear broken status
+
+ share/Makefile.am |    2 +-
+ share/Makefile.in |   47 +++++++++++++++++++++++------------------------
+ src/quvi.c        |    2 +-
+ tests/Makefile.am |    2 +-
+ tests/Makefile.in |   24 ++++++++++++------------
+ 5 files changed, 38 insertions(+), 39 deletions(-)
+
+commit 86d6c48075966acc9c391703a9308f3465bb76d5
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Fri Dec 10 21:49:36 2010 +0200
+
+    Fix bloomberg support [#7]
+    
+    - http://sourceforge.net/apps/trac/quvi/ticket/7
+
+ share/lua/website/bloomberg.lua |    7 +++++--
+ 1 files changed, 5 insertions(+), 2 deletions(-)
+
 commit c947216ff12d1010b49e3066d3c728af52bc9953
 Author: Toni Gundogdu <legatvs.git@gmail.com>
 Date:   Fri Dec 10 09:51:29 2010 +0200

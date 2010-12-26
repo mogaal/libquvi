@@ -1,7 +1,7 @@
 
 if WITH_DOC
 doc_DATA = \
-HowtoContributeCode \
+HowtoWriteWebsiteScript \
 HowtoGetDevelopmentCode \
 HowtoHelp \
 HowtoSubmitPatches \
