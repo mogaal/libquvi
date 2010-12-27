@@ -3,6 +3,8 @@ libquvi (0.2.11-1) unstable; urgency=low
   * New upstream release (Closes: #607122, #606716).
   * d/control: Remove PCRE dependency and replace "libcurl4-dev" by 
     "libcurl4-gnutls-dev | libcurl4-dev"
+  * d/copyright: Update package license to LGPLv2.1+ and change lib/strepl.c
+    entry to "PD" (public domain). 
 
  -- Alejandro Garrido Mota <garridomota@gmail.com>  Wed, 15 Dec 2010 20:21:34 -0430
 
