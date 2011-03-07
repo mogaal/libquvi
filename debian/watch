@@ -1,2 +1,2 @@
 version=3
-http://code.google.com/p/quvi/downloads/list .+/files/quvi-([\d.]+)\.tar\.bz2
+http://sf.net/quvi/quvi-(.*).tar.gz

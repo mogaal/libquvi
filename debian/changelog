@@ -1,3 +1,11 @@
+libquvi (0.2.13-1) unstable; urgency=low
+
+  * New upstream release.. 
+  * Update d/watch to sf.net
+  * Update homepage field to quvi.sourceforge.net (Closes: #615554) 
+
+ -- Alejandro Garrido Mota <garridomota@gmail.com>  Mon, 07 Mar 2011 15:14:42 -0430
+
 libquvi (0.2.11-1) unstable; urgency=low
 
   * New upstream release (Closes: #607122, #606716).
