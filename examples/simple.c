@@ -1,5 +1,5 @@
 /* quvi
- * Copyright (C) 2009,2010  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2009,2010,2011  Toni Gundogdu <legatvs@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,14 +17,27 @@
  * 02110-1301  USA
  */
 
-/*
- * simple.c -- a simplistic libquvi example.
- * Ignores errors, see src/quvi.c for a more complete example.
- */
+/* simple.c -- A very basic example. See src/quvi.c for a more complete
+ * example. */
 
 #include <stdio.h>
 #include <quvi/quvi.h>
 
+static void check_error(quvi_t q, QUVIcode rc)
+{
+  if (rc == QUVI_OK)
+    return;
+
+  fprintf(stderr, "error: %s\n", quvi_strerror(q, rc));
+
+  if (q != NULL)
+    quvi_close(&q);
+
+  exit(1);
+}
+
+/* See src/quvi.c for a more complete example of status callback
+ * function */
 static int status_callback(long param, void *data)
 {
   quvi_word status, type;
@@ -39,17 +52,34 @@ static int status_callback(long param, void *data)
 
 int main(int argc, char **argv)
 {
-  quvi_t q;                     /* library handle */
-  quvi_video_t v;               /* video handle */
-  char *lnk;                    /* holds parsed video link */
+  quvi_video_t v;               /* Video handle */
+  QUVIcode rc;                  /* quvi return code */
+  char *lnk;                    /* Holds parsed video link */
+  quvi_t q;                     /* Session handle */
 
-  quvi_init(&q);
+  /* Start a new session. */
+  rc = quvi_init(&q);
+  check_error(q, rc);
+
+  /* Set session options. */
   quvi_setopt(q, QUVIOPT_STATUSFUNCTION, &status_callback);
-  quvi_parse(q, "http://www.youtube.com/watch?v=DeWsZ2b_pK4", &v);
+  quvi_setopt(q, QUVIOPT_NOVERIFY, 1L); /* Do not verify video link. */
+
+  /* Parse video details from the specified URL. */
+  rc = quvi_parse(q, "http://vimeo.com/1485507", &v);
+  check_error(q, rc);
+
+  /* Access the parsed video details. */
   quvi_getprop(v, QUVIPROP_VIDEOURL, &lnk);
   puts(lnk);
+
+  /* When done with the parsed details, free them. */
   quvi_parse_close(&v);
+
+  /* When done, close the session. */
   quvi_close(&q);
 
   return (0);
 }
+
+/* vim: set ts=2 sw=2 tw=72 expandtab: */

@@ -59,32 +59,35 @@ function is_handled (page_url)
 end
 
 -- Identify the script.
-function ident (page_url)
-    local t   = {}
-    t.domain  = "youtube.com"
-    t.formats = ""
+function ident (self)
+    package.path = self.script_dir .. '/?.lua'
+    local C      = require 'quvi/const'
+    local r      = {}
+    r.domain     = "youtube.com"
+    r.formats    = ""
     for k,_ in pairs (fmt_id_lookup) do
-        t.formats = t.formats .."|".. k
+        r.formats = r.formats .."|".. k
     end
-    t.formats = "default|best" .. t.formats
-    if (page_url ~= nil) then
-        page_url = youtubify(page_url)
+    r.formats = "default|best" .. r.formats
+    if (self.page_url ~= nil) then
+        self.page_url = youtubify(self.page_url)
     end
-    t.handles = is_handled(page_url)
-    return t
+    r.categories = C.proto_http
+    r.handles    = is_handled(self.page_url)
+    return r
 end
 
-function parse (video)
-    video.host_id  = "youtube"
-    local page_url = youtubify(video.page_url)
+function parse (self)
+    self.host_id  = "youtube"
+    local page_url = youtubify(self.page_url)
 
     local _,_,s = page_url:find("v=([%w-_]+)")
-    video.id    = s or error ("no match: video id")
+    self.id    = s or error ("no match: video id")
 
     local _,_,s = page_url:find('#t=(.+)')
-    video.starttime = s or ''
+    self.starttime = s or ''
 
-    return get_video_info (video)
+    return get_video_info (self)
 end
 
 -- Youtubify the URL.
@@ -94,29 +97,33 @@ function youtubify (url)
     return url
 end
 
-function get_video_info (video, result)
+function get_video_info (self, result)
 
-    local config_url =
-        "http://www.youtube.com/get_video_info?&video_id="
-         .. video.id
-         .. "&el=detailpage&ps=default&eurl=&gl=US&hl=en"
+    local _,_,s  = self.page_url:find ('^(%w+)://')
+    local scheme = s or error ("no match: scheme")
+
+    local config_url = string.format (
+        "%s://www.youtube.com/get_video_info?&video_id=%s"
+        .. "&el=detailpage&ps=default&eurl=&gl=US&hl=en",
+            scheme, self.id)
 
     local opts   = { fetch_type = 'config' }
-    local config = decode (quvi.fetch (config_url, opts))
+    local U      = require 'quvi/util'
+    local config = U.decode (quvi.fetch (config_url, opts))
 
     if (config['reason']) then
-        local reason = unescape (config['reason'])
+        local reason = U.unescape (config['reason'])
         local code   = config['errorcode']
         error (reason..' (code='..code..')')
     end
 
-    video.title = config['title'] or error ('no match: video title')
-    video.title = unescape (video.title)
+    self.title = config['title'] or error ('no match: video title')
+    self.title = U.unescape (self.title)
 
     local fmt_url_map =
         config['fmt_url_map'] or error ("no match: fmt_url_map")
 
-    fmt_url_map = unescape (fmt_url_map) .. ','
+    fmt_url_map = U.unescape (fmt_url_map) .. ','
 
     -- Assume first found URL to be the 'best'.
     local best  = nil
@@ -130,19 +137,19 @@ function get_video_info (video, result)
     -- Choose URL.
     local url = nil
 
-    if (video.requested_format == 'best') then
+    if (self.requested_format == 'best') then
         url = best
     else
-        url = to_url (video.requested_format, t)
-        if (url == nil and video.requested_format ~= 'default') then
+        url = to_url (self.requested_format, t)
+        if (url == nil and self.requested_format ~= 'default') then
             -- Fallback to our 'default'.
             url = to_url ('default', t)
         end
     end
 
-    video.url = {url or error ("no match: video url")}
+    self.url = {url or error ("no match: video url")}
 
-    return video
+    return self
 end
 
 function to_url (fmt, t)
@@ -166,23 +173,4 @@ function to_url (fmt, t)
     return url
 end
 
--- http://www.lua.org/pil/20.3.html
-function decode (s)
-    r = {}
-    for n,v in s:gfind ("([^&=]+)=([^&=]+)") do
-        n = unescape (n)
-        r[n] = v
-    end
-    return r
-end
-
--- http://www.lua.org/pil/20.3.html
-function unescape (s)
-    s = s:gsub ('+', ' ')
-    s = s:gsub ('%%(%x%x)', function (h)
-            return string.char (tonumber (h, 16))
-        end)
-    return s
-end
-
-
+-- vim: set ts=4 sw=4 tw=72 expandtab:

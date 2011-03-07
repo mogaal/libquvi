@@ -24,9 +24,11 @@ support-golem.pl \
 support-google.pl \
 support-buzzhumor.pl \
 support-liveleak.pl \
+support-publicsenat.pl \
 support-sapo.pl \
 support-sevenload.pl \
 support-spiegel.pl \
+support-tmunderground.pl\
 support-theonion.pl\
 support-youtube.pl \
 support-vimeo.pl

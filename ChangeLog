@@ -1,3 +1,748 @@
+commit ff65a2713320275f9cf3d86a11da80f5396b9182
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Mon Feb 7 21:25:52 2011 +0200
+
+    Bump interface revision
+
+ configure     |    2 +-
+ m4/version.m4 |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+commit 582ef8466515dc595b90cdd501355b2320ad4cdd
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sat Feb 5 02:05:44 2011 +0200
+
+    Add tmunderground.com support
+
+ share/Makefile.am                   |    1 +
+ share/Makefile.in                   |   12 ++++---
+ share/lua/website/tmunderground.lua |   58 +++++++++++++++++++++++++++++++++++
+ src/quvi.c                          |    1 +
+ tests/Makefile.am                   |    1 +
+ tests/Makefile.in                   |    7 ++--
+ tests/support-tmunderground.pl      |   11 ++++++
+ 7 files changed, 83 insertions(+), 8 deletions(-)
+
+commit 8aece8f560730cb83c064a7ae999438acfa5a58b
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Fri Feb 4 19:59:31 2011 +0200
+
+    Makefile.am: Add francetelevisions.lua, pluzz.lua
+
+ share/Makefile.am |    2 ++
+ share/Makefile.in |   14 ++++++++------
+ 2 files changed, 10 insertions(+), 6 deletions(-)
+
+commit 8c88a196807fe15be7afebafb511294a5e6b12d5
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Fri Feb 4 19:48:45 2011 +0200
+
+    Bump version to 0.2.13
+
+ configure     |   20 ++++++++++----------
+ m4/version.m4 |    2 +-
+ 2 files changed, 11 insertions(+), 11 deletions(-)
+
+commit a65694d040382bded77c2717c93fed4e28b56eac
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Fri Feb 4 19:40:03 2011 +0200
+
+    Add pluzz.fr support [#13]
+    
+    * http://sourceforge.net/apps/trac/quvi/ticket/13
+
+ share/lua/website/pluzz.lua |   55 +++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 55 insertions(+), 0 deletions(-)
+
+commit 0debbd7acddf952a4288b314f3f4c24e0d3bcb26
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Fri Feb 4 19:39:28 2011 +0200
+
+    Add francetelevisions.fr support [#13]
+    
+    * http://sourceforge.net/apps/trac/quvi/ticket/13
+
+ share/lua/website/francetelevisions.lua |   59 +++++++++++++++++++++++++++++++
+ 1 files changed, 59 insertions(+), 0 deletions(-)
+
+commit 241cfc2e8d0d14515dcebaedf240efe7fb45a1e5
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Fri Feb 4 19:19:37 2011 +0200
+
+    Remove unused strupr implementation
+
+ config.h.in     |    3 ---
+ configure       |   27 ---------------------------
+ configure.ac    |    4 ----
+ lib/Makefile.am |    4 ----
+ lib/Makefile.in |   26 +++++++-------------------
+ lib/platform.h  |    4 ----
+ lib/strupr.c    |   35 -----------------------------------
+ 7 files changed, 7 insertions(+), 96 deletions(-)
+
+commit aa93a403e2814fec85b4ebdc133e1890d1ed5a16
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Fri Feb 4 19:13:22 2011 +0200
+
+    INSTALL: Add note about tests
+
+ INSTALL |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
+
+commit e93917f16bbcf3092aa845505d82bb4da62330dc
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Wed Jan 19 10:50:49 2011 +0200
+
+    Set release details for 0.2.12
+
+ NEWS |   22 ++++++++++++++++++++++
+ 1 files changed, 22 insertions(+), 0 deletions(-)
+
+commit 6de77214e63390ecb47c14cdf59d0f714cc14691
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Wed Jan 19 10:21:55 2011 +0200
+
+    tests/support-clipfish.pl: Fix expected title
+
+ tests/support-clipfish.pl |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 6e9b43f16e6a89c1b8ef2aafb4fe7730f800637a
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Wed Jan 19 10:21:29 2011 +0200
+
+    tests/quviTest.pm.in: Apply perltidy
+
+ tests/quviTest.pm.in |   46 +++++++++++++++++++++++++---------------------
+ 1 files changed, 25 insertions(+), 21 deletions(-)
+
+commit 97cabe32d866e612ad86d0b3980d13c74f9e5bf0
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Fri Jan 14 18:03:48 2011 +0200
+
+    Bump interface revision
+
+ configure     |    2 +-
+ m4/version.m4 |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+commit acb3c9abae448fe37a1ee41535f7bf41f8edf356
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Fri Jan 14 17:12:27 2011 +0200
+
+    Website scripts: Cleanup indent functions
+    
+    * Rename "t" to "r"
+    * Move "require" call up to the top of the function
+
+ doc/HowtoWriteWebsiteScript         |    8 ++++----
+ share/lua/website/academicearth.lua |   29 +++++++++++------------------
+ share/lua/website/bloomberg.lua     |   14 +++++++-------
+ share/lua/website/break.lua         |   14 +++++++-------
+ share/lua/website/buzzhumor.lua     |   14 +++++++-------
+ share/lua/website/cbsnews.lua       |   14 +++++++-------
+ share/lua/website/charlierose.lua   |   14 +++++++-------
+ share/lua/website/clipfish.lua      |   14 +++++++-------
+ share/lua/website/collegehumor.lua  |   18 +++++++++---------
+ share/lua/website/dailymotion.lua   |   12 ++++++------
+ share/lua/website/funnyhub.lua      |   14 +++++++-------
+ share/lua/website/funnyordie.lua    |   14 +++++++-------
+ share/lua/website/gaskrank.lua      |   14 +++++++-------
+ share/lua/website/globo.lua         |   14 +++++++-------
+ share/lua/website/golem.lua         |   14 +++++++-------
+ share/lua/website/google.lua        |   14 +++++++-------
+ share/lua/website/liveleak.lua      |   14 +++++++-------
+ share/lua/website/publicsenat.lua   |   14 +++++++-------
+ share/lua/website/sapo.lua          |   14 +++++++-------
+ share/lua/website/sevenload.lua     |   14 +++++++-------
+ share/lua/website/spiegel.lua       |   21 +++++++++++----------
+ share/lua/website/theonion.lua      |   14 +++++++-------
+ share/lua/website/tube8.lua         |   14 +++++++-------
+ share/lua/website/vimeo.lua         |   14 +++++++-------
+ share/lua/website/xvideos.lua       |   14 +++++++-------
+ share/lua/website/youjizz.lua       |   14 +++++++-------
+ share/lua/website/youtube.lua       |   20 ++++++++++----------
+ 27 files changed, 198 insertions(+), 204 deletions(-)
+
+commit 9ae147454a1e192232e9a6e3413b6151bea8a55e
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Fri Jan 14 17:00:15 2011 +0200
+
+    Print path to LUA script if an error occurs
+
+ lib/lua_wrap.c |   71 ++++++++++++++++++++++++++++++++++---------------------
+ 1 files changed, 44 insertions(+), 27 deletions(-)
+
+commit cd5a33d1de430e72a0e25234773b4d4a0d307e9d
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Mon Jan 10 09:49:57 2011 +0200
+
+    Replace indent use with astyle
+    
+    * Use --style=gnu
+    * Remove scripts/indent_c.sh
+    * Add scripts/astyle_c.sh
+
+ doc/CodingStyle     |    3 +-
+ lib/curl_wrap.c     |  265 ++++++-----
+ lib/internal.h      |   12 +-
+ lib/llst.c          |   51 ++-
+ lib/llst.h          |    3 +-
+ lib/lua_wrap.c      |  336 +++++++------
+ lib/lua_wrap.h      |    3 +-
+ lib/quvi.c          |  393 +++++++++--------
+ lib/strepl.c        |   29 +-
+ lib/strupr.c        |    9 +-
+ lib/util.c          |   77 ++--
+ lib/util.h          |    2 +-
+ scripts/Makefile.am |    2 +-
+ scripts/Makefile.in |    2 +-
+ scripts/astyle_c.sh |    6 +
+ scripts/indent_c.sh |   16 -
+ src/cmdline.c       | 1297 +++++++++++++++++++++++++++------------------------
+ src/cmdline.h       |  266 ++++++------
+ src/quvi.c          |  490 +++++++++++---------
+ 19 files changed, 1736 insertions(+), 1526 deletions(-)
+
+commit 4911d3e9096ce78d75a54177fe4faded392377ed
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sun Jan 9 23:03:33 2011 +0200
+
+    Add scripts/Makefile.am
+
+ Makefile.am         |    2 +-
+ Makefile.in         |    5 +-
+ configure           |    3 +-
+ configure.ac        |    1 +
+ scripts/Makefile.am |    1 +
+ scripts/Makefile.in |  391 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ 6 files changed, 399 insertions(+), 4 deletions(-)
+
+commit 0847b4b8a3d299b55e4abfd3f5d10bd2e16cbf6a
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sun Jan 9 22:59:35 2011 +0200
+
+    Apply -l72 with indent command
+
+ lib/curl_wrap.c |   38 +++++++++++++++++++++++++-------------
+ lib/curl_wrap.h |    3 ++-
+ lib/lua_wrap.c  |   51 ++++++++++++++++++++++++++++++++++-----------------
+ lib/quvi.c      |    3 ++-
+ lib/util.c      |    6 ++++--
+ lib/util.h      |    3 ++-
+ src/quvi.c      |   48 ++++++++++++++++++++++++++++++------------------
+ 7 files changed, 99 insertions(+), 53 deletions(-)
+
+commit e493fbacb2220b3b419f34bff94ec8ea8ec2d5f2
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sun Jan 9 22:59:06 2011 +0200
+
+    CodingStyle: Add -l72 and vim modelines
+
+ doc/CodingStyle |   11 ++++++++---
+ 1 files changed, 8 insertions(+), 3 deletions(-)
+
+commit c0333ec3a246348a5c4dffae08984a74903ed8c0
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sun Jan 9 22:57:54 2011 +0200
+
+    Add scripts/indent_c.sh
+
+ scripts/indent_c.sh |   16 ++++++++++++++++
+ 1 files changed, 16 insertions(+), 0 deletions(-)
+
+commit 7724ff3ed8901fca91cb379824a6bed209432dbd
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sun Jan 9 22:57:14 2011 +0200
+
+    Remove examples/git/hooks/pre-commit
+    
+    Due to pre-commit <=> indent frustrations.
+
+ examples/git-hooks/pre-commit |   19 -------------------
+ 1 files changed, 0 insertions(+), 19 deletions(-)
+
+commit 1eb5876216e9a18e543766b29e77f546ca1f91d1
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sun Jan 9 20:49:26 2011 +0200
+
+    examples/simple.c: Rewrite to handle errors
+
+ examples/simple.c |   48 ++++++++++++++++++++++++++++++++++++++----------
+ 1 files changed, 38 insertions(+), 10 deletions(-)
+
+commit dfea4a2d5ccb5c1f7112319e1583d7d862867546
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sun Jan 9 20:11:45 2011 +0200
+
+    Make quvi compile with -pedantic
+    
+    * Make minor syntax changes
+    * Replace seterr, setvid macros with freprintf function
+    * Remove csetopt macro
+    * Remove quvi/license.c
+
+ include/quvi/quvi.h.in |   10 ++--
+ lib/curl_wrap.c        |  138 ++++++++++++++++++++++--------------------------
+ lib/internal.h         |   15 -----
+ lib/lua_wrap.c         |   30 ++++++-----
+ lib/quvi.c             |   12 ++--
+ lib/util.c             |   34 ++++++++----
+ lib/util.h             |    8 +--
+ src/Makefile.am        |    1 -
+ src/Makefile.in        |   30 ++--------
+ src/license.c          |   38 -------------
+ src/quvi.c             |   31 ++++++++++-
+ 11 files changed, 152 insertions(+), 195 deletions(-)
+
+commit c7b740ba34f8926a4a06515eff9bd4ca92a089ff
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Fri Jan 7 23:55:36 2011 +0200
+
+    Add gitignore file
+
+ .gitignore |   12 ++++++++++++
+ 1 files changed, 12 insertions(+), 0 deletions(-)
+
+commit e6efc833c6d9c62f86ab87ff4e9afc4b55e51fd5
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Wed Jan 5 14:15:17 2011 +0200
+
+    AM_INIT_AUTOMAKE: dist-lzma to dist-xz
+
+ Makefile.in  |    7 +++----
+ configure.ac |    2 +-
+ 2 files changed, 4 insertions(+), 5 deletions(-)
+
+commit 34e50b7bab8030b66d97ba6ba1b7a34de79f2d4a
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Tue Jan 4 22:43:33 2011 +0200
+
+    Add dist-lzma to AM_INIT_AUTOMAKE
+
+ Makefile.in  |    5 +++--
+ configure.ac |    2 +-
+ 2 files changed, 4 insertions(+), 3 deletions(-)
+
+commit fae1e959995dd260d9b8fed68583f84fe813a2d1
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Mon Jan 3 22:05:22 2011 +0200
+
+    youtube.lua: Use cleaner string formatting
+    
+    * Use string.format instead
+
+ share/lua/website/youtube.lua |    9 ++++-----
+ 1 files changed, 4 insertions(+), 5 deletions(-)
+
+commit 6c0da29f7490b029477706e716320e27c1e22bbc
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Mon Jan 3 22:04:09 2011 +0200
+
+    bloomberg.lua: Use cleaner string formatting
+    
+    * Use string.format instead
+    * Remove unnecessary quvi.unescape call
+
+ share/lua/website/bloomberg.lua |    8 +++-----
+ 1 files changed, 3 insertions(+), 5 deletions(-)
+
+commit f70699d9f7f5e5a0fbbc19ea189d2add30a24f3b
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Mon Jan 3 21:49:13 2011 +0200
+
+    theonion.lua: Use cleaner string formatting
+    
+    * Use string.format instead
+    * Remove unnecessary call to quvi.unescape
+
+ share/lua/website/theonion.lua |   12 ++++++------
+ 1 files changed, 6 insertions(+), 6 deletions(-)
+
+commit 6ffd39a53d68cf9f60308c183a7028e25f29faf7
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Mon Jan 3 20:06:41 2011 +0200
+
+    Move quvi_supported doxy comment in header
+    
+    Move quvi_supported doxygen comment from "Utility functions" group to
+    "Misc. utility functions".
+
+ include/quvi/quvi.h.in |   56 ++++++++++++++++++++++++------------------------
+ 1 files changed, 28 insertions(+), 28 deletions(-)
+
+commit aaffdde5fd1d826c35c1931a91bfebab1327d4fe
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Mon Jan 3 17:27:06 2011 +0200
+
+    Tweak API function descriptions
+    
+    * quvi_supported
+    * quvi_next_supported_website
+
+ include/quvi/quvi.h.in |   26 ++++++++++++++++++--------
+ 1 files changed, 18 insertions(+), 8 deletions(-)
+
+commit b222f8cf55a27ba2aad94e1d54e1ea7b51a3a209
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Mon Jan 3 19:56:33 2011 +0200
+
+    Make quvi_next_supported_website respect QUVIOPT_CATEGORY
+
+ lib/quvi.c |   26 +++++++++++++++++---------
+ 1 files changed, 17 insertions(+), 9 deletions(-)
+
+commit f0844627ea1af5f958b957d5fbe5db9ad9945a4f
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Mon Jan 3 19:21:24 2011 +0200
+
+    Add vim modelines to LUA source code
+
+ share/lua/util/charset.lua          |    2 +-
+ share/lua/util/content_type.lua     |    2 +-
+ share/lua/util/trim.lua             |    2 +-
+ share/lua/website/academicearth.lua |    2 +-
+ share/lua/website/bloomberg.lua     |    2 ++
+ share/lua/website/break.lua         |    2 +-
+ share/lua/website/buzzhumor.lua     |    2 +-
+ share/lua/website/cbsnews.lua       |    2 ++
+ share/lua/website/charlierose.lua   |    2 +-
+ share/lua/website/clipfish.lua      |    2 +-
+ share/lua/website/collegehumor.lua  |    2 ++
+ share/lua/website/dailymotion.lua   |    2 +-
+ share/lua/website/funnyhub.lua      |    2 +-
+ share/lua/website/funnyordie.lua    |    2 +-
+ share/lua/website/gaskrank.lua      |    2 +-
+ share/lua/website/globo.lua         |    2 +-
+ share/lua/website/golem.lua         |    2 +-
+ share/lua/website/google.lua        |    2 +-
+ share/lua/website/liveleak.lua      |    2 +-
+ share/lua/website/publicsenat.lua   |    3 +++
+ share/lua/website/quvi/bit.lua      |    2 +-
+ share/lua/website/quvi/const.lua    |    2 +-
+ share/lua/website/quvi/util.lua     |    2 +-
+ share/lua/website/sapo.lua          |    2 +-
+ share/lua/website/sevenload.lua     |    2 +-
+ share/lua/website/spiegel.lua       |    2 +-
+ share/lua/website/theonion.lua      |    2 +-
+ share/lua/website/tube8.lua         |    2 +-
+ share/lua/website/vimeo.lua         |    2 +-
+ share/lua/website/xvideos.lua       |    2 +-
+ share/lua/website/youjizz.lua       |    2 +-
+ share/lua/website/youtube.lua       |    2 +-
+ 32 files changed, 37 insertions(+), 28 deletions(-)
+
+commit 8c388282dee71cb74be215df42b045f31d909486
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Mon Jan 3 19:18:47 2011 +0200
+
+    Add vim modelines to C source code
+
+ examples/simple.c      |    2 ++
+ include/quvi/quvi.h.in |    3 +--
+ lib/asprintf.c         |    2 ++
+ lib/curl_wrap.c        |    2 ++
+ lib/curl_wrap.h        |    1 +
+ lib/internal.h         |    1 +
+ lib/llst.c             |    2 ++
+ lib/llst.h             |    1 +
+ lib/lua_wrap.c         |    2 ++
+ lib/lua_wrap.h         |    1 +
+ lib/platform.h         |    1 +
+ lib/quvi.c             |    2 ++
+ lib/strepl.c           |    2 ++
+ lib/strupr.c           |    2 ++
+ lib/util.c             |    2 ++
+ lib/util.h             |    1 +
+ lib/vasprintf.c        |    2 ++
+ src/license.c          |    1 +
+ src/quvi.c             |    2 ++
+ 19 files changed, 30 insertions(+), 2 deletions(-)
+
+commit 81969c08e0819d945bce4da2b15a56a48deecb74
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sun Jan 2 17:58:38 2011 +0200
+
+    dailymotion.lua: Fix family-filter redirect
+    
+    If quvi checks for shortened URL and the website redirects to
+    family_filter page, quvi is unable to continue. This patch adds a
+    workaround to that.
+    
+    Additionally, (at least some) family-filtered pages embed the URL
+    differently, e.g. only one URL is listed in the page HTML and our
+    "regular" fmt_id,video_url pattern no longer matches the URL in this
+    pages. This patch addresses this.
+    
+    Related to <http://sourceforge.net/apps/trac/clive/ticket/4>
+
+ share/lua/website/dailymotion.lua |   45 ++++++++++++++++++++++++++----------
+ 1 files changed, 32 insertions(+), 13 deletions(-)
+
+commit 5ad49a6bf52d0dc5cf1f57468064aa1f0c18613e
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sun Jan 2 12:21:09 2011 +0200
+
+    CodingStyle: Add editor settings under LUA
+
+ doc/CodingStyle |    8 ++++++--
+ 1 files changed, 6 insertions(+), 2 deletions(-)
+
+commit 1f72f3205b7a409fc96d8e8e0abe7df006f16baa
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Wed Dec 29 19:21:37 2010 +0200
+
+    configure.ac: Tidy up summary output
+
+ configure    |   26 ++++++++++++++++----------
+ configure.ac |   13 ++++++++-----
+ 2 files changed, 24 insertions(+), 15 deletions(-)
+
+commit d9dbb9015d425852a9378606ac42110761bf1e77
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Wed Dec 29 19:11:09 2010 +0200
+
+    youtube.lua: mv decode, unescape to quvi/util.lua
+
+ share/Makefile.am               |    1 +
+ share/Makefile.in               |   54 +++++++++++++++++++-------------------
+ share/lua/website/quvi/util.lua |   46 +++++++++++++++++++++++++++++++++
+ share/lua/website/youtube.lua   |   28 +++----------------
+ 4 files changed, 79 insertions(+), 50 deletions(-)
+
+commit 210887add2cccb75f62786a31d8fd8e4e86ce2a2
+Merge: 3d19aec 5bfb40d
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Wed Dec 29 19:03:19 2010 +0200
+
+    Merge branch 'proto_category'
+
+commit 3d19aecb0c33dd97bc4cbde5bf48b1cbcf3fd587
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Wed Dec 29 19:02:15 2010 +0200
+
+    support-publicsenat.pl: Change expected length
+
+ tests/support-publicsenat.pl |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 5bfb40d68c9c7a29bfd87bb2adfb920acc3f1d6d
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Wed Dec 29 18:25:02 2010 +0200
+
+    Fix whitespace
+
+ share/lua/website/quvi/bit.lua |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 4ad5c3ba62b926f0c8f03cd3ccde84c99d5f6394
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Wed Dec 29 17:15:05 2010 +0200
+
+    Pass script dir to website script "parse" function
+
+ lib/lua_wrap.c |    6 ++++++
+ 1 files changed, 6 insertions(+), 0 deletions(-)
+
+commit 3f943c8471cfca631de96df6a1187f11d7f8b4c2
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Wed Dec 29 17:10:20 2010 +0200
+
+    HowtoWriteWebsiteScript: Match category changes
+    
+    Fix a typo, rewrite to match the QUVIOPT_CATEGORY changes.
+
+ doc/HowtoWriteWebsiteScript |   29 +++++++++++++++--------------
+ 1 files changed, 15 insertions(+), 14 deletions(-)
+
+commit 7fc318a18195e0cd1d40b46f31b0cd8642812d09
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Wed Dec 29 15:30:05 2010 +0200
+
+    Change example URL, fix #17
+
+ examples/simple.c      |    2 +-
+ include/quvi/quvi.h.in |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+commit dfbe84eb7df38a9a5650e3caa11e1d1586142414
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Wed Dec 29 15:27:00 2010 +0200
+
+    Add --category-* to manual
+    
+    Remove short options for --test-all, --dump. Tidy up option descriptions
+    for these in addition to --format.
+
+ man1/quvi.1     |   55 ++++++++++++++++++++++++++++++-------------------------
+ man1/quvi.1.pod |   44 +++++++++++++++++++++++++++-----------------
+ 2 files changed, 57 insertions(+), 42 deletions(-)
+
+commit 6802c177c5597cec2a29a7e9470bf82a91001869
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Wed Dec 29 15:24:53 2010 +0200
+
+    Add --category-* to quvi
+    
+    Implement QUVIOPT_CATEGORY in quvi. Remove short options from --test-all
+    and --dump.
+
+ src/cmdline.c   |  164 ++++++++++++++++++++++++++++++++++++++++++-------------
+ src/cmdline.ggo |   19 ++++++-
+ src/cmdline.h   |   17 +++++-
+ src/quvi.c      |   16 +++++
+ 4 files changed, 174 insertions(+), 42 deletions(-)
+
+commit b54f037004b0347534d19fad28a8ca4db0685da2
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Wed Dec 29 15:24:20 2010 +0200
+
+    Add QUVIOPT_CATEGORY
+    
+    Add QUVIOPT_CATEGORY, QUVIPROTO_* and reimplement website scripts to set
+    self.categories in the ident function. Rename the "video" table in parse
+    function to "self".
+
+ include/quvi/quvi.h.in              |   19 ++++++++++++
+ lib/internal.h                      |    5 ++-
+ lib/lua_wrap.c                      |   39 ++++++++++++++++++++----
+ lib/lua_wrap.h                      |    1 +
+ lib/quvi.c                          |   15 +++++----
+ lib/util.c                          |    9 +++++
+ lib/util.h                          |    2 +
+ share/Makefile.am                   |    2 +
+ share/Makefile.in                   |   56 ++++++++++++++++++-----------------
+ share/lua/website/README            |   52 +++++++++++++++++++-------------
+ share/lua/website/academicearth.lua |   32 +++++++++++---------
+ share/lua/website/bloomberg.lua     |   31 +++++++++++--------
+ share/lua/website/break.lua         |   31 ++++++++++---------
+ share/lua/website/buzzhumor.lua     |   28 ++++++++++-------
+ share/lua/website/cbsnews.lua       |   34 ++++++++++++---------
+ share/lua/website/charlierose.lua   |   28 ++++++++++-------
+ share/lua/website/clipfish.lua      |   37 ++++++++++++----------
+ share/lua/website/collegehumor.lua  |   38 +++++++++++++----------
+ share/lua/website/dailymotion.lua   |   39 +++++++++++++-----------
+ share/lua/website/funnyhub.lua      |   28 ++++++++++-------
+ share/lua/website/funnyordie.lua    |   28 ++++++++++-------
+ share/lua/website/gaskrank.lua      |   28 ++++++++++-------
+ share/lua/website/globo.lua         |   30 ++++++++++--------
+ share/lua/website/golem.lua         |   36 ++++++++++++----------
+ share/lua/website/google.lua        |   28 ++++++++++-------
+ share/lua/website/liveleak.lua      |   28 ++++++++++-------
+ share/lua/website/publicsenat.lua   |   33 +++++++++++---------
+ share/lua/website/quvi/bit.lua      |   49 ++++++++++++++++++++++++++++++
+ share/lua/website/quvi/const.lua    |   33 ++++++++++++++++++++
+ share/lua/website/sapo.lua          |   34 ++++++++++----------
+ share/lua/website/sevenload.lua     |   28 ++++++++++-------
+ share/lua/website/spiegel.lua       |   29 ++++++++++--------
+ share/lua/website/theonion.lua      |   30 ++++++++++--------
+ share/lua/website/tube8.lua         |   28 ++++++++++-------
+ share/lua/website/vimeo.lua         |   44 +++++++++++++++------------
+ share/lua/website/xvideos.lua       |   28 ++++++++++-------
+ share/lua/website/youjizz.lua       |   28 ++++++++++-------
+ share/lua/website/youtube.lua       |   43 ++++++++++++++------------
+ 38 files changed, 680 insertions(+), 431 deletions(-)
+
+commit 337d2484184629601e2899afa47d1322cb11a093
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Mon Dec 27 09:01:02 2010 +0200
+
+    youtube.lua: Reuse URL scheme from input URL
+
+ share/lua/website/youtube.lua |   10 +++++++---
+ 1 files changed, 7 insertions(+), 3 deletions(-)
+
+commit 173aa2743551efee507f5d31e60bb6689d69e77b
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Mon Dec 27 09:00:39 2010 +0200
+
+    Use CURL_GLOBAL_ALL instead
+
+ lib/quvi.c |    6 +-----
+ 1 files changed, 1 insertions(+), 5 deletions(-)
+
+commit 05f07faec8293ac57224e9dfaace20818666dc5c
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Mon Dec 27 08:55:20 2010 +0200
+
+    Regenerate quvi.1
+
+ man1/quvi.1 |   42 ++++++++----------------------------------
+ 1 files changed, 8 insertions(+), 34 deletions(-)
+
+commit 0562f51652a7dca1de28e2d3606589d1ada5790a
+Author: Raphaël Droz <raphael.droz@gmail.com>
+Date:   Sat Dec 18 14:33:14 2010 +0100
+
+    publicsenat.lua: Catch video ID at end of URL
+
+ share/lua/website/publicsenat.lua |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 88925dcc90c13175d9d26045cde09be66ff76d87
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sat Dec 18 12:22:07 2010 +0200
+
+    Add publicsenat test
+
+ src/quvi.c                   |    1 +
+ tests/Makefile.am            |    1 +
+ tests/Makefile.in            |   10 +++++-----
+ tests/support-publicsenat.pl |   11 +++++++++++
+ 4 files changed, 18 insertions(+), 5 deletions(-)
+
+commit 346ec8599a1934517ea34126bce8adf1559c4b85
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sat Dec 18 12:20:37 2010 +0200
+
+    Add publicsenat.lua to Makefile.am
+
+ share/Makefile.am |    1 +
+ share/Makefile.in |   18 +++++++++---------
+ 2 files changed, 10 insertions(+), 9 deletions(-)
+
+commit 699db38dc5de8a5168aa0123c93a8d01aa18b3dd
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sat Dec 18 11:54:06 2010 +0200
+
+    publicsenat.lua: Pattern changes, fix title
+    
+    - Remove unnecessary 'flv' from t.formats
+    - Fetch title from video page HTML instead
+    - Do not assume that video page URL ends with ID
+    - Simplify video URL matching pattern
+
+ share/lua/website/publicsenat.lua |   29 ++++++++++++++++-------------
+ 1 files changed, 16 insertions(+), 13 deletions(-)
+
+commit 223b9892037d17128f469978501f06aac0b33c8b
+Author: Raphaël Droz <raphael.droz@gmail.com>
+Date:   Sat Dec 18 00:50:38 2010 +0100
+
+    publicsenat: handle for long style url
+
+ share/lua/website/publicsenat.lua |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit da9b53ddada2ef33f35039494d37815c959a5aec
+Author: Raphaël Droz <raphael.droz@gmail.com>
+Date:   Fri Dec 17 19:21:33 2010 +0100
+
+    Added support for publicsenat.fr
+
+ share/lua/website/publicsenat.lua |   48 +++++++++++++++++++++++++++++++++++++
+ 1 files changed, 48 insertions(+), 0 deletions(-)
+
+commit 1e87bb83ad929794efa17bec93ffb325a988dca5
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sat Dec 18 01:46:48 2010 +0200
+
+    Bump version to 0.2.12
+
+ configure     |   20 ++++++++++----------
+ m4/version.m4 |    2 +-
+ 2 files changed, 11 insertions(+), 11 deletions(-)
+
 commit a37852eccf92113595026378fb6b1f70e1460e91
 Author: Toni Gundogdu <legatvs.git@gmail.com>
 Date:   Sat Dec 18 01:21:37 2010 +0200

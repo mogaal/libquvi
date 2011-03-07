@@ -21,21 +21,25 @@
 --
 
 -- Identify the script.
-function ident (page_url)
-    local t   = {}
-    t.domain  = "sevenload.com"
-    t.formats = "default"
-    t.handles = (page_url ~= nil and page_url:find(t.domain) ~= nil)
-    return t
+function ident (self)
+    package.path = self.script_dir .. '/?.lua'
+    local C      = require 'quvi/const'
+    local r      = {}
+    r.domain     = "sevenload.com"
+    r.formats    = "default"
+    r.categories = C.proto_http
+    r.handles    =
+        (self.page_url ~= nil and self.page_url:find(r.domain) ~= nil)
+    return r
 end
 
 -- Parse video URL.
-function parse (video)
-    video.host_id = "sevenload"
-    local page    = quvi.fetch(video.page_url)
+function parse (self)
+    self.host_id = "sevenload"
+    local page   = quvi.fetch(self.page_url)
 
     local _,_,s = page:find('<meta name="title" content="(.-)"')
-    video.title = s or error ("no match: video title")
+    self.title  = s or error ("no match: video title")
 
     local _,_,s      = page:find('configPath=(.-)"')
     local config_url = s or error ("no match: config")
@@ -44,12 +48,12 @@ function parse (video)
     local config     = quvi.fetch (config_url, {fetch_type = 'config'})
 
     local _,_,s = config_url:find("itemId=(%w+)")
-    video.id    = s or error ("no match: video id")
+    self.id     = s or error ("no match: video id")
 
     local _,_,s = config:find('<location seeking="yes">(.-)</')
-    video.url   = {s or error ("no match: location")}
+    self.url    = {s or error ("no match: location")}
 
-    return video
+    return self
 end
 
-
+-- vim: set ts=4 sw=4 tw=72 expandtab:

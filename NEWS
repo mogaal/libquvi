@@ -1,4 +1,34 @@
 
+0.2.13  Mon Feb 07 2011     Toni Gundogdu
+Changes:
+        - Add tmunderground.lua
+        - Add pluzz.lua (#13)
+        - Add francetelevisions.lua (#13)
+        - Remove unused strupr implementation
+
+
+0.2.12  Wed Jan 19 2011     Toni Gundogdu
+Changes:
+        - Add quvi/const.lua, quvi/bit.lua, quvi/util.lua (to lua/website/)
+        - Add vim modelines to C and LUA source code
+        - Add QUVIOPT_CATEGORY to API
+        - Add dist-xz to configure.ac
+        - Add --category-* options
+        - Add publicsenat.lua, thanks to Raphael Droz for the script (#14)
+        - Pass table (with URL, script path) to LUA scripts "ident" function
+        - Make project compile with "gcc -ansi -pedantic" (c. 4.2, 4.5)
+        - Apply style changes (scripts/astyle_c.sh) to C source code
+        - Set CURL_GLOBAL_ALL to allow use of HTTPS with youtube.lua
+        - Update API reference documentation (descr., grammar, etc.)
+        - bloomberg.lua: Use cleaner string formatting
+        - theonion.lua: Use cleaner string formatting
+        - youtube.lua: Accept HTTPS URLs (#22)
+Bugfixes:
+        - dailymotion.lua: Family-filter redirection (port from clive 2.2)
+        - Replace URL, add error checking to examples/simple.c (#17)
+        - tests/support-clipfish.pl: Expected title
+
+
 0.2.11  Sat Dec 18 2010     Toni Gundogdu
 Changes:
         - Re-license under LGPLv2.1+ [#9]

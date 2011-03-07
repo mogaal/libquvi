@@ -18,57 +18,67 @@ Each website script must contain the following functions:
   * parse
 
 
-2.1. function ident (page_url)
+2.1. function ident (self)
 ------------------------------
 
 quvi calls this function to check if the script can handle
 the user specified video page URL.
 
 Parameters:
-  * page_url (string)
+  * self (table)
+    - page_url (string)   -- User specified video page URL
+    - script_dir (string) -- Path to the directory containing this script
 
 Returns:
-  * A table containing the following keys
+  * A table containing the following details
 
-    - domain (string)
-      - This string is used to match page URL to domain
-      - Returned to an application with quvi_next_supported_website
-      - The string must cover any TLDs and additional domain names
-      - e.g. "youtube.com", "video.google."
+    * domain (string)
+      - Identifies the script, essentially a pattern
+      - Used to match the user specified video page URL
+      - Should cover any additional TLDs and website domain  names
+      - Examples: youtube.com, video.google.
 
-    - formats (string)
-      - An "array" of the supported video format IDs, e.g. "default|best|hq|hd"
-      - All scripts should at least define "default" in this string
-      - Should include "best" if there are more than just "default" ID
+    * formats (string)
+      - Array of available video format IDs (e.g. "default|best|hq|hd")
+      - Specify at least 'default' in this
+      - Append 'best' to the list only if there are more than one format
+        IDs and the script contains an algorithm for this purpose
 
-    - handles (boolean)
-      - Used to check whether the script can handle the user specified URL
+    * categories (number)
+      - Bit pattern defining which categories this script belongs to
+      - See quvi/const.lua for the available category bits (e.g. proto_*)
+      - You can also use bit_or of quvi/bit.lua for multi-categorization
+      - Most scripts usually set this to proto_http
+
+    * handles (boolean)
+      - Whether this script can handle the user specified video page URL
 
 
-2.2. function parse (video)
+2.2. function parse (self)
 ---------------------------
 
 quvi calls this function to fetch and parse the user specified URL.
 This function looks typically very different for each website. Compare
 buzzhumor.lua and youtube.lua for an example of this.
 
-The "parse" function is expected set/update the following video details:
+The "parse" function is expected set/update the following details:
   * host_id (string)
   * title (string)
   * id (string)
   * url (array of strings)
   * redirect (string) [see notes below]
 
-Each of these belong to the `video' table passed to the function
-as a parameter. e.g. video.host_id = 'youtube' or video.id = '1234'
+Each of these belong to the `self' table passed to the function
+as a parameter. e.g. self.host_id = 'youtube' or self.id = '1234'
 
 Parameters:
   * quvi sets the following table keys before it runs the script
-    - page_url (string)         -- user specified URL
-    - requested_format (string) -- user requested video format ID
+    - page_url (string)         -- User specified video page URL
+    - requested_format (string) -- User requested video format ID
+    - script_dir (string)       -- Path to the directory containing this script
 
 Returns:
-  * The updated `video' table
+  * The updated `self' table
 
 Notes:
   * "redirect", special field, if set (default:empty):

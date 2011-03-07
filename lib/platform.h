@@ -32,8 +32,5 @@ int vasprintf(char **dst, const char *fmt, va_list ap);
 int asprintf(char **dst, const char *fmt, ...);
 #endif
 
-#ifndef HAVE_STRUPR
-char *strupr(char *src);
 #endif
-
-#endif
+/* vim: set ts=2 sw=2 tw=72 expandtab: */

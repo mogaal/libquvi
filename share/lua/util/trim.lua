@@ -36,4 +36,4 @@ function trim (s) -- Based on http://lua-users.org/wiki/StringTrim (trim1)
     return (s:gsub ("%s%s+", " "))
 end
 
-
+-- vim: set ts=4 sw=4 tw=72 expandtab:

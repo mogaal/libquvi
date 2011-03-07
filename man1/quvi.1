@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "quvi 1"
-.TH quvi 1 "2010-12-07" "0.2.9" "quvi manual"
+.TH quvi 1 "2010-12-29" "0.2.12" "quvi manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -194,6 +194,21 @@ as well as content-type for the video.
 If this switch used, the program will report invalid values for those
 video details (e.g. 0 file length, empty string for content-type, etc.)
 but saves some bandwidth if those details are not obligatory.
+.IP "\fB\-\-category\-http\fR" 4
+.IX Item "--category-http"
+Enable category \s-1HTTP\s0 website scripts. This is the default category.
+.IP "\fB\-\-category\-mms\fR" 4
+.IX Item "--category-mms"
+Enable category \s-1MMS\s0 website scripts.
+.IP "\fB\-\-category\-rtsp\fR" 4
+.IX Item "--category-rtsp"
+Enable category \s-1RTSP\s0 website scripts.
+.IP "\fB\-\-category\-rtmp\fR" 4
+.IX Item "--category-rtmp"
+Enable category \s-1RTMP\s0 website scripts.
+.IP "\fB\-\-category\-all\fR" 4
+.IX Item "--category-all"
+Enable all categories of website scripts.
 .IP "\fB\-\-page\-title\fR \fIarg\fR" 4
 .IX Item "--page-title arg"
 Check that the parsed video title matches the \fIarg\fR.
@@ -210,38 +225,28 @@ The libquvi tests typically make use of this option.
 .IX Item "--file-suffix arg"
 Check that the parsed video file suffix matches the \fIarg\fR.
 The libquvi tests typically make use of this option.
-.IP "\fB\-a, \-\-test\-all\fR" 4
-.IX Item "-a, --test-all"
-quvi holds a number of built-in video URLs that can be tested
-with this switch.
-.IP "\fB\-d, \-\-dump\fR" 4
-.IX Item "-d, --dump"
-Dump video details while when running the program with \f(CW\*(C`\-\-test\-all\*(C'\fR.
+.IP "\fB\-\-test\-all\fR" 4
+.IX Item "--test-all"
+Test all of the built-in (category \s-1QUVIPROTO_HTTP\s0) URLs.
+.IP "\fB\-\-dump\fR" 4
+.IX Item "--dump"
+Dump video details while with \f(CW\*(C`\-\-test\-all\*(C'\fR.
 .IP "\fB\-t, \-\-test\fR \fIarg\fR" 4
 .IX Item "-t, --test arg"
-quvi holds a number of built-in video URLs that can be matched
-with this option. Some examples:
+Match \fIarg\fR to built-in (category \s-1QUVIPROTO_HTTP\s0) test URLs, e.g.:
 .Sp
-.Vb 2
+.Vb 6
 \&    % quvi \-t youtube
 \&    % quvi \-t yout
+\&    % quvi \-t livel
+\&    % quvi \-t liveleak
+\&    % quvi \-t col
+\&    % quvi \-t collegehumor
 .Ve
-.Sp
-Both would match the same built-in test \s-1URL\s0 for Youtube. Some
-more examples:
-    % quvi \-t livel
-    % quvi \-t liveleak
-    % quvi \-t col
-    % quvi \-t collegehumor
-.Sp
-As long as the built-in \s-1URL\s0 contains the pattern, it can be
-matched. Like \f(CW\*(C`\-\-page\-title\*(C'\fR and friends, this feature is
-intended to be used by the libquvi package tests primarily.
 .IP "\fB\-f, \-\-format\fR \fIarg\fR" 4
 .IX Item "-f, --format arg"
-Query for video format \fIarg\fR. You can get a list of the formats
-that each website (should) support by running the program with
-\&\f(CW\*(C`\-\-support\*(C'\fR.
+Query for video format \fIarg\fR. Run quvi with \f(CW\*(C`\-\-support\*(C'\fR to get a list
+of the supported formats.
 .IP "\fB\-\-agent\fR \fIarg\fR" 4
 .IX Item "--agent arg"
 Identify quvi as \fIarg\fR to servers. Default is \*(L"Mozilla/5.0\*(R".
@@ -343,32 +348,6 @@ quvi exits with 0 on success and >0 if an error occurred.
 \&  QUVI_ICONV            = 0x43, libiconv error occurred
 \&  QUVI_LUA              = 0x44, lua error occurred
 .Ve
-.SH "CONTRIBUTING"
-.IX Header "CONTRIBUTING"
-.IP "\fBAdd support for another website\fR" 4
-.IX Item "Add support for another website"
-On most systems you can find the READMEs and HOWTOs from \f(CW$prefix\fR/share/quvi
-and \f(CW$prefix\fR/share/doc/quvi directories. You can find the same files in
-release source tarballs, and at:
-.Sp
-.Vb 3
-\&    <http://repo.or.cz/w/quvi.git/tree/HEAD:/doc>
-\&    <http://repo.or.cz/w/quvi.git/tree/HEAD:/share/lua>
-\&    <http://repo.or.cz/w/quvi.git/tree/HEAD:/share/lua/website>
-.Ve
-.IP "\fBSubmitting patches\fR" 4
-.IX Item "Submitting patches"
-If you have cooked up a patch, please submit it to the tracker (see \*(L"\s-1BUGS\s0\*(R").
-.Sp
-If you are working with git and you have established a repo from which
-we can pull the changes from, you can use the same tracker for leaving
-pull requests.
-.SH "BUGS"
-.IX Header "BUGS"
-.IP "\fBTrackers\fR" 4
-.IX Item "Trackers"
-Bugs, support, patches, etc. trackers for these can be found at:
-  <http://sourceforge.net/projects/quvi/support>
 .SH "DEBUGGING TIPS"
 .IX Header "DEBUGGING TIPS"
 .IP "\fB\-\-verbose\-libcurl\fR" 4
@@ -376,16 +355,18 @@ Bugs, support, patches, etc. trackers for these can be found at:
 You can use this switch to amp up libcurl verbosity.
 .IP "\fBDebug symbols\fR" 4
 .IX Item "Debug symbols"
-Compile quvi with \f(CW\*(C`\-g\*(C'\fR (see \f(CW\*(C`g++(1)\*(C'\fR) for debug symbols.
+Compile quvi with \f(CW\*(C`\-g\*(C'\fR, refer to \f(CWgcc(1)\fR documentation for the
+details.
 .IP "\fBOther tools\fR" 4
 .IX Item "Other tools"
 Make use of such tools as \f(CWstrace(1)\fR, \f(CWgdb(1)\fR and \f(CWvalgrind(1)\fR.
 They may prove invaluable.
-.SH "OTHER"
-.IX Header "OTHER"
-.IP "\fB\s-1WWW\s0\fR" 4
-.IX Item "WWW"
+.SH "WWW"
+.IX Header "WWW"
 <http://quvi.sourceforge.net/>
+.SH "CONTRIBUTE"
+.IX Header "CONTRIBUTE"
+<http://repo.or.cz/w/quvi.git/tree/HEAD:/doc>
 .SH "AUTHOR"
 .IX Header "AUTHOR"
 Toni Gundogdu <legatvs at sign gmail com>.
@@ -393,5 +374,3 @@ Toni Gundogdu <legatvs at sign gmail com>.
 Thanks to all those who have contributed to the project
 by sending patches, reporting bugs and writing feedback.
 You know who you are.
-.PP
-See also \*(L"\s-1BUGS\s0\*(R", \*(L"\s-1DEBUGGING\s0 \s-1TIPS\s0\*(R" and \*(L"\s-1CONTRIBUTING\s0\*(R".

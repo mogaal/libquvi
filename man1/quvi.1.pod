@@ -80,6 +80,26 @@ If this switch used, the program will report invalid values for those
 video details (e.g. 0 file length, empty string for content-type, etc.)
 but saves some bandwidth if those details are not obligatory.
 
+=item B<--category-http>
+
+Enable category HTTP website scripts. This is the default category.
+
+=item B<--category-mms>
+
+Enable category MMS website scripts.
+
+=item B<--category-rtsp>
+
+Enable category RTSP website scripts.
+
+=item B<--category-rtmp>
+
+Enable category RTMP website scripts.
+
+=item B<--category-all>
+
+Enable all categories of website scripts.
+
 =item B<--page-title> I<arg>
 
 Check that the parsed video title matches the I<arg>.
@@ -100,39 +120,29 @@ The libquvi tests typically make use of this option.
 Check that the parsed video file suffix matches the I<arg>.
 The libquvi tests typically make use of this option.
 
-=item B<-a, --test-all>
+=item B<--test-all>
 
-quvi holds a number of built-in video URLs that can be tested
-with this switch.
+Test all of the built-in (category QUVIPROTO_HTTP) URLs.
 
-=item B<-d, --dump>
+=item B<--dump>
 
-Dump video details while when running the program with C<--test-all>.
+Dump video details while with C<--test-all>.
 
 =item B<-t, --test> I<arg>
 
-quvi holds a number of built-in video URLs that can be matched
-with this option. Some examples:
+Match I<arg> to built-in (category QUVIPROTO_HTTP) test URLs, e.g.:
 
     % quvi -t youtube
     % quvi -t yout
-
-Both would match the same built-in test URL for Youtube. Some
-more examples:
     % quvi -t livel
     % quvi -t liveleak
     % quvi -t col
     % quvi -t collegehumor
 
-As long as the built-in URL contains the pattern, it can be
-matched. Like C<--page-title> and friends, this feature is
-intended to be used by the libquvi package tests primarily.
-
 =item B<-f, --format> I<arg>
 
-Query for video format I<arg>. You can get a list of the formats
-that each website (should) support by running the program with
-C<--support>.
+Query for video format I<arg>. Run quvi with C<--support> to get a list
+of the supported formats.
 
 =item B<--agent> I<arg>
 

@@ -1,5 +1,5 @@
 /* quvi
- * Copyright (C) 2009,2010  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2009,2010,2011  Toni Gundogdu <legatvs@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,6 +22,7 @@
 #include <string.h>
 #include <errno.h>
 #include <stdarg.h>
+#include <libgen.h>
 #include <assert.h>
 
 #include <curl/curl.h>
@@ -35,6 +36,19 @@
 #include "curl_wrap.h"
 #include "util.h"
 
+char *freprintf(char **dst, const char *fmt, ...)
+{
+  va_list args;
+
+  _free(*dst);
+
+  va_start(args, fmt);
+  vasprintf(dst, fmt, args);
+  va_end(args);
+
+  return (*dst);
+}
+
 #ifdef HAVE_ICONV
 QUVIcode to_utf8(_quvi_video_t video)
 {
@@ -44,14 +58,12 @@ QUVIcode to_utf8(_quvi_video_t video)
   ICONV_CONST char *inptr;
   char *from, *wptr;
   iconv_t cd;
-  _quvi_t quvi;
 
   assert(video != 0);
   assert(video->quvi != 0);
   assert(video->title != 0);
   assert(video->charset != 0);
 
-  quvi = video->quvi;
   wptr = outbuf;
   inptr = inbuf;
   avail = sizeof(outbuf);
@@ -69,38 +81,51 @@ QUVIcode to_utf8(_quvi_video_t video)
   cd = iconv_open(to, from);
 
   /* If that fails, then without TRANSLIT. */
-  if (cd == (iconv_t) - 1) {
-    _free(from);
-    asprintf(&from, "%s", video->charset);
-    cd = iconv_open(to, from);
-  }
-
-  if (cd == (iconv_t) - 1) {
-    if (errno == EINVAL)
-      seterr("conversion from %s to %s unavailable", from, to);
-    else {
-#ifdef HAVE_STRERROR
-      seterr("iconv_open: %s", strerror(errno));
-#else
-      perror("iconv_open");
-#endif
+  if (cd == (iconv_t) - 1)
+    {
+      _free(from);
+      asprintf(&from, "%s", video->charset);
+      cd = iconv_open(to, from);
     }
 
-    _free(from);
+  if (cd == (iconv_t) - 1)
+    {
+      if (errno == EINVAL)
+        {
+          freprintf(&video->quvi->errmsg,
+                    "conversion from %s to %s unavailable", from, to);
+        }
+      else
+        {
+#ifdef HAVE_STRERROR
+          freprintf(&video->quvi->errmsg, "iconv_open: %s",
+                    strerror(errno));
+#else
+          perror("iconv_open");
+#endif
+        }
 
-    return (QUVI_ICONV);
-  }
+      _free(from);
+
+      return (QUVI_ICONV);
+    }
 
   iconv_code = iconv(cd, &inptr, &insize, &wptr, &avail);
   iconv_close(cd);
   cd = 0;
 
-  if (iconv_code == (size_t) - 1) {
-    seterr("converting characters from '%s' to '%s' failed", from, to);
-    _free(from);
-    return (QUVI_ICONV);
-  } else
-    setvid(video->title, "%s", outbuf);
+  if (iconv_code == (size_t) - 1)
+    {
+      freprintf(&video->quvi->errmsg,
+                "converting characters from '%s' to '%s' failed", from,
+                to);
+      _free(from);
+      return (QUVI_ICONV);
+    }
+  else
+    {
+      freprintf(&video->title, "%s", outbuf);
+    }
 
   _free(from);
 
@@ -127,12 +152,14 @@ char *unescape(_quvi_t quvi, char *s)
 
 char *from_html_entities(char *src)
 {
-  struct lookup_s {
+  struct lookup_s
+  {
     const char *from;
     const char *to;
   };
 
-  static const struct lookup_s conv[] = {
+  static const struct lookup_s conv[] =
+  {
     {"&quot;", "\""},
     {"&#34;", "\""},
     {"&amp;", "&"},
@@ -181,10 +208,21 @@ int add_video_link(llst_node_t * lst, const char *fmt, ...)
   vasprintf((char **)&qvl->url, fmt, args);
   va_end(args);
 
-  if (!qvl->url) {
-    _free(qvl);
-    return (QUVI_MEM);
-  }
+  if (!qvl->url)
+    {
+      _free(qvl);
+      return (QUVI_MEM);
+    }
 
   return (llst_add(lst, qvl));
 }
+
+char *dirname_from(const char *s)
+{
+  char *t = strdup(s);
+  char *p = strdup(dirname(t));
+  _free(t);
+  return (p);
+}
+
+/* vim: set ts=2 sw=2 tw=72 expandtab: */

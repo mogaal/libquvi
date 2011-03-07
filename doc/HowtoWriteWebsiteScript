@@ -9,10 +9,6 @@ Howto: Contribute code
         - Adobe Flash poorly is supported on non-mswindows systems
         - AF hogs resources, exposes system to vulnerabilities
 
-    *) We do not include websites to quvi that
-        - Allow downloading already
-        - Use the RTMP protocol (at this time)
-
     *) If you are proposing a change to the library API
         - Consider this carefully, we try to keep API changes minimal
         - Adding is easier
@@ -114,7 +110,7 @@ use 'foo.lua' for our script's file name for brewity. You should choose
 a name that matches the website.
 
     cd quvi ; mkdir tmp ; cd tmp
-    cp ../share/lua/website/buzzhumor ../share/lua/website/foo.lua
+    cp ../share/lua/website/buzzhumor.lua ../share/lua/website/foo.lua
     ../configure ; make
 
 Open the foo.lua file in your favorite editor, e.g.:
@@ -123,47 +119,50 @@ Open the foo.lua file in your favorite editor, e.g.:
 
 Start by changing the details in the `ident' function, e.g.:
 
--   t.domain  = 'buzzhumor.com"
-+   t.domain  = 'foo.bar'
+-   r.domain  = 'buzzhumor.com"
++   r.domain  = 'foo.bar'
 
-You can leave t.formats untouched, unless you know that the website
+You can leave r.formats untouched, unless you know that the website
 supports more than one video format -- and you know how to get to those.
 See youtube.lua, dailymotion.lua and vimeo.lua for examples of this.
+
+You should change r.categories only if you know that the website returns
+video URLs to other than the HTTP protocol.
 
 Next there is the `parse' function. This is where the magic happens.
 This function is responsible for parsing all of the video details (e.g.
 title, ID, download URL and host ID).
 
--   video.host_id = 'buzzhumor'
-+   video.host_id = 'foo'
+-   self.host_id = 'buzzhumor'
++   self.host_id = 'foo'
 
 Let's assume that our website "foo" resembles buzzhumor so that all that
 we must do is to fetch a video page from the user specified URL and
 parse the video details from the HTML.
 
-    local page = quvi.fetch (video.page_url)
+    local page = quvi.fetch (self.page_url)
 
-The above fetches the page from the URL (video.page_url) and stores the
+The above fetches the page from the URL (self.page_url) and stores the
 contents to a local variable `page'. We go over the page HTML and notice
 that the video title can be parsed from <title>.
 
     local _,_,s = page:find('<title>(.-)</title>')
-    video.title = s or error ('no match: video title')
+    self.title = s or error ('no match: video title')
 
 We have now parsed the title and stored it to the `video' table. Next,
 the video ID. Next, the video ID. This is usually an unique string of
 characters. For example:
 
     local _,_,s = page:find ('vid_id="(.-)"')
-    video.id    = s or error ('no match: video id')
+    self.id    = s or error ('no match: video id')
 
 This leaves only the video download URL. This could be as simple as an
 URL to an flv file on the server. For example:
 
     local _,_,s = page:find('vid_url="(.-)"')
-    video.url   = {s or error ('no match: video url')}
+    self.url   = {s or error ('no match: video url')}
 
-Note that we store the parsed URL to video.url table ({}). If there were
+Note that we store the parsed URL to self.url table ({}). If there were
 more than one download URL, we could append them to that table. At the
 time of writing this, none of the current scripts provide multiple URLs.
 
@@ -202,6 +201,7 @@ Make sure you have quvi binaries installed to your path.
 
     mkdir -p foo/lua/website ; cd foo
     cp $prefix/share/quvi/lua/website/buzzhumor.lua lua/website/foo.lua
+    cp -r $prefix/share/quvi/lua/website/quvi/ lua/website/
     git init ; git add . ; git commit -am 'initial commit'
     (
         * Edit lua/website/foo.lua (as we did in 2.2. above)
@@ -236,7 +236,8 @@ Just to re-iterate: we need (at least) a test URL with your website script.
 2.5. Before you submit your website script
 ------------------------------------------
 
-    * Does your script parse everything correctly?
+    * Does your script set/parse everything correctly?
+        - Website script category
         - Host ID
         - Video ID
         - Video title

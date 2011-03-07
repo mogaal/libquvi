@@ -38,25 +38,12 @@
         if (p) { free(p); p=0; } \
     } while(0)
 
-#define seterr(args...) \
-    do { \
-        _free(quvi->errmsg); \
-        asprintf(&quvi->errmsg, args); \
-    } while(0)
-
-#define setvid(prop,args...) \
-    do { \
-        _free(prop); \
-        asprintf(&prop, args); \
-    } while(0)
-
-#define csetopt(opt,param) \
-    curl_easy_setopt(quvi->curl,opt,param)
-
-struct _quvi_s {
+struct _quvi_s
+{
   char *format;
-  int no_verify;
-  int no_shortened;
+  long no_verify;
+  long no_shortened;
+  long category;
   quvi_callback_status status_func;
   quvi_callback_write write_func;
   void *curl;
@@ -71,7 +58,8 @@ struct _quvi_s {
 
 typedef struct _quvi_s *_quvi_t;
 
-struct _quvi_video_link_s {
+struct _quvi_video_link_s
+{
   char *url;
   char *suffix;
   char *content_type;
@@ -80,7 +68,8 @@ struct _quvi_video_link_s {
 
 typedef struct _quvi_video_link_s *_quvi_video_link_t;
 
-struct _quvi_video_s {
+struct _quvi_video_s
+{
   _quvi_t quvi;
   char *id;
   char *title;
@@ -95,7 +84,8 @@ struct _quvi_video_s {
 
 typedef struct _quvi_video_s *_quvi_video_t;
 
-struct _quvi_lua_script_s {
+struct _quvi_lua_script_s
+{
   char *basename;
   char *path;
 };
@@ -103,3 +93,4 @@ struct _quvi_lua_script_s {
 typedef struct _quvi_lua_script_s *_quvi_lua_script_t;
 
 #endif
+/* vim: set ts=2 sw=2 tw=72 expandtab: */

@@ -35,6 +35,21 @@ option "no-shortened"
 option "no-verify"
     n "Do not verify video link"
     optional
+option "category-http"
+    - "Category HTTP website scripts"
+    optional
+option "category-mms"
+    - "Category MMS website scripts"
+    optional
+option "category-rtsp"
+    - "Category RTSP website scripts"
+    optional
+option "category-rtmp"
+    - "Category RTMP website scripts"
+    optional
+option "category-all"
+    - "All website script categories"
+    optional
 
 option "page-title"
     - "Check that parsed page title matches arg"
@@ -54,10 +69,10 @@ option "file-suffix"
     optional
 
 option "test-all"
-    a "Run built-in tests"
+    - "Run all built-in tests of category QUVIPROTO_HTTP"
     optional
 option "dump"
-    d "Dump video details with --test-all"
+    - "Dump video details with --test-all"
     dependon="test-all"
     optional
 option "test"

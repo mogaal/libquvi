@@ -30,7 +30,7 @@ AC_GNU_SOURCE
 AC_DEFINE_UNQUOTED([CANONICAL_TARGET], "$target", [...])
 AC_DEFINE_UNQUOTED([CANONICAL_HOST], "$host", [...])
 
-AM_INIT_AUTOMAKE([-Wall -Werror foreign dist-bzip2])
+AM_INIT_AUTOMAKE([-Wall -Werror foreign dist-bzip2 dist-xz])
 
 LT_INIT()
 LT_PREREQ([2.2])
@@ -142,10 +142,6 @@ AC_CHECK_FUNCS([vasprintf], [
 ])
 AM_CONDITIONAL([NO_ASPRINTF], [test x"$have_asprintf" != "xyes"])
 
-have_strupr=no
-AC_CHECK_FUNCS([strupr], [have_strupr=yes])
-AM_CONDITIONAL([NO_STRUPR], [test x"$have_strupr" != "xyes"])
-
 # --enable-quvi
 AC_ARG_ENABLE([quvi],
     [AS_HELP_STRING([--enable-quvi],
@@ -226,27 +222,31 @@ AC_CONFIG_FILES([
     examples/Makefile
     tests/Makefile
     tests/quviTest.pm
+    scripts/Makefile
     libquvi.pc
     doxygen.conf
 ])
 
 AC_OUTPUT
 
-AC_MSG_NOTICE([Configured to build quvi/libquvi:
+AC_MSG_NOTICE([
 
-    quvi version:   ${VERSION}  g:$git_describe  b:$build_date
+Configured:
+    quvi version:   ${VERSION}  g:${git_describe}  b:${build_date}
     host setup:     ${host}
-    install prefix: ${prefix}
     compiler:       ${CC}
     cflags:         ${CFLAGS}
+    prefix:         ${prefix}
 
 Options:
     build libquvi:  shared=${enable_shared} static=${enable_static}
-    build quvi:     ${enable_quvi}
     build examples: ${enable_examples}
-    enable nsfw:    ${enable_nsfw}
+    build quvi:     ${enable_quvi}
+    --
     enable broken:  ${enable_broken}
     enable tests:   ${enable_tests}
+    enable nsfw:    ${enable_nsfw}
+    --
     install manual: ${with_man}
     install docs:   ${with_doc}
 ])

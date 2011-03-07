@@ -23,47 +23,44 @@
 -- Note: the videos are hosted by blip.tv (direct URL) and youtube (redirect).
 
 -- Identify the script.
-function ident (page_url)
-    local t   = {}
-    t.domain  = "academicearth.org"
-    t.formats = "default"
-    t.handles = (page_url ~= nil and page_url:find (t.domain) ~= nil)
-    return t
+function ident (self)
+    package.path = self.script_dir .. '/?.lua'
+    local C      = require 'quvi/const'
+    local r      = {}
+    r.domain     = "academicearth.org"
+    r.formats    = "default"
+    r.categories = C.proto_http
+    r.handles    =
+        (self.page_url ~= nil and self.page_url:find (r.domain) ~= nil)
+    return r
 end
 
 -- Parse video URL.
-function parse (video)
+function parse (self)
+    self.host_id = "academicearth"
+    local page   = quvi.fetch (self.page_url)
 
-    video.host_id = "academicearth"
-    local page    = quvi.fetch (video.page_url)
-
-    local _,_,s = page:find ('flashVars.flvURL = "(.-)"')
-
+    local _,_,s  = page:find ('flashVars.flvURL = "(.-)"')
     if (s ~= nil) then
+        self.url = {s}
 
-        video.url = {s}
-
-        -- Hackish. Could not find a better ID scheme.
         local _,_,s = s:find ('%-(.-)%.')
-        video.id    = s or error ("no match: video id")
+        self.id     = s or error ("no match: video id")
 
         local _,_,s = page:find ('<title>(.-)%s+%|')
-        video.title = s or error ("no match: video title")
-
+        self.title  = s or error ("no match: video title")
     else
-
         local _,_,s = page:find ('flashVars.ytID = "(.-)"')
 
         if (s ~= nil) then
-            video.redirect = "http://youtube.com/watch?v=" .. s
-            return video
+            self.redirect = "http://youtube.com/watch?v=" .. s
+            return self
         else
             error ("no match: flv: no clip available for this lecture")
         end
-
     end
 
-    return video
+    return self
 end
 
-
+-- vim: set ts=4 sw=4 tw=72 expandtab:

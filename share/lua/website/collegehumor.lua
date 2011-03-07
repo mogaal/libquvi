@@ -21,32 +21,36 @@
 --
 
 -- Identify the script.
-function ident (page_url)
-    local t   = {}
-    t.domain  = "collegehumor.com"
-    t.formats = "default"
--- Uncomment to re-enable. See also: http://is.gd/g9b4K
---    t.formats = "default|best|hd"
-    t.handles = (page_url ~= nil and page_url:find(t.domain) ~= nil)
-    return t
+function ident (self)
+    package.path = self.script_dir .. '/?.lua'
+    local C      = require 'quvi/const'
+    local r      = {}
+    r.domain     = "collegehumor.com"
+    r.formats    = "default"
+-- Commented out due to limited hd support
+--    r.formats  = "default|best|hd"
+    r.categories = C.proto_http
+    r.handles    =
+        (self.page_url ~= nil and self.page_url:find(r.domain) ~= nil)
+    return r
 end
 
 -- Parse video URL.
-function parse (video)
-    video.host_id = "collegehumor"
+function parse (self)
+    self.host_id = "collegehumor"
    
     local success, _, vid =
-        video.page_url:find("^http://www%.collegehumor%.com/video:(%d+)")
+        self.page_url:find("^http://www%.collegehumor%.com/video:(%d+)")
 
     if ( success == nil ) then
         error("expected URL beginning with 'http://collegehumor.com/video:'")
     end
 
-    video.id = vid
+    self.id = vid
 
-    local page = quvi.fetch(video.page_url)
+    local page = quvi.fetch(self.page_url)
     local _,_,s = page:find('<meta name="title" content="(.-)"')
-    video.title = s or error("no match: video title")
+    self.title = s or error("no match: video title")
 
     local page =
         quvi.fetch("http://www.collegehumor.com/moogaloop/video:" .. vid,
@@ -58,12 +62,14 @@ function parse (video)
     local _,_,s = page:find('<hq>([%w%p]+)</hq>')
     local hq = s
 
-    video.url = { default }
-    if (video.requested_format == "hd" or video.requested_format == "best") then
+    self.url = { default }
+    if (self.requested_format == "hd" or self.requested_format == "best") then
         if ( hq ~= nil ) then
-	        video.url = { hq }
+	        self.url = { hq }
 	    end
     end
 
-    return video
+    return self
 end
+
+-- vim: set ts=4 sw=4 tw=72 expandtab:

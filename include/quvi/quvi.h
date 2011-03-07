@@ -24,7 +24,7 @@
  * This documentation describes the libquvi C API.
  *
  * @author Toni Gundogdu
- * @version 0.2.11
+ * @version 0.2.13
  * @example quvi.c
  * @example simple.c
  */
@@ -45,7 +45,7 @@
 /** @enum QUVIversion Types used with quvi_version() */
 typedef enum {
 QUVI_VERSION = 0x00,    /**< Version string only */
-QUVI_VERSION_LONG,      /**< Version string, build date and misc. features */
+QUVI_VERSION_LONG       /**< Version string, build date and misc. features */
 } QUVIversion;
 
 /** @enum QUVIcode Return codes */
@@ -67,14 +67,14 @@ QUVI_PCRE = 0x40, /**< libpcre error occurred @deprecated since 0.2.9 */
 QUVI_NOSUPPORT,   /**< libquvi does not support the video host */
 QUVI_CURL,        /**< libcurl error occurred */
 QUVI_ICONV,       /**< libiconv error occurred */
-QUVI_LUA,         /**< lua error occurred */
+QUVI_LUA          /**< lua error occurred */
 } QUVIcode;
 
 /** @enum QUVIstatus Status codes */
 typedef enum {
 QUVISTATUS_FETCH  = 0x00,   /**< Status changed to fetch (page, config, etc.) */
 QUVISTATUS_VERIFY,          /**< Status changed to verify video link */
-QUVISTATUS_SHORTENED,       /**< Status changed to check for shortened URL */
+QUVISTATUS_SHORTENED        /**< Status changed to check for shortened URL */
 } QUVIstatus;
 
 /** @enum QUVIstatusType Status type codes */
@@ -84,7 +84,7 @@ QUVISTATUSTYPE_PAGE = 0x00,   /**< Fetching video page */
 QUVISTATUSTYPE_CONFIG,        /**< Fetching config */
 QUVISTATUSTYPE_PLAYLIST,      /**< Fetching playlist */
 /* Generic types: */
-QUVISTATUSTYPE_DONE,          /**< General purpose "done" status type */
+QUVISTATUSTYPE_DONE           /**< General purpose "done" status type */
 } QUVIstatusType;
 
 /** @enum QUVIoption Option codes to be used with quvi_setopt()
@@ -105,6 +105,7 @@ QUVIOPT_NOVERIFY,       /**< Do not verify video link */
 QUVIOPT_STATUSFUNCTION, /**< Callback function for status updates */
 QUVIOPT_WRITEFUNCTION,  /**< Callback function for writing data */
 QUVIOPT_NOSHORTENED,    /**< Do not "decompress" shortened URLs */
+QUVIOPT_CATEGORY        /**< Bit pattern of (OR'd) website script categories */
 } QUVIoption;
 
 #define QUVIINFO_VOID       0x100000 /**< void type */
@@ -112,6 +113,24 @@ QUVIOPT_NOSHORTENED,    /**< Do not "decompress" shortened URLs */
 #define QUVIINFO_STRING     0x300000 /**< string type */
 #define QUVIINFO_DOUBLE     0x400000 /**< double type */
 #define QUVIINFO_TYPEMASK   0xf00000 /**< type mask */
+
+/** @enum QUVIcategory Website script category
+*
+* Used (together with QUVIOPT_CATEGORY) to specify which of the website
+* script categories the application  wants to use. The library defaults
+* to QUVIPROTO_HTTP.
+*
+* @sa: QUVIOPT_CATEGORY
+*/
+typedef enum {
+QUVIPROTO_HTTP = 0x1, /**< Protocol category HTTP */
+QUVIPROTO_MMS  = 0x2, /**< Protocol category MMS */
+QUVIPROTO_RTSP = 0x4, /**< Protocol category RTSP */
+QUVIPROTO_RTMP = 0x8, /**< Protocol category RTMP */
+QUVIPROTO_ALL  =
+    (QUVIPROTO_HTTP|QUVIPROTO_MMS|QUVIPROTO_RTSP|QUVIPROTO_RTMP)
+    /**< All protocol categories */
+} QUVIcategory;
 
 /** @enum QUVIinfo Info codes to be used with quvi_getinfo()
 *
@@ -427,7 +446,7 @@ QUVIcode quvi_getinfo(quvi_t quvi, QUVIinfo info, ...);
 * quvi_t quvi;
 * quvi_video_t video;
 * quvi_init(&quvi);
-* quvi_parse(quvi, "http://www.youtube.com/watch?v=DeWsZ2b_pK4", &video);
+* quvi_parse(quvi, "http://vimeo.com/1485507", &video);
 * ...
 * @endcode
 */
@@ -468,26 +487,6 @@ QUVIcode quvi_getprop(quvi_video_t video, QUVIproperty prop, ...);
 /** @defgroup libquvi_parse_util Utility functions
  * @{
  */
-
-/**
-* @brief Checks whether the URL would be supported by one of the scripts
-*
-* This function does not require a network connection. This means that this
-* function will return QUVI_NOSUPPORT for most shortened URLs. See also
-* the notes below.
-*
-* @param quvi Handle to session
-* @param url Null-terminated string to an URL
-*
-* @note
-*   - Returns QUVI_NOSUPPORT for most shortened URLs
-*   - Only exceptions are those that have been hardcoded to lua scripts
-*   as "official" shorteners for those websites (e.g. youtu.be or
-*   dai.ly)
-*
-* @return Non-zero if an error occurred
-*/
-QUVIcode quvi_supported(quvi_t quvi, char *url);
 
 /**
 * @brief Move to the next video link (if any)
@@ -550,6 +549,34 @@ void quvi_parse_close(quvi_video_t *video);
  */
 
 /**
+* @brief Checks whether the URL would be supported by one of the scripts
+*
+* This function does not require an Internet connection. Note that this
+* function will return QUVI_NOSUPPORT for nearly all shortened (or
+* "compressed") URLs as they require querying a redirection over the
+* Internet. See the "Exceptions" below.
+*
+* @param quvi Handle to session
+* @param url Null-terminated string to an URL
+*
+* @note
+*   - Most shorteners require retrieving the redirection from the
+*     services before
+*   - Returns QUVI_NOSUPPORT for most shortened URLs
+*   - Examples:
+*     - is.gd
+*     - goo.gl
+*     - ...
+*   - Exceptions:
+*     - youtu.be (script: youtube.lua)
+*     - dai.y (script: dailymotion.lua)
+*     - These services do not "compress" the video ID which can be used
+*     in the above scripts to reconstruct the original URL
+* @return Non-zero if an error occurred
+*/
+QUVIcode quvi_supported(quvi_t quvi, char *url);
+
+/**
 * @brief Return next supported video website
 *
 * This function can be used to iterate the supported websites.
@@ -560,7 +587,9 @@ void quvi_parse_close(quvi_video_t *video);
 *
 * @return QUVI_OK or a non-zero value if an error occurred
 *   - QUVI_LAST indicates end of the list of the websites
-*   - Any other returned non-zero value indicates an actual error and should be handled accordingly (e.g. relaying the return code to \a quvi_strerror)
+*   - Any other returned non-zero value indicates an actual error and
+*     should be handled accordingly (e.g. relaying the return code to
+*     \a quvi_strerror)
 *
 * @note
 *   - Both domain and formats string must be quvi_free()d after use
@@ -646,5 +675,4 @@ void quvi_free(void *ptr);
 #endif /* __cplusplus */
 
 #endif /* quvi_h */
-
-
+/* vim: set ts=2 sw=2 tw=72 expandtab: */

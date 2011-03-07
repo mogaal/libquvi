@@ -20,24 +20,24 @@
 -- 02110-1301  USA
 --
 
---
--- Should work with most http://videos.sapo.pt/$video_id URLs.
---
-
 -- Identify the script.
-function ident (page_url)
-    local t   = {}
-    t.domain  = "videos.sapo.pt"
-    t.formats = "default"
-    t.handles = (page_url ~= nil and page_url:find (t.domain) ~= nil)
-    return t
+function ident (self)
+    package.path = self.script_dir .. '/?.lua'
+    local C      = require 'quvi/const'
+    local r      = {}
+    r.domain     = "videos.sapo.pt"
+    r.formats    = "default"
+    r.categories = C.proto_http
+    r.handles    =
+        (self.page_url ~= nil and self.page_url:find (r.domain) ~= nil)
+    return r
 end
 
 -- Parse video URL.
-function parse (video)
+function parse (self)
 
-    video.host_id = "sapo"
-    local page    = quvi.fetch (video.page_url)
+    self.host_id = "sapo"
+    local page   = quvi.fetch (self.page_url)
 
     if (page:find ('rtmp:%/%/')) then
         error ("video requires rtmp which we do not currently support")
@@ -47,16 +47,16 @@ function parse (video)
     if (s == nil) then
         _,_,s = page:find ('<title>(.-)%s+-%s+')
     end
-    video.title = s or error ("no match: video title")
+    self.title = s or error ("no match: video title")
 
     local _,_,s = page:find ('?file=(.-)/mov')
     if (s == nil) then error ("no match: video url") end
-    video.url   = {s .. "/mov"}
+    self.url = {s .. "/mov"}
 
-    local _,_,s = video.url[1]:find ('.*/(.-)/mov')
-    video.id    = s or error ("no match: video id")
+    local _,_,s = self.url[1]:find ('.*/(.-)/mov')
+    self.id     = s or error ("no match: video id")
 
-    return video
+    return self
 end
 
-
+-- vim: set ts=4 sw=4 tw=72 expandtab:
