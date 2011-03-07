@@ -51,24 +51,22 @@ QUVIcode quvi_init(quvi_t * dst)
 
   *dst = (quvi_t) quvi;
 
-#ifndef HOST_W32
-  curl_global_init(CURL_GLOBAL_NOTHING);
-#else
-  curl_global_init(CURL_GLOBAL_WIN32);
-#endif
+  curl_global_init(CURL_GLOBAL_ALL);
 
   quvi->curl = curl_easy_init();
-  if (!quvi->curl) {
-    _free(quvi);
-    return (QUVI_CURLINIT);
-  }
+  if (!quvi->curl)
+    {
+      _free(quvi);
+      return (QUVI_CURLINIT);
+    }
 
-  /* set defaults */
+  /* Set library defaults. */
   quvi_setopt(quvi, QUVIOPT_FORMAT, "default");
+  quvi_setopt(quvi, QUVIOPT_CATEGORY, QUVIPROTO_HTTP);
 
-  csetopt(CURLOPT_USERAGENT, "Mozilla/5.0");
-  csetopt(CURLOPT_FOLLOWLOCATION, 1L);
-  csetopt(CURLOPT_NOBODY, 0L);
+  curl_easy_setopt(quvi->curl, CURLOPT_USERAGENT, "Mozilla/5.0");
+  curl_easy_setopt(quvi->curl, CURLOPT_FOLLOWLOCATION, 1L);
+  curl_easy_setopt(quvi->curl, CURLOPT_NOBODY, 0L);
 
   return (init_lua(quvi));
 }
@@ -81,26 +79,27 @@ void quvi_close(quvi_t * handle)
 
   quvi = (_quvi_t *) handle;
 
-  if (quvi && *quvi) {
+  if (quvi && *quvi)
+    {
 
-    free_lua(quvi);
-    assert((*quvi)->util_scripts == NULL);
-    assert((*quvi)->website_scripts == NULL);
+      free_lua(quvi);
+      assert((*quvi)->util_scripts == NULL);
+      assert((*quvi)->website_scripts == NULL);
 
-    _free((*quvi)->format);
-    assert((*quvi)->format == NULL);
+      _free((*quvi)->format);
+      assert((*quvi)->format == NULL);
 
-    _free((*quvi)->errmsg);
-    assert((*quvi)->errmsg == NULL);
+      _free((*quvi)->errmsg);
+      assert((*quvi)->errmsg == NULL);
 
-    curl_easy_cleanup((*quvi)->curl);
-    (*quvi)->curl = NULL;
+      curl_easy_cleanup((*quvi)->curl);
+      (*quvi)->curl = NULL;
 
-    _free(*quvi);
-    assert((*quvi) == NULL);
+      _free(*quvi);
+      assert((*quvi) == NULL);
 
-    curl_global_cleanup();
-  }
+      curl_global_cleanup();
+    }
 }
 
 /* quvi_supported */
@@ -119,7 +118,7 @@ QUVIcode quvi_supported(quvi_t quvi, char *url)
 
   video->quvi = quvi;
 
-  setvid(video->page_link, "%s", url);
+  freprintf(&video->page_link, "%s", url);
 
   rc = find_host_script(video);
 
@@ -147,26 +146,31 @@ QUVIcode quvi_parse(quvi_t quvi, char *url, quvi_video_t * dst)
   *dst = video;
   video->quvi = quvi;
 
-  setvid(video->page_link, "%s", url);
+  freprintf(&video->page_link, "%s", url);
 
-  if (!video->quvi->no_shortened) {
-    rc = is_shortened_url(video);
-    if (rc != QUVI_OK)
-      return (rc);
-  }
-
-  while (1) {
-    rc = find_host_script_and_parse(video);
-    if (rc != QUVI_OK)
-      return (rc);
-    else {
-      if (strlen(video->redirect)) {    /* Found a redirect. */
-        setvid(video->page_link, "%s", video->redirect);
-        continue;
-      } else
-        break;
+  if (!video->quvi->no_shortened)
+    {
+      rc = is_shortened_url(video);
+      if (rc != QUVI_OK)
+        return (rc);
     }
-  }
+
+  while (1)
+    {
+      rc = find_host_script_and_parse(video);
+      if (rc != QUVI_OK)
+        return (rc);
+      else
+        {
+          if (strlen(video->redirect))      /* Found a redirect. */
+            {
+              freprintf(&video->page_link, "%s", video->redirect);
+              continue;
+            }
+          else
+            break;
+        }
+    }
 
 #ifdef HAVE_ICONV               /* Convert character set encoding to utf8. */
   if (video->charset)
@@ -176,15 +180,17 @@ QUVIcode quvi_parse(quvi_t quvi, char *url, quvi_video_t * dst)
 
   video->title = from_html_entities(video->title);
 
-  if (!video->quvi->no_verify) {
-    llst_node_t curr = video->link;
-    while (curr) {
-      rc = query_file_length(video->quvi, curr);
-      if (rc != QUVI_OK)
-        break;
-      curr = curr->next;
+  if (!video->quvi->no_verify)
+    {
+      llst_node_t curr = video->link;
+      while (curr)
+        {
+          rc = query_file_length(video->quvi, curr);
+          if (rc != QUVI_OK)
+            break;
+          curr = curr->next;
+        }
     }
-  }
 
   /* set current video link to first link in the list. */
   video->curr = video->link;
@@ -200,28 +206,30 @@ void quvi_parse_close(quvi_video_t * handle)
 
   video = (_quvi_video_t *) handle;
 
-  if (video && *video) {
-    llst_node_t curr = (*video)->link;
+  if (video && *video)
+    {
+      llst_node_t curr = (*video)->link;
 
-    while (curr) {
-      _quvi_video_link_t l = (_quvi_video_link_t) curr->data;
-      _free(l->url);
-      _free(l->suffix);
-      _free(l->content_type);
-      curr = curr->next;
+      while (curr)
+        {
+          _quvi_video_link_t l = (_quvi_video_link_t) curr->data;
+          _free(l->url);
+          _free(l->suffix);
+          _free(l->content_type);
+          curr = curr->next;
+        }
+      llst_free(&(*video)->link);
+
+      _free((*video)->id);
+      _free((*video)->title);
+      _free((*video)->charset);
+      _free((*video)->page_link);
+      _free((*video)->host_id);
+      _free((*video)->redirect);
+      _free((*video)->starttime);
+
+      _free(*video);
     }
-    llst_free(&(*video)->link);
-
-    _free((*video)->id);
-    _free((*video)->title);
-    _free((*video)->charset);
-    _free((*video)->page_link);
-    _free((*video)->host_id);
-    _free((*video)->redirect);
-    _free((*video)->starttime);
-
-    _free(*video);
-  }
 }
 
 static QUVIcode _setopt(_quvi_t quvi, QUVIoption opt, va_list arg)
@@ -233,27 +241,30 @@ static QUVIcode _setopt(_quvi_t quvi, QUVIoption opt, va_list arg)
         asprintf(&opt, "%s", va_arg(arg,char *)); \
     } while(0); break
 
-#define _seti(opt) \
-    do { opt = va_arg(arg,int); } while(0); break
+#define _setn(opt) \
+    do { opt = va_arg(arg,long); } while(0); break
 
-  switch (opt) {
-  case QUVIOPT_FORMAT:
-    _sets(quvi->format);
-  case QUVIOPT_NOVERIFY:
-    _seti(quvi->no_verify);
-  case QUVIOPT_STATUSFUNCTION:
-    quvi->status_func = va_arg(arg, quvi_callback_status);
-    break;
-  case QUVIOPT_WRITEFUNCTION:
-    quvi->write_func = va_arg(arg, quvi_callback_write);
-    break;
-  case QUVIOPT_NOSHORTENED:
-    _seti(quvi->no_shortened);
-  default:
-    return (QUVI_INVARG);
-  }
+  switch (opt)
+    {
+    case QUVIOPT_FORMAT:
+      _sets(quvi->format);
+    case QUVIOPT_NOVERIFY:
+      _setn(quvi->no_verify);
+    case QUVIOPT_STATUSFUNCTION:
+      quvi->status_func = va_arg(arg, quvi_callback_status);
+      break;
+    case QUVIOPT_WRITEFUNCTION:
+      quvi->write_func = va_arg(arg, quvi_callback_write);
+      break;
+    case QUVIOPT_NOSHORTENED:
+      _setn(quvi->no_shortened);
+    case QUVIOPT_CATEGORY:
+      _setn(quvi->category);
+    default:
+      return (QUVI_INVARG);
+    }
 #undef _sets
-#undef _seti
+#undef _setn
   return (QUVI_OK);
 }
 
@@ -302,16 +313,17 @@ static QUVIcode _getprop(_quvi_video_t video, QUVIproperty prop, ...)
             rc = QUVI_INVARG; \
     } while (0); break
 
-  switch (type) {
-  case QUVIPROPERTY_DOUBLE:
-    _initv(dp, double *);
-  case QUVIPROPERTY_STRING:
-    _initv(sp, char **);
-  case QUVIPROPERTY_LONG:
-    _initv(lp, long *);
-  default:
-    rc = QUVI_INVARG;
-  }
+  switch (type)
+    {
+    case QUVIPROPERTY_DOUBLE:
+      _initv(dp, double *);
+    case QUVIPROPERTY_STRING:
+      _initv(sp, char **);
+    case QUVIPROPERTY_LONG:
+      _initv(lp, long *);
+    default:
+      rc = QUVI_INVARG;
+    }
   va_end(arg);
 
   if (rc != QUVI_OK)
@@ -323,32 +335,33 @@ static QUVIcode _getprop(_quvi_video_t video, QUVIproperty prop, ...)
 #define _setn(var,with) \
     do { *var = with; } while(0); break
 
-  switch (prop) {
-  case QUVIPROP_HOSTID:
-    _sets(video->host_id);
-  case QUVIPROP_PAGEURL:
-    _sets(video->page_link);
-  case QUVIPROP_PAGETITLE:
-    _sets(video->title);
-  case QUVIPROP_VIDEOID:
-    _sets(video->id);
-  case QUVIPROP_VIDEOURL:
-    _sets(qvl->url);
-  case QUVIPROP_VIDEOFILELENGTH:
-    _setn(dp, qvl->length);
-  case QUVIPROP_VIDEOFILECONTENTTYPE:
-    _sets(qvl->content_type);
-  case QUVIPROP_VIDEOFILESUFFIX:
-    _sets(qvl->suffix);
-  case QUVIPROP_HTTPCODE:
-    _setn(lp, video->quvi->httpcode);
-  case QUVIPROP_VIDEOFORMAT:
-    _sets(video->quvi->format);
-  case QUVIPROP_STARTTIME:
-    _sets(video->starttime);
-  default:
-    rc = QUVI_INVARG;
-  }
+  switch (prop)
+    {
+    case QUVIPROP_HOSTID:
+      _sets(video->host_id);
+    case QUVIPROP_PAGEURL:
+      _sets(video->page_link);
+    case QUVIPROP_PAGETITLE:
+      _sets(video->title);
+    case QUVIPROP_VIDEOID:
+      _sets(video->id);
+    case QUVIPROP_VIDEOURL:
+      _sets(qvl->url);
+    case QUVIPROP_VIDEOFILELENGTH:
+      _setn(dp, qvl->length);
+    case QUVIPROP_VIDEOFILECONTENTTYPE:
+      _sets(qvl->content_type);
+    case QUVIPROP_VIDEOFILESUFFIX:
+      _sets(qvl->suffix);
+    case QUVIPROP_HTTPCODE:
+      _setn(lp, video->quvi->httpcode);
+    case QUVIPROP_VIDEOFORMAT:
+      _sets(video->quvi->format);
+    case QUVIPROP_STARTTIME:
+      _sets(video->starttime);
+    default:
+      rc = QUVI_INVARG;
+    }
 
   return (rc);
 }
@@ -372,18 +385,19 @@ static QUVIcode _getinfo(_quvi_t quvi, QUVIinfo info, ...)
   va_start(arg, info);
   type = QUVIINFO_TYPEMASK & (int)info;
 
-  switch (type) {
-  case QUVIINFO_DOUBLE:
-    _initv(dp, double *);
-  case QUVIINFO_STRING:
-    _initv(sp, char **);
-  case QUVIINFO_LONG:
-    _initv(lp, long *);
-  case QUVIINFO_VOID:
-    _initv(vp, void **);
-  default:
-    rc = QUVI_INVARG;
-  }
+  switch (type)
+    {
+    case QUVIINFO_DOUBLE:
+      _initv(dp, double *);
+    case QUVIINFO_STRING:
+      _initv(sp, char **);
+    case QUVIINFO_LONG:
+      _initv(lp, long *);
+    case QUVIINFO_VOID:
+      _initv(vp, void **);
+    default:
+      rc = QUVI_INVARG;
+    }
   va_end(arg);
 
   if (rc != QUVI_OK)
@@ -392,16 +406,17 @@ static QUVIcode _getinfo(_quvi_t quvi, QUVIinfo info, ...)
 #define _setv(with) \
     do  { *vp = with ? with:NULL; } while(0); break
 
-  switch (info) {
-  case QUVIINFO_CURL:
-    _setv(quvi->curl);
-  case QUVIINFO_CURLCODE:
-    _setn(lp, quvi->curlcode);
-  case QUVIINFO_HTTPCODE:
-    _setn(lp, quvi->httpcode);
-  default:
-    rc = QUVI_INVARG;
-  }
+  switch (info)
+    {
+    case QUVIINFO_CURL:
+      _setv(quvi->curl);
+    case QUVIINFO_CURLCODE:
+      _setn(lp, quvi->curlcode);
+    case QUVIINFO_HTTPCODE:
+      _setn(lp, quvi->httpcode);
+    default:
+      rc = QUVI_INVARG;
+    }
 
   return (rc);
 }
@@ -454,17 +469,19 @@ QUVIcode quvi_next_videolink(quvi_video_t handle)
   video = (_quvi_video_t) handle;
 
   /* start from the first */
-  if (!video->curr) {
-    video->curr = video->link;
-    return (QUVI_OK);
-  }
+  if (!video->curr)
+    {
+      video->curr = video->link;
+      return (QUVI_OK);
+    }
 
   /* move to the next */
   video->curr = video->curr->next;
-  if (!video->curr) {
-    video->curr = video->link;  /* reset */
-    return (QUVI_LAST);
-  }
+  if (!video->curr)
+    {
+      video->curr = video->link;  /* reset */
+      return (QUVI_LAST);
+    }
 
   return (QUVI_OK);
 }
@@ -474,7 +491,8 @@ static llst_node_t curr_host = NULL;
 /* quvi_next_supported_website */
 
 QUVIcode
-quvi_next_supported_website(quvi_t handle, char **domain, char **formats)
+quvi_next_supported_website(quvi_t handle, char **domain,
+                            char **formats)
 {
   struct lua_ident_s ident;
   _quvi_t quvi;
@@ -491,11 +509,12 @@ quvi_next_supported_website(quvi_t handle, char **domain, char **formats)
 
   if (!curr_host)
     curr_host = quvi->website_scripts;
-  else {
-    curr_host = curr_host->next;
-    if (!curr_host)
-      return (QUVI_LAST);
-  }
+  else
+    {
+      curr_host = curr_host->next;
+      if (!curr_host)
+        return (QUVI_LAST);
+    }
 
   ident.quvi = quvi;
   ident.url = NULL;
@@ -504,15 +523,27 @@ quvi_next_supported_website(quvi_t handle, char **domain, char **formats)
 
   rc = run_ident_func(&ident, curr_host);
 
-  *domain = ident.domain;
-  *formats = ident.formats;
+  if (rc == QUVI_NOSUPPORT)
+    {
+      /* The website scripts return QUVI_NOSUPPORT in all cases. This is
+       * because of the undefined URL that we pass to them above (ident.url
+       * = NULL). We are only interested in the `domain' and `formats'
+       * information anyway, so this is OK. */
+      if (ident.categories & quvi->category)
+        {
+          *domain = ident.domain;
+          *formats = ident.formats;
+          rc = QUVI_OK;
+        }
+      else
+        {
+          _free(ident.domain);
+          _free(ident.formats);
+          rc = quvi_next_supported_website(handle, domain, formats);
+        }
+    }
 
-  /*
-   * Scripts will return QUVI_NOSUPPORT because
-   * of the "ident.url=0" above. This is OK since
-   * we ignore the "will_handle" value altogether.
-   */
-  return (rc == QUVI_NOSUPPORT ? QUVI_OK : rc);
+  return (rc);
 }
 
 /* quvi_next_host, NOTE: deprecated. */
@@ -530,7 +561,8 @@ QUVIcode quvi_next_host(char **domain, char **formats)
 
 char *quvi_strerror(quvi_t handle, QUVIcode code)
 {
-  static const char *errormsgs[] = {
+  static const char *errormsgs[] =
+  {
     "no error",
     "memory allocation failed",
     "bad handle argument to function",
@@ -546,13 +578,16 @@ char *quvi_strerror(quvi_t handle, QUVIcode code)
 
   _quvi_t quvi = (_quvi_t) handle;
 
-  if (quvi) {
-    if (code > _INTERNAL_QUVI_LAST)
-      return (quvi->errmsg);
-  } else {
-    if (code > _INTERNAL_QUVI_LAST)
-      code = _INTERNAL_QUVI_LAST;
-  }
+  if (quvi)
+    {
+      if (code > _INTERNAL_QUVI_LAST)
+        return (quvi->errmsg);
+    }
+  else
+    {
+      if (code > _INTERNAL_QUVI_LAST)
+        code = _INTERNAL_QUVI_LAST;
+    }
 
   return ((char *)errormsgs[code]);
 }
@@ -564,24 +599,24 @@ char *quvi_version(QUVIversion type)
   static const char version[] = PACKAGE_VERSION;
   static const char version_long[] =
 #ifdef GIT_DESCRIBE
-      GIT_DESCRIBE
+    GIT_DESCRIBE
 #else
-      PACKAGE_VERSION
+    PACKAGE_VERSION
 #endif
 #ifdef BUILD_DATE
-      " built on " BUILD_DATE
+    " built on " BUILD_DATE
 #endif
-      " for " CANONICAL_TARGET " ("
+    " for " CANONICAL_TARGET " ("
 #ifdef HAVE_ICONV
-      "i"
+    "i"
 #endif
 #ifdef ENABLE_BROKEN
-      "b"
+    "b"
 #endif
 #ifdef ENABLE_NSFW
-      "n"
+    "n"
 #endif
-      ")";
+    ")";
 
   if (type == QUVI_VERSION_LONG)
     return ((char *)version_long);
@@ -595,3 +630,5 @@ void quvi_free(void *ptr)
   if (ptr != NULL)
     free(ptr);
 }
+
+/* vim: set ts=2 sw=2 tw=72 expandtab: */

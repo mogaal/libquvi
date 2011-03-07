@@ -20,7 +20,8 @@
 #ifndef llst_h
 #define llst_h
 
-struct _llst_node_s {
+struct _llst_node_s
+{
   struct _llst_node_s *next;
   struct _llst_node_s *prev;
   void *data;
@@ -35,3 +36,4 @@ int llst_size(llst_node_t);
 void llst_free(llst_node_t *);
 
 #endif
+/* vim: set ts=2 sw=2 tw=72 expandtab: */

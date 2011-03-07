@@ -21,37 +21,41 @@
 --
 
 -- Identify the script.
-function ident (page_url)
-    local t   = {}
-    t.domain  = "vimeo.com"
-    t.formats = "default|best|hd"
-    t.handles = (page_url ~= nil and page_url:find(t.domain) ~= nil)
-    return t
+function ident (self)
+    package.path = self.script_dir .. '/?.lua'
+    local C      = require 'quvi/const'
+    local r      = {}
+    r.domain     = "vimeo.com"
+    r.formats    = "default|best|hd"
+    r.categories = C.proto_http
+    r.handles    =
+        (self.page_url ~= nil and self.page_url:find(r.domain) ~= nil)
+    return r
 end
 
 -- Parse video URL.
-function parse (video)
-    video.host_id = "vimeo"
+function parse (self)
+    self.host_id = "vimeo"
     
-    is_player, _, video.id =
-        video.page_url:find("^http://player.vimeo.com/video/(%d+)")
+    is_player, _, self.id =
+        self.page_url:find("^http://player.vimeo.com/video/(%d+)")
 
     if ( is_player ~= nil ) then
-        video.page_url = "http://vimeo.com/" .. vid
+        self.page_url = "http://vimeo.com/" .. vid
     end
 
-    if (video.id == nil) then
-        local _,_,s = video.page_url:find('vimeo.com/(%d+)')
-        video.id    = s
+    if (self.id == nil) then
+        local _,_,s = self.page_url:find('vimeo.com/(%d+)')
+        self.id     = s
     end
 
-    if (video.id == nil) then error ("no match: video") end
+    if (self.id == nil) then error ("no match: video") end
 
-    local config_url = "http://vimeo.com/moogaloop/load/clip:" .. video.id
+    local config_url = "http://vimeo.com/moogaloop/load/clip:" .. self.id
     local config = quvi.fetch (config_url, {fetch_type = 'config'})
 
     local _,_,s = config:find("<caption>(.-)</")
-    video.title = s or error ("no match: video title")
+    self.title  = s or error ("no match: video title")
 
     local _,_,s = config:find("<request_signature>(.-)</")
     local sign  = s or error ("no match: request signature")
@@ -63,18 +67,18 @@ function parse (video)
     local hd_button = s or error ("no match: hd button")
 
     local q = "sd" -- Same as "default".
-    if (video.requested_format == "hd" or video.requested_format == "best") then
+    if (self.requested_format == "hd" or self.requested_format == "best") then
         if (hd_button == "1") then
             q = "hd"
         end
     end
 
-    video.url = {
+    self.url = {
         string.format("http://vimeo.com/moogaloop/play/clip:%s/%s/%s/?q=%s",
-            video.id, sign, exp, q)
+            self.id, sign, exp, q)
     }
 
-    return video
+    return self
 end
 
-
+-- vim: set ts=4 sw=4 tw=72 expandtab:

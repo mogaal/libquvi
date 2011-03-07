@@ -40,5 +40,7 @@ e.g. "make check", the following environment variables can be used:
   TEST_RESTRICTED     Enable website rule tests known for country restrictions
   QUVI_TEST_OPTIONS   Additional options to pass to quvi when the tests are run
 
+Note that only the HTTP tests are run.
+
 Examples:
     QUVI_TEST_OPTIONS="--debug -n" make check     # See --enable-tests

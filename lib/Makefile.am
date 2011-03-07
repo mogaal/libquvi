@@ -15,10 +15,6 @@ if NO_ASPRINTF
 src += vasprintf.c asprintf.c
 endif
 
-if NO_STRUPR
-src += strupr.c
-endif
-
 hdr = \
 curl_wrap.h \
 lua_wrap.h \

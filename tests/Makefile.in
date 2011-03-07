@@ -43,8 +43,9 @@ target_triplet = @target@
 @HAVE_PERL_TRUE@	support-funnyordie.pl support-globo.pl \
 @HAVE_PERL_TRUE@	support-golem.pl support-google.pl \
 @HAVE_PERL_TRUE@	support-buzzhumor.pl support-liveleak.pl \
-@HAVE_PERL_TRUE@	support-sapo.pl support-sevenload.pl \
-@HAVE_PERL_TRUE@	support-spiegel.pl support-theonion.pl \
+@HAVE_PERL_TRUE@	support-publicsenat.pl support-sapo.pl \
+@HAVE_PERL_TRUE@	support-sevenload.pl support-spiegel.pl \
+@HAVE_PERL_TRUE@	support-tmunderground.pl support-theonion.pl \
 @HAVE_PERL_TRUE@	support-youtube.pl support-vimeo.pl \
 @HAVE_PERL_TRUE@	$(am__EXEEXT_2) $(am__append_2) \
 @HAVE_PERL_TRUE@	$(am__append_3)

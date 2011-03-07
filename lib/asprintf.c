@@ -33,3 +33,5 @@ int asprintf(char **dst, const char *fmt, ...)
 
   return (rc);
 }
+
+/* vim: set ts=2 sw=2 tw=72 expandtab: */

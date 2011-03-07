@@ -37,3 +37,5 @@ int vasprintf(char **dst, const char *fmt, va_list ap)
 
   return (vsnprintf(p, len, fmt, ap));
 }
+
+/* vim: set ts=2 sw=2 tw=72 expandtab: */

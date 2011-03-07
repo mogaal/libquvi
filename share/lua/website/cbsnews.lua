@@ -21,33 +21,37 @@
 --
 
 -- Identify the script.
-function ident (page_url)
-    local t   = {}
-    t.domain  = "cbsnews.com"
-    t.formats = "default|best|1100k|598k|386k"
-    t.handles = (page_url ~= nil and page_url:find(t.domain) ~= nil)
-    return t
+function ident (self)
+    package.path = self.script_dir .. '/?.lua'
+    local C      = require 'quvi/const'
+    local r      = {}
+    r.domain     = "cbsnews.com"
+    r.formats    = "default|best|1100k|598k|386k"
+    r.categories = C.proto_http
+    r.handles    =
+        (self.page_url ~= nil and self.page_url:find(r.domain) ~= nil)
+    return r
 end
 
 -- Parse video URL.
-function parse (video)
-    video.host_id = "cbsnews"
-    local page    = quvi.fetch(video.page_url)
+function parse (self)
+    self.host_id = "cbsnews"
+    local page   = quvi.fetch(self.page_url)
 
     -- Need "? because some videos have the " and some don't
     local _,_,s = page:find('CBSVideo.setVideoId%("?(.-)"?%);')
-    video.id    = s or error ("no match: video id")
+    self.id     = s or error ("no match: video id")
 
     -- Goto cnet and get the url for the xml of the available video formats
     s =  "http://api.cnet.com/restApi/v1.0/videoSearch?videoIds="
         .. s
         .. "&iod=videoMedia"
 
-    local xml  = quvi.fetch (s, {fetch_type = 'config'})
+    local xml = quvi.fetch (s, {fetch_type = 'config'})
 
     -- Grab title from the XML.
     local _,_,s = xml:find ('<Title>.-CDATA%[(.-)%]')
-    video.title = s or error ("no match: video title")
+    self.title  = s or error ("no match: video title")
 
     -- Go over the URLs. Figure out 'best' based on bitrate.
     local t    = {}
@@ -62,12 +66,12 @@ function parse (video)
 
     local url = nil
 
-    if (video.requested_format == 'best') then
+    if (self.requested_format == 'best') then
        url = t[best]
     else
 
         -- Try to match requested_format to known IDs. Strip non-digits.
-        local _,_,f = video.requested_format:find ('(%d+)')
+        local _,_,f = self.requested_format:find ('(%d+)')
         table.foreach (t,
             function (k,v) if (tonumber (f) == k) then url = v end end)
 
@@ -78,7 +82,9 @@ function parse (video)
         end
     end
 
-    video.url = {url}
+    self.url = {url}
 
-    return video
+    return self
 end
+
+-- vim: set ts=4 sw=4 tw=72 expandtab:

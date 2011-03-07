@@ -52,15 +52,14 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am__quvi_SOURCES_DIST = quvi.c cmdline.c license.c \
-	$(top_srcdir)/lib/strepl.c $(top_srcdir)/lib/vasprintf.c \
-	$(top_srcdir)/lib/asprintf.c cmdline.h
+am__quvi_SOURCES_DIST = quvi.c cmdline.c $(top_srcdir)/lib/strepl.c \
+	$(top_srcdir)/lib/vasprintf.c $(top_srcdir)/lib/asprintf.c \
+	cmdline.h
 @ENABLE_QUVI_TRUE@@NO_ASPRINTF_TRUE@am__objects_1 =  \
 @ENABLE_QUVI_TRUE@@NO_ASPRINTF_TRUE@	quvi-vasprintf.$(OBJEXT) \
 @ENABLE_QUVI_TRUE@@NO_ASPRINTF_TRUE@	quvi-asprintf.$(OBJEXT)
 @ENABLE_QUVI_TRUE@am__objects_2 = quvi-quvi.$(OBJEXT) \
-@ENABLE_QUVI_TRUE@	quvi-cmdline.$(OBJEXT) \
-@ENABLE_QUVI_TRUE@	quvi-license.$(OBJEXT) quvi-strepl.$(OBJEXT) \
+@ENABLE_QUVI_TRUE@	quvi-cmdline.$(OBJEXT) quvi-strepl.$(OBJEXT) \
 @ENABLE_QUVI_TRUE@	$(am__objects_1)
 am__objects_3 =
 @ENABLE_QUVI_TRUE@am_quvi_OBJECTS = $(am__objects_2) $(am__objects_3)
@@ -253,8 +252,8 @@ top_srcdir = @top_srcdir@
 @ENABLE_QUVI_TRUE@EXTRA_DIST = \
 @ENABLE_QUVI_TRUE@    cmdline.ggo
 
-@ENABLE_QUVI_TRUE@src = quvi.c cmdline.c license.c \
-@ENABLE_QUVI_TRUE@	$(top_srcdir)/lib/strepl.c $(am__append_1)
+@ENABLE_QUVI_TRUE@src = quvi.c cmdline.c $(top_srcdir)/lib/strepl.c \
+@ENABLE_QUVI_TRUE@	$(am__append_1)
 @ENABLE_QUVI_TRUE@hdr = \
 @ENABLE_QUVI_TRUE@cmdline.h
 
@@ -359,7 +358,6 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/quvi-asprintf.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/quvi-cmdline.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/quvi-license.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/quvi-quvi.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/quvi-strepl.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/quvi-vasprintf.Po@am__quote@
@@ -419,22 +417,6 @@ quvi-cmdline.obj: cmdline.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='cmdline.c' object='quvi-cmdline.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(quvi_CFLAGS) $(CFLAGS) -c -o quvi-cmdline.obj `if test -f 'cmdline.c'; then $(CYGPATH_W) 'cmdline.c'; else $(CYGPATH_W) '$(srcdir)/cmdline.c'; fi`
-
-quvi-license.o: license.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(quvi_CFLAGS) $(CFLAGS) -MT quvi-license.o -MD -MP -MF $(DEPDIR)/quvi-license.Tpo -c -o quvi-license.o `test -f 'license.c' || echo '$(srcdir)/'`license.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/quvi-license.Tpo $(DEPDIR)/quvi-license.Po
-@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='license.c' object='quvi-license.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(quvi_CFLAGS) $(CFLAGS) -c -o quvi-license.o `test -f 'license.c' || echo '$(srcdir)/'`license.c
-
-quvi-license.obj: license.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(quvi_CFLAGS) $(CFLAGS) -MT quvi-license.obj -MD -MP -MF $(DEPDIR)/quvi-license.Tpo -c -o quvi-license.obj `if test -f 'license.c'; then $(CYGPATH_W) 'license.c'; else $(CYGPATH_W) '$(srcdir)/license.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/quvi-license.Tpo $(DEPDIR)/quvi-license.Po
-@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='license.c' object='quvi-license.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(quvi_CFLAGS) $(CFLAGS) -c -o quvi-license.obj `if test -f 'license.c'; then $(CYGPATH_W) 'license.c'; else $(CYGPATH_W) '$(srcdir)/license.c'; fi`
 
 quvi-strepl.o: $(top_srcdir)/lib/strepl.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(quvi_CFLAGS) $(CFLAGS) -MT quvi-strepl.o -MD -MP -MF $(DEPDIR)/quvi-strepl.Tpo -c -o quvi-strepl.o `test -f '$(top_srcdir)/lib/strepl.c' || echo '$(srcdir)/'`$(top_srcdir)/lib/strepl.c

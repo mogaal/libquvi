@@ -40,32 +40,35 @@
 
 #ifdef _0
 static void dump_lua_stack(lua_State * L)
-{                               /* http://www.lua.org/pil/24.2.3.html */
+{
+  /* http://www.lua.org/pil/24.2.3.html */
   int i, top;
 
   top = lua_gettop(L);
 
-  for (i = 1; i <= top; i++) {  /* repeat for each level */
-    int t = lua_type(L, i);
-    switch (t) {
-    case LUA_TSTRING:          /* strings */
-      printf("`%s'", lua_tostring(L, i));
-      break;
+  for (i = 1; i <= top; i++)    /* repeat for each level */
+    {
+      int t = lua_type(L, i);
+      switch (t)
+        {
+        case LUA_TSTRING:          /* strings */
+          printf("`%s'", lua_tostring(L, i));
+          break;
 
-    case LUA_TBOOLEAN:         /* booleans */
-      printf(lua_toboolean(L, i) ? "true" : "false");
-      break;
+        case LUA_TBOOLEAN:         /* booleans */
+          printf(lua_toboolean(L, i) ? "true" : "false");
+          break;
 
-    case LUA_TNUMBER:          /* numbers */
-      printf("%g", lua_tonumber(L, i));
-      break;
+        case LUA_TNUMBER:          /* numbers */
+          printf("%g", lua_tonumber(L, i));
+          break;
 
-    default:                   /* other values */
-      printf("%s", lua_typename(L, t));
-      break;
+        default:                   /* other values */
+          printf("%s", lua_typename(L, t));
+          break;
+        }
+      printf("  ");               /* put a separator */
     }
-    printf("  ");               /* put a separator */
-  }
   printf("\n");                 /* end the listing */
 }
 #endif
@@ -90,32 +93,37 @@ static int l_quvi_fetch(lua_State * l)
 
   rc = fetch_to_mem(qv, lua_tostring(l, 1), l, &data);
 
-  if (rc == QUVI_OK) {
+  if (rc == QUVI_OK)
+    {
 
-    if (data != NULL) {
+      if (data != NULL)
+        {
 
-      luaL_buffinit(l, &b);
-      luaL_addstring(&b, data);
-      luaL_pushresult(&b);
+          luaL_buffinit(l, &b);
+          luaL_addstring(&b, data);
+          luaL_pushresult(&b);
+          _free(data);
+
+        }
+
+      else
+        {
+
+          /* Rare. Server returns an empty page (no content). Possibly related
+           * to a proxy software in use. cURL returns CURLE_OK so the only way
+           * we can tell this is by checking the data pointer (==NULL). */
+
+          luaL_error(l, "server returned no data (quvicode=%d, curlcode=0)",
+                     rc);
+        }
+
+    }
+
+  else
+    {
       _free(data);
-
+      luaL_error(l, qv->quvi->errmsg);
     }
-
-    else {
-
-      /* Rare. Server returns an empty page (no content). Possibly related
-       * to a proxy software in use. cURL returns CURLE_OK so the only way
-       * we can tell this is by checking the data pointer (==NULL). */
-
-      luaL_error(l, "server returned no data (quvicode=%d, curlcode=0)", rc);
-    }
-
-  }
-
-  else {
-    _free(data);
-    luaL_error(l, qv->quvi->errmsg);
-  }
 
   return (1);
 }
@@ -173,26 +181,28 @@ scan_dir(llst_node_t * dst, const char *path, filter_func filter)
   if (show_scandir)
     fprintf(stderr, "%s: %s\n", __PRETTY_FUNCTION__, path);
 
-  while ((de = readdir(dir))) {
+  while ((de = readdir(dir)))
+    {
 
-    if (filter(de)) {
+      if (filter(de))
+        {
 
-      _quvi_lua_script_t qls;
+          _quvi_lua_script_t qls;
 
-      QUVIcode rc = new_lua_script(&qls);
+          QUVIcode rc = new_lua_script(&qls);
 
-      if (rc != QUVI_OK)
-        return (rc);
+          if (rc != QUVI_OK)
+            return (rc);
 
-      asprintf((char **)&qls->basename, "%s", de->d_name);
-      asprintf((char **)&qls->path, "%s/%s", path, de->d_name);
+          asprintf((char **)&qls->basename, "%s", de->d_name);
+          asprintf((char **)&qls->path, "%s/%s", path, de->d_name);
 
-      if (show_script)
-        fprintf(stderr, "%s: %s\n", __PRETTY_FUNCTION__, qls->path);
+          if (show_script)
+            fprintf(stderr, "%s: %s\n", __PRETTY_FUNCTION__, qls->path);
 
-      llst_add(dst, qls);
+          llst_add(dst, qls);
+        }
     }
-  }
 
   closedir(dir);
 
@@ -200,7 +210,8 @@ scan_dir(llst_node_t * dst, const char *path, filter_func filter)
 }
 
 static QUVIcode
-scan_known_dirs(llst_node_t * dst, const char *spath, filter_func filter)
+scan_known_dirs(llst_node_t * dst, const char *spath,
+                filter_func filter)
 {
   char *homedir, *path, *basedir;
   char buf[PATH_MAX];
@@ -215,11 +226,12 @@ scan_known_dirs(llst_node_t * dst, const char *spath, filter_func filter)
 
   /* QUVI_BASEDIR. */
   basedir = getenv("QUVI_BASEDIR");
-  if (basedir) {
-    asprintf(&path, "%s/%s", basedir, spath);
-    _scan;
-    return (QUVI_OK);
-  }
+  if (basedir)
+    {
+      asprintf(&path, "%s/%s", basedir, spath);
+      _scan;
+      return (QUVI_OK);
+    }
 
   /* Current working directory. */
   asprintf(&path, "%s/%s", getcwd(buf, sizeof(buf)), spath);
@@ -227,14 +239,15 @@ scan_known_dirs(llst_node_t * dst, const char *spath, filter_func filter)
 
   /* Home directory. */
   homedir = getenv("HOME");
-  if (homedir) {
-    asprintf(&path, "%s/.quvi/%s", homedir, spath);
-    _scan;
-    asprintf(&path, "%s/.config/quvi/%s", homedir, spath);
-    _scan;
-    asprintf(&path, "%s/.local/share/quvi/%s", homedir, spath);
-    _scan;
-  }
+  if (homedir)
+    {
+      asprintf(&path, "%s/.quvi/%s", homedir, spath);
+      _scan;
+      asprintf(&path, "%s/.config/quvi/%s", homedir, spath);
+      _scan;
+      asprintf(&path, "%s/.local/share/quvi/%s", homedir, spath);
+      _scan;
+    }
 
   /* --datadir. */
   asprintf(&path, "%s/%s", DATADIR, spath);
@@ -249,7 +262,8 @@ scan_known_dirs(llst_node_t * dst, const char *spath, filter_func filter)
   return (QUVI_OK);
 }
 
-static const luaL_Reg reg_meth[] = {
+static const luaL_Reg reg_meth[] =
+{
   {"fetch", l_quvi_fetch},
   {"unescape", l_quvi_unescape},
   {NULL, NULL}
@@ -282,7 +296,8 @@ int init_lua(_quvi_t quvi)
   if (llst_size(quvi->util_scripts) == 0)
     return (QUVI_NOLUAUTIL);
 
-  rc = scan_known_dirs(&quvi->website_scripts, "lua/website", lua_files_only);
+  rc = scan_known_dirs(&quvi->website_scripts, "lua/website",
+                       lua_files_only);
 
   if (rc != QUVI_OK)
     return (rc);
@@ -356,7 +371,8 @@ char *lua_get_field_s(lua_State * l, const char *key)
   return (s);
 }
 
-static int get_field_b(lua_State * l, _quvi_lua_script_t qls, const char *key)
+static int get_field_b(lua_State * l, _quvi_lua_script_t qls,
+                       const char *key)
 {
   int b;
   set_key(l, key);
@@ -366,9 +382,21 @@ static int get_field_b(lua_State * l, _quvi_lua_script_t qls, const char *key)
   return (b);
 }
 
+static long get_field_n(lua_State * l, _quvi_lua_script_t qls,
+                        const char *key)
+{
+  long n;
+  set_key(l, key);
+  _istype(number);
+  n = lua_tonumber(l, -1);
+  lua_pop(l, 1);
+  return (n);
+}
+
 static QUVIcode
 iter_video_url(lua_State * l,
-               _quvi_lua_script_t qls, const char *key, _quvi_video_t qv)
+               _quvi_lua_script_t qls, const char *key,
+               _quvi_video_t qv)
 {
   QUVIcode rc = QUVI_OK;
 
@@ -376,15 +404,15 @@ iter_video_url(lua_State * l,
   _istype(table);
   lua_pushnil(l);
 
-  while (lua_next(l, -2) && rc == QUVI_OK) {
+  while (lua_next(l, -2) && rc == QUVI_OK)
+    {
+      if (!lua_isstring(l, -1))
+        luaL_error(l, "%s: expected an array of URL strings", qls->path);
 
-    if (!lua_isstring(l, -1))
-      luaL_error(l, "expected array to contain only strings");
+      rc = add_video_link(&qv->link, "%s", lua_tostring(l, -1));
 
-    rc = add_video_link(&qv->link, "%s", lua_tostring(l, -1));
-
-    lua_pop(l, 1);
-  }
+      lua_pop(l, 1);
+    }
 
   lua_pop(l, 1);
 
@@ -404,34 +432,37 @@ static void set_field(lua_State * l, const char *key, const char *value)
 
 /* Finds the specified util script from the list. */
 
-static _quvi_lua_script_t find_util_script(_quvi_t quvi, const char *basename)
+static _quvi_lua_script_t find_util_script(_quvi_t quvi,
+    const char *basename)
 {
   llst_node_t curr = quvi->util_scripts;
-  while (curr) {
-    _quvi_lua_script_t s = (_quvi_lua_script_t) curr->data;
-    if (strcmp(s->basename, basename) == 0)
-      return (s);
-    curr = curr->next;
-  }
+  while (curr)
+    {
+      _quvi_lua_script_t s = (_quvi_lua_script_t) curr->data;
+      if (strcmp(s->basename, basename) == 0)
+        return (s);
+      curr = curr->next;
+    }
   return (NULL);
 }
 
 static QUVIcode
 prep_util_script(_quvi_t quvi,
                  const char *script_fname,
-                 const char *func_name, lua_State ** pl)
+                 const char *func_name, lua_State ** pl,
+                 _quvi_lua_script_t *qls)
 {
-  _quvi_lua_script_t qls;
   lua_State *l;
 
   assert(quvi != NULL);
   assert(func_name != NULL);
   assert(script_fname != NULL);
 
-  *pl = NULL;
+  *pl  = NULL;
+  *qls = NULL;
 
-  qls = find_util_script(quvi, script_fname);
-  if (!qls)
+  *qls = find_util_script(quvi, script_fname);
+  if (*qls == NULL)
     return (QUVI_NOLUAUTIL);
 
   l = quvi->lua;
@@ -440,13 +471,16 @@ prep_util_script(_quvi_t quvi,
   lua_pushnil(l);
   lua_getglobal(l, func_name);
 
-  if (luaL_dofile(l, (qls)->path))
-    luaL_error(l, "%s", lua_tostring(l, -1));
+  if (luaL_dofile(l, (*qls)->path))
+    luaL_error(l, "%s: %s", (*qls)->path, lua_tostring(l, -1));
 
   lua_getglobal(l, func_name);
 
   if (!lua_isfunction(l, -1))
-    luaL_error(l, "%s: function `%s' not found", (qls)->path, func_name);
+    {
+      luaL_error(l,
+                 "%s: function `%s' not found", (*qls)->path, func_name);
+    }
 
   *pl = l;
 
@@ -459,28 +493,33 @@ QUVIcode run_lua_suffix_func(_quvi_t quvi, _quvi_video_link_t qvl)
 {
   const static char script_fname[] = "content_type.lua";
   const static char func_name[] = "suffix_from_contenttype";
+  _quvi_lua_script_t qls;
   lua_State *l;
   QUVIcode rc;
 
   assert(quvi != NULL);
   assert(qvl != NULL);
 
-  rc = prep_util_script(quvi, script_fname, func_name, &l);
-
+  rc = prep_util_script(quvi, script_fname, func_name, &l, &qls);
   if (rc != QUVI_OK)
     return (rc);
 
   assert(l != NULL);
+  assert(qls != NULL);
 
   lua_pushstring(l, qvl->content_type);
 
   if (lua_pcall(l, 1, 1, 0))
-    luaL_error(l, lua_tostring(l, -1));
+    luaL_error(l, "%s: %s", qls->path, lua_tostring(l, -1));
 
   if (lua_isstring(l, -1))
-    setvid(qvl->suffix, "%s", lua_tostring(l, -1));
+    freprintf(&qvl->suffix, "%s", lua_tostring(l, -1));
   else
-    luaL_error(l, "expected `%s' function to return a string", func_name);
+    {
+      luaL_error(l,
+                 "%s: expected `%s' function to return a string",
+                 qls->path, func_name);
+    }
 
   lua_pop(l, 1);
 
@@ -493,6 +532,7 @@ static QUVIcode run_lua_trim_fields_func(_quvi_video_t video, int ref)
 {
   const static char script_fname[] = "trim.lua";
   const static char func_name[] = "trim_fields";
+  _quvi_lua_script_t qls;
   _quvi_t quvi;
   lua_State *l;
   QUVIcode rc;
@@ -502,20 +542,24 @@ static QUVIcode run_lua_trim_fields_func(_quvi_video_t video, int ref)
   quvi = video->quvi;
   assert(quvi != NULL);
 
-  rc = prep_util_script(quvi, script_fname, func_name, &l);
-
+  rc = prep_util_script(quvi, script_fname, func_name, &l, &qls);
   if (rc != QUVI_OK)
     return (rc);
 
   assert(l != NULL);
+  assert(qls != NULL);
 
   lua_rawgeti(l, LUA_REGISTRYINDEX, ref);
 
   if (lua_pcall(l, 1, 1, 0))
-    luaL_error(l, lua_tostring(l, -1));
+    luaL_error(l, "%s: %s", qls->path, lua_tostring(l, -1));
 
   if (!lua_istable(l, -1))
-    luaL_error(l, "expected `%s' function to return a table", func_name);
+    {
+      luaL_error(l,
+                 "%s: expected `%s' function to return a table",
+                 qls->path, func_name);
+    }
 
   return (QUVI_OK);
 }
@@ -526,6 +570,7 @@ QUVIcode run_lua_charset_func(_quvi_video_t video, const char *data)
 {
   const static char script_fname[] = "charset.lua";
   const static char func_name[] = "charset_from_data";
+  _quvi_lua_script_t qls;
   _quvi_t quvi;
   lua_State *l;
   QUVIcode rc;
@@ -534,23 +579,27 @@ QUVIcode run_lua_charset_func(_quvi_video_t video, const char *data)
   quvi = video->quvi;
   assert(quvi != NULL);
 
-  rc = prep_util_script(quvi, script_fname, func_name, &l);
-
+  rc = prep_util_script(quvi, script_fname, func_name, &l, &qls);
   if (rc != QUVI_OK)
     return (rc);
 
   assert(l != NULL);
+  assert(qls != NULL);
 
   lua_pushstring(l, data);
 
   if (lua_pcall(l, 1, 1, 0))
-    luaL_error(l, lua_tostring(l, -1));
+    luaL_error(l, "%s: %s", qls->path, lua_tostring(l, -1));
 
   if (lua_isstring(l, -1))
-    setvid(video->charset, "%s", lua_tostring(l, -1));
+    freprintf(&video->charset, "%s", lua_tostring(l, -1));
   else if (lua_isnil(l, -1)) ;  /* Charset was not found. We can live with that. */
   else
-    luaL_error(l, "expected `%s' function to return a string", func_name);
+    {
+      luaL_error(l,
+                 "%s: expected `%s' function to return a string",
+                 qls->path, func_name);
+    }
 
   lua_pop(l, 1);
 
@@ -564,6 +613,7 @@ QUVIcode run_lua_charset_func(_quvi_video_t video, const char *data)
 QUVIcode run_ident_func(lua_ident_t ident, llst_node_t node)
 {
   _quvi_lua_script_t qls;
+  char *script_dir;
   _quvi_t quvi;
   lua_State *l;
   QUVIcode rc;
@@ -586,33 +636,57 @@ QUVIcode run_ident_func(lua_ident_t ident, llst_node_t node)
   lua_setglobal(l, "ident");
   lua_setglobal(l, "parse");
 
-  if (luaL_dofile(l, qls->path)) {
-    seterr("%s", lua_tostring(l, -1));
-    return (QUVI_LUA);
-  }
+  if (luaL_dofile(l, qls->path))
+    {
+      freprintf(&quvi->errmsg, "%s", lua_tostring(l, -1));
+      return (QUVI_LUA);
+    }
 
   lua_getglobal(l, "ident");
 
-  if (!lua_isfunction(l, -1)) {
-    seterr("%s: `ident' function not found", qls->path);
-    return (QUVI_LUA);
-  }
+  if (!lua_isfunction(l, -1))
+    {
+      freprintf(&quvi->errmsg, "%s: `ident' function not found",
+                qls->path);
+      return (QUVI_LUA);
+    }
 
-  if (ident->url)
-    lua_pushstring(l, ident->url);
+  script_dir = dirname_from(qls->path);
 
-  if (lua_pcall(l, (ident->url ? 1 : 0), 1, 0)) {
-    seterr("%s", lua_tostring(l, -1));
-    return (QUVI_LUA);
-  }
+  lua_newtable(l);
+  set_field(l, "page_url", ident->url);
+  set_field(l, "script_dir", script_dir);
 
-  if (lua_istable(l, -1)) {
-    ident->domain = strdup(get_field_req_s(l, qls, "domain"));
-    ident->formats = strdup(get_field_req_s(l, qls, "formats"));
-    rc = get_field_b(l, qls, "handles")
-        ? QUVI_OK : QUVI_NOSUPPORT;
-  } else
-    luaL_error(l, "expected `ident' function to return a table");
+  _free(script_dir);
+
+  if (lua_pcall(l, 1, 1, 0))
+    {
+      freprintf(&quvi->errmsg, "%s", lua_tostring(l, -1));
+      return (QUVI_LUA);
+    }
+
+  if (lua_istable(l, -1))
+    {
+
+      ident->domain = strdup(get_field_req_s(l, qls, "domain"));
+
+      ident->formats = strdup(get_field_req_s(l, qls, "formats"));
+
+      ident->categories = get_field_n(l, qls, "categories");
+
+      rc = get_field_b(l, qls, "handles")
+           ? QUVI_OK : QUVI_NOSUPPORT;
+
+      if (rc == QUVI_OK)
+        rc = ident->categories & quvi->
+             category ? QUVI_OK : QUVI_NOSUPPORT;
+
+    }
+  else
+    {
+      luaL_error(l,
+                 "%s: expected `ident' function to return a table", qls->path);
+    }
 
   lua_pop(l, 1);
 
@@ -626,6 +700,7 @@ run_parse_func(lua_State * l, llst_node_t node, _quvi_video_t video)
 {
   static const char func_name[] = "parse";
   _quvi_lua_script_t qls;
+  char *script_dir;
   _quvi_t quvi;
   QUVIcode rc;
 
@@ -637,48 +712,63 @@ run_parse_func(lua_State * l, llst_node_t node, _quvi_video_t video)
 
   lua_getglobal(l, func_name);
 
-  if (!lua_isfunction(l, -1)) {
-    seterr("%s: `%s' function not found", qls->path, func_name);
-    return (QUVI_LUA);
-  }
+  if (!lua_isfunction(l, -1))
+    {
+      freprintf(&quvi->errmsg,
+                "%s: `%s' function not found", qls->path, func_name);
+      return (QUVI_LUA);
+    }
+
+  script_dir = dirname_from(qls->path);
 
   lua_newtable(l);
   set_field(l, "page_url", video->page_link);
   set_field(l, "requested_format", video->quvi->format);
   set_field(l, "redirect", "");
   set_field(l, "starttime", "");
+  set_field(l, "script_dir", script_dir);
 
-  if (lua_pcall(l, 1, 1, 0)) {
-    seterr("%s", lua_tostring(l, -1));
-    return (QUVI_LUA);
-  }
+  _free(script_dir);
 
-  if (!lua_istable(l, -1)) {
-    seterr("expected `%s' function return a table", func_name);
-    return (QUVI_LUA);
-  }
-
-  setvid(video->redirect, "%s", get_field_req_s(l, qls, "redirect"));
-
-  if (strlen(video->redirect) == 0) {
-
-    const int r = luaL_ref(l, LUA_REGISTRYINDEX);
-
-    rc = run_lua_trim_fields_func(video, r);
-
-    luaL_unref(l, LUA_REGISTRYINDEX, r);
-
-    if (rc == QUVI_OK) {
-
-      setvid(video->host_id, "%s", get_field_req_s(l, qls, "host_id"));
-      setvid(video->title, "%s", get_field_req_s(l, qls, "title"));
-      setvid(video->id, "%s", get_field_req_s(l, qls, "id"));
-      setvid(video->starttime, "%s", get_field_req_s(l, qls, "starttime"));
-
-      rc = iter_video_url(l, qls, "url", video);
+  if (lua_pcall(l, 1, 1, 0))
+    {
+      freprintf(&quvi->errmsg, "%s", lua_tostring(l, -1));
+      return (QUVI_LUA);
     }
 
-  }
+  if (!lua_istable(l, -1))
+    {
+      freprintf(&quvi->errmsg,
+                "expected `%s' function return a table", func_name);
+      return (QUVI_LUA);
+    }
+
+  freprintf(&video->redirect, "%s",
+            get_field_req_s(l, qls, "redirect"));
+
+  if (strlen(video->redirect) == 0)
+    {
+
+      const int r = luaL_ref(l, LUA_REGISTRYINDEX);
+
+      rc = run_lua_trim_fields_func(video, r);
+
+      luaL_unref(l, LUA_REGISTRYINDEX, r);
+
+      if (rc == QUVI_OK)
+        {
+
+          freprintf(&video->host_id, "%s",
+                    get_field_req_s(l, qls, "host_id"));
+          freprintf(&video->title, "%s", get_field_req_s(l, qls, "title"));
+          freprintf(&video->id, "%s", get_field_req_s(l, qls, "id"));
+          freprintf(&video->starttime, "%s",
+                    get_field_req_s(l, qls, "starttime"));
+
+          rc = iter_video_url(l, qls, "url", video);
+        }
+
+    }
 
   lua_pop(l, 1);
 
@@ -687,7 +777,8 @@ run_parse_func(lua_State * l, llst_node_t node, _quvi_video_t video)
 
 /* Match host script to the url. */
 
-static llst_node_t find_host_script_node(_quvi_video_t video, QUVIcode * rc)
+static llst_node_t find_host_script_node(_quvi_video_t video,
+    QUVIcode * rc)
 {
   llst_node_t curr;
   _quvi_t quvi;
@@ -698,33 +789,37 @@ static llst_node_t find_host_script_node(_quvi_video_t video, QUVIcode * rc)
   curr = quvi->website_scripts;
   l = quvi->lua;
 
-  while (curr) {
-    struct lua_ident_s ident;
+  while (curr)
+    {
+      struct lua_ident_s ident;
 
-    ident.quvi = video->quvi;
-    ident.url = video->page_link;
-    ident.domain = NULL;
-    ident.formats = NULL;
+      ident.quvi = video->quvi;
+      ident.url = video->page_link;
+      ident.domain = NULL;
+      ident.formats = NULL;
 
-    /* check if script ident this url. */
-    *rc = run_ident_func(&ident, curr);
+      /* Check if script ident this url. */
+      *rc = run_ident_func(&ident, curr);
 
-    _free(ident.domain);
-    _free(ident.formats);
+      _free(ident.domain);
+      _free(ident.formats);
 
-    if (*rc == QUVI_OK) {
-      /* found a script. */
-      return (curr);
-    } else if (*rc != QUVI_NOSUPPORT) {
-      /* a script error. terminate. */
-      return (NULL);
+      if (*rc == QUVI_OK)
+        {
+          /* Found a script. */
+          return (curr);
+        }
+      else if (*rc != QUVI_NOSUPPORT)
+        {
+          /* A script error. Terminate with it. */
+          return (NULL);
+        }
+
+      curr = curr->next;
     }
 
-    curr = curr->next;
-  }
-
-  /* in rc, set by run_ident_func, we trust. */
-  seterr("no support: %s", video->page_link);
+  /* Trust that run_ident_func sets the rc. */
+  freprintf(&quvi->errmsg, "no support: %s", video->page_link);
 
   return (NULL);
 }
@@ -756,3 +851,5 @@ QUVIcode find_host_script_and_parse(_quvi_video_t video)
   /* found a script. */
   return (run_parse_func(l, script, video));
 }
+
+/* vim: set ts=2 sw=2 tw=72 expandtab: */
