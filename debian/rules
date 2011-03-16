@@ -7,7 +7,7 @@ override_dh_auto_configure:
 	dh_auto_configure -- --enable-nsfw
 
 override_dh_auto_test:
-	NO_INTERNET=1
+	NO_INTERNET=1 dh_auto_test
 
 override_dh_installchangelogs:
 	dh_installchangelogs NEWS
