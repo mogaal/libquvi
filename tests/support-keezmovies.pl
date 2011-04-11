@@ -1,11 +1,11 @@
 exit quviTest::run_t(
-"bloomberg",
+"keezmovies",
 "--page-title",
-    "Bloomberg Game Changers: Steve Jobs",
+    "Evelyn's",
 "--video-id",
-    "66626118",
+    "659194",
 "--file-length",
-    "203586089",
+    "7336778",
 "--file-suffix",
     "flv"
 );

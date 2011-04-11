@@ -2,19 +2,24 @@
 Howto: Submit patches
 =====================
 
-Note:
-    You agree to put your changes and new code under the same
-    license quvi and libquvi are using already unless stated
-    and agreed otherwise.
+* You agree to put your changes and new code under the same license quvi
+and libquvi are using already unless stated and agreed otherwise
+
+* If you are submitting a new website script, please include a test URL
+with your patch
+
+* Please read the doc/CodingStyle
+
+
+CREATING A PATCH
+----------------
 
 If you are using git:
   * Check for unnecessary whitespace with "git diff --check" and fix them
   * Use "git format-patch -M" to create the patch
+
 Otherwise:
   * When working with diff, please use "diff -u"
-
-NOTE: If you are submitting a new website script, please include
-      *a test URL* with your patch.
 
 WWW: <http://quvi.sourceforge.net/> / Development
     You can submit your patches to the Trac that we use.

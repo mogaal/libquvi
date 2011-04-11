@@ -9,6 +9,7 @@ lua/website/quvi/bit.lua \
 lua/website/quvi/const.lua \
 lua/website/quvi/util.lua \
 lua/website/academicearth.lua \
+lua/website/arte.lua \
 lua/website/bloomberg.lua \
 lua/website/break.lua \
 lua/website/buzzhumor.lua \
@@ -30,6 +31,7 @@ lua/website/publicsenat.lua \
 lua/website/sapo.lua \
 lua/website/sevenload.lua \
 lua/website/spiegel.lua \
+lua/website/tagtele.lua \
 lua/website/tmunderground.lua \
 lua/website/theonion.lua \
 lua/website/vimeo.lua \
@@ -37,7 +39,9 @@ lua/website/youtube.lua
 
 if ENABLE_NSFW
 DIST_lua += \
+lua/website/keezmovies.lua \
 lua/website/tube8.lua \
+lua/website/xhamster.lua \
 lua/website/xvideos.lua \
 lua/website/youjizz.lua
 endif

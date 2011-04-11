@@ -13,11 +13,11 @@
 #include "config.h"
 #endif
 
-#include <stdio.h>              /* for FILE */
+#include <stdio.h> /* for FILE */
 
 #ifdef __cplusplus
 extern "C" {
-#endif                          /* __cplusplus */
+#endif /* __cplusplus */
 
 #ifndef CMDLINE_PARSER_PACKAGE
   /** @brief the program name (used for printing errors) */
@@ -37,130 +37,97 @@ extern "C" {
   /** @brief Where the command line options are stored */
   struct gengetopt_args_info
   {
-    const char *help_help;
-    /**< @brief Print help and exit help description.  */
-    const char *version_help;
-    /**< @brief Print version and exit help description.  */
-    const char *license_help;
-    /**< @brief Print license and exit help description.  */
-    const char *support_help;
-    /**< @brief Print supported websites and exit help description.  */
-    const char *xml_help;
-    /**< @brief Print details in XML help description.  */
-    const char *old_help;
-    /**< @brief Print details in original format help description.  */
-    const char *quiet_help;
-    /**< @brief Turn off output to stderr help description.  */
-    const char *verbose_libcurl_help;
-    /**< @brief Turn on libcurl verbose mode help description.  */
-    char *exec_arg;     /**< @brief Invoke arg after parsing.  */
-    char *exec_orig;    /**< @brief Invoke arg after parsing original value given at command line.  */
-    const char *exec_help;
-    /**< @brief Invoke arg after parsing help description.  */
-    const char *no_shortened_help;
-    /**< @brief Do not decompress shortened URLs help description.  */
-    const char *no_verify_help;
-    /**< @brief Do not verify video link help description.  */
-    const char *category_http_help;
-    /**< @brief Category HTTP website scripts help description.  */
-    const char *category_mms_help;
-    /**< @brief Category MMS website scripts help description.  */
-    const char *category_rtsp_help;
-    /**< @brief Category RTSP website scripts help description.  */
-    const char *category_rtmp_help;
-    /**< @brief Category RTMP website scripts help description.  */
-    const char *category_all_help;
-    /**< @brief All website script categories help description.  */
-    char *page_title_arg;       /**< @brief Check that parsed page title matches arg.  */
-    char *page_title_orig;      /**< @brief Check that parsed page title matches arg original value given at command line.  */
-    const char *page_title_help;
-    /**< @brief Check that parsed page title matches arg help description.  */
-    char *video_id_arg; /**< @brief Check that parsed video ID matches arg.  */
-    char *video_id_orig;/**< @brief Check that parsed video ID matches arg original value given at command line.  */
-    const char *video_id_help;
-    /**< @brief Check that parsed video ID matches arg help description.  */
-    double file_length_arg;     /**< @brief Check that parsed video length matches arg.  */
-    char *file_length_orig;     /**< @brief Check that parsed video length matches arg original value given at command line.  */
-    const char *file_length_help;
-    /**< @brief Check that parsed video length matches arg help description.  */
-    char *file_suffix_arg;      /**< @brief Check that parsed video suffix matches arg.  */
-    char *file_suffix_orig;     /**< @brief Check that parsed video suffix matches arg original value given at command line.  */
-    const char *file_suffix_help;
-    /**< @brief Check that parsed video suffix matches arg help description.  */
-    const char *test_all_help;
-    /**< @brief Run all built-in tests of category QUVIPROTO_HTTP help description.  */
-    const char *dump_help;
-    /**< @brief Dump video details with --test-all help description.  */
-    char *test_arg;     /**< @brief Pattern to match to built-in test URLs.  */
-    char *test_orig;    /**< @brief Pattern to match to built-in test URLs original value given at command line.  */
-    const char *test_help;
-    /**< @brief Pattern to match to built-in test URLs help description.  */
-    char *format_arg;   /**< @brief Video format to query (default='default').  */
-    char *format_orig;  /**< @brief Video format to query original value given at command line.  */
-    const char *format_help;
-    /**< @brief Video format to query help description.  */
-    char *agent_arg;    /**< @brief Identify as arg (default='Mozilla/5.0').  */
-    char *agent_orig;   /**< @brief Identify as arg original value given at command line.  */
-    const char *agent_help;
-    /**< @brief Identify as arg help description.  */
-    char *proxy_arg;    /**< @brief Use proxy for HTTP connections.  */
-    char *proxy_orig;   /**< @brief Use proxy for HTTP connections original value given at command line.  */
-    const char *proxy_help;
-    /**< @brief Use proxy for HTTP connections help description.  */
-    const char *no_proxy_help;
-    /**< @brief Disable use of HTTP proxy help description.  */
-    int connect_timeout_arg;    /**< @brief Seconds connecting allowed to take (default='30').  */
-    char *connect_timeout_orig; /**< @brief Seconds connecting allowed to take original value given at command line.  */
-    const char *connect_timeout_help;
-    /**< @brief Seconds connecting allowed to take help description.  */
+    const char *help_help; /**< @brief Print help and exit help description.  */
+    const char *version_help; /**< @brief Print version and exit help description.  */
+    const char *license_help; /**< @brief Print license and exit help description.  */
+    const char *support_help; /**< @brief Print supported websites and exit help description.  */
+    const char *xml_help; /**< @brief Print details in XML help description.  */
+    const char *old_help; /**< @brief Print details in original format help description.  */
+    const char *quiet_help; /**< @brief Turn off output to stderr help description.  */
+    const char *verbose_libcurl_help; /**< @brief Turn on libcurl verbose mode help description.  */
+    char * exec_arg;  /**< @brief Invoke arg after parsing.  */
+    char * exec_orig; /**< @brief Invoke arg after parsing original value given at command line.  */
+    const char *exec_help; /**< @brief Invoke arg after parsing help description.  */
+    const char *no_shortened_help; /**< @brief Do not decompress shortened URLs help description.  */
+    const char *no_verify_help; /**< @brief Do not verify video link help description.  */
+    const char *category_http_help; /**< @brief Category HTTP website scripts help description.  */
+    const char *category_mms_help; /**< @brief Category MMS website scripts help description.  */
+    const char *category_rtsp_help; /**< @brief Category RTSP website scripts help description.  */
+    const char *category_rtmp_help; /**< @brief Category RTMP website scripts help description.  */
+    const char *category_all_help; /**< @brief All website script categories help description.  */
+    char * page_title_arg;  /**< @brief Check that parsed page title matches arg.  */
+    char * page_title_orig; /**< @brief Check that parsed page title matches arg original value given at command line.  */
+    const char *page_title_help; /**< @brief Check that parsed page title matches arg help description.  */
+    char * video_id_arg;  /**< @brief Check that parsed video ID matches arg.  */
+    char * video_id_orig; /**< @brief Check that parsed video ID matches arg original value given at command line.  */
+    const char *video_id_help; /**< @brief Check that parsed video ID matches arg help description.  */
+    double file_length_arg; /**< @brief Check that parsed video length matches arg.  */
+    char * file_length_orig;  /**< @brief Check that parsed video length matches arg original value given at command line.  */
+    const char *file_length_help; /**< @brief Check that parsed video length matches arg help description.  */
+    char * file_suffix_arg; /**< @brief Check that parsed video suffix matches arg.  */
+    char * file_suffix_orig;  /**< @brief Check that parsed video suffix matches arg original value given at command line.  */
+    const char *file_suffix_help; /**< @brief Check that parsed video suffix matches arg help description.  */
+    const char *test_all_help; /**< @brief Run all built-in tests of category QUVIPROTO_HTTP help description.  */
+    const char *dump_help; /**< @brief Dump video details with --test-all help description.  */
+    char * test_arg;  /**< @brief Pattern to match to built-in test URLs.  */
+    char * test_orig; /**< @brief Pattern to match to built-in test URLs original value given at command line.  */
+    const char *test_help; /**< @brief Pattern to match to built-in test URLs help description.  */
+    char * format_arg;  /**< @brief Video format to query (default='default').  */
+    char * format_orig; /**< @brief Video format to query original value given at command line.  */
+    const char *format_help; /**< @brief Video format to query help description.  */
+    char * agent_arg; /**< @brief Identify as arg (default='Mozilla/5.0').  */
+    char * agent_orig;  /**< @brief Identify as arg original value given at command line.  */
+    const char *agent_help; /**< @brief Identify as arg help description.  */
+    char * proxy_arg; /**< @brief Use proxy for HTTP connections.  */
+    char * proxy_orig;  /**< @brief Use proxy for HTTP connections original value given at command line.  */
+    const char *proxy_help; /**< @brief Use proxy for HTTP connections help description.  */
+    const char *no_proxy_help; /**< @brief Disable use of HTTP proxy help description.  */
+    int connect_timeout_arg;  /**< @brief Seconds connecting allowed to take (default='30').  */
+    char * connect_timeout_orig;  /**< @brief Seconds connecting allowed to take original value given at command line.  */
+    const char *connect_timeout_help; /**< @brief Seconds connecting allowed to take help description.  */
 
-    unsigned int help_given;    /**< @brief Whether help was given.  */
-    unsigned int version_given; /**< @brief Whether version was given.  */
-    unsigned int license_given; /**< @brief Whether license was given.  */
-    unsigned int support_given; /**< @brief Whether support was given.  */
-    unsigned int xml_given;     /**< @brief Whether xml was given.  */
-    unsigned int old_given;     /**< @brief Whether old was given.  */
-    unsigned int quiet_given;   /**< @brief Whether quiet was given.  */
-    unsigned int verbose_libcurl_given; /**< @brief Whether verbose-libcurl was given.  */
-    unsigned int exec_given;    /**< @brief Whether exec was given.  */
-    unsigned int no_shortened_given;    /**< @brief Whether no-shortened was given.  */
-    unsigned int no_verify_given;       /**< @brief Whether no-verify was given.  */
-    unsigned int category_http_given;   /**< @brief Whether category-http was given.  */
-    unsigned int category_mms_given;    /**< @brief Whether category-mms was given.  */
-    unsigned int category_rtsp_given;   /**< @brief Whether category-rtsp was given.  */
-    unsigned int category_rtmp_given;   /**< @brief Whether category-rtmp was given.  */
-    unsigned int category_all_given;    /**< @brief Whether category-all was given.  */
-    unsigned int page_title_given;      /**< @brief Whether page-title was given.  */
-    unsigned int video_id_given;/**< @brief Whether video-id was given.  */
-    unsigned int file_length_given;     /**< @brief Whether file-length was given.  */
-    unsigned int file_suffix_given;     /**< @brief Whether file-suffix was given.  */
-    unsigned int test_all_given;/**< @brief Whether test-all was given.  */
-    unsigned int dump_given;    /**< @brief Whether dump was given.  */
-    unsigned int test_given;    /**< @brief Whether test was given.  */
-    unsigned int format_given;  /**< @brief Whether format was given.  */
-    unsigned int agent_given;   /**< @brief Whether agent was given.  */
-    unsigned int proxy_given;   /**< @brief Whether proxy was given.  */
-    unsigned int no_proxy_given;/**< @brief Whether no-proxy was given.  */
-    unsigned int connect_timeout_given; /**< @brief Whether connect-timeout was given.  */
+    unsigned int help_given ; /**< @brief Whether help was given.  */
+    unsigned int version_given ;  /**< @brief Whether version was given.  */
+    unsigned int license_given ;  /**< @brief Whether license was given.  */
+    unsigned int support_given ;  /**< @brief Whether support was given.  */
+    unsigned int xml_given ;  /**< @brief Whether xml was given.  */
+    unsigned int old_given ;  /**< @brief Whether old was given.  */
+    unsigned int quiet_given ;  /**< @brief Whether quiet was given.  */
+    unsigned int verbose_libcurl_given ;  /**< @brief Whether verbose-libcurl was given.  */
+    unsigned int exec_given ; /**< @brief Whether exec was given.  */
+    unsigned int no_shortened_given ; /**< @brief Whether no-shortened was given.  */
+    unsigned int no_verify_given ;  /**< @brief Whether no-verify was given.  */
+    unsigned int category_http_given ;  /**< @brief Whether category-http was given.  */
+    unsigned int category_mms_given ; /**< @brief Whether category-mms was given.  */
+    unsigned int category_rtsp_given ;  /**< @brief Whether category-rtsp was given.  */
+    unsigned int category_rtmp_given ;  /**< @brief Whether category-rtmp was given.  */
+    unsigned int category_all_given ; /**< @brief Whether category-all was given.  */
+    unsigned int page_title_given ; /**< @brief Whether page-title was given.  */
+    unsigned int video_id_given ; /**< @brief Whether video-id was given.  */
+    unsigned int file_length_given ;  /**< @brief Whether file-length was given.  */
+    unsigned int file_suffix_given ;  /**< @brief Whether file-suffix was given.  */
+    unsigned int test_all_given ; /**< @brief Whether test-all was given.  */
+    unsigned int dump_given ; /**< @brief Whether dump was given.  */
+    unsigned int test_given ; /**< @brief Whether test was given.  */
+    unsigned int format_given ; /**< @brief Whether format was given.  */
+    unsigned int agent_given ;  /**< @brief Whether agent was given.  */
+    unsigned int proxy_given ;  /**< @brief Whether proxy was given.  */
+    unsigned int no_proxy_given ; /**< @brief Whether no-proxy was given.  */
+    unsigned int connect_timeout_given ;  /**< @brief Whether connect-timeout was given.  */
 
-    char **inputs;/**< @brief unamed options (options without names) */
-    unsigned inputs_num;/**< @brief unamed options number */
-  };
+    char **inputs ; /**< @brief unamed options (options without names) */
+    unsigned inputs_num ; /**< @brief unamed options number */
+  } ;
 
   /** @brief The additional parameters to pass to parser functions */
   struct cmdline_parser_params
   {
-    int override;
-    /**< @brief whether to override possibly already present options (default 0) */
-    int initialize;
-    /**< @brief whether to initialize the option structure gengetopt_args_info (default 1) */
-    int check_required;
-    /**< @brief whether to check that all required options were provided (default 1) */
-    int check_ambiguity;
-    /**< @brief whether to check for options already specified in the option structure gengetopt_args_info (default 0) */
-    int print_errors;
-    /**< @brief whether getopt_long should print an error message for a bad option (default 1) */
-  };
+    int override; /**< @brief whether to override possibly already present options (default 0) */
+    int initialize; /**< @brief whether to initialize the option structure gengetopt_args_info (default 1) */
+    int check_required; /**< @brief whether to check that all required options were provided (default 1) */
+    int check_ambiguity; /**< @brief whether to check for options already specified in the option structure gengetopt_args_info (default 0) */
+    int print_errors; /**< @brief whether getopt_long should print an error message for a bad option (default 1) */
+  } ;
 
   /** @brief the purpose string of the program */
   extern const char *gengetopt_args_info_purpose;
@@ -176,8 +143,8 @@ extern "C" {
    * @param args_info the structure where option information will be stored
    * @return 0 if everything went fine, NON 0 if an error took place
    */
-  int cmdline_parser(int argc, char **argv,
-                     struct gengetopt_args_info *args_info);
+  int cmdline_parser (int argc, char **argv,
+                      struct gengetopt_args_info *args_info);
 
   /**
    * The command line parser (version with additional parameters - deprecated)
@@ -190,9 +157,9 @@ extern "C" {
    * @return 0 if everything went fine, NON 0 if an error took place
    * @deprecated use cmdline_parser_ext() instead
    */
-  int cmdline_parser2(int argc, char **argv,
-                      struct gengetopt_args_info *args_info,
-                      int override, int initialize, int check_required);
+  int cmdline_parser2 (int argc, char **argv,
+                       struct gengetopt_args_info *args_info,
+                       int override, int initialize, int check_required);
 
   /**
    * The command line parser (version with additional parameters)
@@ -202,9 +169,9 @@ extern "C" {
    * @param params additional parameters for the parser
    * @return 0 if everything went fine, NON 0 if an error took place
    */
-  int cmdline_parser_ext(int argc, char **argv,
-                         struct gengetopt_args_info *args_info,
-                         struct cmdline_parser_params *params);
+  int cmdline_parser_ext (int argc, char **argv,
+                          struct gengetopt_args_info *args_info,
+                          struct cmdline_parser_params *params);
 
   /**
    * Save the contents of the option struct into an already open FILE stream.
@@ -212,7 +179,7 @@ extern "C" {
    * @param args_info the option struct to dump
    * @return 0 if everything went fine, NON 0 if an error took place
    */
-  int cmdline_parser_dump(FILE * outfile,
+  int cmdline_parser_dump(FILE *outfile,
                           struct gengetopt_args_info *args_info);
 
   /**
@@ -253,13 +220,13 @@ extern "C" {
    * (also set default values for options that have a default)
    * @param args_info the structure to initialize
    */
-  void cmdline_parser_init(struct gengetopt_args_info *args_info);
+  void cmdline_parser_init (struct gengetopt_args_info *args_info);
   /**
    * Deallocates the string fields of the gengetopt_args_info structure
    * (but does not deallocate the structure itself)
    * @param args_info the structure to deallocate
    */
-  void cmdline_parser_free(struct gengetopt_args_info *args_info);
+  void cmdline_parser_free (struct gengetopt_args_info *args_info);
 
   /**
    * The config file parser (deprecated version)
@@ -271,10 +238,9 @@ extern "C" {
    * @return 0 if everything went fine, NON 0 if an error took place
    * @deprecated use cmdline_parser_config_file() instead
    */
-  int cmdline_parser_configfile(const char *filename,
-                                struct gengetopt_args_info *args_info,
-                                int override, int initialize,
-                                int check_required);
+  int cmdline_parser_configfile (const char *filename,
+                                 struct gengetopt_args_info *args_info,
+                                 int override, int initialize, int check_required);
 
   /**
    * The config file parser
@@ -283,9 +249,9 @@ extern "C" {
    * @param params additional parameters for the parser
    * @return 0 if everything went fine, NON 0 if an error took place
    */
-  int cmdline_parser_config_file(const char *filename,
-                                 struct gengetopt_args_info *args_info,
-                                 struct cmdline_parser_params *params);
+  int cmdline_parser_config_file (const char *filename,
+                                  struct gengetopt_args_info *args_info,
+                                  struct cmdline_parser_params *params);
 
   /**
    * Checks that all the required options were specified
@@ -294,10 +260,11 @@ extern "C" {
    *   possible errors
    * @return
    */
-  int cmdline_parser_required(struct gengetopt_args_info *args_info,
-                              const char *prog_name);
+  int cmdline_parser_required (struct gengetopt_args_info *args_info,
+                               const char *prog_name);
+
 
 #ifdef __cplusplus
 }
-#endif                          /* __cplusplus */
-#endif                          /* CMDLINE_H */
+#endif /* __cplusplus */
+#endif /* CMDLINE_H */

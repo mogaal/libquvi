@@ -1,11 +1,11 @@
 exit quviTest::run_t(
-"bloomberg",
+"tagtele",
 "--page-title",
-    "Bloomberg Game Changers: Steve Jobs",
+    "La maison revisitée",
 "--video-id",
-    "66626118",
+    "64096",
 "--file-length",
-    "203586089",
+    "46030240",
 "--file-suffix",
     "flv"
 );

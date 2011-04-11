@@ -47,7 +47,8 @@ function parse (self)
     local _,_,s      = page:find("'config','(.-)'")
     local config_url = s or error ("no match: config")
     local opts       = { fetch_type = 'config' }
-    local config     = quvi.fetch (quvi.unescape (config_url), opts)
+    local U          = require 'quvi/util'
+    local config     = quvi.fetch (U.unescape(config_url), opts)
 
     local _,_,s        = config:find("<file>(.-)</")
     local playlist_url = s or error ("no match: playlist")

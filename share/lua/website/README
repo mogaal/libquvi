@@ -10,6 +10,21 @@ These scripts are written in Lua. If you are new to Lua,
 <http://www.lua.org/pil/> is a good place to start.
 
 
+1.1. Notes
+----------
+
+See quvi/ subdir for additional scripts that can be used in your
+scripts. You can find plenty of examples in the website scripts.
+
+You may need to unescape URLs from time to time. The "quvi" object
+(described below) previously contained a function `quvi.unescape' which
+could be used to do this. This function was removed in 0.2.14 and as
+of 0.2.14 you can do the following in your scripts instead:
+
+  local U = require 'quvi/util'
+  local s = U.unescape(url)
+
+
 2. Structure of an quvi website script
 ======================================
 
@@ -113,15 +128,3 @@ arbitrary_cookie value is passed (as it is) to libcurl, see:
 
 Returns:
   * Fetched data
-
-
-3.2. Function: string quvi.unescape (string)
---------------------------------------------
-
-Returns an unescaped `string'.
-
-Parameters:
-  * string
-
-Returns:
-  * Unescaped string

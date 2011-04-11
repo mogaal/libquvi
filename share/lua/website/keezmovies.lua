@@ -1,6 +1,6 @@
 
 -- quvi
--- Copyright (C) 2010  quvi project
+-- Copyright (C) 2010 Paul Kocialkowski <contact@paulk.fr>
 --
 -- This file is part of quvi <http://quvi.sourceforge.net/>.
 --
@@ -25,7 +25,7 @@ function ident (self)
     package.path = self.script_dir .. '/?.lua'
     local C      = require 'quvi/const'
     local r      = {}
-    r.domain     = "charlierose.com"
+    r.domain     = "keezmovies.com"
     r.formats    = "default"
     r.categories = C.proto_http
     r.handles    =
@@ -35,18 +35,20 @@ end
 
 -- Parse video URL.
 function parse (self)
-    self.host_id = "charlierose"
+    self.host_id = "keezmovies"
     local page   = quvi.fetch(self.page_url)
 
-    local _,_,s = page:find("<title>Charlie Rose%s+-%s+(.-)</title>")
+    local _,_,s = page:find("<title>(.-)%s+-%s+KeezMovies.com")
     self.title  = s or error ("no match: video title")
 
-    local _,_,s = page:find('view%/content%/(.-)"')
+    local _,_,s = page:find("id%%3D(.-)&amp;")
     self.id     = s or error ("no match: video id")
 
-    local _,_,s = page:find('url":"(.-)"')
+    local _,_,s = page:find("video_url=(.-)&amp;")
     s           = s or error ("no match: flv url")
-    self.url    = {s}
+
+    local U     = require 'quvi/util'
+    self.url    = {U.unescape (s)}
 
     return self
 end

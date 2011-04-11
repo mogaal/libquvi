@@ -5,5 +5,5 @@ exit quviTest::run_t(
 "--video-id",
     "xdpig1",
 "--file-suffix",
-    "flv"
+    "mp4"
 );

@@ -46,7 +46,8 @@ function parse (self)
 
     local _,_,s = page:find("flv_url=(.-)&amp;")
     s           = s or error ("no match: flv url")
-    self.url    = {quvi.unescape (s)}
+    local U     = require 'quvi/util'
+    self.url    = {U.unescape(s)}
 
     return self
 end

@@ -45,10 +45,10 @@ target_triplet = @target@
 @HAVE_PERL_TRUE@	support-buzzhumor.pl support-liveleak.pl \
 @HAVE_PERL_TRUE@	support-publicsenat.pl support-sapo.pl \
 @HAVE_PERL_TRUE@	support-sevenload.pl support-spiegel.pl \
-@HAVE_PERL_TRUE@	support-tmunderground.pl support-theonion.pl \
-@HAVE_PERL_TRUE@	support-youtube.pl support-vimeo.pl \
-@HAVE_PERL_TRUE@	$(am__EXEEXT_2) $(am__append_2) \
-@HAVE_PERL_TRUE@	$(am__append_3)
+@HAVE_PERL_TRUE@	support-tagtele.pl support-tmunderground.pl \
+@HAVE_PERL_TRUE@	support-theonion.pl support-youtube.pl \
+@HAVE_PERL_TRUE@	support-vimeo.pl $(am__EXEEXT_2) \
+@HAVE_PERL_TRUE@	$(am__append_2) $(am__append_3)
 @ENABLE_BROKEN_TRUE@@HAVE_PERL_TRUE@am__append_1 = $(TESTS_BROKEN)
 @HAVE_PERL_POD_CHECKER_TRUE@@HAVE_PERL_TRUE@am__append_2 = $(TESTS_POD)
 @ENABLE_NSFW_TRUE@@HAVE_PERL_TRUE@am__append_3 = $(TESTS_NSFW)
@@ -233,7 +233,9 @@ EXTRA_DIST = quviTest.pm.in $(TESTS) $(TESTS_POD) $(TESTS_NSFW)
 @HAVE_PERL_TRUE@pod-check.pl
 
 @HAVE_PERL_TRUE@TESTS_NSFW = \
+@HAVE_PERL_TRUE@support-keezmovies.pl\
 @HAVE_PERL_TRUE@support-tube8.pl\
+@HAVE_PERL_TRUE@support-xhamster.pl\
 @HAVE_PERL_TRUE@support-xvideos.pl\
 @HAVE_PERL_TRUE@support-youjizz.pl
 

@@ -46,7 +46,8 @@ function parse (self)
 
     local _,_,s = page:find("videoUrl%Wx3d(.-)%Wx26")
     s           = s or error ("no match: url")
-    self.url    = {quvi.unescape (s)}
+    local U     = require 'quvi/util'
+    self.url    = {U.unescape(s)}
 
     return self
 end

@@ -28,6 +28,7 @@ support-publicsenat.pl \
 support-sapo.pl \
 support-sevenload.pl \
 support-spiegel.pl \
+support-tagtele.pl\
 support-tmunderground.pl\
 support-theonion.pl\
 support-youtube.pl \
@@ -50,7 +51,9 @@ TESTS += $(TESTS_POD)
 endif
 
 TESTS_NSFW =\
+support-keezmovies.pl\
 support-tube8.pl\
+support-xhamster.pl\
 support-xvideos.pl\
 support-youjizz.pl
 

@@ -221,6 +221,65 @@ static void supported(quvi_t quvi, opts_s opts)
   exit(rc);
 }
 
+static void format_help(quvi_t quvi, opts_s opts)
+{
+  int quit = 0;
+
+  if (strcmp(opts.format_arg, "help") == 0)
+    {
+      printf("Usage:\n"
+             "   --format arg            get format arg\n"
+             "   --format list           list websites and supported formats\n"
+             "   --format list arg       match arg to websites, list formats for matches\n"
+             "Examples:\n"
+             "   --format mp4_360p       get format mp4_360p (youtube)\n"
+             "   --format list youtube   list youtube formats\n"
+             "   --format list dailym    list dailym(otion) formats\n"
+            );
+      quit = 1;
+    }
+  else if (strcmp(opts.format_arg, "list") == 0)
+    {
+      int done = 0;
+      char *d, *f;
+
+      while(!done)
+        {
+          const int rc = quvi_next_supported_website(quvi, &d, &f);
+          switch (rc)
+            {
+            case QUVI_OK:
+            {
+              int print = 1;
+              /* -f list <pattern> */
+              if (opts.inputs_num > 0)
+                print = strstr(d, (char *)opts.inputs[0]) != 0;
+              /* -f list */
+              if (print)
+                printf("%s:\n  %s\n\n", d, f);
+              quvi_free(d);
+              quvi_free(f);
+            }
+            break;
+            case QUVI_LAST:
+              done = 1;
+              break;
+            default:
+              spew_e("%s\n", quvi_strerror(quvi, rc));
+              break;
+            }
+        }
+      quit = 1;
+    }
+
+  if (quit)
+    {
+      quvi_close(&quvi);
+      cmdline_parser_free(&opts);
+      exit(0);
+    }
+}
+
 /* dumps all supported hosts to stdout. */
 static void support(quvi_t quvi, opts_s opts)
 {
@@ -533,6 +592,7 @@ static int check_values(quvi_video_t video, opts_s opts)
 
 static const char *tests[] =
 {
+  "http://www.tagtele.com/videos/voir/64096",
   "http://www.tmunderground.com/watch/4f88b3a8e3d44c636cbd/The-Intermediate",
   "http://www.publicsenat.fr/vod/un-monde-de-bulles/speciale-journal-de-spirou/67141",
   "http://video.globo.com/Videos/Player/Noticias/0,,GIM1392245-7823-QUATRO+MEDICOS+SAO+PRESOS+POR+VENDER+E+USAR+PRODUTOS+FALSOS+NO+RIO,00.html",
@@ -560,6 +620,8 @@ static const char *tests[] =
   "http://www.theonion.com/video/time-announces-new-version-of-magazine-aimed-at-ad,17950/",
   "http://www.bloomberg.com/video/63722844/",
 #ifdef ENABLE_NSFW
+  "http://xhamster.com/movies/391958/perfect_babe_dancing.html",
+  "http://www.keezmovies.com/video/evelyn-s",
   "http://www.tube8.com/fetish/japanese-melon-gal-censored/186133/",
   "http://www.xvideos.com/video243887/devi_emmerson_body_painting",
   "http://www.youjizz.com/videos/glamour-girls---melissa-125602.html",
@@ -806,6 +868,9 @@ int main(int argc, char *argv[])
   if (opts.support_given)
     support(quvi, opts);
 
+  if (opts.format_given)
+    format_help(quvi, opts);
+
   /* User input */
 
   if (opts.test_all_given)
@@ -816,7 +881,6 @@ int main(int argc, char *argv[])
 
   else
     {
-
       if (opts.inputs_num == 0)
         fprintf(stderr, "error: no input links\n");
 

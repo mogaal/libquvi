@@ -95,20 +95,15 @@ static int l_quvi_fetch(lua_State * l)
 
   if (rc == QUVI_OK)
     {
-
       if (data != NULL)
         {
-
           luaL_buffinit(l, &b);
           luaL_addstring(&b, data);
           luaL_pushresult(&b);
           _free(data);
-
         }
-
       else
         {
-
           /* Rare. Server returns an empty page (no content). Possibly related
            * to a proxy software in use. cURL returns CURLE_OK so the only way
            * we can tell this is by checking the data pointer (==NULL). */
@@ -116,9 +111,7 @@ static int l_quvi_fetch(lua_State * l)
           luaL_error(l, "server returned no data (quvicode=%d, curlcode=0)",
                      rc);
         }
-
     }
-
   else
     {
       _free(data);
@@ -128,6 +121,7 @@ static int l_quvi_fetch(lua_State * l)
   return (1);
 }
 
+#ifdef _0 /* Replaced by quvi/util:unescape in 0.2.14 */
 static int l_quvi_unescape(lua_State * l)
 {
   luaL_Buffer b;
@@ -146,6 +140,7 @@ static int l_quvi_unescape(lua_State * l)
 
   return (1);
 }
+#endif
 
 /* wrapper. */
 
@@ -183,10 +178,8 @@ scan_dir(llst_node_t * dst, const char *path, filter_func filter)
 
   while ((de = readdir(dir)))
     {
-
       if (filter(de))
         {
-
           _quvi_lua_script_t qls;
 
           QUVIcode rc = new_lua_script(&qls);
@@ -265,7 +258,9 @@ scan_known_dirs(llst_node_t * dst, const char *spath,
 static const luaL_Reg reg_meth[] =
 {
   {"fetch", l_quvi_fetch},
+#ifdef _0
   {"unescape", l_quvi_unescape},
+#endif
   {NULL, NULL}
 };
 
@@ -667,7 +662,6 @@ QUVIcode run_ident_func(lua_ident_t ident, llst_node_t node)
 
   if (lua_istable(l, -1))
     {
-
       ident->domain = strdup(get_field_req_s(l, qls, "domain"));
 
       ident->formats = strdup(get_field_req_s(l, qls, "formats"));
@@ -680,7 +674,6 @@ QUVIcode run_ident_func(lua_ident_t ident, llst_node_t node)
       if (rc == QUVI_OK)
         rc = ident->categories & quvi->
              category ? QUVI_OK : QUVI_NOSUPPORT;
-
     }
   else
     {
@@ -748,7 +741,6 @@ run_parse_func(lua_State * l, llst_node_t node, _quvi_video_t video)
 
   if (strlen(video->redirect) == 0)
     {
-
       const int r = luaL_ref(l, LUA_REGISTRYINDEX);
 
       rc = run_lua_trim_fields_func(video, r);
@@ -767,7 +759,6 @@ run_parse_func(lua_State * l, llst_node_t node, _quvi_video_t video)
 
           rc = iter_video_url(l, qls, "url", video);
         }
-
     }
 
   lua_pop(l, 1);
