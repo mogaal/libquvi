@@ -44,7 +44,8 @@ function parse (self)
     local _,_,s      = page:find('configPath=(.-)"')
     local config_url = s or error ("no match: config")
 
-    config_url       = quvi.unescape(config_url)
+    local U          = require 'quvi/util'
+    config_url       = U.unescape(config_url)
     local config     = quvi.fetch (config_url, {fetch_type = 'config'})
 
     local _,_,s = config_url:find("itemId=(%w+)")

@@ -10,11 +10,23 @@ quvi [options] [url...]
 
 =head1 DESCRIPTION
 
-quvi is a command line tool for parsing video download links.
-It supports Youtube and other similar video websites.
+quvi is a command line tool for parsing Adobe Flash media stream URLs. It
+supports many websites including YouTube and Dailymotion.
 
-The video details are printed to standard output (in JSON),
-everything else is printed to standard error.
+The video details are printed to standard output (in JSON), everything else
+is printed to standard error.
+
+=head1 MOTIVATION
+
+quvi parses Adobe Flash media stream URLs for third party applications. It
+originates from the idea of allowing users to view the videos without having
+to install or use Adobe Flash Player. quvi is not an "alternative" but rather
+a "workaround" to Adobe Flash Player.
+
+Read also:
+  * <http://en.wikipedia.org/wiki/Adobe_Flash#Performance>
+  * <http://en.wikipedia.org/wiki/Adobe_Flash#Flash_client_security>
+  * <http://en.wikipedia.org/wiki/Adobe_Flash#Alternatives_to_Flash>
 
 =head1 OPTIONS
 
@@ -61,7 +73,7 @@ Turn on libcurl verbose mode.
 Invoke I<arg> for each (successfully) parsed video. You can use the following
 specifiers in I<arg>:
 
-    %u  Video download URL
+    %u  Media URL
 
 Note that I<all> occurences of the specifier will be replaced,
 and each new value will be quoted ("").
@@ -141,8 +153,7 @@ Match I<arg> to built-in (category QUVIPROTO_HTTP) test URLs, e.g.:
 
 =item B<-f, --format> I<arg>
 
-Query for video format I<arg>. Run quvi with C<--support> to get a list
-of the supported formats.
+Query for I<arg> video format. I<arg> can also be C<help>.
 
 =item B<--agent> I<arg>
 
@@ -202,6 +213,10 @@ Query YOUTUBE_URL for "best" format of the video.
 
 Run quvi with C<--support> to get a list of the websites
 and which formats they support.
+
+=item quvi -f list dailym
+
+Print available video formats for dailym(otion).
 
 =back
 
@@ -293,18 +308,30 @@ They may prove invaluable.
 
 =head1 WWW
 
-<http://quvi.sourceforge.net/>
+E<lt>http://quvi.sourceforge.net/E<gt>
+
+E<lt>http://repo.or.cz/w/quvi.gitE<gt>
 
 =head1 CONTRIBUTE
 
-<http://repo.or.cz/w/quvi.git/tree/HEAD:/doc>
+E<lt>http://repo.or.cz/w/quvi.git/tree/HEAD:/docE<gt>
+
+=head1 BACKGROUND
+
+quvi was inspired by cclive. Embeddable LUA scripting was introduced in the
+0.2.0 release.
+
+=head1 LICENSE
+
+quvi and libquvi are free software, licensed under the LGPLv2.1+.
+The LUA scripts that quvi uses are considered as programs and using
+the LUA scripts is B<linking>.
 
 =head1 AUTHOR
 
-Toni Gundogdu <legatvs at sign gmail com>.
+Toni Gundogdu E<lt>legatvs at sign gmail comE<gt>
 
-Thanks to all those who have contributed to the project
-by sending patches, reporting bugs and writing feedback.
-You know who you are.
+Thanks to all those who have contributed to the project by sending patches,
+reporting bugs and writing feedback. You know who you are.
 
 =cut

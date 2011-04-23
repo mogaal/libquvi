@@ -1,6 +1,6 @@
 
 -- quvi
--- Copyright (C) 2010  quvi project
+-- Copyright (C) 2010 Paul Kocialkowski <contact@paulk.fr>
 --
 -- This file is part of quvi <http://quvi.sourceforge.net/>.
 --
@@ -25,28 +25,30 @@ function ident (self)
     package.path = self.script_dir .. '/?.lua'
     local C      = require 'quvi/const'
     local r      = {}
-    r.domain     = "charlierose.com"
+    r.domain     = "tagtele.com"
     r.formats    = "default"
     r.categories = C.proto_http
     r.handles    =
-        (self.page_url ~= nil and self.page_url:find(r.domain) ~= nil)
+        (self.page_url ~= nil and self.page_url:find (r.domain) ~= nil)
     return r
 end
 
 -- Parse video URL.
 function parse (self)
-    self.host_id = "charlierose"
+    self.host_id = "tagtele"
     local page   = quvi.fetch(self.page_url)
 
-    local _,_,s = page:find("<title>Charlie Rose%s+-%s+(.-)</title>")
+    local _,_,s = page:find("<title>TagTélé%s+-%s+(.-)</title>")
     self.title  = s or error ("no match: video title")
 
-    local _,_,s = page:find('view%/content%/(.-)"')
+    local _,_,s = self.page_url:find('/voir/(%d+)')
     self.id     = s or error ("no match: video id")
 
-    local _,_,s = page:find('url":"(.-)"')
-    s           = s or error ("no match: flv url")
-    self.url    = {s}
+    local playlist_url  = "http://www.tagtele.com/videos/playlist/"..self.id.."/"
+    local playlist      = quvi.fetch(playlist_url, {fetch_type='playlist'})
+
+    local _,_,s = playlist:find("<location>(.-)</")
+    self.url    = {s or error ("no match: location")}
 
     return self
 end

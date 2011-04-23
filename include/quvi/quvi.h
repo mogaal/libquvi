@@ -24,7 +24,7 @@
  * This documentation describes the libquvi C API.
  *
  * @author Toni Gundogdu
- * @version 0.2.13
+ * @version 0.2.14
  * @example quvi.c
  * @example simple.c
  */

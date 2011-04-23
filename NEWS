@@ -1,4 +1,23 @@
 
+0.2.14  Thu Mar 10 2011  Toni Gundogdu
+Changes:
+        - Change project description (README, manual, WWW)
+        - Add short option for --category-all
+        - Add arte.lua (#23), thanks to Raphael Droz for the script
+        - Add keezmovies.lua, tagtele.lua, xhamster.lua
+            - Thanks to Paul Kocialkowski for the scripts
+        - Extend --format to support "help" and "list"
+        - LUA: Remove "unescape" from quvi object
+            - Use 'quvi/util' instead
+        - Rewrite doc/HowtoWriteWebsiteScript, README
+Bugfixes:
+        - Video titles: Handle HTML entities starting with "0" digit
+        - dailymotion.lua: Format support
+        - support-dailymotion.pl: Change expected file suffix
+        - support-bloomberg.pl: Change expected ID, file length
+        - support-golem.pl: Change expected file length
+
+
 0.2.13  Mon Feb 07 2011     Toni Gundogdu
 Changes:
         - Add tmunderground.lua

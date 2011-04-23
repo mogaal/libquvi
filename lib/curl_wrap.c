@@ -147,31 +147,24 @@ fetch_to_mem(_quvi_video_t video, const char *url, lua_State * l,
 
   if (curlcode == CURLE_OK && respcode == 200)
     {
-
       if (video->quvi->status_func)
         {
-
           if (video->quvi->status_func(makelong(QUVISTATUS_FETCH,
                                                 QUVISTATUSTYPE_DONE),
                                        0) != QUVI_OK)
             {
               rc = QUVI_ABORTEDBYCALLBACK;
             }
-
         }
-
     }
-
   else
     {
-
       if (curlcode == CURLE_OK)
         {
           freprintf(&video->quvi->errmsg,
                     "server response code %ld (conncode=%ld)", respcode,
                     conncode);
         }
-
       else
         {
           freprintf(&video->quvi->errmsg,
@@ -255,10 +248,8 @@ QUVIcode query_file_length(_quvi_t quvi, llst_node_t lnk)
 
   if (curlcode == CURLE_OK)
     {
-
       if (respcode == 200 || respcode == 206)
         {
-
           const char *ct;
 
           curl_easy_getinfo(quvi->curl, CURLINFO_CONTENT_TYPE, &ct);
@@ -357,10 +348,8 @@ QUVIcode is_shortened_url(_quvi_video_t video)
 
   if (curlcode == CURLE_OK)
     {
-
       if (respcode >= 301 && respcode <= 303)
         {
-
           /* A redirect. */
 
           char *url = NULL;
@@ -369,7 +358,6 @@ QUVIcode is_shortened_url(_quvi_video_t video)
           freprintf(&video->page_link, "%s", url);
 
           rc = QUVI_OK;
-
         }
       /* respcode >= 301 && respcode <= 303 */
       else
@@ -380,18 +368,14 @@ QUVIcode is_shortened_url(_quvi_video_t video)
 
       if (video->quvi->status_func)
         {
-
           const long param =
             makelong(QUVISTATUS_SHORTENED, QUVISTATUSTYPE_DONE);
 
           rc = video->quvi->status_func(param, 0);
-
         }
-
     }
   else
     {
-
       freprintf(&video->quvi->errmsg, "%s (curlcode=%d, conncode=%ld)",
                 curl_easy_strerror(curlcode), curlcode, conncode);
 

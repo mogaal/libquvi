@@ -1,6 +1,6 @@
 
 -- quvi
--- Copyright (C) 2010  Toni Gundogdu <legatvs@gmail.com>
+-- Copyright (C) 2010,2011  Toni Gundogdu <legatvs@gmail.com>
 --
 -- This file is part of quvi <http://quvi.sourceforge.net/>.
 --
@@ -20,107 +20,120 @@
 -- 02110-1301  USA
 --
 
-local domains = {
-    "dailymotion.",
-    "dai.ly"
-}
-
--- Check whether the domain is handled
-function is_handled (page_url)
-    if page_url == nil then
-        return false
-    end
-    for k,domain in pairs(domains) do
-        if page_url:find(domain) ~= nil then
-            return true
-        end
-    end
-    return false
-end
-
 -- Identify the script.
-function ident (self)
+function ident(self)
     package.path = self.script_dir .. '/?.lua'
     local C      = require 'quvi/const'
     local r      = {}
     r.domain     = "dailymotion."
     r.formats    = "default|best|hq|hd"
     r.categories = C.proto_http
-    r.handles    = is_handled (self.page_url)
+    r.handles    = is_handled(self.page_url)
     return r
 end
 
--- Parse video URL.
-function parse (self)
-    self.host_id  = "dailymotion"
-    self.page_url = normalize (self.page_url)
+-- Check whether the domain is handled
+function is_handled(page_url)
+    local domains = {"dailymotion.", "dai.ly"}
+    if not page_url then return false end
+    for k,v in pairs(domains) do
+        if page_url:find(v) then
+            return true
+        end
+    end
+    return false
+end
 
-    local _,_,s = self.page_url:find ('/family_filter%?urlback=(.+)')
-    if (s ~= nil) then
-        self.page_url = 'http://dailymotion.com' .. quvi.unescape (s)
-            -- We set family_filter arbitrary cookie below.
+-- Parse video URL.
+function parse(self)
+    self.host_id  = "dailymotion"
+    self.page_url = normalize(self.page_url)
+
+    local U = require 'quvi/util'
+
+    local _,_,s = self.page_url:find('/family_filter%?urlback=(.+)')
+    if s then -- Set family_filter arbitrary cookie below.
+        self.page_url = 'http://dailymotion.com' .. U.unescape(s)
     end
 
-    local opts = { arbitrary_cookie = 'family_filter=off' }
+    local opts = {arbitrary_cookie = 'family_filter=off'}
     local page = quvi.fetch(self.page_url, opts)
 
-    if (page:find('SWFObject("http:")') ~= nil) then
-        error ("Looks like a partner video. Refusing to continue.")
-    end
-
     local _,_,s = page:find('title="(.-)"')
-    self.title  = s or error ("no match: video title")
+    self.title  = s or error("no match: video title")
 
     local _,_,s = page:find("video/(.-)_")
-    self.id     = s or error ("no match: video id")
+    self.id     = s or error("no match: video id")
 
-    -- Some videos have only one link available.
-    local _,_,s = page:find ('"video", "(.-)"')
-    if (s ~= nil) then
-        self.url = {s}
-    else
-        parse_video_url (self)
-    end
-
-    if (self.url == nil) then
-        error ('no match: video url')
+    self.url    = get_url(self, page, U)
+    if not self.url then
+        error("no match: video url")
     end
 
     return self
 end
 
-function normalize (url)
-    if (url:find ("/swf/")) then
-        url = url:gsub ("/video/", "/")
-        url = url:gsub ("/swf/", "/video/")
+function get_url(self, page, U)
+    local _,_,seq = page:find('"sequence",%s+"(.-)"')
+    if not seq then
+        local e = "no match: sequence"
+        if page:find("_partnerplayer") then
+            e = e .. ": looks like a partner video which we do not support"
+        end
+        error(e)
     end
-    return url
-end
+    seq = U.unescape(seq)
 
-function parse_video_url (self)
-
-    local best    = nil
-    local req_fmt = self.requested_format
-
-    if (req_fmt == "default") then
-        req_fmt = "sd" -- Dailymotion defaults to this.
-    end
-
-    for id,path in page:gfind("%%22(%w%w)URL%%22%%3A%%22(.-)%%22") do
-        path = path:gsub("%%5C","")
-        path = quvi.unescape(path)
-        best = path
-        if (req_fmt == id) then
-            self.url = {path}
-            break
+    local _,_,vpp = seq:find('"videoPluginParameters":{(.-)}')
+    if not vpp then
+        local _,_,s = page:find('"video", "(.-)"')
+        if not s then
+            error("no match: video plugin params")
+        else
+            -- some videos (that require setting family_filter cookie)
+            -- may list only one link which is not found under
+            -- "videoPluginParameters". See also:
+            -- http://sourceforge.net/apps/trac/clive/ticket/4
+            return {s}
         end
     end
 
-    if (best ~= nil and self.requested_format == "best") then
-        self.url = {best}
+    -- "sd" is our "default".
+    local req_fmt = self.requested_format
+    req_fmt = (req_fmt == "default") and "sd" or req_fmt
+
+    -- choose "best" from the array, check against reported video
+    -- resolution height. pick the highest available.
+    local best,curr
+    local best_h = 0
+
+    for id,url in vpp:gfind('(%w+)URL":"(.-)"') do -- id=format id.
+        url = url:gsub("\\/", "/")
+        -- found requested format id.
+        if id == req_fmt then
+            curr = url
+            break
+        end
+        -- default to whatever is the first in the array.
+        if not curr then curr = url end
+        -- compare heights as reported in the URLs.
+        local _,_,w,h = url:find("(%d+)x(%d+)")
+        if tonumber(h) > tonumber(best_h) then
+            best_h = h
+            best = url
+        end
     end
 
-    return self.url
+    curr = (req_fmt == "best") and best or curr
+    return {curr}
+end
+
+function normalize(page_url) -- embedded URL to "regular".
+    if page_url:find("/swf/") then
+        page_url = page_url:gsub("/video/", "/")
+        page_url = page_url:gsub("/swf/", "/video/")
+    end
+    return page_url
 end
 
 -- vim: set ts=4 sw=4 tw=72 expandtab:

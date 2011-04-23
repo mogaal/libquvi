@@ -1,3 +1,313 @@
+commit 051984177c2a3a5e3b0a9a4e30410c862edb6140
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Mar 10 21:42:16 2011 +0200
+
+    Set release details for 0.2.14
+
+ NEWS |   19 +++++++++++++++++++
+ 1 files changed, 19 insertions(+), 0 deletions(-)
+
+commit 4eb14345b58ae52389c38b75f23770d088267be8
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Mar 10 21:42:00 2011 +0200
+
+    Bump interface revision
+
+ configure     |    2 +-
+ m4/version.m4 |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+commit 67c8126ddba2bc2cc2ac1e968817d349ae432ab3
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Wed Mar 9 21:56:31 2011 +0200
+
+    Add AUTHORS file
+
+ AUTHORS     |    1 +
+ Makefile.in |    2 +-
+ 2 files changed, 2 insertions(+), 1 deletions(-)
+
+commit c8827d37c09d2b06c66b639d38acbcdb81462b30
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Wed Mar 9 21:24:30 2011 +0200
+
+    Add tests for keezmovies, tagtele, xhamster
+
+ src/quvi.c                  |    3 +++
+ tests/Makefile.am           |    3 +++
+ tests/Makefile.in           |   10 ++++++----
+ tests/support-keezmovies.pl |   11 +++++++++++
+ tests/support-tagtele.pl    |   11 +++++++++++
+ tests/support-xhamster.pl   |   11 +++++++++++
+ 6 files changed, 45 insertions(+), 4 deletions(-)
+
+commit 41e5ffd9ba20262e5819cb442393fc3ddd52bde1
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Wed Mar 9 20:55:41 2011 +0200
+
+    share/Makefile.am: Add keezmovies.lua, tagtele.lua, xhamster.lua
+
+ share/Makefile.am |    3 +++
+ share/Makefile.in |   19 ++++++++++++-------
+ 2 files changed, 15 insertions(+), 7 deletions(-)
+
+commit fab275005e3b8944f8466922c4c23122c94ee327
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Wed Mar 9 20:51:32 2011 +0200
+
+    xhamster.lua: Grab title from elsewhere
+
+ share/lua/website/xhamster.lua |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 13df0a8845d5f33c85f5381ddd3e7c7a82a48155
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Wed Mar 9 20:50:44 2011 +0200
+
+    tagtele.lua: Grab ID from URL, add fetch_type
+
+ share/lua/website/tagtele.lua |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+commit 04dd7e36d7ec521bbd5f12a2e5ccd3aca70de907
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Wed Mar 9 20:49:49 2011 +0200
+
+    keezmovies.lua: Use quvi/util: unescape instead
+
+ share/lua/website/keezmovies.lua |    4 +++-
+ 1 files changed, 3 insertions(+), 1 deletions(-)
+
+commit 414936ee8a43043c2272d1ceec055d5bfecc5b62
+Author: PaulK <contact@paulk.fr>
+Date:   Wed Mar 9 16:06:24 2011 +0100
+
+    Add support for Tagtele, Keezmovies and Xhamster
+
+ share/lua/website/keezmovies.lua |   54 +++++++++++++++++++++++++++++++++++
+ share/lua/website/tagtele.lua    |   56 ++++++++++++++++++++++++++++++++++++
+ share/lua/website/xhamster.lua   |   58 ++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 168 insertions(+), 0 deletions(-)
+
+commit 54cea708be8758d775772fc2408be3d593da5edb
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Wed Mar 9 20:21:02 2011 +0200
+
+    support-dailymotion.pl: Change expected suffix
+
+ tests/support-dailymotion.pl |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 1b06b8fdbb29a268a09db4b08632af8fbc4907c7
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Tue Mar 8 18:17:40 2011 +0200
+
+    share/Makefile.am: Add arte.lua
+
+ share/Makefile.am |    1 +
+ share/Makefile.in |   58 ++++++++++++++++++++++++++--------------------------
+ 2 files changed, 30 insertions(+), 29 deletions(-)
+
+commit 7d74e20e9a4a91b5bb21f8f10640c24b2f7a0207
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Tue Mar 8 18:06:39 2011 +0200
+
+    arte.lua: Add Arte TV support (#23)
+    
+    * Contributed by Raphaël Droz
+    * http://sourceforge.net/apps/trac/quvi/ticket/23
+
+ share/lua/website/arte.lua |   97 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 97 insertions(+), 0 deletions(-)
+
+commit 33aa3aaeceba4c0e0bd95600cc8fe1a42f877f1b
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Tue Mar 8 18:04:31 2011 +0200
+
+    Manual: Update description
+    
+    * New description
+    * Add "Motivation"
+    * Add "Background"
+    * Add "License"
+    * Make minor changes to markup
+
+ man1/quvi.1     |   41 +++++++++++++++++++++++++++++++----------
+ man1/quvi.1.pod |   46 +++++++++++++++++++++++++++++++++++-----------
+ 2 files changed, 66 insertions(+), 21 deletions(-)
+
+commit 03a99d159faf3a5aa4d9d0576535dfb8ee2dfd7a
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Tue Mar 8 18:01:36 2011 +0200
+
+    Rewrite doc/HowtoWriteWebsiteScript
+
+ doc/HowtoWriteWebsiteScript |  460 +++++++++++++++++++++++++++----------------
+ 1 files changed, 287 insertions(+), 173 deletions(-)
+
+commit 2f9c9e91b4553010750179f2889c2d90e0dc8679
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Tue Mar 8 18:00:12 2011 +0200
+
+    Rewrite README
+    
+    * New descriptions
+    * Add "Applications using quvi"
+    * Add "License"
+    * Add "Motivation"
+    * Add "Background"
+
+ README |   58 +++++++++++++++++++++++++++++++++++++++++++++++-----------
+ 1 files changed, 47 insertions(+), 11 deletions(-)
+
+commit ae6d04cf9e72971c12540fe95022aea6e6d64cd2
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Feb 24 18:48:04 2011 +0200
+
+    dailymotion.lua: Add "family_filter" exception
+
+ share/lua/website/dailymotion.lua |   13 ++++++++++++-
+ 1 files changed, 12 insertions(+), 1 deletions(-)
+
+commit 0ab78f87aec0886dd28105052645bf0d35e7f567
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Feb 24 16:05:14 2011 +0200
+
+    support-golem.pl: Change expected length
+
+ tests/support-golem.pl |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 7f3ffd6c5fbf5eb5130a55ee7d42ab05f4ab9170
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Feb 24 16:04:38 2011 +0200
+
+    support-bloomberg.pl: Change expected ID, length
+
+ tests/support-bloomberg.pl |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+commit 515fbe3fea2a5a142218775ed6523cdf8b2538fa
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Feb 24 11:26:43 2011 +0200
+
+    LUA: Remove quvi.unescape from quvi object
+    
+    Use quvi/util:unescape instead.
+
+ lib/lua_wrap.c           |    4 ++++
+ share/lua/website/README |   27 +++++++++++++++------------
+ 2 files changed, 19 insertions(+), 12 deletions(-)
+
+commit ee0979938bfee79686c0467ebd7a91aaf221a90a
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Feb 24 11:05:38 2011 +0200
+
+    Use quvi/util:unescape instead of quvi.unescape
+    
+    * charlierose.lua: Remove unnecessary quvi.unescape call
+
+ share/lua/website/charlierose.lua |    2 +-
+ share/lua/website/google.lua      |    3 ++-
+ share/lua/website/liveleak.lua    |    3 ++-
+ share/lua/website/sevenload.lua   |    3 ++-
+ share/lua/website/xvideos.lua     |    3 ++-
+ 5 files changed, 9 insertions(+), 5 deletions(-)
+
+commit 28f92eb62d3472e963b1913766615e9c46d19564
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Feb 24 10:50:45 2011 +0200
+
+    Fix: dailymotion.lua: default URL for all formats
+    
+    Fix also
+      dailymotion.lua:109: attempt to index global 'page' (a nil value).
+    
+    * http://sourceforge.net/apps/trac/quvi/ticket/26
+    * http://sourceforge.net/apps/trac/quvi/ticket/25
+
+ share/lua/website/dailymotion.lua |  136 +++++++++++++++++++------------------
+ 1 files changed, 69 insertions(+), 67 deletions(-)
+
+commit 09b327372672eaab7c87d3ec7fb00571281451a2
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Feb 24 00:45:27 2011 +0200
+
+    lua_wrap.c, curl_wrap.c: Remove extra newlines
+
+ lib/curl_wrap.c |   16 ----------------
+ lib/lua_wrap.c  |   13 -------------
+ 2 files changed, 0 insertions(+), 29 deletions(-)
+
+commit 9e80b1c271aa51d343aad78dd425cfbe596905ce
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Feb 24 00:22:42 2011 +0200
+
+    Extend HTML entity conversion table
+    
+    * Cover values padded with single-zero (e.g. &#039;)
+
+ lib/util.c |    5 +++++
+ 1 files changed, 5 insertions(+), 0 deletions(-)
+
+commit 2f3462cc3df1dd7c781dad35adde23e0705ee5f2
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Tue Feb 22 12:18:40 2011 +0200
+
+    Manual: Document -f (help|list pattern)
+
+ man1/quvi.1     |    8 +++++---
+ man1/quvi.1.pod |    7 +++++--
+ 2 files changed, 10 insertions(+), 5 deletions(-)
+
+commit db74b1653d15ceb9551c5fb27073ed9c798ba86a
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Tue Feb 22 12:13:34 2011 +0200
+
+    Add -f (help|list pattern) support
+
+ src/quvi.c |   63 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 files changed, 62 insertions(+), 1 deletions(-)
+
+commit 670a23799141be0035c5fd55d8e4a87ee992c19b
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Fri Feb 18 10:14:42 2011 +0200
+
+    Add short option for --category-all
+
+ src/cmdline.c   | 1028 +++++++++++++++++++++++++++++--------------------------
+ src/cmdline.ggo |    2 +-
+ src/cmdline.h   |  251 ++++++--------
+ 3 files changed, 654 insertions(+), 627 deletions(-)
+
+commit 3f4b1dd99f7e38e6f2e185f8102f7d2c0d65860e
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Fri Feb 18 10:04:23 2011 +0200
+
+    doc/HowtoSubmitPatches: Cleanup, additional notes
+
+ doc/HowtoSubmitPatches |   19 ++++++++++++-------
+ 1 files changed, 12 insertions(+), 7 deletions(-)
+
+commit 87ae5cbe5e638c5487ba8b99cd5e4c51caebca44
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Mon Feb 7 22:49:18 2011 +0200
+
+    Bump version to 0.2.14
+
+ configure     |   20 ++++++++++----------
+ m4/version.m4 |    2 +-
+ 2 files changed, 11 insertions(+), 11 deletions(-)
+
+commit d26e5db771bb32b5ba2a5bad8bda3fc319124610
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Mon Feb 7 21:43:12 2011 +0200
+
+    Set release details for 0.2.13
+
+ NEWS |    8 ++++++++
+ 1 files changed, 8 insertions(+), 0 deletions(-)
+
 commit ff65a2713320275f9cf3d86a11da80f5396b9182
 Author: Toni Gundogdu <legatvs.git@gmail.com>
 Date:   Mon Feb 7 21:25:52 2011 +0200

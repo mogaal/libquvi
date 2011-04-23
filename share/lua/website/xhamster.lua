@@ -1,6 +1,6 @@
 
 -- quvi
--- Copyright (C) 2010  quvi project
+-- Copyright (C) 2010 Paul Kocialkowski <contact@paulk.fr>
 --
 -- This file is part of quvi <http://quvi.sourceforge.net/>.
 --
@@ -25,7 +25,7 @@ function ident (self)
     package.path = self.script_dir .. '/?.lua'
     local C      = require 'quvi/const'
     local r      = {}
-    r.domain     = "charlierose.com"
+    r.domain     = "xhamster.com"
     r.formats    = "default"
     r.categories = C.proto_http
     r.handles    =
@@ -35,18 +35,22 @@ end
 
 -- Parse video URL.
 function parse (self)
-    self.host_id = "charlierose"
+    self.host_id = "xhamster"
     local page   = quvi.fetch(self.page_url)
 
-    local _,_,s = page:find("<title>Charlie Rose%s+-%s+(.-)</title>")
+    local _,_,s = page:find('class="mTitle">.+<h1>(.-)<')
     self.title  = s or error ("no match: video title")
 
-    local _,_,s = page:find('view%/content%/(.-)"')
+    local _,_,s = self.page_url:find("/movies/(.-)/")
     self.id     = s or error ("no match: video id")
 
-    local _,_,s = page:find('url":"(.-)"')
-    s           = s or error ("no match: flv url")
-    self.url    = {s}
+    local _,_,s = page:find("'srv': '(.-)'")
+    local srv   = s or error ("no match: server")
+
+    local _,_,s = page:find("'file': '(.-)'")
+    local file  = s or error ("no match: file")
+
+    self.url    = {srv.."/flv2/"..file}
 
     return self
 end

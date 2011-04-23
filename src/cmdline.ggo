@@ -48,7 +48,7 @@ option "category-rtmp"
     - "Category RTMP website scripts"
     optional
 option "category-all"
-    - "All website script categories"
+    a "All website script categories"
     optional
 
 option "page-title"
