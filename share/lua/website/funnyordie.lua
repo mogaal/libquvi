@@ -28,8 +28,8 @@ function ident (self)
     r.domain     = "funnyordie.com"
     r.formats    = "default"
     r.categories = C.proto_http
-    r.handles    =
-        (self.page_url ~= nil and self.page_url:find(r.domain) ~= nil)
+    local U      = require 'quvi/util'
+    r.handles    = U.handles(self.page_url, {r.domain}, {"/videos/"})
     return r
 end
 

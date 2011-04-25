@@ -42,7 +42,9 @@ target_triplet = @target@
 @ENABLE_NSFW_TRUE@lua/website/xvideos.lua \
 @ENABLE_NSFW_TRUE@lua/website/youjizz.lua
 
-@ENABLE_BROKEN_TRUE@am__append_2 = 
+@ENABLE_TODO_TRUE@am__append_2 = \
+@ENABLE_TODO_TRUE@lua/website/collegehumor.lua
+
 subdir = share
 DIST_COMMON = $(am__nobase_dist_pkgdata_DATA_DIST) \
 	$(srcdir)/Makefile.am $(srcdir)/Makefile.in
@@ -68,24 +70,26 @@ DIST_SOURCES =
 am__nobase_dist_pkgdata_DATA_DIST = lua/README \
 	lua/util/content_type.lua lua/util/charset.lua \
 	lua/util/trim.lua lua/website/README lua/website/quvi/bit.lua \
-	lua/website/quvi/const.lua lua/website/quvi/util.lua \
-	lua/website/academicearth.lua lua/website/arte.lua \
-	lua/website/bloomberg.lua lua/website/break.lua \
-	lua/website/buzzhumor.lua lua/website/cbsnews.lua \
-	lua/website/collegehumor.lua lua/website/charlierose.lua \
+	lua/website/quvi/const.lua lua/website/quvi/url.lua \
+	lua/website/quvi/util.lua lua/website/academicearth.lua \
+	lua/website/arte.lua lua/website/bloomberg.lua \
+	lua/website/break.lua lua/website/buzzhumor.lua \
+	lua/website/cbsnews.lua lua/website/charlierose.lua \
 	lua/website/clipfish.lua lua/website/dailymotion.lua \
 	lua/website/gaskrank.lua lua/website/francetelevisions.lua \
 	lua/website/funnyhub.lua lua/website/funnyordie.lua \
 	lua/website/globo.lua lua/website/golem.lua \
 	lua/website/google.lua lua/website/liveleak.lua \
-	lua/website/pluzz.lua lua/website/publicsenat.lua \
-	lua/website/sapo.lua lua/website/sevenload.lua \
+	lua/website/megavideo.lua lua/website/pluzz.lua \
+	lua/website/publicsenat.lua lua/website/sapo.lua \
+	lua/website/sevenload.lua lua/website/soundcloud.lua \
 	lua/website/spiegel.lua lua/website/tagtele.lua \
-	lua/website/tmunderground.lua lua/website/theonion.lua \
+	lua/website/ted.lua lua/website/tmunderground.lua \
+	lua/website/theonion.lua lua/website/tvlux.lua \
 	lua/website/vimeo.lua lua/website/youtube.lua \
 	lua/website/keezmovies.lua lua/website/tube8.lua \
 	lua/website/xhamster.lua lua/website/xvideos.lua \
-	lua/website/youjizz.lua
+	lua/website/youjizz.lua lua/website/collegehumor.lua
 am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
 am__vpath_adj = case $$p in \
     $(srcdir)/*) f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`;; \
@@ -177,13 +181,13 @@ PACKAGE_TARNAME = @PACKAGE_TARNAME@
 PACKAGE_URL = @PACKAGE_URL@
 PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
-PERL = @PERL@
 PKG_CONFIG = @PKG_CONFIG@
 PKG_CONFIG_LIBDIR = @PKG_CONFIG_LIBDIR@
 PKG_CONFIG_PATH = @PKG_CONFIG_PATH@
 POD2HTML = @POD2HTML@
 POD2MAN = @POD2MAN@
 POW_LIB = @POW_LIB@
+PROVE = @PROVE@
 QUVI_AGE = @QUVI_AGE@
 QUVI_CURRENT = @QUVI_CURRENT@
 QUVI_REVISION = @QUVI_REVISION@
@@ -192,6 +196,7 @@ SED = @SED@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 STRIP = @STRIP@
+VALGRIND = @VALGRIND@
 VERSION = @VERSION@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
@@ -256,20 +261,22 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 DIST_lua = lua/README lua/util/content_type.lua lua/util/charset.lua \
 	lua/util/trim.lua lua/website/README lua/website/quvi/bit.lua \
-	lua/website/quvi/const.lua lua/website/quvi/util.lua \
-	lua/website/academicearth.lua lua/website/arte.lua \
-	lua/website/bloomberg.lua lua/website/break.lua \
-	lua/website/buzzhumor.lua lua/website/cbsnews.lua \
-	lua/website/collegehumor.lua lua/website/charlierose.lua \
+	lua/website/quvi/const.lua lua/website/quvi/url.lua \
+	lua/website/quvi/util.lua lua/website/academicearth.lua \
+	lua/website/arte.lua lua/website/bloomberg.lua \
+	lua/website/break.lua lua/website/buzzhumor.lua \
+	lua/website/cbsnews.lua lua/website/charlierose.lua \
 	lua/website/clipfish.lua lua/website/dailymotion.lua \
 	lua/website/gaskrank.lua lua/website/francetelevisions.lua \
 	lua/website/funnyhub.lua lua/website/funnyordie.lua \
 	lua/website/globo.lua lua/website/golem.lua \
 	lua/website/google.lua lua/website/liveleak.lua \
-	lua/website/pluzz.lua lua/website/publicsenat.lua \
-	lua/website/sapo.lua lua/website/sevenload.lua \
+	lua/website/megavideo.lua lua/website/pluzz.lua \
+	lua/website/publicsenat.lua lua/website/sapo.lua \
+	lua/website/sevenload.lua lua/website/soundcloud.lua \
 	lua/website/spiegel.lua lua/website/tagtele.lua \
-	lua/website/tmunderground.lua lua/website/theonion.lua \
+	lua/website/ted.lua lua/website/tmunderground.lua \
+	lua/website/theonion.lua lua/website/tvlux.lua \
 	lua/website/vimeo.lua lua/website/youtube.lua $(am__append_1) \
 	$(am__append_2)
 EXTRA_DIST = $(DIST_lua)

@@ -76,12 +76,16 @@ quvi calls this function to fetch and parse the user specified URL.
 This function looks typically very different for each website. Compare
 buzzhumor.lua and youtube.lua for an example of this.
 
-The "parse" function is expected set/update the following details:
+The "parse" function is expected set the following details:
   * host_id (string)
   * title (string)
   * id (string)
   * url (array of strings)
-  * redirect (string) [see notes below]
+  * redirect_url (string) [see notes below]
+
+Optional details (set if available):
+  * thumbnail_url (string)
+  * duration (numeric)
 
 Each of these belong to the `self' table passed to the function
 as a parameter. e.g. self.host_id = 'youtube' or self.id = '1234'
@@ -96,9 +100,9 @@ Returns:
   * The updated `self' table
 
 Notes:
-  * "redirect", special field, if set (default:empty):
-    - Drop user specified URL and follow to the redirect URL instead
-    - This replaces the original user defined URL (set by quvi_parse)
+  * "redirect_url", special field, if set (default:empty):
+    - Follow to a new location (of redirect_url)
+    - Replaces the original user defined "page_url" (set by quvi_parse)
     - See academicearth.lua script for an example
 
 

@@ -33,7 +33,7 @@ option "no-shortened"
     s "Do not decompress shortened URLs"
     optional
 option "no-verify"
-    n "Do not verify video link"
+    n "Do not verify media URL"
     optional
 option "category-http"
     - "Category HTTP website scripts"
@@ -49,35 +49,6 @@ option "category-rtmp"
     optional
 option "category-all"
     a "All website script categories"
-    optional
-
-option "page-title"
-    - "Check that parsed page title matches arg"
-    string typestr="arg"
-    optional
-option "video-id"
-    - "Check that parsed video ID matches arg"
-    string typestr="arg"
-    optional
-option "file-length"
-    - "Check that parsed video length matches arg"
-    double typestr="arg"
-    optional
-option "file-suffix"
-    - "Check that parsed video suffix matches arg"
-    string typestr="arg"
-    optional
-
-option "test-all"
-    - "Run all built-in tests of category QUVIPROTO_HTTP"
-    optional
-option "dump"
-    - "Dump video details with --test-all"
-    dependon="test-all"
-    optional
-option "test"
-    t "Pattern to match to built-in test URLs"
-    string typestr="arg"
     optional
 
 option "format"
@@ -105,7 +76,5 @@ option "connect-timeout"
     optional
 
 text "\nExamples:"
-text "\n  quvi YOUTUBE_URL -f webm_720p"
+text "\n  quvi YOUTUBE_URL -f mp4_360p"
 text "\n  quvi URL --exec \"/usr/bin/vlc %u\""
-text "\n  quvi --support"
-text "\n  quvi --support URL"

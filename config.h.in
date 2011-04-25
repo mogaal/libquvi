@@ -9,11 +9,11 @@
 /* ... */
 #undef CANONICAL_TARGET
 
-/* Define to enable broken support */
-#undef ENABLE_BROKEN
-
 /* Define to enable nsfw */
 #undef ENABLE_NSFW
+
+/* Define to enable todo support */
+#undef ENABLE_TODO
 
 /* We have 'git describe' */
 #undef GIT_DESCRIBE

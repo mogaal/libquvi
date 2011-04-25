@@ -41,6 +41,50 @@ function M.unescape (s)
     return s
 end
 
+-- handles
+--  Check whether a website script can "handle" the specified URL
+-- Params:
+--  url     .. video page URL
+--  domains .. table of domain names
+--  paths   .. table of URL path patterns to match
+--  queries .. table of URL query patterns to match
+function M.handles(url, domains, paths, queries)
+    if not url or not domains then
+        return false
+    end
+    local U = require 'quvi/url'
+    local t = U.parse(url)
+--    for k,v in pairs(t) do print(k,v) end
+    local r = M.contains(t.host, domains)
+    if r then
+        if paths then
+            r = M.contains(t.path, paths)
+        end
+        if r then
+            if queries then
+                if t.query then
+                    r = M.contains(t.query, queries)
+                else
+                    r = false
+                end
+            end
+        end
+    end
+    return r
+end
+
+function M.contains(s,t)
+    if not s then return false end
+    for k,v in pairs(t) do
+        if s:find(v) then return true end
+    end
+    return false
+end
+
+function M.ends(s,e) -- http://lua-users.org/wiki/StringRecipes
+    return e == '' or s:sub(-#e) == e
+end
+
 return M
 
 -- vim: set ts=4 sw=4 tw=72 expandtab:

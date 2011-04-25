@@ -28,6 +28,7 @@ function ident (self)
     r.domain     = "sevenload.com"
     r.formats    = "default"
     r.categories = C.proto_http
+    -- TODO: Use quvi/util:handles instead
     r.handles    =
         (self.page_url ~= nil and self.page_url:find(r.domain) ~= nil)
     return r

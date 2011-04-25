@@ -20,6 +20,8 @@
 -- 02110-1301  USA
 --
 
+-- http://www.bloomberg.com/video/
+
 -- Identify the script.
 function ident (self)
     package.path = self.script_dir .. '/?.lua'
@@ -28,8 +30,8 @@ function ident (self)
     r.domain     = "bloomberg.com"
     r.formats    = "default"
     r.categories = C.proto_http
-    r.handles    =
-        (self.page_url ~= nil and self.page_url:find (r.domain) ~= nil)
+    local U      = require 'quvi/util'
+    r.handles    = U.handles(self.page_url, {r.domain}, {"/video/"})
     return r
 end
 

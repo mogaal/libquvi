@@ -33,16 +33,16 @@ int is_format_supported(const char *fmt, const char *lst);
 #endif
 
 QUVIcode contenttype_to_suffix(_quvi_t, _quvi_video_link_t);
-QUVIcode parse_charset(_quvi_video_t video, const char *content);
-QUVIcode format_output_filename(_quvi_video_t video, char **dst);
+QUVIcode parse_charset(_quvi_media_t video, const char *content);
+QUVIcode format_output_filename(_quvi_media_t video, char **dst);
 
 QUVIcode
 parse_page_common(const char *url,
-                  _quvi_video_t video,
+                  _quvi_media_t video,
                   char **content, const char *re_id,
                   const char *re_title);
 
-QUVIcode to_utf8(_quvi_video_t video);
+QUVIcode to_utf8(_quvi_media_t video);
 
 char *strepl(const char *s, const char *what, const char *with);
 char *unescape(_quvi_t quvi, char *s);

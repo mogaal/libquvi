@@ -27,49 +27,56 @@ function ident (self)
     local r      = {}
     r.domain     = "collegehumor.com"
     r.formats    = "default"
--- Commented out due to limited hd support
---    r.formats  = "default|best|hd"
+-- default and hq seem to be the same. see also 'hq' parsing.
+--    r.formats    = "default|best|hq"
     r.categories = C.proto_http
-    r.handles    =
-        (self.page_url ~= nil and self.page_url:find(r.domain) ~= nil)
+    local U      = require 'quvi/util'
+    local u      = collegehumorify(self.page_url)
+    r.handles    = U.handles(u, {r.domain}, {"/video%:%d+/?"})
     return r
 end
 
 -- Parse video URL.
 function parse (self)
     self.host_id = "collegehumor"
-   
-    local success, _, vid =
-        self.page_url:find("^http://www%.collegehumor%.com/video:(%d+)")
 
-    if ( success == nil ) then
-        error("expected URL beginning with 'http://collegehumor.com/video:'")
-    end
+    self.page_url, self.id = collegehumorify(self.page_url)
+    self.id = self.id or error("no match: video id")
 
-    self.id = vid
+    -- http://www.collegehumor.com/video:1942317 - OK
+    -- http://www.collegehumor.com/video:6463979 - FAILS
 
-    local page = quvi.fetch(self.page_url)
-    local _,_,s = page:find('<meta name="title" content="(.-)"')
-    self.title = s or error("no match: video title")
+    local page  = quvi.fetch(
+        "http://www.collegehumor.com/moogaloop/video:" .. self.id,
+        {fetch_type = 'config'})
 
-    local page =
-        quvi.fetch("http://www.collegehumor.com/moogaloop/video:" .. vid,
-            {fetch_type = 'config'})
+    local _,_,sd_url = page:find('<file><!%[%w+%[(.-)%]')
+    local _,_,hq_url = page:find('<hq><!%[%w+%[(.-)%]')
 
-    local _,_,s = page:find('<file>([%w%p]+)</file>')
-    local default = s or error("no match: default quality URL")
+    local url = sd_url or hq_url -- default to 'sd'
+    url = url or error("no match: video url") -- we need this at least
 
-    local _,_,s = page:find('<hq>([%w%p]+)</hq>')
-    local hq = s
+    local r = self.requested_format
+    url = ((r == 'hq' or r == 'best') and hq_url) and hq_url or sd_url
 
-    self.url = { default }
-    if (self.requested_format == "hd" or self.requested_format == "best") then
-        if ( hq ~= nil ) then
-	        self.url = { hq }
-	    end
-    end
+    self.url = {url}
+
+    local _,_,s = page:find('<caption>(.-)<')
+    self.title  = s or error("no match: video title")
+
+    local _,_,s = page:find('<thumbnail><!%[%w+%[(.-)%]')
+    self.thumbnail_url = s or ""
 
     return self
+end
+
+function collegehumorify(url)
+    if not url then return url end
+    local _,_,id = url:find('collegehumor%.com/video[/:](%d+)')
+    if id then
+        url = "http://www.collegehumor.com/video:" .. id
+    end
+    return url,id
 end
 
 -- vim: set ts=4 sw=4 tw=72 expandtab:

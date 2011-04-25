@@ -21,57 +21,51 @@
 --
 
 -- Identify the script.
-function ident (self)
+function ident(self)
     package.path = self.script_dir .. '/?.lua'
     local C      = require 'quvi/const'
     local r      = {}
     r.domain     = "vimeo.com"
     r.formats    = "default|best|hd"
     r.categories = C.proto_http
-    r.handles    =
-        (self.page_url ~= nil and self.page_url:find(r.domain) ~= nil)
+    local U      = require 'quvi/util'
+    r.handles    = U.handles(self.page_url, {r.domain}, {"/%d+$"})
     return r
 end
 
 -- Parse video URL.
-function parse (self)
-    self.host_id = "vimeo"
-    
-    is_player, _, self.id =
-        self.page_url:find("^http://player.vimeo.com/video/(%d+)")
+function parse(self)
+    self.host_id  = "vimeo"
+    self.page_url = vimeofy(self.page_url)
 
-    if ( is_player ~= nil ) then
-        self.page_url = "http://vimeo.com/" .. vid
-    end
-
-    if (self.id == nil) then
-        local _,_,s = self.page_url:find('vimeo.com/(%d+)')
-        self.id     = s
-    end
-
-    if (self.id == nil) then error ("no match: video") end
+    local _,_,s = self.page_url:find('vimeo.com/(%d+)')
+    self.id = s or error("no match: video id")
 
     local config_url = "http://vimeo.com/moogaloop/load/clip:" .. self.id
-    local config = quvi.fetch (config_url, {fetch_type = 'config'})
+    local config = quvi.fetch(config_url, {fetch_type = 'config'})
+
+    if config:find('<error>') then
+        local _,_,s = config:find('<message>(.-)\n')
+        error( (s == nil) and "no match: error message" or s )
+    end
 
     local _,_,s = config:find("<caption>(.-)</")
-    self.title  = s or error ("no match: video title")
+    self.title  = s or error("no match: video title")
 
     local _,_,s = config:find("<request_signature>(.-)</")
-    local sign  = s or error ("no match: request signature")
+    local sign  = s or error("no match: request signature")
 
     local _,_,s = config:find("<request_signature_expires>(.-)</")
-    local exp   = s or error ("no match: request signature expires")
+    local exp   = s or error("no match: request signature expires")
 
     local _,_,s     = config:find("<hd_button>(%d)</")
-    local hd_button = s or error ("no match: hd button")
+    local hd_button = s or error("no match: hd button")
 
-    local q = "sd" -- Same as "default".
-    if (self.requested_format == "hd" or self.requested_format == "best") then
-        if (hd_button == "1") then
-            q = "hd"
-        end
-    end
+    local r = self.requested_format
+    r = (r == "best") and "hd" or r -- 'best' is an alias for 'hd'
+
+    local q = -- 'sd' is the 'default'.
+        (r == "hd" and hd_button == "1") and "hd" or "sd"
 
     self.url = {
         string.format("http://vimeo.com/moogaloop/play/clip:%s/%s/%s/?q=%s",
@@ -79,6 +73,12 @@ function parse (self)
     }
 
     return self
+end
+
+-- vimeofy the URL.
+function vimeofy(url)
+    url = url:gsub("player.", "") -- player.vimeo.com
+    return url
 end
 
 -- vim: set ts=4 sw=4 tw=72 expandtab:

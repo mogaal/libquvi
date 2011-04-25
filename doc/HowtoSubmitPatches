@@ -5,8 +5,9 @@ Howto: Submit patches
 * You agree to put your changes and new code under the same license quvi
 and libquvi are using already unless stated and agreed otherwise
 
-* If you are submitting a new website script, please include a test URL
-with your patch
+* If you are submitting a new website script, please include a test JSON
+file with it:
+    % quvi -q TEST_URL > foo.json
 
 * Please read the doc/CodingStyle
 

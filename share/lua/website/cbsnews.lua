@@ -1,6 +1,6 @@
 
 -- quvi
--- Copyright (C) 2010  quvi project
+-- Copyright (C) 2010,2011  quvi project
 --
 -- This file is part of quvi <http://quvi.sourceforge.net/>.
 --
@@ -26,10 +26,14 @@ function ident (self)
     local C      = require 'quvi/const'
     local r      = {}
     r.domain     = "cbsnews.com"
-    r.formats    = "default|best|1100k|598k|386k"
+-- m4v, seem to be available for most videos
+-- mp4, appear to be for newer videos
+-- Available height property can vary greatly per video.
+    r.formats    =
+        "default|best|m4v_216p|m4v_360p|m4v_480p|mp4_180p|mp4_240p|mp4_480p"
     r.categories = C.proto_http
-    r.handles    =
-        (self.page_url ~= nil and self.page_url:find(r.domain) ~= nil)
+    local U      = require 'quvi/util'
+    r.handles    = U.handles(self.page_url, {r.domain}, {"/video/watch/"})
     return r
 end
 
@@ -44,8 +48,7 @@ function parse (self)
 
     -- Goto cnet and get the url for the xml of the available video formats
     s =  "http://api.cnet.com/restApi/v1.0/videoSearch?videoIds="
-        .. s
-        .. "&iod=videoMedia"
+        ..s.. "&iod=videoMedia"
 
     local xml = quvi.fetch (s, {fetch_type = 'config'})
 
@@ -53,38 +56,57 @@ function parse (self)
     local _,_,s = xml:find ('<Title>.-CDATA%[(.-)%]')
     self.title  = s or error ("no match: video title")
 
-    -- Go over the URLs. Figure out 'best' based on bitrate.
-    local t    = {}
-    local best = 0
+    -- Go over the URLs in the XML.
+    local r_fmt = self.requested_format
+    local r_type,r_height = from_fmt_id(r_fmt)
+--    print(r_type,r_height)
 
-    for url in xml:gfind ('<DeliveryUrl>.-CDATA%[(.-)%]') do
-        local _,_,s = url:find('_(%d+)%.%w+$')
-        local n     = tonumber (s)
-        if (best < n) then best = n end
-        t[n]        = url
+    local p = '<Height>(%d+)<.-<BitRate>(%d+)<.-<DeliveryUrl>.-CDATA%[(.-)%]'
+    local t = {}
+    local url
+
+    for h,b,u in xml:gfind(p) do
+--        print(h,b,u)
+        url  = (not url) and u or url
+        h    = tonumber(h)
+        t[u] = {height=h, bitrate=tonumber(b)}
+        if r_fmt ~= "best" then
+            if h == r_height and u:find("%."..r_type) then
+                url = u
+                break
+            end
+        end
     end
 
-    local url = nil
-
-    if (self.requested_format == 'best') then
-       url = t[best]
-    else
-
-        -- Try to match requested_format to known IDs. Strip non-digits.
-        local _,_,f = self.requested_format:find ('(%d+)')
-        table.foreach (t,
-            function (k,v) if (tonumber (f) == k) then url = v end end)
-
-        -- Use whatever is in the table as our 'default' if above failed.
-        if (url == nil) then
-            table.foreach (t,
-                function (k,v) if (url == nil) then url = v end end)
+    if r_fmt == 'best' then
+        -- Note: container (m4v/mp4) is ignored. Compare height and
+        -- bitrate properties. If the same height, then higher bitrate
+        -- decides.
+        local best = {h=0,b=0}
+        for u,v in pairs(t) do
+            if best.h <= v.height and best.b < v.bitrate then
+                best.h = v.height
+                best.b = v.bitrate
+                url = u
+            end
         end
     end
 
     self.url = {url}
 
     return self
+end
+
+function from_fmt_id(s)
+    local _,_,t,h = s:find('(%w+)_(%d+)p')
+    if not t or not h then
+        -- Default to "m4v_216p" which seems to be available for most.
+        -- Note that anything that matches "%w+_%d+p" but does not
+        -- exist in config, will be ignored and whatever is found
+        -- in the config in first, will be used instead.
+        t,h = from_fmt_id("m4v_216p")
+    end
+    return t,tonumber(h)
 end
 
 -- vim: set ts=4 sw=4 tw=72 expandtab:

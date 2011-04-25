@@ -43,32 +43,24 @@ const char *gengetopt_args_info_help[] =
   "      --verbose-libcurl      Turn on libcurl verbose mode",
   "      --exec=arg             Invoke arg after parsing",
   "  -s, --no-shortened         Do not decompress shortened URLs",
-  "  -n, --no-verify            Do not verify video link",
+  "  -n, --no-verify            Do not verify media URL",
   "      --category-http        Category HTTP website scripts",
   "      --category-mms         Category MMS website scripts",
   "      --category-rtsp        Category RTSP website scripts",
   "      --category-rtmp        Category RTMP website scripts",
   "  -a, --category-all         All website script categories",
-  "      --page-title=arg       Check that parsed page title matches arg",
-  "      --video-id=arg         Check that parsed video ID matches arg",
-  "      --file-length=arg      Check that parsed video length matches arg",
-  "      --file-suffix=arg      Check that parsed video suffix matches arg",
-  "      --test-all             Run all built-in tests of category QUVIPROTO_HTTP",
-  "      --dump                 Dump video details with --test-all",
-  "  -t, --test=arg             Pattern to match to built-in test URLs",
   "  -f, --format=arg           Video format to query  (default=`default')",
   "      --agent=arg            Identify as arg  (default=`Mozilla/5.0')",
   "      --proxy=arg            Use proxy for HTTP connections",
   "      --no-proxy             Disable use of HTTP proxy",
   "      --connect-timeout=arg  Seconds connecting allowed to take  (default=`30')",
-  "\nExamples:\n  quvi YOUTUBE_URL -f webm_720p\n  quvi URL --exec \"/usr/bin/vlc %u\"\n  quvi --support\n  quvi --support URL",
+  "\nExamples:\n  quvi YOUTUBE_URL -f mp4_360p\n  quvi URL --exec \"/usr/bin/vlc %u\"",
   0
 };
 
 typedef enum {ARG_NO
               , ARG_STRING
               , ARG_INT
-              , ARG_DOUBLE
              } cmdline_parser_arg_type;
 
 static
@@ -80,8 +72,6 @@ static int
 cmdline_parser_internal (int argc, char **argv, struct gengetopt_args_info *args_info,
                          struct cmdline_parser_params *params, const char *additional_error);
 
-static int
-cmdline_parser_required2 (struct gengetopt_args_info *args_info, const char *prog_name, const char *additional_error);
 struct line_list
 {
   char * string_arg;
@@ -130,13 +120,6 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->category_rtsp_given = 0 ;
   args_info->category_rtmp_given = 0 ;
   args_info->category_all_given = 0 ;
-  args_info->page_title_given = 0 ;
-  args_info->video_id_given = 0 ;
-  args_info->file_length_given = 0 ;
-  args_info->file_suffix_given = 0 ;
-  args_info->test_all_given = 0 ;
-  args_info->dump_given = 0 ;
-  args_info->test_given = 0 ;
   args_info->format_given = 0 ;
   args_info->agent_given = 0 ;
   args_info->proxy_given = 0 ;
@@ -150,15 +133,6 @@ void clear_args (struct gengetopt_args_info *args_info)
   FIX_UNUSED (args_info);
   args_info->exec_arg = NULL;
   args_info->exec_orig = NULL;
-  args_info->page_title_arg = NULL;
-  args_info->page_title_orig = NULL;
-  args_info->video_id_arg = NULL;
-  args_info->video_id_orig = NULL;
-  args_info->file_length_orig = NULL;
-  args_info->file_suffix_arg = NULL;
-  args_info->file_suffix_orig = NULL;
-  args_info->test_arg = NULL;
-  args_info->test_orig = NULL;
   args_info->format_arg = gengetopt_strdup ("default");
   args_info->format_orig = NULL;
   args_info->agent_arg = gengetopt_strdup ("Mozilla/5.0");
@@ -191,18 +165,11 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->category_rtsp_help = gengetopt_args_info_help[13] ;
   args_info->category_rtmp_help = gengetopt_args_info_help[14] ;
   args_info->category_all_help = gengetopt_args_info_help[15] ;
-  args_info->page_title_help = gengetopt_args_info_help[16] ;
-  args_info->video_id_help = gengetopt_args_info_help[17] ;
-  args_info->file_length_help = gengetopt_args_info_help[18] ;
-  args_info->file_suffix_help = gengetopt_args_info_help[19] ;
-  args_info->test_all_help = gengetopt_args_info_help[20] ;
-  args_info->dump_help = gengetopt_args_info_help[21] ;
-  args_info->test_help = gengetopt_args_info_help[22] ;
-  args_info->format_help = gengetopt_args_info_help[23] ;
-  args_info->agent_help = gengetopt_args_info_help[24] ;
-  args_info->proxy_help = gengetopt_args_info_help[25] ;
-  args_info->no_proxy_help = gengetopt_args_info_help[26] ;
-  args_info->connect_timeout_help = gengetopt_args_info_help[27] ;
+  args_info->format_help = gengetopt_args_info_help[16] ;
+  args_info->agent_help = gengetopt_args_info_help[17] ;
+  args_info->proxy_help = gengetopt_args_info_help[18] ;
+  args_info->no_proxy_help = gengetopt_args_info_help[19] ;
+  args_info->connect_timeout_help = gengetopt_args_info_help[20] ;
 
 }
 
@@ -289,15 +256,6 @@ cmdline_parser_release (struct gengetopt_args_info *args_info)
   unsigned int i;
   free_string_field (&(args_info->exec_arg));
   free_string_field (&(args_info->exec_orig));
-  free_string_field (&(args_info->page_title_arg));
-  free_string_field (&(args_info->page_title_orig));
-  free_string_field (&(args_info->video_id_arg));
-  free_string_field (&(args_info->video_id_orig));
-  free_string_field (&(args_info->file_length_orig));
-  free_string_field (&(args_info->file_suffix_arg));
-  free_string_field (&(args_info->file_suffix_orig));
-  free_string_field (&(args_info->test_arg));
-  free_string_field (&(args_info->test_orig));
   free_string_field (&(args_info->format_arg));
   free_string_field (&(args_info->format_orig));
   free_string_field (&(args_info->agent_arg));
@@ -375,20 +333,6 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "category-rtmp", 0, 0 );
   if (args_info->category_all_given)
     write_into_file(outfile, "category-all", 0, 0 );
-  if (args_info->page_title_given)
-    write_into_file(outfile, "page-title", args_info->page_title_orig, 0);
-  if (args_info->video_id_given)
-    write_into_file(outfile, "video-id", args_info->video_id_orig, 0);
-  if (args_info->file_length_given)
-    write_into_file(outfile, "file-length", args_info->file_length_orig, 0);
-  if (args_info->file_suffix_given)
-    write_into_file(outfile, "file-suffix", args_info->file_suffix_orig, 0);
-  if (args_info->test_all_given)
-    write_into_file(outfile, "test-all", 0, 0 );
-  if (args_info->dump_given)
-    write_into_file(outfile, "dump", 0, 0 );
-  if (args_info->test_given)
-    write_into_file(outfile, "test", args_info->test_orig, 0);
   if (args_info->format_given)
     write_into_file(outfile, "format", args_info->format_orig, 0);
   if (args_info->agent_given)
@@ -494,36 +438,9 @@ cmdline_parser2 (int argc, char **argv, struct gengetopt_args_info *args_info, i
 int
 cmdline_parser_required (struct gengetopt_args_info *args_info, const char *prog_name)
 {
-  int result = EXIT_SUCCESS;
-
-  if (cmdline_parser_required2(args_info, prog_name, 0) > 0)
-    result = EXIT_FAILURE;
-
-  if (result == EXIT_FAILURE)
-    {
-      cmdline_parser_free (args_info);
-      exit (EXIT_FAILURE);
-    }
-
-  return result;
-}
-
-int
-cmdline_parser_required2 (struct gengetopt_args_info *args_info, const char *prog_name, const char *additional_error)
-{
-  int error = 0;
-  FIX_UNUSED (additional_error);
-
-  /* checks for required options */
-
-  /* checks for dependences among options */
-  if (args_info->dump_given && ! args_info->test_all_given)
-    {
-      fprintf (stderr, "%s: '--dump' option depends on option 'test-all'%s\n", prog_name, (additional_error ? additional_error : ""));
-      error = 1;
-    }
-
-  return error;
+  FIX_UNUSED (args_info);
+  FIX_UNUSED (prog_name);
+  return EXIT_SUCCESS;
 }
 
 
@@ -596,9 +513,6 @@ int update_arg(void *field, char **orig_field,
     case ARG_INT:
       if (val) *((int *)field) = strtol (val, &stop_char, 0);
       break;
-    case ARG_DOUBLE:
-      if (val) *((double *)field) = strtod (val, &stop_char);
-      break;
     case ARG_STRING:
       if (val)
         {
@@ -616,7 +530,6 @@ int update_arg(void *field, char **orig_field,
   switch(arg_type)
     {
     case ARG_INT:
-    case ARG_DOUBLE:
       if (val && !(stop_char && *stop_char == '\0'))
         {
           fprintf(stderr, "%s: invalid numeric value: %s\n", package_name, val);
@@ -706,13 +619,6 @@ cmdline_parser_internal (
         { "category-rtsp",  0, NULL, 0 },
         { "category-rtmp",  0, NULL, 0 },
         { "category-all", 0, NULL, 'a' },
-        { "page-title", 1, NULL, 0 },
-        { "video-id", 1, NULL, 0 },
-        { "file-length",  1, NULL, 0 },
-        { "file-suffix",  1, NULL, 0 },
-        { "test-all", 0, NULL, 0 },
-        { "dump", 0, NULL, 0 },
-        { "test", 1, NULL, 't' },
         { "format", 1, NULL, 'f' },
         { "agent",  1, NULL, 0 },
         { "proxy",  1, NULL, 0 },
@@ -721,7 +627,7 @@ cmdline_parser_internal (
         { 0,  0, 0, 0 }
       };
 
-      c = getopt_long (argc, argv, "hqsnat:f:", long_options, &option_index);
+      c = getopt_long (argc, argv, "hqsnaf:", long_options, &option_index);
 
       if (c == -1) break; /* Exit from `while (1)' loop.  */
 
@@ -756,7 +662,7 @@ cmdline_parser_internal (
             goto failure;
 
           break;
-        case 'n': /* Do not verify video link.  */
+        case 'n': /* Do not verify media URL.  */
 
 
           if (update_arg( 0 ,
@@ -776,18 +682,6 @@ cmdline_parser_internal (
                           &(local_args_info.category_all_given), optarg, 0, 0, ARG_NO,
                           check_ambiguity, override, 0, 0,
                           "category-all", 'a',
-                          additional_error))
-            goto failure;
-
-          break;
-        case 't': /* Pattern to match to built-in test URLs.  */
-
-
-          if (update_arg( (void *)&(args_info->test_arg),
-                          &(args_info->test_orig), &(args_info->test_given),
-                          &(local_args_info.test_given), optarg, 0, 0, ARG_STRING,
-                          check_ambiguity, override, 0, 0,
-                          "test", 't',
                           additional_error))
             goto failure;
 
@@ -960,90 +854,6 @@ cmdline_parser_internal (
                 goto failure;
 
             }
-          /* Check that parsed page title matches arg.  */
-          else if (strcmp (long_options[option_index].name, "page-title") == 0)
-            {
-
-
-              if (update_arg( (void *)&(args_info->page_title_arg),
-                              &(args_info->page_title_orig), &(args_info->page_title_given),
-                              &(local_args_info.page_title_given), optarg, 0, 0, ARG_STRING,
-                              check_ambiguity, override, 0, 0,
-                              "page-title", '-',
-                              additional_error))
-                goto failure;
-
-            }
-          /* Check that parsed video ID matches arg.  */
-          else if (strcmp (long_options[option_index].name, "video-id") == 0)
-            {
-
-
-              if (update_arg( (void *)&(args_info->video_id_arg),
-                              &(args_info->video_id_orig), &(args_info->video_id_given),
-                              &(local_args_info.video_id_given), optarg, 0, 0, ARG_STRING,
-                              check_ambiguity, override, 0, 0,
-                              "video-id", '-',
-                              additional_error))
-                goto failure;
-
-            }
-          /* Check that parsed video length matches arg.  */
-          else if (strcmp (long_options[option_index].name, "file-length") == 0)
-            {
-
-
-              if (update_arg( (void *)&(args_info->file_length_arg),
-                              &(args_info->file_length_orig), &(args_info->file_length_given),
-                              &(local_args_info.file_length_given), optarg, 0, 0, ARG_DOUBLE,
-                              check_ambiguity, override, 0, 0,
-                              "file-length", '-',
-                              additional_error))
-                goto failure;
-
-            }
-          /* Check that parsed video suffix matches arg.  */
-          else if (strcmp (long_options[option_index].name, "file-suffix") == 0)
-            {
-
-
-              if (update_arg( (void *)&(args_info->file_suffix_arg),
-                              &(args_info->file_suffix_orig), &(args_info->file_suffix_given),
-                              &(local_args_info.file_suffix_given), optarg, 0, 0, ARG_STRING,
-                              check_ambiguity, override, 0, 0,
-                              "file-suffix", '-',
-                              additional_error))
-                goto failure;
-
-            }
-          /* Run all built-in tests of category QUVIPROTO_HTTP.  */
-          else if (strcmp (long_options[option_index].name, "test-all") == 0)
-            {
-
-
-              if (update_arg( 0 ,
-                              0 , &(args_info->test_all_given),
-                              &(local_args_info.test_all_given), optarg, 0, 0, ARG_NO,
-                              check_ambiguity, override, 0, 0,
-                              "test-all", '-',
-                              additional_error))
-                goto failure;
-
-            }
-          /* Dump video details with --test-all.  */
-          else if (strcmp (long_options[option_index].name, "dump") == 0)
-            {
-
-
-              if (update_arg( 0 ,
-                              0 , &(args_info->dump_given),
-                              &(local_args_info.dump_given), optarg, 0, 0, ARG_NO,
-                              check_ambiguity, override, 0, 0,
-                              "dump", '-',
-                              additional_error))
-                goto failure;
-
-            }
           /* Identify as arg.  */
           else if (strcmp (long_options[option_index].name, "agent") == 0)
             {
@@ -1114,10 +924,6 @@ cmdline_parser_internal (
 
 
 
-  if (check_required)
-    {
-      error += cmdline_parser_required2 (args_info, argv[0], additional_error);
-    }
 
   cmdline_parser_release (&local_args_info);
 

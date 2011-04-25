@@ -4,16 +4,24 @@ EXTRA_DIST = \
 libquvi.pc.in \
 libquvi.ver \
 doxygen.conf.in \
-KNOWN_ISSUES \
 ChangeLog.pre-gitlog
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libquvi.pc
 
-SUBDIRS = include lib man1 src examples share doc scripts
+SUBDIRS = include lib man1 src examples share scripts
+
+if WITH_DOC
+SUBDIRS += doc
+endif
 
 if ENABLE_TESTS
 SUBDIRS += tests
+
+check: test
+
+test:
+	@(cd tests; $(MAKE) all test)
 endif
 
 .PHONY: pod2man pod2html dox cmdline

@@ -21,26 +21,22 @@
 --
 
 -- Parse file suffix (extension) from content-type string.
-function suffix_from_contenttype (ctype)
+function suffix_from_contenttype(ctype)
 
     -- Ideally, we'd parse these from /etc/mime-types.
     -- In reality, we need a more cross-platform solution.
 
-    if (ctype:find ("text/html")) then
-        error (
-            'content-type cannot be "' ..ctype.. '" for a video. '
-            .. 'The rule script for this website is either buggy or incomplete.'
-        )
+    if ctype:find("text/html") then
+        error('content-type cannot be "' ..ctype.. '" for a video. '
+            ..'The script for this website is either buggy or '
+            ..'incomplete.')
     end
 
     local _,_,s = ctype:find("/(.-)$")
     s = s or error ("no match: content type")
     s = s:gsub("^x%-","")
 
-    if (s:find("octet")
-        or s:find("swf")
-        or s:find("flash")
-        or s:find("plain"))
+    if s:find("octet") or s:find("swf") or s:find("flash") or s:find("plain")
     then
         s = "flv"
     end
