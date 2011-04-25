@@ -28,9 +28,14 @@ function ident (self)
     r.domain     = "videos.sapo.pt"
     r.formats    = "default"
     r.categories = C.proto_http
-    r.handles    =
-        (self.page_url ~= nil and self.page_url:find (r.domain) ~= nil)
+    -- TODO: Replace with LUA equivalent to Perl's "\w{20}".
+    local p      = "/"
+    for i=1,20 do p = p.."%w" end
+    p = p .. "$"
+    local U      = require 'quvi/util'
+    r.handles    = U.handles(self.page_url, {r.domain}, {p})
     return r
+
 end
 
 -- Parse video URL.

@@ -158,13 +158,13 @@ PACKAGE_TARNAME = @PACKAGE_TARNAME@
 PACKAGE_URL = @PACKAGE_URL@
 PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
-PERL = @PERL@
 PKG_CONFIG = @PKG_CONFIG@
 PKG_CONFIG_LIBDIR = @PKG_CONFIG_LIBDIR@
 PKG_CONFIG_PATH = @PKG_CONFIG_PATH@
 POD2HTML = @POD2HTML@
 POD2MAN = @POD2MAN@
 POW_LIB = @POW_LIB@
+PROVE = @PROVE@
 QUVI_AGE = @QUVI_AGE@
 QUVI_CURRENT = @QUVI_CURRENT@
 QUVI_REVISION = @QUVI_REVISION@
@@ -173,6 +173,7 @@ SED = @SED@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 STRIP = @STRIP@
+VALGRIND = @VALGRIND@
 VERSION = @VERSION@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
@@ -236,8 +237,9 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 @ENABLE_EXAMPLES_TRUE@simple_SOURCES = simple.c
-@ENABLE_EXAMPLES_TRUE@simple_CFLAGS = -I$(top_builddir)/include
-@ENABLE_EXAMPLES_TRUE@simple_LDFLAGS = $(top_builddir)/lib/libquvi.la
+@ENABLE_EXAMPLES_TRUE@simple_CPPFLAGS = -I$(top_builddir)/include $(AM_CPPFLAGS)
+@ENABLE_EXAMPLES_TRUE@simple_CFLAGS = $(AM_CFLAGS)
+@ENABLE_EXAMPLES_TRUE@simple_LDFLAGS = $(top_builddir)/lib/libquvi.la $(AM_LDFLAGS)
 all: all-am
 
 .SUFFIXES:
@@ -318,20 +320,20 @@ distclean-compile:
 @am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $<
 
 simple-simple.o: simple.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_CFLAGS) $(CFLAGS) -MT simple-simple.o -MD -MP -MF $(DEPDIR)/simple-simple.Tpo -c -o simple-simple.o `test -f 'simple.c' || echo '$(srcdir)/'`simple.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(simple_CPPFLAGS) $(CPPFLAGS) $(simple_CFLAGS) $(CFLAGS) -MT simple-simple.o -MD -MP -MF $(DEPDIR)/simple-simple.Tpo -c -o simple-simple.o `test -f 'simple.c' || echo '$(srcdir)/'`simple.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple-simple.Tpo $(DEPDIR)/simple-simple.Po
 @am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='simple.c' object='simple-simple.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_CFLAGS) $(CFLAGS) -c -o simple-simple.o `test -f 'simple.c' || echo '$(srcdir)/'`simple.c
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(simple_CPPFLAGS) $(CPPFLAGS) $(simple_CFLAGS) $(CFLAGS) -c -o simple-simple.o `test -f 'simple.c' || echo '$(srcdir)/'`simple.c
 
 simple-simple.obj: simple.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_CFLAGS) $(CFLAGS) -MT simple-simple.obj -MD -MP -MF $(DEPDIR)/simple-simple.Tpo -c -o simple-simple.obj `if test -f 'simple.c'; then $(CYGPATH_W) 'simple.c'; else $(CYGPATH_W) '$(srcdir)/simple.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(simple_CPPFLAGS) $(CPPFLAGS) $(simple_CFLAGS) $(CFLAGS) -MT simple-simple.obj -MD -MP -MF $(DEPDIR)/simple-simple.Tpo -c -o simple-simple.obj `if test -f 'simple.c'; then $(CYGPATH_W) 'simple.c'; else $(CYGPATH_W) '$(srcdir)/simple.c'; fi`
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple-simple.Tpo $(DEPDIR)/simple-simple.Po
 @am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='simple.c' object='simple-simple.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(simple_CFLAGS) $(CFLAGS) -c -o simple-simple.obj `if test -f 'simple.c'; then $(CYGPATH_W) 'simple.c'; else $(CYGPATH_W) '$(srcdir)/simple.c'; fi`
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(simple_CPPFLAGS) $(CPPFLAGS) $(simple_CFLAGS) $(CFLAGS) -c -o simple-simple.obj `if test -f 'simple.c'; then $(CYGPATH_W) 'simple.c'; else $(CYGPATH_W) '$(srcdir)/simple.c'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo

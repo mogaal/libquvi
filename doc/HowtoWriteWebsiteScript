@@ -235,8 +235,26 @@ Make sure that you have at least 0.2.0 installed to your system:
 
 Use buzzhumor.lua as a template script.
     % mkdir -p foo/lua/website/ ; cd foo
-    % cp $prefix/share/lua/website/buzzhumor.lua lua/website/foo.lua
+    % cp -r $prefix/share/lua/util/ lua/
     % cp -r $prefix/share/lua/website/quvi/ lua/website/
+    % cp $prefix/share/lua/website/buzzhumor.lua lua/website/foo.lua
+
+    So the foo/ dir should look like:
+    % find .
+    .
+    ./lua
+    ./lua/website
+    ./lua/website/foo.lua
+    ./lua/website/quvi
+    ./lua/website/quvi/const.lua
+    ./lua/website/quvi/url.lua
+    ./lua/website/quvi/util.lua
+    ./lua/website/quvi/bit.lua
+    ./lua/util
+    ./lua/util/content_type.lua
+    ./lua/util/charset.lua
+    ./lua/util/trim.lua
+
     (open foo.lua in an editor)
 
 Jump to 2.3.3 to continue.
@@ -258,6 +276,24 @@ Or you can use the project default:
 
 -   r.domain  = 'buzzhumor.com"
 +   r.domain  = 'foo.bar'
+
+    A word about r.handles: when the `ident' function gets called, quvi
+    checks whether the script can handle the user defined page URL. To
+    do this, we define at least one domain signature and one path
+    signature to compare against the URL. For the sake of brewity, let's
+    assume that:
+
+- r.handles    = U.handles(self.page_url, {r.domain}, {"/videos/"})
++ r.handles    = U.handles(self.page_url, {r.domain}, {"/watch/"})
+
+    Is enough. It may be easier to understand if we take a look at
+    the example URLs:
+        http://www.buzzhumor.com/videos/32561/Girl_Feels_Shotgun_Power
+        http://foo.bar/watch/1234/
+
+    The `handles' function (of quvi/util.lua) that we call confirms that:
+        * the domain pattern (e.g. "buzzhumor.com") is found in the URL
+        * the path pattern (e.g. "/videos/") is found in the URL
 
     You can leave r.formats untouched, unless you know that the website
     supports more than one ("default") video format and you know how to
@@ -320,6 +356,9 @@ You will most likely spend most of the time tweaking the patterns in
 in your script. It often helps to "isolate the problem", e.g. copy
 page data to a local file and write an additional script to perfect
 the LUA patterns. See "1. General tips" for "Isolate the problem".
+
+Read also $top_srcdir/tests/README for tips on how you can use the
+existing test suite files to test your script.
 
 
 2.4. Generate the patch

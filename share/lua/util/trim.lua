@@ -24,7 +24,7 @@ function trim_fields (video)
     for k,v in pairs (video) do
         if (type (v) == 'table') then
             video[k] = trim_fields (v)
-        else
+        elseif (type (v) == 'string') then
             video[k] = trim (v)
         end
     end

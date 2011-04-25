@@ -1,0 +1,16 @@
+{
+  "host": "spiegel",
+  "page_title": "Wiedeking-Nachfolger gefunden",
+  "page_url": "http://www.spiegel.de/video/video-1012582.html",
+  "id": "1012582",
+  "format_requested": "576k",
+  "link": [
+    {
+      "id": "1",
+      "length_bytes": "3668544",
+      "content_type": "video/x-flv",
+      "file_suffix": "flv",
+      "url": ""
+    }
+  ]
+}

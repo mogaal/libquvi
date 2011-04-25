@@ -41,8 +41,8 @@ function ident (self)
     end
     r.formats    = r.formats:gsub("^%|","")
     r.categories = C.proto_http
-    r.handles    =
-        (self.page_url ~= nil and self.page_url:find(r.domain) ~= nil)
+    local U      = require 'quvi/util'
+    r.handles    = U.handles(self.page_url, {r.domain}, {"/video/"})
     return r
 end
 

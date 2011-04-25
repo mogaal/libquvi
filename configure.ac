@@ -66,17 +66,13 @@ AC_PATH_PROG(DOXYGEN, doxygen, no)
 AM_CONDITIONAL([HAVE_DOXYGEN], [test x"$DOXYGEN" != "xno"])
 AC_SUBST(DOXYGEN)
 
-AC_PATH_PROG(PERL, perl, no)
-AM_CONDITIONAL([HAVE_PERL], [test x"$PERL" != "xno"])
-AC_SUBST(PERL)
+AC_PATH_PROG(PROVE, prove, no)
+AM_CONDITIONAL([HAVE_PROVE], [test x"$PROVE" != "xno"])
+AC_SUBST(PROVE)
 
-have_pod_checker=no
-AC_MSG_CHECKING([for Pod::Checker])
-if [ $PERL -mPod::Checker >/dev/null 2>&1 ]; then
-    AC_MSG_RESULT([yes])
-    have_pod_checker=yes
-fi
-AM_CONDITIONAL([HAVE_PERL_POD_CHECKER], [test x"$have_pod_checker" = "xyes"])
+AC_PATH_PROG(VALGRIND, valgrind, no)
+AM_CONDITIONAL([HAVE_VALGRIND], [test x"$VALGRIND" != "xno"])
+AC_SUBST(VALGRIND)
 
 AC_PATH_PROG(POD2MAN, pod2man, no)
 AM_CONDITIONAL([HAVE_POD2MAN], [test x"$POD2MAN" != "xno"])
@@ -158,6 +154,23 @@ AC_ARG_ENABLE([examples],
     [enable_examples=no])
 AM_CONDITIONAL([ENABLE_EXAMPLES], [test x"$enable_examples" != "xno"])
 
+# --enable-tests
+AC_ARG_ENABLE([tests],
+    [AS_HELP_STRING([--enable-tests],
+        [enable tests @<:@default=no@:>@])],
+    [],
+    [enable_tests=no])
+AM_CONDITIONAL([ENABLE_TESTS], [test x"$enable_tests" != "xno"])
+
+# --enable-verbose-tests
+AC_ARG_ENABLE([verbose-tests],
+    [AS_HELP_STRING([--enable-verbose-tests],
+        [enable verbose tests @<:@default=no@:>@])],
+    [],
+    [enable_verbose_tests=no])
+AM_CONDITIONAL([ENABLE_VERBOSE_TESTS],
+    [test x"$enable_verbose_tests" != "xno"])
+
 # --enable-nsfw
 AC_ARG_ENABLE([nsfw],
     [AS_HELP_STRING([--enable-nsfw],
@@ -170,25 +183,25 @@ if [ test x"$enable_nsfw" != "xno" ]; then
     AC_DEFINE([ENABLE_NSFW], [1], [Define to enable nsfw])
 fi
 
-# --enable-tests
-AC_ARG_ENABLE([tests],
-    [AS_HELP_STRING([--enable-tests],
-        [enable tests @<:@default=no@:>@])],
+# --enable-todo
+AC_ARG_ENABLE([todo],
+    [AS_HELP_STRING([--enable-todo],
+        [with website scripts marked as "todo" @<:@default=no@:>@])],
     [],
-    [enable_tests=no])
-AM_CONDITIONAL([ENABLE_TESTS], [test x"$enable_tests" != "xno"])
+    [enable_todo=no])
+AM_CONDITIONAL([ENABLE_TODO], [test x"$enable_todo" != "xno"])
 
-# --enable-broken
-AC_ARG_ENABLE([broken],
-    [AS_HELP_STRING([--enable-broken],
-        [build with broken website support @<:@default=no@:>@])],
-    [],
-    [enable_broken=no])
-AM_CONDITIONAL([ENABLE_BROKEN], [test x"$enable_broken" != "xno"])
-
-if [ test x"$enable_broken" != "xno" ]; then
-    AC_DEFINE([ENABLE_BROKEN], [1], [Define to enable broken support])
+if [ test x"$enable_todo" != "xno" ]; then
+    AC_DEFINE([ENABLE_TODO], [1], [Define to enable todo support])
 fi
+
+# --enable-nlfy
+AC_ARG_ENABLE([nlfy],
+    [AS_HELP_STRING([--enable-nlfy],
+        [test scripts marked as "nlfy" @<:@default=no@:>@])],
+    [],
+    [enable_nlfy=no])
+AM_CONDITIONAL([ENABLE_NLFY], [test x"$enable_nlfy" != "xno"])
 
 # --with-man
 AC_ARG_WITH([man],
@@ -221,7 +234,6 @@ AC_CONFIG_FILES([
     src/Makefile
     examples/Makefile
     tests/Makefile
-    tests/quviTest.pm
     scripts/Makefile
     libquvi.pc
     doxygen.conf
@@ -243,9 +255,10 @@ Options:
     build examples: ${enable_examples}
     build quvi:     ${enable_quvi}
     --
-    enable broken:  ${enable_broken}
     enable tests:   ${enable_tests}
+    enable todo:    ${enable_todo}
     enable nsfw:    ${enable_nsfw}
+    enable nlfy:    ${enable_nlfy}
     --
     install manual: ${with_man}
     install docs:   ${with_doc}
@@ -254,8 +267,7 @@ Options:
 #Other:
 #    gengetopt:      ${GENGETOPT}
 #    doxygen:        ${DOXYGEN}
-#    perl:           ${PERL}
-#    Pod::Checker:   ${have_pod_checker}
+#    prove:          ${PROVE}
 #    pod2man:        ${POD2MAN}
 #    pod2html:       ${POD2HTML}
 

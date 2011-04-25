@@ -1,3 +1,1724 @@
+commit a2460dfed50ae2fb373b4e2a598153644c55011d
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Fri Apr 15 21:01:19 2011 +0300
+
+    Set release details for 0.2.15
+
+ NEWS |   57 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 57 insertions(+), 0 deletions(-)
+
+commit 0166e23e217336c4caa539a138b0f0e4306e4786
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Fri Apr 15 20:42:09 2011 +0300
+
+    Bump interface revision (c+1:0:a+1)
+
+ configure     |    6 +++---
+ m4/version.m4 |    6 +++---
+ 2 files changed, 6 insertions(+), 6 deletions(-)
+
+commit 9498ce372cf4f0a0a3d7259692d90010c963cabc
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Fri Apr 15 14:31:25 2011 +0300
+
+    Manual: Add stdin note, example
+
+ man1/quvi.1     |   17 ++++++++++++++++-
+ man1/quvi.1.pod |   14 ++++++++++++++
+ 2 files changed, 30 insertions(+), 1 deletions(-)
+
+commit 6ae7642cb7c679d5d1b419afc586193d54b8a63d
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Fri Apr 15 14:31:11 2011 +0300
+
+    quvi: Add stdin support
+
+ src/Makefile.am |    3 +-
+ src/Makefile.in |   25 ++++++++++--
+ src/quvi.c      |  116 ++++++++++++++++++++++++++++++++++++++++--------------
+ 3 files changed, 109 insertions(+), 35 deletions(-)
+
+commit cffca87d21e0949392165b7a452b32643de0f972
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Fri Apr 15 14:29:54 2011 +0300
+
+    mem.t: Remove QUVI_INVARG test
+
+ tests/t/mem.t |    8 ++------
+ 1 files changed, 2 insertions(+), 6 deletions(-)
+
+commit edef81506f3696c8186d4b7d1b6348f3e025075d
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Fri Apr 15 10:57:46 2011 +0300
+
+    LUA: Rename "redirect" -> "redirect_url"
+
+ lib/internal.h                      |    2 +-
+ lib/lua_wrap.c                      |    8 ++++----
+ lib/quvi.c                          |    6 +++---
+ share/lua/website/README            |    8 ++++----
+ share/lua/website/academicearth.lua |    2 +-
+ share/lua/website/pluzz.lua         |    2 +-
+ 6 files changed, 14 insertions(+), 14 deletions(-)
+
+commit cb89e8afbc4899e706e19accb3eed377a3083d99
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Apr 14 23:56:09 2011 +0300
+
+    Fix uninitialized variable (#46)
+    
+    An uninitialized variable in run_parse_func caused quvi to return
+    invalid code with LUA scripts that used the 'redirect'.
+
+ lib/lua_wrap.c |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+commit 1ca79ebd093e805d4acf417a2511eb19c192e1ca
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Apr 14 22:17:25 2011 +0300
+
+    Use JSON::XS explicitly
+
+ tests/t/d/url.t                  |    2 +-
+ tests/t/format_default.t         |    2 +-
+ tests/t/format_default_nonhttp.t |    2 +-
+ tests/t/format_other.t           |    2 +-
+ tests/t/mem.t                    |    2 +-
+ tests/t/nosupport.t              |    2 +-
+ tests/t/redirect.t               |    2 +-
+ tests/t/shortened.t              |    2 +-
+ 8 files changed, 8 insertions(+), 8 deletions(-)
+
+commit 4e84fe078fe937a7f98e911843dc137f1b9ea0bd
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Wed Apr 13 20:41:56 2011 +0300
+
+    Manual: Rewrite --quiet description
+
+ man1/quvi.1     |    8 ++++++--
+ man1/quvi.1.pod |    8 ++++++--
+ 2 files changed, 12 insertions(+), 4 deletions(-)
+
+commit a0e7f71e1ff59bd3ed7685e70bc5648735fc7f9c
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Wed Apr 13 20:37:00 2011 +0300
+
+    src/quvi.c: Use atexit to set a cleanup function
+    
+    Fix any memleaks detected by the new mem tests (see last commit).
+
+ src/quvi.c |  219 +++++++++++++++++++++++++++++-------------------------------
+ 1 files changed, 107 insertions(+), 112 deletions(-)
+
+commit 643fb668de2cac9ef3bbf953d82bea5a0252348b
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Wed Apr 13 20:36:38 2011 +0300
+
+    t/mem.t: Additional tests
+
+ tests/t/mem.t |   59 ++++++++++++++++++++++++++++++++++++++++++++++++++++----
+ 1 files changed, 54 insertions(+), 5 deletions(-)
+
+commit d06d21f3868e5476e3dd6f1da47d606645c0a85c
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Wed Apr 13 20:09:53 2011 +0300
+
+    Manual: Update QUVI_MEM exit status description
+
+ man1/quvi.1     |    3 ++-
+ man1/quvi.1.pod |    1 +
+ 2 files changed, 3 insertions(+), 1 deletions(-)
+
+commit 0f955d0f84fabb9e48cc8f23c63127015bb1e84b
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Wed Apr 13 20:00:25 2011 +0300
+
+    collegehumor.lua: collegehumorify: Check if not URL
+
+ share/lua/website/collegehumor.lua |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+commit 730389eb2992f7ffcd7269dbd8c5b581226899fd
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Wed Apr 13 15:40:42 2011 +0300
+
+    lua/website/README: Add thumbnail_url, duration
+
+ share/lua/website/README |    6 +++++-
+ 1 files changed, 5 insertions(+), 1 deletions(-)
+
+commit 860e11b7ec8b16f7c69329fb41ab9f827b4a3ee0
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Wed Apr 13 15:37:59 2011 +0300
+
+    LUA: Rename starttime -> start_time
+
+ lib/internal.h                |    2 +-
+ lib/lua_wrap.c                |    6 +++---
+ lib/quvi.c                    |    4 ++--
+ share/lua/website/youtube.lua |    6 +++---
+ 4 files changed, 9 insertions(+), 9 deletions(-)
+
+commit e57a5b94b7bde38bdf03fcbf5cf465ae5659f5af
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Wed Apr 13 15:34:37 2011 +0300
+
+    LUA: Rename media_thumbnail_url -> thumbnail_url
+
+ lib/internal.h                     |    2 +-
+ lib/lua_wrap.c                     |    6 +++---
+ lib/quvi.c                         |    4 ++--
+ share/lua/website/collegehumor.lua |    2 +-
+ share/lua/website/soundcloud.lua   |    2 +-
+ share/lua/website/ted.lua          |    2 +-
+ 6 files changed, 9 insertions(+), 9 deletions(-)
+
+commit 3c9a134d7372d4ca539324be397f33eb8096750e
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Wed Apr 13 11:37:06 2011 +0300
+
+    quvi/util.lua: Add "ends" function
+
+ share/lua/website/quvi/util.lua |    4 ++++
+ 1 files changed, 4 insertions(+), 0 deletions(-)
+
+commit 2ad6244a777971ec0b2a694d4177023a8a9e3d0a
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Tue Apr 12 22:52:34 2011 +0300
+
+    Remove start_time, thumbnail_url from test data
+
+ tests/data/format/default/academicearth.json       |    2 --
+ tests/data/format/default/bloomberg.json           |    2 --
+ tests/data/format/default/break.json               |    2 --
+ tests/data/format/default/buzzhumor.json           |    2 --
+ tests/data/format/default/cbsnews.json             |    2 --
+ tests/data/format/default/charlierose.json         |    2 --
+ tests/data/format/default/funnyhub.json            |    2 --
+ tests/data/format/default/funnyordie.json          |    2 --
+ tests/data/format/default/gaskrank.json            |    2 --
+ tests/data/format/default/globo.json               |    2 --
+ tests/data/format/default/golem.json               |    2 --
+ tests/data/format/default/google.json              |    2 --
+ .../default/ignore/length_bytes/dailymotion.json   |    2 --
+ tests/data/format/default/liveleak.json            |    2 --
+ tests/data/format/default/megavideo.json           |    2 --
+ tests/data/format/default/nlfy/clipfish.json       |    2 --
+ tests/data/format/default/nlfy/sevenload.json      |    2 --
+ tests/data/format/default/nsfw/keezmovies.json     |    2 --
+ tests/data/format/default/nsfw/tube8.json          |    2 --
+ tests/data/format/default/nsfw/xhamster.json       |    2 --
+ tests/data/format/default/nsfw/xvideos.json        |    2 --
+ tests/data/format/default/nsfw/youjizz.json        |    2 --
+ tests/data/format/default/publicsenat.json         |    2 --
+ tests/data/format/default/sapo.json                |    2 --
+ tests/data/format/default/soundcloud.json          |    1 -
+ tests/data/format/default/spiegel.json             |    2 --
+ tests/data/format/default/tagtele.json             |    2 --
+ tests/data/format/default/ted.json                 |    1 -
+ tests/data/format/default/theonion.json            |    2 --
+ tests/data/format/default/tmunderground.json       |    2 --
+ tests/data/format/default/todo/collegehumor.json   |    3 +--
+ tests/data/format/default/tvlux.json               |    2 --
+ tests/data/format/default/vimeo.json               |    2 --
+ tests/data/format/default/youtube.json             |    2 --
+ tests/data/format/default/youtube_starttime.json   |    1 -
+ tests/data/format/other/cbsnews_best.json          |    2 --
+ tests/data/format/other/cbsnews_m4v_216p.json      |    2 --
+ tests/data/format/other/cbsnews_m4v_360p.json      |    2 --
+ tests/data/format/other/cbsnews_m4v_480p.json      |    2 --
+ tests/data/format/other/cbsnews_mp4_180p.json      |    2 --
+ tests/data/format/other/cbsnews_mp4_240p.json      |    2 --
+ tests/data/format/other/cbsnews_mp4_480p.json      |    2 --
+ tests/data/format/other/golem_best.json            |    2 --
+ tests/data/format/other/golem_high.json            |    2 --
+ tests/data/format/other/golem_ipod.json            |    2 --
+ .../ignore/length_bytes/dailymotion_best.json      |    2 --
+ .../other/ignore/length_bytes/dailymotion_hd.json  |    2 --
+ .../other/ignore/length_bytes/dailymotion_hq.json  |    2 --
+ tests/data/format/other/spiegel_1400k.json         |    2 --
+ tests/data/format/other/spiegel_576k.json          |    2 --
+ tests/data/format/other/spiegel_928k.json          |    2 --
+ tests/data/format/other/spiegel_best.json          |    2 --
+ tests/data/format/other/ted_best.json              |    1 -
+ tests/data/format/other/ted_hd.json                |    1 -
+ tests/data/format/other/vimeo_best.json            |    2 --
+ tests/data/format/other/vimeo_hd.json              |    2 --
+ tests/data/format/other/youtube_best.json          |    2 --
+ tests/data/format/other/youtube_flv_240p.json      |    2 --
+ tests/data/format/other/youtube_flv_360p.json      |    2 --
+ tests/data/format/other/youtube_flv_480p.json      |    2 --
+ tests/data/format/other/youtube_mp4_1080p.json     |    2 --
+ tests/data/format/other/youtube_mp4_3072p.json     |    2 --
+ tests/data/format/other/youtube_mp4_360p.json      |    2 --
+ tests/data/format/other/youtube_mp4_720p.json      |    2 --
+ tests/data/resolve/inscript_redirect.json          |    2 --
+ tests/data/resolve/shortened.json                  |    2 --
+ 66 files changed, 1 insertions(+), 127 deletions(-)
+
+commit 2fbe1bd869c8272b60541a87a3e5fb95c090c0d3
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Tue Apr 12 17:55:14 2011 +0300
+
+    Print details only if available
+    
+    Applies to all supported output formats (JSON, XML, old).
+    
+    * content-length
+    * content-type
+    * file suffix
+    * start_time
+    * thumbnail_url
+
+ src/quvi.c |   92 ++++++++++++++++++++++++++++++++++++++---------------------
+ 1 files changed, 59 insertions(+), 33 deletions(-)
+
+commit 044ae3fb5712f6d5bf7e73bedbbe0a45a7343570
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Tue Apr 12 17:27:06 2011 +0300
+
+    Add results line to output
+
+ src/quvi.c |    7 ++++---
+ 1 files changed, 4 insertions(+), 3 deletions(-)
+
+commit 90d385d5431329b68cba7171cd51889eaff9ab76
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Mon Apr 11 23:46:47 2011 +0300
+
+    Manual: Add command line note to QUVI_INVARG
+
+ man1/quvi.1     |    4 ++--
+ man1/quvi.1.pod |    2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+commit c6341bc0b12dd4231167a63476aae9be10c03619
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Mon Apr 11 23:43:34 2011 +0300
+
+    Fix: Do not exit if preceeding URL fails (#40)
+    
+    Fix the issue #40. Exit with QUVI_INVARG if input
+    was not given.
+
+ src/quvi.c |   37 ++++++++++++++++++++++++++++---------
+ 1 files changed, 28 insertions(+), 9 deletions(-)
+
+commit 97a62651f52169454aa58c30a283bb191c30ce41
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Mon Apr 11 14:13:54 2011 +0300
+
+    src/quvi.c: Enclose link details in a structure
+
+ src/quvi.c |   63 ++++++++++++++++++++++++++---------------------------------
+ 1 files changed, 28 insertions(+), 35 deletions(-)
+
+commit b90c61810eb8f5d933befbb5bf6eb6c10489b064
+Merge: 3509a7a 83bf2d4
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sun Apr 10 21:52:48 2011 +0300
+
+    Merge branch 'no_swf_player_url_#31'
+
+commit 83bf2d4f711d1cad192c5790adea82a9bb7e295f
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sun Apr 10 21:52:18 2011 +0300
+
+    src/quvi.c: Remove "swf player url" from dump_media_old
+
+ src/quvi.c |    3 +--
+ 1 files changed, 1 insertions(+), 2 deletions(-)
+
+commit d8ab6a7b3df0a44a42dd83ec3d7a7b528934bbe8
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sun Apr 10 21:39:02 2011 +0300
+
+    Revert "Add swf_player_url to test JSONs"
+    
+    This reverts commit db87e3b6ddfd96a3b4b9479c1c60f3927be3be64.
+
+ tests/data/format/default/academicearth.json       |    1 -
+ tests/data/format/default/bloomberg.json           |    1 -
+ tests/data/format/default/break.json               |    1 -
+ tests/data/format/default/buzzhumor.json           |    1 -
+ tests/data/format/default/cbsnews.json             |    1 -
+ tests/data/format/default/charlierose.json         |    1 -
+ tests/data/format/default/funnyhub.json            |    1 -
+ tests/data/format/default/funnyordie.json          |    1 -
+ tests/data/format/default/gaskrank.json            |    1 -
+ tests/data/format/default/globo.json               |    1 -
+ tests/data/format/default/golem.json               |    1 -
+ tests/data/format/default/google.json              |    1 -
+ .../default/ignore/length_bytes/dailymotion.json   |    1 -
+ tests/data/format/default/liveleak.json            |    1 -
+ tests/data/format/default/megavideo.json           |    1 -
+ tests/data/format/default/nlfy/clipfish.json       |    1 -
+ tests/data/format/default/nlfy/sevenload.json      |    1 -
+ tests/data/format/default/nsfw/keezmovies.json     |    1 -
+ tests/data/format/default/nsfw/tube8.json          |    1 -
+ tests/data/format/default/nsfw/xhamster.json       |    1 -
+ tests/data/format/default/nsfw/xvideos.json        |    1 -
+ tests/data/format/default/nsfw/youjizz.json        |    1 -
+ tests/data/format/default/publicsenat.json         |    1 -
+ tests/data/format/default/sapo.json                |    1 -
+ tests/data/format/default/soundcloud.json          |    1 -
+ tests/data/format/default/spiegel.json             |    1 -
+ tests/data/format/default/tagtele.json             |    1 -
+ tests/data/format/default/ted.json                 |    1 -
+ tests/data/format/default/theonion.json            |    1 -
+ tests/data/format/default/tmunderground.json       |    1 -
+ tests/data/format/default/todo/collegehumor.json   |    1 -
+ tests/data/format/default/tvlux.json               |    1 -
+ tests/data/format/default/vimeo.json               |    1 -
+ tests/data/format/default/youtube.json             |    1 -
+ tests/data/format/default/youtube_starttime.json   |    1 -
+ tests/data/format/other/cbsnews_best.json          |    1 -
+ tests/data/format/other/cbsnews_m4v_216p.json      |    1 -
+ tests/data/format/other/cbsnews_m4v_360p.json      |    1 -
+ tests/data/format/other/cbsnews_m4v_480p.json      |    1 -
+ tests/data/format/other/cbsnews_mp4_180p.json      |    1 -
+ tests/data/format/other/cbsnews_mp4_240p.json      |    1 -
+ tests/data/format/other/cbsnews_mp4_480p.json      |    1 -
+ tests/data/format/other/golem_best.json            |    1 -
+ tests/data/format/other/golem_high.json            |    1 -
+ tests/data/format/other/golem_ipod.json            |    1 -
+ .../ignore/length_bytes/dailymotion_best.json      |    1 -
+ .../other/ignore/length_bytes/dailymotion_hd.json  |    1 -
+ .../other/ignore/length_bytes/dailymotion_hq.json  |    1 -
+ tests/data/format/other/spiegel_1400k.json         |    1 -
+ tests/data/format/other/spiegel_576k.json          |    1 -
+ tests/data/format/other/spiegel_928k.json          |    1 -
+ tests/data/format/other/spiegel_best.json          |    1 -
+ tests/data/format/other/ted_best.json              |    1 -
+ tests/data/format/other/ted_hd.json                |    1 -
+ tests/data/format/other/vimeo_best.json            |    1 -
+ tests/data/format/other/vimeo_hd.json              |    1 -
+ tests/data/format/other/youtube_best.json          |    1 -
+ tests/data/format/other/youtube_flv_240p.json      |    1 -
+ tests/data/format/other/youtube_flv_360p.json      |    1 -
+ tests/data/format/other/youtube_flv_480p.json      |    1 -
+ tests/data/format/other/youtube_mp4_1080p.json     |    1 -
+ tests/data/format/other/youtube_mp4_3072p.json     |    1 -
+ tests/data/format/other/youtube_mp4_360p.json      |    1 -
+ tests/data/format/other/youtube_mp4_720p.json      |    1 -
+ tests/data/resolve/inscript_redirect.json          |    1 -
+ tests/data/resolve/shortened.json                  |    1 -
+ 66 files changed, 0 insertions(+), 66 deletions(-)
+
+commit 890f4c5b924111ec989a82d89a92734590ea0dff
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sun Apr 10 21:38:48 2011 +0300
+
+    Revert "Test::Quvi: Add swf_player_url to ignore list"
+    
+    This reverts commit 3baec410bafb75ecb612448c0b492b723cbadeea.
+
+ tests/lib/Test/Quvi.pm |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 825c1ce6218244872d68f8c363063947be20bfc5
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sun Apr 10 21:38:15 2011 +0300
+
+    Revert "arte.lua: Parse swf_player_url"
+    
+    This reverts commit f9a4db4288759b6d49a1ac8eba5001dbd1fec2f5.
+
+ share/lua/website/arte.lua |    4 ----
+ 1 files changed, 0 insertions(+), 4 deletions(-)
+
+commit 6133918a3e588a40785d1c7765c36084f4e46747
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sun Apr 10 21:35:51 2011 +0300
+
+    Manual: Remove swf player url
+
+ man1/quvi.1     |    3 +--
+ man1/quvi.1.pod |    1 -
+ 2 files changed, 1 insertions(+), 3 deletions(-)
+
+commit eeaabdfdcc99028cfcf10685959c93fd7dd27637
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sun Apr 10 21:35:17 2011 +0300
+
+    lib/: Remove swf player url
+
+ lib/internal.h |    1 -
+ lib/lua_wrap.c |    4 ----
+ lib/quvi.c     |    3 ---
+ 3 files changed, 0 insertions(+), 8 deletions(-)
+
+commit 30d1959e06890b6d08d605b1ff65e1591ad6bb2f
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sun Apr 10 21:32:32 2011 +0300
+
+    quvi.h.in: Remove QUVIPROP_SWFPLAYERURL
+
+ include/quvi/quvi.h.in |    3 +--
+ 1 files changed, 1 insertions(+), 2 deletions(-)
+
+commit 1be8c31e5de3777e1dbedaaaef3d473d29477a2c
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sun Apr 10 21:31:07 2011 +0300
+
+    src/quvi.c: Remove swf_player_url
+
+ src/quvi.c |   33 +++++++--------------------------
+ 1 files changed, 7 insertions(+), 26 deletions(-)
+
+commit 3509a7aa104203a8dc388167bba5344c3e8f065a
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sun Apr 10 12:18:31 2011 +0300
+
+    Fix: test target: exit w/ 1 only if error occurred
+
+ tests/Makefile.am |   15 +++++++--------
+ tests/Makefile.in |   15 +++++++--------
+ 2 files changed, 14 insertions(+), 16 deletions(-)
+
+commit 410db85f56e31092d9022eb2756aaec79493536a
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sun Apr 10 11:50:02 2011 +0300
+
+    quvi.h.in: Apply astyle
+
+ include/quvi/quvi.h.in | 1047 ++++++++++++++++++++++++------------------------
+ 1 files changed, 528 insertions(+), 519 deletions(-)
+
+commit db87e3b6ddfd96a3b4b9479c1c60f3927be3be64
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sun Apr 10 01:35:04 2011 +0300
+
+    Add swf_player_url to test JSONs
+
+ tests/data/format/default/academicearth.json       |    1 +
+ tests/data/format/default/bloomberg.json           |    1 +
+ tests/data/format/default/break.json               |    1 +
+ tests/data/format/default/buzzhumor.json           |    1 +
+ tests/data/format/default/cbsnews.json             |    1 +
+ tests/data/format/default/charlierose.json         |    1 +
+ tests/data/format/default/funnyhub.json            |    1 +
+ tests/data/format/default/funnyordie.json          |    1 +
+ tests/data/format/default/gaskrank.json            |    1 +
+ tests/data/format/default/globo.json               |    1 +
+ tests/data/format/default/golem.json               |    1 +
+ tests/data/format/default/google.json              |    1 +
+ .../default/ignore/length_bytes/dailymotion.json   |    1 +
+ tests/data/format/default/liveleak.json            |    1 +
+ tests/data/format/default/megavideo.json           |    1 +
+ tests/data/format/default/nlfy/clipfish.json       |    1 +
+ tests/data/format/default/nlfy/sevenload.json      |    1 +
+ tests/data/format/default/nsfw/keezmovies.json     |    1 +
+ tests/data/format/default/nsfw/tube8.json          |    1 +
+ tests/data/format/default/nsfw/xhamster.json       |    1 +
+ tests/data/format/default/nsfw/xvideos.json        |    1 +
+ tests/data/format/default/nsfw/youjizz.json        |    1 +
+ tests/data/format/default/publicsenat.json         |    1 +
+ tests/data/format/default/sapo.json                |    1 +
+ tests/data/format/default/soundcloud.json          |    1 +
+ tests/data/format/default/spiegel.json             |    1 +
+ tests/data/format/default/tagtele.json             |    1 +
+ tests/data/format/default/ted.json                 |    1 +
+ tests/data/format/default/theonion.json            |    1 +
+ tests/data/format/default/tmunderground.json       |    1 +
+ tests/data/format/default/todo/collegehumor.json   |    1 +
+ tests/data/format/default/tvlux.json               |    1 +
+ tests/data/format/default/vimeo.json               |    1 +
+ tests/data/format/default/youtube.json             |    1 +
+ tests/data/format/default/youtube_starttime.json   |    1 +
+ tests/data/format/other/cbsnews_best.json          |    1 +
+ tests/data/format/other/cbsnews_m4v_216p.json      |    1 +
+ tests/data/format/other/cbsnews_m4v_360p.json      |    1 +
+ tests/data/format/other/cbsnews_m4v_480p.json      |    1 +
+ tests/data/format/other/cbsnews_mp4_180p.json      |    1 +
+ tests/data/format/other/cbsnews_mp4_240p.json      |    1 +
+ tests/data/format/other/cbsnews_mp4_480p.json      |    1 +
+ tests/data/format/other/golem_best.json            |    1 +
+ tests/data/format/other/golem_high.json            |    1 +
+ tests/data/format/other/golem_ipod.json            |    1 +
+ .../ignore/length_bytes/dailymotion_best.json      |    1 +
+ .../other/ignore/length_bytes/dailymotion_hd.json  |    1 +
+ .../other/ignore/length_bytes/dailymotion_hq.json  |    1 +
+ tests/data/format/other/spiegel_1400k.json         |    1 +
+ tests/data/format/other/spiegel_576k.json          |    1 +
+ tests/data/format/other/spiegel_928k.json          |    1 +
+ tests/data/format/other/spiegel_best.json          |    1 +
+ tests/data/format/other/ted_best.json              |    1 +
+ tests/data/format/other/ted_hd.json                |    1 +
+ tests/data/format/other/vimeo_best.json            |    1 +
+ tests/data/format/other/vimeo_hd.json              |    1 +
+ tests/data/format/other/youtube_best.json          |    1 +
+ tests/data/format/other/youtube_flv_240p.json      |    1 +
+ tests/data/format/other/youtube_flv_360p.json      |    1 +
+ tests/data/format/other/youtube_flv_480p.json      |    1 +
+ tests/data/format/other/youtube_mp4_1080p.json     |    1 +
+ tests/data/format/other/youtube_mp4_3072p.json     |    1 +
+ tests/data/format/other/youtube_mp4_360p.json      |    1 +
+ tests/data/format/other/youtube_mp4_720p.json      |    1 +
+ tests/data/resolve/inscript_redirect.json          |    1 +
+ tests/data/resolve/shortened.json                  |    1 +
+ 66 files changed, 66 insertions(+), 0 deletions(-)
+
+commit 3baec410bafb75ecb612448c0b492b723cbadeea
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sun Apr 10 01:17:28 2011 +0300
+
+    Test::Quvi: Add swf_player_url to ignore list
+
+ tests/lib/Test/Quvi.pm |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit e23339b5bc053c09b83ab2183cd60d268324f90a
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sun Apr 10 01:14:22 2011 +0300
+
+    Wrap parsed details in a structure
+
+ src/quvi.c |  128 +++++++++++++++++++++++++++++++-----------------------------
+ 1 files changed, 66 insertions(+), 62 deletions(-)
+
+commit f19537bb329684beb335795579928b65f27ce929
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sun Apr 10 01:00:04 2011 +0300
+
+    Use _free macro instead
+
+ src/quvi.c |   30 ++++++++++++------------------
+ 1 files changed, 12 insertions(+), 18 deletions(-)
+
+commit d877981153d6567d338f4de225a251c9b4043b66
+Merge: a44519f 352d4b9
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sun Apr 10 00:40:59 2011 +0300
+
+    Merge branch 'swf_player_url_#31'
+
+commit 352d4b9487f8215972f4c2ccfbd9fbc089d922b1
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sun Apr 10 00:14:43 2011 +0300
+
+    --exec: Add support for %s (QUVIPROP_SWFPLAYERURL)
+    
+    Document '%s' in the manual.
+    
+    Additionally (unrelated): Escape URLs with XML.
+
+ man1/quvi.1     |    5 ++-
+ man1/quvi.1.pod |    1 +
+ src/quvi.c      |  109 ++++++++++++++++++++++++++++++++++++++-----------------
+ 3 files changed, 80 insertions(+), 35 deletions(-)
+
+commit 274f283a096bf71cd38486b2f94a885a147ce57e
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sun Apr 10 00:13:39 2011 +0300
+
+    quvi.h.in: Fix QUVIPROP_SWFPLAYERURL definition
+
+ include/quvi/quvi.h.in |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit f9a4db4288759b6d49a1ac8eba5001dbd1fec2f5
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sat Apr 9 23:23:04 2011 +0300
+
+    arte.lua: Parse swf_player_url
+
+ share/lua/website/arte.lua |    4 ++++
+ 1 files changed, 4 insertions(+), 0 deletions(-)
+
+commit fd40a6ea90c73a7cd448446df8223e28383a6e11
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sat Apr 9 23:21:55 2011 +0300
+
+    Add QUVIPROP_SWFPLAYERURL (#31)
+    
+    Allow LUA scripts to set swf_player_url (a.k.a. swfVfy with rtmpdump).
+    
+    * http://sourceforge.net/apps/trac/quvi/ticket/31
+
+ include/quvi/quvi.h.in |    7 +++++--
+ lib/internal.h         |    1 +
+ lib/lua_wrap.c         |   16 +++++++++++++---
+ lib/quvi.c             |    3 +++
+ 4 files changed, 22 insertions(+), 5 deletions(-)
+
+commit a44519f3c0e15930ba1a2b98b964256c081f2dfa
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Apr 7 17:27:55 2011 +0300
+
+    youtube.lua: Less nil
+
+ share/lua/website/youtube.lua |   12 ++++++------
+ 1 files changed, 6 insertions(+), 6 deletions(-)
+
+commit b25904ede35c3ccba57ab0d7c0ec513b3a754be1
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Mon Apr 4 17:46:58 2011 +0300
+
+    youtube.lua: Remove unnecessary semicolons
+
+ share/lua/website/youtube.lua |    6 +++---
+ 1 files changed, 3 insertions(+), 3 deletions(-)
+
+commit c0762ae77b2286aede73426c52a38f62c83c256a
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Mon Apr 4 15:58:49 2011 +0300
+
+    Add youtube_starttime.json
+
+ tests/data/format/default/youtube_starttime.json |   18 ++++++++++++++++++
+ 1 files changed, 18 insertions(+), 0 deletions(-)
+
+commit f5d99d617405d7c87c23c85d9a91475174323186
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Mon Apr 4 15:57:27 2011 +0300
+
+    youtube.lua: Process the starttime string (#36)
+    
+    Process the start time string and append a request variable to the video
+    URI so that the server responds with the corresponding offset video
+    stream.
+    
+    * <http://sourceforge.net/apps/trac/quvi/ticket/36>
+
+ share/lua/website/youtube.lua |   11 +++++++++++
+ 1 files changed, 11 insertions(+), 0 deletions(-)
+
+commit 35e74caacee357de71a3244c8114ac4f13941eb0
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sun Apr 3 21:05:14 2011 +0300
+
+    Test::Quvi: Add support for --dump-json
+
+ tests/README           |    1 +
+ tests/lib/Test/Quvi.pm |    6 +++++-
+ 2 files changed, 6 insertions(+), 1 deletions(-)
+
+commit 7c635edb4836c519f26feeaa5729bdf2552d9e02
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sun Apr 3 21:04:44 2011 +0300
+
+    url.t: Fix typo --json -> --json-file
+
+ tests/t/d/url.t |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+commit 75fee3f00b4f1ab4cd04dbe3793a5c55b6bff9bb
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sun Apr 3 15:58:00 2011 +0300
+
+    arte.lua: Improve handling expired URLs
+    
+    Example URL:
+      <http://videos.arte.tv/de/videos/water_makes_money-3775756.html>
+
+ share/lua/website/arte.lua |   45 ++++++++++++++++++++++++++++++-------------
+ 1 files changed, 31 insertions(+), 14 deletions(-)
+
+commit 957915be1f831205dae0f3267505e5fc0463dc3f
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sun Apr 3 15:27:17 2011 +0300
+
+    megavideo.lua: Convert to use quvi/util.lua:handles function
+
+ share/lua/website/megavideo.lua |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+commit c40e11f1c2e5836248e8f8efc23d10238848e3e1
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sun Apr 3 15:26:48 2011 +0300
+
+    francetelevisions.lua: Fix path in U.handles
+
+ share/lua/website/francetelevisions.lua |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 3545ab35d1cb57e38a81e127c8022093d2fd0c9e
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sun Apr 3 14:18:53 2011 +0300
+
+    Makefile.am: Add megavideo.lua, megavideo.json
+
+ share/Makefile.am |    1 +
+ share/Makefile.in |   35 ++++++++++++++++++-----------------
+ tests/Makefile.am |    1 +
+ tests/Makefile.in |    1 +
+ 4 files changed, 21 insertions(+), 17 deletions(-)
+
+commit e12f491b2e865d149a2af58bd82608d1d8bf05c6
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sun Apr 3 13:47:26 2011 +0300
+
+    soundcloud.lua: Tweak thumbnail url pattern
+
+ share/lua/website/soundcloud.lua |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 5b64a5b4ec5c0adfe676821a6a064eee74a79042
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sun Apr 3 13:17:29 2011 +0300
+
+    tests/: Add megavideo.json
+
+ tests/data/format/default/megavideo.json |   18 ++++++++++++++++++
+ 1 files changed, 18 insertions(+), 0 deletions(-)
+
+commit 7b2085959f964cd7eede96c95a82336a0527fae2
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sun Apr 3 13:11:25 2011 +0300
+
+    megavideo.lua: Tidy up
+    
+    * Remove unused binstr2bin function
+    * Make lines fit the 72 char margin
+    * Set fetch type to 'config'
+
+ share/lua/website/megavideo.lua |   25 +++++++++++++++----------
+ 1 files changed, 15 insertions(+), 10 deletions(-)
+
+commit c9e040704b931ef52bba321b82599c8bf57e4a0b
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sun Apr 3 13:11:02 2011 +0300
+
+    tests/README: Add url.t --json-file URL note
+
+ tests/README |    4 ++++
+ 1 files changed, 4 insertions(+), 0 deletions(-)
+
+commit c6beee14140b9780ce5e419798af22cc918fed17
+Author: PaulK <contact@paulk.fr>
+Date:   Sat Apr 2 15:01:53 2011 +0200
+
+    Add megavideo support
+
+ share/lua/website/megavideo.lua |  218 +++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 218 insertions(+), 0 deletions(-)
+
+commit 0e457161f20631202e7213021badc341d7fe7b05
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Fri Apr 1 13:15:04 2011 +0300
+
+    collegehumor.lua: Add collegehumorify (#34)
+    
+    Add collegehumorify function, fix parsing with video 1942317 which we
+    have used in the past to confirm that the script works. This, however,
+    does not fix the collegehumor support. The moogaloop query redirects to
+    "video not found" page, except for 1942317.
+    
+    Add thumbnail parsing.
+    
+    * http://sourceforge.net/apps/trac/quvi/ticket/34
+
+ share/lua/website/collegehumor.lua |   58 ++++++++++++++++++++----------------
+ 1 files changed, 32 insertions(+), 26 deletions(-)
+
+commit 587343563576f557fbc27f5c0ce2a4c424d1a00f
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Fri Apr 1 11:18:50 2011 +0300
+
+    Remove KNOWN_ISSUES file
+    
+    CPPFLAGS changes (1e19de4) seems to fix the "undeclared errors" seen
+    with missplaced -I (e.g. system compiling a current version while
+    old version installed; compilation includes the old quvi.h before
+    the current header). Confirmed OK with mingw32 and on FreeBSD.
+
+ KNOWN_ISSUES |   53 -----------------------------------------------------
+ Makefile.am  |    1 -
+ Makefile.in  |    1 -
+ 3 files changed, 0 insertions(+), 55 deletions(-)
+
+commit dd88d5510f7611042255cfaeb00307db28bf5efe
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Fri Apr 1 11:15:22 2011 +0300
+
+    make-w32.sh: 7za -> zip
+
+ w32/make-w32.sh |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+commit a4e7c521acfbd7f7e0f69ec9dd5a872561e6be42
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Fri Apr 1 11:15:03 2011 +0300
+
+    src/quvi.c: Remove unused functions
+
+ src/quvi.c |   16 ----------------
+ 1 files changed, 0 insertions(+), 16 deletions(-)
+
+commit 1e19de43155589d141109088faa3fcc4d229949f
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Fri Apr 1 10:37:57 2011 +0300
+
+    Makefile.am: Add CPPFLAGS
+    
+    * Move from CFLAGS to CPPFLAGS
+    * Add AM_(CFLAGS|CPPFLAGS|LDFLAGS)
+
+ examples/Makefile.am |    5 ++-
+ examples/Makefile.in |   13 +++++----
+ lib/Makefile.am      |   52 +++++++++++++++++++-----------------
+ lib/Makefile.in      |   71 ++++++++++++++++++++++++++-----------------------
+ src/Makefile.am      |   12 +++++++-
+ src/Makefile.in      |   53 +++++++++++++++++++++----------------
+ 6 files changed, 116 insertions(+), 90 deletions(-)
+
+commit 889b329fab23bb774be27ee8273feca11f1e7cf4
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Mar 31 13:26:51 2011 +0300
+
+    Manual: Add "NOTES - PROTOCOL CATEGORIES"
+    
+    * Add protocol category examples
+
+ man1/quvi.1     |   37 +++++++++++++++++++++++++++++++------
+ man1/quvi.1.pod |   37 ++++++++++++++++++++++++++++++++++---
+ 2 files changed, 65 insertions(+), 9 deletions(-)
+
+commit 2e19c95a3ddfa7513cdce00438bdf005b3500697
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Mar 31 13:26:13 2011 +0300
+
+    API: Document: QUVIcategory: Rewrite
+
+ include/quvi/quvi.h.in |   11 +++++++----
+ 1 files changed, 7 insertions(+), 4 deletions(-)
+
+commit 34991937388dd3b14fc2a9aa7c388688eff1fd68
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Mar 31 12:08:05 2011 +0300
+
+    tests/Makefile.am: Remove leftover JSONs
+    
+    clipfish.json and sevenload.json files were moved to JSON_NLFY, remove
+    these from JSON variable.
+
+ tests/Makefile.am |    2 --
+ tests/Makefile.in |    2 --
+ 2 files changed, 0 insertions(+), 4 deletions(-)
+
+commit af6568763ccd3cff08d0c77b89cc1746c34a6c8a
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Mar 31 12:03:02 2011 +0300
+
+    Only include doc subdir with --with-doc flag (#33)
+    
+    * http://sourceforge.net/apps/trac/quvi/ticket/33
+
+ Makefile.am |    9 +++++++--
+ Makefile.in |   10 ++++++----
+ 2 files changed, 13 insertions(+), 6 deletions(-)
+
+commit c16651794dd03fa529c5e5659f5f1d1ab2e429c8
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Mar 31 11:52:30 2011 +0300
+
+    Fix build when PATH_MAX is not defined (#32)
+    
+    * http://sourceforge.net/apps/trac/quvi/ticket/32
+
+ lib/lua_wrap.c |   10 +++++++---
+ 1 files changed, 7 insertions(+), 3 deletions(-)
+
+commit 74571c4ba12d24db0ac714c24431f39cf600fe81
+Merge: b2df66b fc264c8
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Mar 31 11:43:50 2011 +0300
+
+    Merge branch 'testsuite_v2'
+
+commit fc264c8b1010c6457f575e319680a41cdefc8f2e
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Mar 31 11:40:49 2011 +0300
+
+    Do not exit if a test fails, set a flag instead
+    
+    Instead of bailing out completely, let the remaining tests run their
+    course and exit with a non-zero value if the error flag was set earlier.
+
+ tests/Makefile.am |    6 ++++--
+ tests/Makefile.in |    6 ++++--
+ 2 files changed, 8 insertions(+), 4 deletions(-)
+
+commit 6a1f3dd0c4a7bf58c34b939736262cfacb1694b5
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Mar 31 11:22:20 2011 +0300
+
+    configure.ac: Add --enable-verbose-tests
+
+ INSTALL           |   17 ++++++-----
+ configure         |   75 +++++++++++++++++++++++++++++++++++-----------------
+ configure.ac      |   25 ++++++++++++-----
+ tests/Makefile.am |    6 +++-
+ tests/Makefile.in |   17 ++++++-----
+ 5 files changed, 90 insertions(+), 50 deletions(-)
+
+commit 46db1dc486fc48ab1196b43ad616c240a8bbcf0e
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Mar 31 11:13:55 2011 +0300
+
+    Fix nsfw typo
+
+ tests/t/format_default.t |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 361cdbfea26e2c65027053782b675a31a168d408
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Mar 31 10:58:48 2011 +0300
+
+    Replace format_default_nsfw.t with --nsfw in Test::Quvi
+
+ tests/Makefile.am             |   23 ++++++++++++-----------
+ tests/Makefile.in             |   39 +++++++++++++++++++++++----------------
+ tests/lib/Test/Quvi.pm        |    1 +
+ tests/t/format_default.t      |    1 +
+ tests/t/format_default_nsfw.t |   35 -----------------------------------
+ 5 files changed, 37 insertions(+), 62 deletions(-)
+
+commit 0a42c13119ef56658873397383d54950716209a4
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Wed Mar 30 23:39:06 2011 +0300
+
+    Add --enable-nlfy
+    
+    * Move clipfish.json, sevenload.json to nlfy group
+
+ INSTALL                                       |   12 ++++++++-
+ configure                                     |   31 +++++++++++++++++++++++-
+ configure.ac                                  |   11 ++++++++-
+ tests/Makefile.am                             |   12 ++++++++-
+ tests/Makefile.in                             |   12 +++++++--
+ tests/data/format/default/clipfish.json       |   18 --------------
+ tests/data/format/default/nlfy/clipfish.json  |   18 ++++++++++++++
+ tests/data/format/default/nlfy/sevenload.json |   18 ++++++++++++++
+ tests/data/format/default/sevenload.json      |   18 --------------
+ tests/lib/Test/Quvi.pm                        |    3 +-
+ tests/t/format_default.t                      |    1 +
+ 11 files changed, 107 insertions(+), 47 deletions(-)
+
+commit 669cb4faec0245d78e48884142d4c25da26acce6
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Wed Mar 30 21:45:56 2011 +0300
+
+    lib/quvi.c: Rename ENABLE_BROKEN -> ENABLE_TODO
+
+ lib/quvi.c |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+commit fbae48aedea9257f1894f6a969e75b753ba6f282
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Wed Mar 30 17:15:02 2011 +0300
+
+    Move collegehumor.(lua|json) to TODO
+
+ share/Makefile.am                                |    4 +-
+ share/Makefile.in                                |   63 +++++++++++-----------
+ tests/Makefile.am                                |   34 +++++++-----
+ tests/Makefile.in                                |   34 +++++++-----
+ tests/data/format/default/collegehumor.json      |   18 ------
+ tests/data/format/default/todo/README            |    8 +++
+ tests/data/format/default/todo/collegehumor.json |   18 ++++++
+ 7 files changed, 100 insertions(+), 79 deletions(-)
+
+commit a7b08874edbe1510eb80aac450b074f6a7de295a
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Wed Mar 30 17:13:59 2011 +0300
+
+    format_default.t: Add todo path
+
+ tests/t/format_default.t |   10 +++++++---
+ 1 files changed, 7 insertions(+), 3 deletions(-)
+
+commit e4c082b301373820ccc1d76ca0040b32c1459ae7
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Wed Mar 30 17:13:00 2011 +0300
+
+    Test::Quvi: Add thumbnail_url to default ignore list
+
+ tests/lib/Test/Quvi.pm |   14 +++++++-------
+ 1 files changed, 7 insertions(+), 7 deletions(-)
+
+commit cda1aec90b70a09f0920d947d207b1c0a7f1aedb
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Wed Mar 30 17:11:40 2011 +0300
+
+    tests/README: Trim
+
+ tests/README |   64 +++++++++++++++++----------------------------------------
+ 1 files changed, 19 insertions(+), 45 deletions(-)
+
+commit f2a37c6af7a164b04dcf48766ba963f7855ce770
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Wed Mar 30 13:45:03 2011 +0300
+
+    Terminate tests if an error occurred
+
+ tests/Makefile.am |    4 ++--
+ tests/Makefile.in |    4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+commit 1c3cfe4a7a0a7b37101e30a4f0d9f2a3f151546d
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Wed Mar 30 10:57:56 2011 +0300
+
+    Add tests/t/pod.t
+
+ Makefile.in              |    1 -
+ configure                |   59 ----------------------------------------------
+ configure.ac             |    5 ----
+ doc/Makefile.in          |    1 -
+ examples/Makefile.in     |    1 -
+ include/Makefile.in      |    1 -
+ include/quvi/Makefile.in |    1 -
+ lib/Makefile.in          |    1 -
+ man1/Makefile.in         |    1 -
+ scripts/Makefile.in      |    1 -
+ share/Makefile.in        |    1 -
+ src/Makefile.in          |    1 -
+ tests/Makefile.am        |   25 +++++++++++++++++--
+ tests/Makefile.in        |   22 ++++++++++++++---
+ tests/t/pod.t            |   18 ++++++++++++++
+ 15 files changed, 58 insertions(+), 81 deletions(-)
+
+commit 30e34fc72612aa793b2587d67dabcc128bcc5493
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Tue Mar 29 23:14:45 2011 +0300
+
+    Replace old testsuite
+    
+    Additional changes include:
+    * Replace 'perl' check with 'prove' check
+    * Rename --enable-broken to --enable-todo
+    * Add 'valgrind' check
+    * Add 'test' target
+
+ Makefile.am                                        |    4 +
+ Makefile.in                                        |    8 +-
+ config.h.in                                        |    6 +-
+ configure                                          |  212 ++++++++++++-----
+ configure.ac                                       |   43 ++--
+ doc/Makefile.in                                    |    4 +-
+ examples/Makefile.in                               |    4 +-
+ include/Makefile.in                                |    4 +-
+ include/quvi/Makefile.in                           |    4 +-
+ lib/Makefile.in                                    |    4 +-
+ man1/Makefile.in                                   |    4 +-
+ scripts/Makefile.in                                |    4 +-
+ scripts/perltidy.sh                                |    2 +-
+ share/Makefile.am                                  |    2 +-
+ share/Makefile.in                                  |    6 +-
+ src/Makefile.in                                    |    4 +-
+ tests/Makefile.am                                  |  160 ++++++++-----
+ tests/Makefile.in                                  |  261 ++++++++------------
+ tests/data/format/default/academicearth.json       |   18 ++
+ tests/data/format/default/bloomberg.json           |   18 ++
+ tests/data/format/default/break.json               |   18 ++
+ tests/data/format/default/buzzhumor.json           |   18 ++
+ tests/data/format/default/cbsnews.json             |   18 ++
+ tests/data/format/default/charlierose.json         |   18 ++
+ tests/data/format/default/clipfish.json            |   18 ++
+ tests/data/format/default/collegehumor.json        |   18 ++
+ tests/data/format/default/funnyhub.json            |   18 ++
+ tests/data/format/default/funnyordie.json          |   18 ++
+ tests/data/format/default/gaskrank.json            |   18 ++
+ tests/data/format/default/globo.json               |   18 ++
+ tests/data/format/default/golem.json               |   18 ++
+ tests/data/format/default/google.json              |   18 ++
+ tests/data/format/default/ignore/README            |    5 +
+ .../default/ignore/length_bytes/dailymotion.json   |   18 ++
+ tests/data/format/default/liveleak.json            |   18 ++
+ tests/data/format/default/non-http/README          |   11 +
+ tests/data/format/default/nsfw/keezmovies.json     |   18 ++
+ tests/data/format/default/nsfw/tube8.json          |   18 ++
+ tests/data/format/default/nsfw/xhamster.json       |   18 ++
+ tests/data/format/default/nsfw/xvideos.json        |   18 ++
+ tests/data/format/default/nsfw/youjizz.json        |   18 ++
+ tests/data/format/default/publicsenat.json         |   18 ++
+ tests/data/format/default/sapo.json                |   18 ++
+ tests/data/format/default/sevenload.json           |   18 ++
+ tests/data/format/default/soundcloud.json          |   19 ++
+ tests/data/format/default/spiegel.json             |   18 ++
+ tests/data/format/default/tagtele.json             |   18 ++
+ tests/data/format/default/ted.json                 |   18 ++
+ tests/data/format/default/theonion.json            |   18 ++
+ tests/data/format/default/tmunderground.json       |   18 ++
+ tests/data/format/default/tvlux.json               |   18 ++
+ tests/data/format/default/vimeo.json               |   18 ++
+ tests/data/format/default/youtube.json             |   18 ++
+ tests/data/format/other/cbsnews_best.json          |   18 ++
+ tests/data/format/other/cbsnews_m4v_216p.json      |   18 ++
+ tests/data/format/other/cbsnews_m4v_360p.json      |   18 ++
+ tests/data/format/other/cbsnews_m4v_480p.json      |   18 ++
+ tests/data/format/other/cbsnews_mp4_180p.json      |   18 ++
+ tests/data/format/other/cbsnews_mp4_240p.json      |   18 ++
+ tests/data/format/other/cbsnews_mp4_480p.json      |   18 ++
+ tests/data/format/other/golem_best.json            |   18 ++
+ tests/data/format/other/golem_high.json            |   18 ++
+ tests/data/format/other/golem_ipod.json            |   18 ++
+ tests/data/format/other/ignore/README              |    5 +
+ .../ignore/length_bytes/dailymotion_best.json      |   18 ++
+ .../other/ignore/length_bytes/dailymotion_hd.json  |   18 ++
+ .../other/ignore/length_bytes/dailymotion_hq.json  |   18 ++
+ tests/data/format/other/spiegel_1400k.json         |   18 ++
+ tests/data/format/other/spiegel_576k.json          |   18 ++
+ tests/data/format/other/spiegel_928k.json          |   18 ++
+ tests/data/format/other/spiegel_best.json          |   18 ++
+ tests/data/format/other/ted_best.json              |   18 ++
+ tests/data/format/other/ted_hd.json                |   18 ++
+ tests/data/format/other/vimeo_best.json            |   18 ++
+ tests/data/format/other/vimeo_hd.json              |   18 ++
+ tests/data/format/other/youtube_best.json          |   18 ++
+ tests/data/format/other/youtube_flv_240p.json      |   18 ++
+ tests/data/format/other/youtube_flv_360p.json      |   18 ++
+ tests/data/format/other/youtube_flv_480p.json      |   18 ++
+ tests/data/format/other/youtube_mp4_1080p.json     |   18 ++
+ tests/data/format/other/youtube_mp4_3072p.json     |   18 ++
+ tests/data/format/other/youtube_mp4_360p.json      |   18 ++
+ tests/data/format/other/youtube_mp4_720p.json      |   18 ++
+ tests/data/resolve/inscript_redirect.json          |   18 ++
+ tests/data/resolve/shortened.json                  |   18 ++
+ tests/lib/Test/Quvi.pm                             |  244 ++++++++++++++++++
+ tests/t/d/url.t                                    |   51 ++++
+ tests/t/format_default.t                           |   45 ++++
+ tests/t/format_default_nonhttp.t                   |   40 +++
+ tests/t/format_default_nsfw.t                      |   35 +++
+ tests/t/format_other.t                             |   46 ++++
+ tests/t/mem.t                                      |   26 ++
+ tests/t/nosupport.t                                |   22 ++
+ tests/t/redirect.t                                 |   32 +++
+ tests/t/shortened.t                                |   49 ++++
+ 95 files changed, 2192 insertions(+), 308 deletions(-)
+
+commit 5b9b74bb982bd09aa279a65a4f8be117870d1495
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Tue Mar 29 21:58:59 2011 +0300
+
+    Add tests/README
+
+ tests/README |  178 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 178 insertions(+), 0 deletions(-)
+
+commit 3113345225bfa34509c19be746274ea00eda92f4
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Tue Mar 29 21:57:53 2011 +0300
+
+    HowtoWriteWebsiteScript: Add missing cp
+    
+    * Add $top_srcdir/tests/README comment
+    * Add dir structure example
+
+ doc/HowtoWriteWebsiteScript |   23 ++++++++++++++++++++++-
+ 1 files changed, 22 insertions(+), 1 deletions(-)
+
+commit 17e175478adcbc0e6f690f522f960d5256c1f9a7
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Tue Mar 29 21:42:00 2011 +0300
+
+    HowtoSubmitPatches: Add JSON comment
+
+ doc/HowtoSubmitPatches |    5 +++--
+ 1 files changed, 3 insertions(+), 2 deletions(-)
+
+commit fda84c727dc7bbb1117543d4c35e9e7925f808a3
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Mon Mar 28 22:50:52 2011 +0300
+
+    lib/lua_wrap.c: Apply astyle
+
+ lib/lua_wrap.c |   23 +++++++++++++----------
+ 1 files changed, 13 insertions(+), 10 deletions(-)
+
+commit 6ed281818938e8fe276039f934d99e0ebf83f835
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Mon Mar 28 22:49:27 2011 +0300
+
+    src/quvi.c: Remove extra '\n' from dump_error
+
+ src/quvi.c |    4 ----
+ 1 files changed, 0 insertions(+), 4 deletions(-)
+
+commit e5cf34bacc2c26862a31dfd5313593a162358fe0
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Mon Mar 28 22:45:54 2011 +0300
+
+    scan_dir: Print strerror(errno) if opendir fails
+    
+    Make QUVI_SHOW_SCANDIR more consistent by printing if opendir fails.
+    
+    Add distinctive strings to the output to separate QUVI_SHOW_SCANDIR
+    and QUVI_SHOW_SCRIPT making easier to tell them apart.
+
+ lib/lua_wrap.c |   22 +++++++++++++++-------
+ 1 files changed, 15 insertions(+), 7 deletions(-)
+
+commit c59b2227b25fc9b91d0f54e20dff3e6dff71f0fa
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Mon Mar 28 21:42:50 2011 +0300
+
+    Remove tests/(*.pl|*.pm.in)
+
+ tests/nosupport-eval.pl        |    8 --
+ tests/pod-check.pl             |    1 -
+ tests/quviTest.pm.in           |  199 ----------------------------------------
+ tests/support-academicearth.pl |   27 ------
+ tests/support-bloomberg.pl     |   11 --
+ tests/support-break.pl         |   11 --
+ tests/support-buzzhumor.pl     |   11 --
+ tests/support-cbsnews.pl       |   11 --
+ tests/support-charlierose.pl   |   11 --
+ tests/support-clipfish.pl      |   15 ---
+ tests/support-collegehumor.pl  |   11 --
+ tests/support-dailymotion.pl   |    9 --
+ tests/support-funnyhub.pl      |   11 --
+ tests/support-funnyordie.pl    |   11 --
+ tests/support-gaskrank.pl      |   11 --
+ tests/support-globo.pl         |   11 --
+ tests/support-golem.pl         |   11 --
+ tests/support-google.pl        |   11 --
+ tests/support-keezmovies.pl    |   11 --
+ tests/support-liveleak.pl      |   11 --
+ tests/support-publicsenat.pl   |   11 --
+ tests/support-sapo.pl          |   11 --
+ tests/support-sevenload.pl     |   11 --
+ tests/support-shortened.pl     |   32 -------
+ tests/support-soundcloud.pl    |   11 --
+ tests/support-spiegel.pl       |   11 --
+ tests/support-tagtele.pl       |   11 --
+ tests/support-ted.pl           |   11 --
+ tests/support-theonion.pl      |   11 --
+ tests/support-tmunderground.pl |   11 --
+ tests/support-tube8.pl         |   11 --
+ tests/support-tvlux.pl         |   11 --
+ tests/support-vimeo.pl         |   11 --
+ tests/support-xhamster.pl      |   11 --
+ tests/support-xvideos.pl       |   11 --
+ tests/support-youjizz.pl       |   11 --
+ tests/support-youtube.pl       |   11 --
+ 37 files changed, 0 insertions(+), 621 deletions(-)
+
+commit e1c612fc35ad69054b97fc91c32fd2ab9be05632
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Mon Mar 28 21:39:36 2011 +0300
+
+    quvi: Remove test options
+    
+    Remove:
+      * --page-title
+      * --media-id
+      * --file-length
+      * --file-suffix
+      * --test-all
+      * --dump
+      * --test
+
+ man1/quvi.1     |   66 ++++-----------
+ man1/quvi.1.pod |   62 +++------------
+ src/cmdline.c   |  214 +++------------------------------------------------
+ src/cmdline.ggo |   33 +--------
+ src/cmdline.h   |   24 ------
+ src/quvi.c      |  232 +++++--------------------------------------------------
+ 6 files changed, 61 insertions(+), 570 deletions(-)
+
+commit 01e38869e54f43758301614e54e04b4a3f2338f2
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sat Mar 26 22:21:41 2011 +0200
+
+    Add scripts/perltidy.sh
+
+ scripts/perltidy.sh |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
+
+commit b2df66b23d865a71de92cbed2c2dc22ebcf2fedd
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Fri Mar 25 16:23:54 2011 +0200
+
+    Fix: memory leak: free (media_thumbnail_url)
+
+ lib/quvi.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 0ce9d602fcdb3527eeb2d6ac1dc455d0e8c8eb13
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Fri Mar 25 11:18:41 2011 +0200
+
+    ted.lua: Add missing 'hd' to t.formats
+    
+    * Confirm that at least 'default' URL is found
+    * Fallback to 'default' if 'hd' is not found
+    * Make 'best' format an alias for 'hd'
+
+ share/lua/website/ted.lua |   25 +++++++++++++------------
+ 1 files changed, 13 insertions(+), 12 deletions(-)
+
+commit 6f99fe49239678bcd451fbbe6293e4fa3876fef4
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Fri Mar 25 11:18:30 2011 +0200
+
+    Add tests/support-ted.pl
+
+ src/quvi.c           |    1 +
+ tests/Makefile.am    |    1 +
+ tests/Makefile.in    |    9 +++++----
+ tests/support-ted.pl |   11 +++++++++++
+ 4 files changed, 18 insertions(+), 4 deletions(-)
+
+commit 6f9b9b900c89a12645a5332caeb751d59fc255f9
+Author: Bastien Nocera <hadess@hadess.net>
+Date:   Thu Mar 24 19:15:40 2011 +0000
+
+    ted.lua: Add support for ted.com
+
+ share/Makefile.am         |    1 +
+ share/Makefile.in         |   18 ++++++-----
+ share/lua/website/ted.lua |   73 +++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 84 insertions(+), 8 deletions(-)
+
+commit d12edafde13a47a652c66f615060dae7cfe3bfba
+Author: Bastien Nocera <hadess@hadess.net>
+Date:   Fri Mar 25 00:53:13 2011 +0000
+
+    API: Make QUVIPROP_MEDIADURATION property a double
+    
+    As scripts would know which format the duration will be in,
+    but users of the API would have no way of knowing the format
+    of the duration otherwise.
+    
+    Make appropriate changes to trim.lua and soundcloud.lua to
+    accomodate this type change.
+
+ include/quvi/quvi.h.in           |    2 +-
+ lib/internal.h                   |    2 +-
+ lib/lua_wrap.c                   |   12 +++++++++---
+ lib/quvi.c                       |    2 +-
+ share/lua/util/trim.lua          |    2 +-
+ share/lua/website/soundcloud.lua |    2 +-
+ src/quvi.c                       |   37 ++++++++++++++++++++++---------------
+ 7 files changed, 36 insertions(+), 23 deletions(-)
+
+commit 856f0c865fe1ab31e01f05dcc920170fa8d24fea
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Mar 24 19:58:01 2011 +0200
+
+    Add tests/support-soundcloud.pl
+
+ tests/Makefile.am           |    1 +
+ tests/Makefile.in           |   12 ++++++------
+ tests/support-soundcloud.pl |   11 +++++++++++
+ 3 files changed, 18 insertions(+), 6 deletions(-)
+
+commit 18e3a65828c515209bdb69d37daf743808282a7b
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Mar 24 19:52:27 2011 +0200
+
+    soundcloud.lua: Remove calls to print title
+
+ share/lua/website/soundcloud.lua |   10 ++++------
+ 1 files changed, 4 insertions(+), 6 deletions(-)
+
+commit 1a56a138b0b04fc4a969ebab899dfbc38be8e9d6
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Mar 24 19:45:14 2011 +0200
+
+    src/quvi.c: Add soundcloud test URL
+
+ src/quvi.c |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+commit 7ba5491461b3e1ee824732cf2e1278ac3723c515
+Author: Bastien Nocera <hadess@hadess.net>
+Date:   Thu Mar 24 12:12:28 2011 +0000
+
+    youtube: Add support for youtube.com/e/videoid URLs
+    
+    As used in
+    http://www.omgubuntu.co.uk/2011/02/unity-2ds-new-design-in-motion-video/
+
+ share/lua/website/youtube.lua |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+commit 2438d35a80cf955192e95a79ba9ac7242501e6b9
+Author: Bastien Nocera <hadess@hadess.net>
+Date:   Thu Mar 24 13:24:38 2011 +0000
+
+    soundcloud.lua: Add support for Soundcloud.com
+
+ lib/util.c                       |    1 -
+ share/Makefile.am                |    1 +
+ share/Makefile.in                |   24 ++++++------
+ share/lua/website/soundcloud.lua |   71 ++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 84 insertions(+), 13 deletions(-)
+
+commit db44db703bc588812a3eee6dbba6e36ef8b3f8a0
+Author: Bastien Nocera <hadess@hadess.net>
+Date:   Thu Mar 24 13:14:55 2011 +0000
+
+    API: Add properties for duration and thumbnail
+    
+    Add QUVIPROP_MEDIATHUMBNAILURL property
+    Add QUVIPROP_MEDIADURATION property
+    
+    Print those from the quvi command-line tool.
+
+ include/quvi/quvi.h.in |    4 +++-
+ lib/internal.h         |    2 ++
+ lib/lua_wrap.c         |    6 ++++++
+ lib/quvi.c             |    4 ++++
+ src/quvi.c             |   47 +++++++++++++++++++++++++++++++++++------------
+ 5 files changed, 50 insertions(+), 13 deletions(-)
+
+commit c165a89e19e96aa9f493e09f22bcb53d1f7b7361
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Wed Mar 23 12:46:34 2011 +0200
+
+    API: Add "media" interface that deprecates "video"
+    
+    Remove "video" remarks from the API.
+    
+    0.2.14 introduced the "media URL" concept. 0.2.15 continues this by
+    replacing (and deprecating) all symbols that use "video" in them.
+    The deprecated symbols will be removed in 0.2.20.
+    
+    * Add quvi_next_media_url (depr. quvi_next_videolink)
+    * Add quvi_media_t (depr. quvi_video_t)
+    * Add QUVIPROP_MEDIAID (depr. QUVIPROP_VIDEOID)
+    * Add QUVIPROP_MEDIAURL (depr. QUVIPROP_VIDEOURL)
+    * Add QUVIPROP_MEDIACONTENTLENGTH (depr. QUVIPROP_VIDEOFILELENGTH)
+    * Add QUVIPROP_MEDIACONTENTTYPE (depr. QUVIPROP_VIDEOFILECONTENTTYPE)
+    * Add QUVIPROP_FILESUFFIX (depr. QUVIPROP_VIDEOFILESUFFIX)
+    * Add QUVIPROP_FORMAT (depr. QUVIPROP_VIDEOFORMAT)
+    * Cleanup doxygen comments (e.g. code examples)
+    * quvi(1): --video-id -> --media-id
+    * tests/: Use --media-id
+    * manual: Rename --video-id -> --media-id, replace "video" with "media"
+
+ include/quvi/quvi.h.in         |  265 +++++++++++++++++++++++++++-------------
+ lib/curl_wrap.c                |    4 +-
+ lib/curl_wrap.h                |    4 +-
+ lib/internal.h                 |    2 +-
+ lib/lua_wrap.c                 |   16 ++--
+ lib/lua_wrap.h                 |    6 +-
+ lib/quvi.c                     |   52 +++++---
+ lib/util.c                     |    3 +-
+ lib/util.h                     |    8 +-
+ man1/quvi.1                    |   57 +++++----
+ man1/quvi.1.pod                |   51 +++++----
+ src/cmdline.c                  |   48 ++++----
+ src/cmdline.ggo                |   12 +-
+ src/cmdline.h                  |   24 ++--
+ src/quvi.c                     |  158 ++++++++++++------------
+ tests/quviTest.pm.in           |    2 +-
+ tests/support-academicearth.pl |    4 +-
+ tests/support-bloomberg.pl     |    2 +-
+ tests/support-break.pl         |    2 +-
+ tests/support-buzzhumor.pl     |    2 +-
+ tests/support-cbsnews.pl       |    2 +-
+ tests/support-charlierose.pl   |    2 +-
+ tests/support-clipfish.pl      |    2 +-
+ tests/support-collegehumor.pl  |    2 +-
+ tests/support-dailymotion.pl   |    2 +-
+ tests/support-funnyhub.pl      |    2 +-
+ tests/support-funnyordie.pl    |    2 +-
+ tests/support-gaskrank.pl      |    2 +-
+ tests/support-globo.pl         |    2 +-
+ tests/support-golem.pl         |    2 +-
+ tests/support-google.pl        |    2 +-
+ tests/support-keezmovies.pl    |    2 +-
+ tests/support-liveleak.pl      |    2 +-
+ tests/support-publicsenat.pl   |    2 +-
+ tests/support-sapo.pl          |    2 +-
+ tests/support-sevenload.pl     |    2 +-
+ tests/support-shortened.pl     |    4 +-
+ tests/support-spiegel.pl       |    2 +-
+ tests/support-tagtele.pl       |    2 +-
+ tests/support-theonion.pl      |    2 +-
+ tests/support-tmunderground.pl |    2 +-
+ tests/support-tube8.pl         |    2 +-
+ tests/support-tvlux.pl         |    2 +-
+ tests/support-vimeo.pl         |    2 +-
+ tests/support-xhamster.pl      |    2 +-
+ tests/support-xvideos.pl       |    2 +-
+ tests/support-youjizz.pl       |    2 +-
+ tests/support-youtube.pl       |    2 +-
+ 48 files changed, 447 insertions(+), 333 deletions(-)
+
+commit a7116be38675c9fec5c6d43f922b3d96b7c9602e
+Author: Bastien Nocera <hadess@hadess.net>
+Date:   Tue Mar 22 22:20:58 2011 +0000
+
+    youtube: Add support for "#at=" as start-time
+    
+    As can be used in:
+    http://www.youtube.com/watch?v=lfxC3TCDgCE&feature=player_embedded#at=27
+
+ share/lua/website/youtube.lua |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 6af571625b38d7037b32eb93f2dc0d420819b123
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Tue Mar 22 17:10:06 2011 +0200
+
+    Rewrite quvi_supported doxygen comments
+    
+    * Add remarks
+    * Add since
+
+ include/quvi/quvi.h.in |   23 ++++++++++++++++-------
+ 1 files changed, 16 insertions(+), 7 deletions(-)
+
+commit 8d4c7a94014e49cda2dc309c9ba65cf6943af0f2
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Mon Mar 21 09:54:05 2011 +0200
+
+    cbsnews: Fix attempt to compare number with nil
+    
+    * Improve 'best' parsing (compare height in addition to bitrate)
+    * Update r.formats: replace old IDs
+    * http://sourceforge.net/apps/trac/quvi/ticket/30
+
+ share/lua/website/cbsnews.lua |   78 ++++++++++++++++++++++++++---------------
+ 1 files changed, 50 insertions(+), 28 deletions(-)
+
+commit c19c4973c84b7d4871153d12b806de427b3c98c7
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sun Mar 20 19:20:16 2011 +0200
+
+    Rewrite doxy comment for quvi_supported
+
+ include/quvi/quvi.h.in |   26 +++++++++-----------------
+ 1 files changed, 9 insertions(+), 17 deletions(-)
+
+commit ea451657f5183cde333c1c01417566b6da1e037e
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sun Mar 20 19:19:40 2011 +0200
+
+    doc/HowtoWriteWebsiteScript: Add r.handles
+
+ doc/HowtoWriteWebsiteScript |   18 ++++++++++++++++++
+ 1 files changed, 18 insertions(+), 0 deletions(-)
+
+commit 601219d95561b15008f48f510aafcf608aa5d60d
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sun Mar 20 19:00:21 2011 +0200
+
+    tests/nosupport-eval.pl: Change youtube test URL
+
+ tests/nosupport-eval.pl |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 596f6a9ad48b92b45b3f4d02a6f049bc35b6000a
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sun Mar 20 18:55:58 2011 +0200
+
+    quvi_supported: Improve URL checking
+    
+    Extend the checking to cover more than just domain name.
+    
+    * http://sourceforge.net/apps/trac/quvi/ticket/29
+
+ share/Makefile.am                       |    1 +
+ share/Makefile.in                       |   70 ++++----
+ share/lua/website/academicearth.lua     |    4 +-
+ share/lua/website/arte.lua              |   14 +-
+ share/lua/website/bloomberg.lua         |    6 +-
+ share/lua/website/break.lua             |    4 +-
+ share/lua/website/buzzhumor.lua         |    4 +-
+ share/lua/website/cbsnews.lua           |    4 +-
+ share/lua/website/charlierose.lua       |    4 +-
+ share/lua/website/clipfish.lua          |    4 +-
+ share/lua/website/collegehumor.lua      |    4 +-
+ share/lua/website/dailymotion.lua       |   18 +--
+ share/lua/website/francetelevisions.lua |   14 +-
+ share/lua/website/funnyhub.lua          |    4 +-
+ share/lua/website/funnyordie.lua        |    4 +-
+ share/lua/website/gaskrank.lua          |    4 +-
+ share/lua/website/globo.lua             |    6 +-
+ share/lua/website/golem.lua             |    6 +-
+ share/lua/website/google.lua            |    5 +-
+ share/lua/website/keezmovies.lua        |    4 +-
+ share/lua/website/liveleak.lua          |    4 +-
+ share/lua/website/pluzz.lua             |    1 +
+ share/lua/website/publicsenat.lua       |    4 +-
+ share/lua/website/quvi/url.lua          |  293 +++++++++++++++++++++++++++++++
+ share/lua/website/quvi/util.lua         |   40 +++++
+ share/lua/website/sapo.lua              |    9 +-
+ share/lua/website/sevenload.lua         |    1 +
+ share/lua/website/spiegel.lua           |    4 +-
+ share/lua/website/tagtele.lua           |    4 +-
+ share/lua/website/theonion.lua          |    4 +-
+ share/lua/website/tmunderground.lua     |    4 +-
+ share/lua/website/tube8.lua             |    4 +-
+ share/lua/website/tvlux.lua             |    5 +-
+ share/lua/website/vimeo.lua             |    4 +-
+ share/lua/website/xhamster.lua          |    4 +-
+ share/lua/website/xvideos.lua           |    4 +-
+ share/lua/website/youjizz.lua           |    5 +-
+ share/lua/website/youtube.lua           |  109 +++++-------
+ 38 files changed, 505 insertions(+), 182 deletions(-)
+
+commit b6ad4a5280ffb2778933cd46b8d9088f59a19e2a
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Fri Mar 18 08:51:55 2011 +0200
+
+    tvlux.lua: Add support for tvlux.be
+
+ share/Makefile.am           |    1 +
+ share/Makefile.in           |   12 +++++-----
+ share/lua/website/tvlux.lua |   53 +++++++++++++++++++++++++++++++++++++++++++
+ src/quvi.c                  |    1 +
+ tests/Makefile.am           |    1 +
+ tests/Makefile.in           |    7 +++--
+ tests/support-tvlux.pl      |   11 +++++++++
+ 7 files changed, 77 insertions(+), 9 deletions(-)
+
+commit b4a6ee1f148583830121cf6d58e2c03ae8a1f7da
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Fri Mar 18 08:50:47 2011 +0200
+
+    content_type.lua: Change error message, cleanup
+
+ share/lua/util/content_type.lua |   16 ++++++----------
+ 1 files changed, 6 insertions(+), 10 deletions(-)
+
+commit 3bfcaad39ac5ca26617195bb95ea4951d1dd71a8
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Mar 17 11:22:28 2011 +0200
+
+    vimeo.lua: Add vimeofy function
+    
+    Encapsulate the "player.vimeo.com" support. Remove extra whitespace.
+    Replace requested format if-then-else-end with and-or pairs.
+
+ share/lua/website/vimeo.lua |   49 +++++++++++++++++++-----------------------
+ 1 files changed, 22 insertions(+), 27 deletions(-)
+
+commit db9790ac84fade94331c9b4cdd8dcb2e2bcb7b36
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Mar 17 10:56:02 2011 +0200
+
+    vimeo.lua: exit with server returned error (#27)
+
+ share/lua/website/vimeo.lua |    5 +++++
+ 1 files changed, 5 insertions(+), 0 deletions(-)
+
+commit 706b4fb291ffc517eb9928d3d91edf686d989d1a
+Author: Bastien Nocera <hadess@hadess.net>
+Date:   Wed Mar 16 18:14:30 2011 +0000
+
+    youtube: Support the new embed types
+
+ share/lua/website/youtube.lua |    5 +++--
+ 1 files changed, 3 insertions(+), 2 deletions(-)
+
+commit bc90a4747a6f8fe84195c6a606cb25aad900683a
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Mar 10 21:51:26 2011 +0200
+
+    Bump version to 0.2.15
+
+ configure     |   20 ++++++++++----------
+ m4/version.m4 |    2 +-
+ 2 files changed, 11 insertions(+), 11 deletions(-)
+
 commit 051984177c2a3a5e3b0a9a4e30410c862edb6140
 Author: Toni Gundogdu <legatvs.git@gmail.com>
 Date:   Thu Mar 10 21:42:16 2011 +0200

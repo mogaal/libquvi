@@ -16,13 +16,22 @@
 
 "./configure && make install", typically. See also "./configure --help".
 
-    --enable-tests      Enable tests (e.g. "make check")
-    --enable-nsfw       Enable support for NSFW websites
-    --enable-broken     Enable support for broken websites
-    --disable-quvi      Do not build (and install) quvi tool
-    --disable-examples  Do not build example(s)
-    --without-man       Do not install the manual page(s)
-    --without-doc       Do not install doc/ contents
+    --enable-tests          Enable tests (e.g. "make check")
+    --enable-verbose-tests  Verbose tests
+    --enable-nsfw           Install (&test) website scripts marked as "NSFW"
+    --enable-todo           Install (&test) w. scripts marked as "TODO" [1]
+    --enable-nlfy           Test website scripts marked as "NLFY" [2]
+    --disable-quvi          Do not build (/install) quvi(1) command
+    --disable-examples      Do not build examples
+    --without-man           Do not install manual pages
+    --without-doc           Do not install doc/ contents
+
+[1] These may be broken scripts that need fixing, not recommended unless
+    you are a developer/contributor
+
+[2] These may be scripts for websites that are known to block IPs from
+    outside of their "world of view"; note that this switch affects
+    the tests only -- these scripts are installed nonetheless
 
 
     C API documentation

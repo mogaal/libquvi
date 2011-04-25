@@ -1,0 +1,16 @@
+{
+  "host": "publicsenat",
+  "page_title": "Spéciale Journal de Spirou",
+  "page_url": "http://www.publicsenat.fr/vod/un-monde-de-bulles/speciale-journal-de-spirou/67141",
+  "id": "67141",
+  "format_requested": "default",
+  "link": [
+    {
+      "id": "1",
+      "length_bytes": "138643826",
+      "content_type": "video/x-flv",
+      "file_suffix": "flv",
+      "url": ""
+    }
+  ]
+}

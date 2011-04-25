@@ -1,4 +1,61 @@
 
+0.2.15  Fri Apr 15 2011  Toni Gundogdu
+Changes:
+        - Add support for reading URLs from the stdin
+        - quvi_supported: Improve URL checking (#29)
+            - Check additional URL parts (vs. domain only)
+        - Remove obsoleted (by new test suite) options from quvi command
+            - --test-all
+            - --test
+            - --page-title
+            - --video-id
+            - --file-length
+            - --file-suffix
+            - --dump
+Changes: Build system
+        - New testsuite (see $top_srcdir/test/README)
+        - Use CPPFLAGS (src|lib|examples)/Makefile.am
+        - configure:
+            - Add --enable-nlfy, --enable-verbose-tests
+            - Rename --enable-broken -> --enable-todo
+Changes: API
+        - Add "media" interface, deprecating the old "video" interface
+            - The deprecated symbols will be removed in 0.2.20
+            - Add quvi_next_media_url (depr. quvi_next_videolink)
+            - Add quvi_media_t (depr. quvi_video_t)
+            - Add QUVIPROP_MEDIAID (depr. QUVIPROP_VIDEOID)
+            - Add QUVIPROP_MEDIAURL (depr. QUVIPROP_VIDEOURL)
+            - Add QUVIPROP_MEDIACONTENTLENGTH (depr. QUVIPROP_VIDEOFILELENGTH)
+            - Add QUVIPROP_MEDIACONTENTTYPE (depr.QUVIPROP_VIDEOFILECONTENTTYPE)
+            - Add QUVIPROP_FILESUFFIX (depr. QUVIPROP_VIDEOFILESUFFIX)
+            - Add QUVIPROP_FORMAT (depr. QUVIPROP_VIDEOFORMAT)
+        - Add QUVIPROP_MEDIATHUMBNAILURL, QUVIPROP_MEDIADURATION
+            - Thanks to Bastien Nocera for the patch
+Changes: Website scripts
+        - Add soundcloud.lua, ted.lua: Thanks to Bastien Nocera for scripts
+        - Add megavideo.lua: Thanks to Paul Kocialkowski for the script
+        - Add tvlux.lua
+        - collegehumor.lua: Mark as TODO (#35)
+        - cbsnews.lua (#30)
+            - Improve 'best' parsing (compare height and bitrate)
+            - Update format IDs
+        - youtube.lua:
+            - Add support for "#at=" as start-time
+            - Add support additional embed URL types (/e/,/embed/)
+            - Process the starttime string (#36)
+            - Remove the dangling format IDs (tgp_144p, webm_*)
+        - vimeo.lua: Exit with server returned error message (#27)
+        - arte.lua: Improve handling of expired URLs
+Bugfixes:
+        - "error: (null)" with LUA scripts that use 'redirect' (#46)
+        - quvi: Do not exit if preceeding URL fails (#40)
+        - Compilation when PATH_MAX is not defined (#32)
+Bugfixes: Build system
+        - Include doc subdir with --with-doc flag only (#33)
+Bugfixes: Website scripts
+        - cbsnews.lua: attempt to compare number with nil (#30)
+
+
 0.2.14  Thu Mar 10 2011  Toni Gundogdu
 Changes:
         - Change project description (README, manual, WWW)

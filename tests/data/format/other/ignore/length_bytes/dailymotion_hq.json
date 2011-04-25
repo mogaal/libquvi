@@ -1,0 +1,16 @@
+{
+  "host": "dailymotion",
+  "page_title": "CITY OF SCARS",
+  "page_url": "http://www.dailymotion.com/video/xdpig1_city-of-scars_shortfilms",
+  "id": "xdpig1",
+  "format_requested": "hq",
+  "link": [
+    {
+      "id": "1",
+      "length_bytes": "189655958",
+      "content_type": "video/mp4",
+      "file_suffix": "mp4",
+      "url": ""
+    }
+  ]
+}

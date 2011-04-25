@@ -65,7 +65,7 @@ quvi_write_callback_default(void *p, size_t size, size_t nmemb,
 extern char *lua_get_field_s(lua_State *, const char *);
 
 QUVIcode
-fetch_to_mem(_quvi_video_t video, const char *url, lua_State * l,
+fetch_to_mem(_quvi_media_t video, const char *url, lua_State * l,
              char **dst)
 {
   char *fetch_type, *arbitrary_cookie, *user_agent;
@@ -304,7 +304,7 @@ QUVIcode query_file_length(_quvi_t quvi, llst_node_t lnk)
  * Check if URL is a shortened URL (e.g. dai.ly, goo.gl, etc.) and
  * replace the (shortened) video page URL with the redirect URL.
  */
-QUVIcode is_shortened_url(_quvi_video_t video)
+QUVIcode is_shortened_url(_quvi_media_t video)
 {
   long respcode, conncode;
   CURLcode curlcode;

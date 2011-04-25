@@ -21,15 +21,15 @@
 
 -- Identify the script.
 function ident (self)
-    local t      = {}
-    t.domain     = "francetelevisions.fr"
-    t.formats    = "default"
     package.path = self.script_dir .. '/?.lua'
     local C      = require 'quvi/const'
-    t.categories = C.proto_mms
-    t.handles    =
-        (self.page_url ~= nil and (self.page_url:find(t.domain) ~= nil))
-    return t
+    local r      = {}
+    r.domain     = "francetelevisions.fr"
+    r.formats    = "default"
+    r.categories = C.proto_mms
+    local U      = require 'quvi/util'
+    r.handles    = U.handles(self.page_url, {r.domain}, nil, {"id%-video"})
+    return r
 end
 
 -- Parse video URL.

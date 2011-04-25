@@ -28,20 +28,12 @@ function ident(self)
     r.domain     = "dailymotion."
     r.formats    = "default|best|hq|hd"
     r.categories = C.proto_http
-    r.handles    = is_handled(self.page_url)
+    local U      = require 'quvi/util'
+-- "http://dai.ly/cityofscars",
+-- "http://www.dailymotion.com/video/xdpig1_city-of-scars_shortfilms",
+    r.handles    =
+        U.handles(self.page_url, {r.domain, "dai.ly"}, {"/video/","/%w+$"})
     return r
-end
-
--- Check whether the domain is handled
-function is_handled(page_url)
-    local domains = {"dailymotion.", "dai.ly"}
-    if not page_url then return false end
-    for k,v in pairs(domains) do
-        if page_url:find(v) then
-            return true
-        end
-    end
-    return false
 end
 
 -- Parse video URL.

@@ -20,6 +20,7 @@
 #include "config.h"
 
 #include <string.h>
+#include <errno.h>
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
 #endif
@@ -73,7 +74,7 @@ static void dump_lua_stack(lua_State * L)
 }
 #endif
 
-static _quvi_video_t qv = NULL;
+static _quvi_media_t qv = NULL;
 
 /* c functions for lua. */
 
@@ -166,15 +167,22 @@ scan_dir(llst_node_t * dst, const char *path, filter_func filter)
   struct dirent *de;
   DIR *dir;
 
-  dir = opendir(path);
-  if (!dir)
-    return (QUVI_OK);
-
   show_scandir = getenv("QUVI_SHOW_SCANDIR");
   show_script = getenv("QUVI_SHOW_SCRIPT");
 
+  dir = opendir(path);
+  if (!dir)
+    {
+      if (show_scandir)
+        {
+          fprintf(stderr, "quvi: %s: %s: %s\n",
+                  __PRETTY_FUNCTION__, path, strerror(errno));
+        }
+      return (QUVI_OK);
+    }
+
   if (show_scandir)
-    fprintf(stderr, "%s: %s\n", __PRETTY_FUNCTION__, path);
+    fprintf(stderr, "quvi: %s: %s\n", __PRETTY_FUNCTION__, path);
 
   while ((de = readdir(dir)))
     {
@@ -191,7 +199,10 @@ scan_dir(llst_node_t * dst, const char *path, filter_func filter)
           asprintf((char **)&qls->path, "%s/%s", path, de->d_name);
 
           if (show_script)
-            fprintf(stderr, "%s: %s\n", __PRETTY_FUNCTION__, qls->path);
+            {
+              fprintf(stderr, "quvi: %s: found script: %s\n",
+                      __PRETTY_FUNCTION__, qls->path);
+            }
 
           llst_add(dst, qls);
         }
@@ -206,8 +217,7 @@ static QUVIcode
 scan_known_dirs(llst_node_t * dst, const char *spath,
                 filter_func filter)
 {
-  char *homedir, *path, *basedir;
-  char buf[PATH_MAX];
+  char *homedir, *path, *basedir, *buf;
 
 #define _scan \
     do { \
@@ -227,7 +237,12 @@ scan_known_dirs(llst_node_t * dst, const char *spath,
     }
 
   /* Current working directory. */
-  asprintf(&path, "%s/%s", getcwd(buf, sizeof(buf)), spath);
+  buf = getcwd(NULL,0);
+  if (!buf)
+    return(QUVI_MEM);
+
+  asprintf(&path, "%s/%s", buf, spath);
+  _free(buf);
   _scan;
 
   /* Home directory. */
@@ -391,7 +406,7 @@ static long get_field_n(lua_State * l, _quvi_lua_script_t qls,
 static QUVIcode
 iter_video_url(lua_State * l,
                _quvi_lua_script_t qls, const char *key,
-               _quvi_video_t qv)
+               _quvi_media_t qv)
 {
   QUVIcode rc = QUVI_OK;
 
@@ -420,6 +435,13 @@ static void set_field(lua_State * l, const char *key, const char *value)
 {
   lua_pushstring(l, key);
   lua_pushstring(l, value);
+  lua_settable(l, -3);
+}
+
+static void set_field_n(lua_State * l, const char *key, double value)
+{
+  lua_pushstring(l, key);
+  lua_pushnumber(l, value);
   lua_settable(l, -3);
 }
 
@@ -523,7 +545,7 @@ QUVIcode run_lua_suffix_func(_quvi_t quvi, _quvi_video_link_t qvl)
 
 /* Executes the `trim_fields' lua function. */
 
-static QUVIcode run_lua_trim_fields_func(_quvi_video_t video, int ref)
+static QUVIcode run_lua_trim_fields_func(_quvi_media_t video, int ref)
 {
   const static char script_fname[] = "trim.lua";
   const static char func_name[] = "trim_fields";
@@ -561,7 +583,7 @@ static QUVIcode run_lua_trim_fields_func(_quvi_video_t video, int ref)
 
 /* Executes the `charset_from_data' lua function. */
 
-QUVIcode run_lua_charset_func(_quvi_video_t video, const char *data)
+QUVIcode run_lua_charset_func(_quvi_media_t video, const char *data)
 {
   const static char script_fname[] = "charset.lua";
   const static char func_name[] = "charset_from_data";
@@ -689,7 +711,7 @@ QUVIcode run_ident_func(lua_ident_t ident, llst_node_t node)
 /* Executes the host script's "parse" function. */
 
 static QUVIcode
-run_parse_func(lua_State * l, llst_node_t node, _quvi_video_t video)
+run_parse_func(lua_State * l, llst_node_t node, _quvi_media_t video)
 {
   static const char func_name[] = "parse";
   _quvi_lua_script_t qls;
@@ -702,6 +724,7 @@ run_parse_func(lua_State * l, llst_node_t node, _quvi_video_t video)
 
   quvi = video->quvi;           /* seterr macro needs this. */
   qls = (_quvi_lua_script_t) node->data;
+  rc = QUVI_OK;
 
   lua_getglobal(l, func_name);
 
@@ -717,9 +740,11 @@ run_parse_func(lua_State * l, llst_node_t node, _quvi_video_t video)
   lua_newtable(l);
   set_field(l, "page_url", video->page_link);
   set_field(l, "requested_format", video->quvi->format);
-  set_field(l, "redirect", "");
-  set_field(l, "starttime", "");
+  set_field(l, "redirect_url", "");
+  set_field(l, "start_time", "");
+  set_field(l, "thumbnail_url", "");
   set_field(l, "script_dir", script_dir);
+  set_field_n(l, "duration", 0);
 
   _free(script_dir);
 
@@ -736,10 +761,10 @@ run_parse_func(lua_State * l, llst_node_t node, _quvi_video_t video)
       return (QUVI_LUA);
     }
 
-  freprintf(&video->redirect, "%s",
-            get_field_req_s(l, qls, "redirect"));
+  freprintf(&video->redirect_url, "%s",
+            get_field_req_s(l, qls, "redirect_url"));
 
-  if (strlen(video->redirect) == 0)
+  if (strlen(video->redirect_url) == 0)
     {
       const int r = luaL_ref(l, LUA_REGISTRYINDEX);
 
@@ -749,13 +774,22 @@ run_parse_func(lua_State * l, llst_node_t node, _quvi_video_t video)
 
       if (rc == QUVI_OK)
         {
-
           freprintf(&video->host_id, "%s",
                     get_field_req_s(l, qls, "host_id"));
-          freprintf(&video->title, "%s", get_field_req_s(l, qls, "title"));
-          freprintf(&video->id, "%s", get_field_req_s(l, qls, "id"));
-          freprintf(&video->starttime, "%s",
-                    get_field_req_s(l, qls, "starttime"));
+
+          freprintf(&video->title, "%s",
+                    get_field_req_s(l, qls, "title"));
+
+          freprintf(&video->id, "%s",
+                    get_field_req_s(l, qls, "id"));
+
+          freprintf(&video->start_time, "%s",
+                    get_field_req_s(l, qls, "start_time"));
+
+          freprintf(&video->thumbnail_url, "%s",
+                    get_field_req_s(l, qls, "thumbnail_url"));
+
+          video->duration = get_field_n(l, qls, "duration");
 
           rc = iter_video_url(l, qls, "url", video);
         }
@@ -768,7 +802,7 @@ run_parse_func(lua_State * l, llst_node_t node, _quvi_video_t video)
 
 /* Match host script to the url. */
 
-static llst_node_t find_host_script_node(_quvi_video_t video,
+static llst_node_t find_host_script_node(_quvi_media_t video,
     QUVIcode * rc)
 {
   llst_node_t curr;
@@ -816,7 +850,7 @@ static llst_node_t find_host_script_node(_quvi_video_t video,
 }
 
 /* Match host script to the url */
-QUVIcode find_host_script(_quvi_video_t video)
+QUVIcode find_host_script(_quvi_media_t video)
 {
   QUVIcode rc;
   find_host_script_node(video, &rc);
@@ -824,7 +858,7 @@ QUVIcode find_host_script(_quvi_video_t video)
 }
 
 /* Match host script to the url and run parse func */
-QUVIcode find_host_script_and_parse(_quvi_video_t video)
+QUVIcode find_host_script_and_parse(_quvi_media_t video)
 {
   llst_node_t script;
   _quvi_t quvi;

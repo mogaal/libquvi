@@ -21,12 +21,12 @@
 #define curl_wrap_h
 
 QUVIcode
-fetch_to_mem(_quvi_video_t video, const char *url, lua_State * l,
+fetch_to_mem(_quvi_media_t video, const char *url, lua_State * l,
              char **dst);
 
 QUVIcode query_file_length(_quvi_t, llst_node_t);
 
-QUVIcode is_shortened_url(_quvi_video_t);
+QUVIcode is_shortened_url(_quvi_media_t);
 
 #endif
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

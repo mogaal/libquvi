@@ -29,11 +29,11 @@ function ident (self)
     package.path = self.script_dir .. '/?.lua'
     local C      = require 'quvi/const'
     local r      = {}
-    r.domain     = "globo.com"
+    r.domain     = "video.globo.com"
     r.formats    = "default"
     r.categories = C.proto_http
-    r.handles    =
-        (self.page_url ~= nil and self.page_url:find(r.domain) ~= nil)
+    local U      = require 'quvi/util'
+    r.handles    = U.handles(self.page_url, {r.domain}, {"/Videos/"})
     return r
 end
 

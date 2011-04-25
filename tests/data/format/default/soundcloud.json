@@ -1,0 +1,18 @@
+{
+  "host": "soundcloud",
+  "page_title": "Martin Solveig & Dragonette - Hello (Bassjackers remix)",
+  "page_url": "http://soundcloud.com/martinsolveig/martin-solveig-dragonette-hello-bassjackers-remix",
+  "id": "vQ1PRG0cEL11",
+  "format_requested": "default",
+  "thumbnail_url": "http://i1.sndcdn.com/artworks-000002475001-zi22rj-t300x300.jpg?f18fb68",
+  "duration": "303971",
+  "link": [
+    {
+      "id": "1",
+      "length_bytes": "4861700",
+      "content_type": "audio/mpeg",
+      "file_suffix": "mpeg",
+      "url": ""
+    }
+  ]
+}
