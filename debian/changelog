@@ -1,4 +1,4 @@
-libquvi (0.2.14-1) unstable; urgency=low
+libquvi (0.2.15-1) unstable; urgency=low
 
   * New upstream release. 
   * Update d/watch to sf.net
