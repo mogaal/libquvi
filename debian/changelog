@@ -6,7 +6,7 @@ libquvi (0.2.14-1) unstable; urgency=low
   * d/rules: Add dh_auto_test before NO_INTERNET=1 in override_dh_auto_test 
   * Update Standards-Version field to 3.9.2 
 
- -- Alejandro Garrido Mota <garridomota@gmail.com>  Mon, 07 Mar 2011 15:14:42 -0430
+ -- Alejandro Garrido Mota <garridomota@gmail.com>  Sat, 23 Apr 2011 15:32:55 -0430
 
 libquvi (0.2.11-1) unstable; urgency=low
 
