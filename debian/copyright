@@ -5,7 +5,7 @@ Upstream-Source: http://code.google.com/p/quvi/
 Upstream-Name: libquvi
 
 Files: *
-Copyright: 2009,2010 Toni Gundogdu <legatvs@gmail.com>
+Copyright: 2009,2010,2011 Toni Gundogdu <legatvs@gmail.com>
 License: LGPL-2.1+
 
 Files: lib/strepl.c
@@ -14,7 +14,7 @@ Copyright: 2009, Toni Gundogdu <legatvs@gmail.com>
 License: PD
 
 Files: debian/*
-Copyright: 2009, Alejandro Garrido Mota <garridomota@gmail.com>
+Copyright: 2009,2010,2011 Alejandro Garrido Mota <garridomota@gmail.com>
 License: GPL-3+
 
 License: LGPL-2.1+
