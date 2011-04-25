@@ -1,13 +1,13 @@
 libquvi (0.2.15-1) unstable; urgency=low
 
-  * New upstream release. 
+  * New upstream release (Closes: #622253). 
   * Update d/watch to sf.net
   * Update homepage field to quvi.sourceforge.net (Closes: #615554) 
   * d/rules: Add dh_auto_test before NO_INTERNET=1 in override_dh_auto_test 
   * Update Standards-Version field to 3.9.2 
   * Add symbol (d/libquvi0.symbols) file.
 
- -- Alejandro Garrido Mota <garridomota@gmail.com>  Sat, 23 Apr 2011 15:32:55 -0430
+ -- Alejandro Garrido Mota <garridomota@gmail.com>  Mon, 25 Apr 2011 01:07:41 -0430
 
 libquvi (0.2.11-1) unstable; urgency=low
 
