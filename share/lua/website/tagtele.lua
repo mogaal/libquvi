@@ -33,16 +33,22 @@ function ident (self)
     return r
 end
 
--- Parse video URL.
+-- Query available formats.
+function query_formats(self)
+    self.formats = 'default'
+    return self
+end
+
+-- Parse media URL.
 function parse (self)
     self.host_id = "tagtele"
     local page   = quvi.fetch(self.page_url)
 
     local _,_,s = page:find("<title>TagTélé%s+-%s+(.-)</title>")
-    self.title  = s or error ("no match: video title")
+    self.title  = s or error ("no match: media title")
 
     local _,_,s = self.page_url:find('/voir/(%d+)')
-    self.id     = s or error ("no match: video id")
+    self.id     = s or error ("no match: media id")
 
     local playlist_url  = "http://www.tagtele.com/videos/playlist/"..self.id.."/"
     local playlist      = quvi.fetch(playlist_url, {fetch_type='playlist'})

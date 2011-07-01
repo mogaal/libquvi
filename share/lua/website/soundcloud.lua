@@ -33,7 +33,13 @@ function ident(self)
     return r
 end
 
--- Parse video URL.
+-- Query available formats.
+function query_formats(self)
+    self.formats = 'default'
+    return self
+end
+
+-- Parse media URL.
 function parse(self)
     self.host_id  = "soundcloud"
 
@@ -43,10 +49,10 @@ function parse(self)
     local metadata = s or error("no match: metadata")
 
     local _,_,s = metadata:find('"uid":"(%w-)"')
-    self.id = s or error("no match: video id")
+    self.id = s or error("no match: media id")
 
     local _,_,s = metadata:find('"title":"(.-)"')
-    local title  = s or error("no match: video title")
+    local title  = s or error("no match: media title")
     -- Unescape the Unicode strings if any
     -- the HTML will be unescaped by quvi itself
     self.title = string.gsub(title, "\\u(%d+)",

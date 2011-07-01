@@ -1,0 +1,46 @@
+
+Title: About
+
+
+quvi:
+
+quvi is a command line tool for parsing Adobe Flash media stream URLs.
+It supports many websites including YouTube and Dailymotion.
+
+
+libquvi:
+
+libquvi is a cross-platform library for parsing Adobe Flash media
+stream URLs with C API.
+
+
+Website:
+
+Visit the <website at http://quvi.sourceforge.net/>.
+
+
+License:
+
+quvi and libquvi are free software, licensed under the <LGPLv2.1+ at
+http://www.gnu.org/licenses/lgpl-2.1.html>. The LUA
+scripts that quvi uses are considered as programs and using the LUA scripts
+is *linking*.
+
+
+Motivation:
+
+quvi parses Adobe Flash media stream URLs for third party applications. It
+originates from the idea of allowing users to view the videos without having
+to install or use Adobe Flash Player. quvi is not an "alternative" but rather
+a "workaround" to Adobe Flash Player.
+
+Read more about Adobe Flash:
+  * <Performance at http://en.wikipedia.org/wiki/Adobe_Flash#Performance>
+  * <Security at http://en.wikipedia.org/wiki/Adobe_Flash#Flash_client_security>
+  * <Alternatives at http://en.wikipedia.org/wiki/Adobe_Flash#Alternatives_to_Flash>
+
+
+Background:
+
+quvi was inspired by cclive. Embeddable LUA scripting was introduced in the
+0.2.0 release.

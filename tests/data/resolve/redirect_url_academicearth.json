@@ -1,0 +1,18 @@
+{
+  "host": "youtube",
+  "page_title": "1. Introduction to Roman Architecture",
+  "page_url": "http://youtube.com/e/qd3MJPHaotQ",
+  "id": "qd3MJPHaotQ",
+  "format_requested": "default",
+  "thumbnail_url": "http://i2.ytimg.com/vi/qd3MJPHaotQ/default.jpg",
+  "duration": "2551000",
+  "link": [
+    {
+      "id": "1",
+      "length_bytes": "78035755",
+      "content_type": "video/x-flv",
+      "file_suffix": "flv",
+      "url": ""
+    }
+  ]
+}

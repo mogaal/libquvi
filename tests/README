@@ -106,7 +106,7 @@ Arguments to tests
     e.g. -b $top_srcdir/share/.
 
     You can pass additional options to quvi, e.g:
-        % prove t/foo.t :: -o "-qs"
+        % prove t/foo.t :: -o "-qr"
 
     The test suite can check the returned against JSONs. Use the
     --json-file if you need to do this.

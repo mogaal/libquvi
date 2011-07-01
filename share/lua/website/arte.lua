@@ -1,5 +1,6 @@
 
 -- quvi
+-- Copyright (C) 2011  Toni Gundogdu <legatvs@gmail.com>
 -- Copyright (C) 2011  Raphaël Droz <raphael.droz+floss@gmail.com>
 --
 -- This file is part of quvi <http://quvi.googlecode.com/>.
@@ -19,10 +20,9 @@
 -- Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 -- 02110-1301  USA
 
--- arte videos reportedly expire after ~7 days.
+-- NOTE: Most videos expire some (7?) days after their original broadcast
 
--- Default ('default', 'best') to "fr". In order to access the German
--- ('de') videos, use 'de' or 'hd-de'.
+local Arte = {} -- Utility functions unique to to this script.
 
 -- Identify the script.
 function ident(self)
@@ -30,85 +30,134 @@ function ident(self)
     local C      = require 'quvi/const'
     local r      = {}
     r.domain     = "videos.arte.tv"
-    r.formats    = "default|hd|de|hd-de|best"
+    r.formats    = "default|best"
     r.categories = C.proto_rtmp
     local U      = require 'quvi/util'
     r.handles    = U.handles(self.page_url, {r.domain}, {"/%w+/videos/"})
     return r
 end
 
--- Parse video URL.
-function parse(self)
-    self.host_id = 'arte'
-    local page   = quvi.fetch(self.page_url)
+-- Query available formats.
+function query_formats(self)
+    local config  = Arte.get_config(self)
+    local U       = require 'quvi/util'
+    local formats = Arte.iter_formats(config, U)
 
-    -- local _,_,_,s,t =
-    --    page:find('addToPlaylistOpen(.-)/videos/([%w_]+)%-(%d+)%.html')
-
-    -- id will be overriden by per-language id
-    -- self.id = t or error('no match: id')
-    -- filename is of no use yet
-    -- self.filename = s or error('no match: filename')
-
-    -- language-agnostic configuration:
-    -- http://videos.arte.tv/fr/do_delegate/videos
-    -- /<title>-<id>,view,asPlayerXml.xml
-    local _,_,s      = page:find('videorefFileUrl = "(.-)"')
-    local config_url = s or error('no match: config url')
-    local config     = quvi.fetch(config_url, {fetch_type = 'config'})
-
-    -- per-language XML configuration URL (default to 'fr')
-    local _,_,conf_url_fr = config:find('lang="fr" ref="(.-)"')
-    local _,_,conf_url_de = config:find('lang="de" ref="(.-)"')
-
-    local config_url = conf_url_fr or conf_url_de
-
-    -- 'best' is just an alias for 'hd'. Assume it to be the 'best'
-    -- (in quality) of all known and available formats.
-    local r = self.requested_format
-    r = (r == "best") and "hd" or r
-
-    -- user requested specifically 'de'.
-    if r ~= 'default' and r:find('de') then
-        if not conf_url_de then
-            error("no match: config url: de")
-        else
-            config_url = conf_url_de
-        end
+    local t = {}
+    for _,v in pairs(formats) do
+        table.insert(t, Arte.to_s(v))
     end
 
-    if not config_url then
-        error("no match: config url: fr or de "
-          .. "(note: videos expire 7 days after their original "
-          .. "broadcast)")
-    end
-
-    -- per-language configuration file:
-    local config = quvi.fetch(config_url, {fetch_type = 'config'})
-    local _,_,s  = config:find('<name>(.-)</name>')
-    self.title   = s or error('no match: title')
-
-    -- check which quality is available.
-    local _,_,sd_url = config:find('url quality="sd">(.-)<')
-    local _,_,hd_url = config:find('url quality="hd">(.-)<')
-
-    local url = sd_url or hd_url -- default to sd.
-    url = (hd_url and r:find('hd')) and hd_url or url
-
-    self.url = {url or error("no match: media url")}
-
-    -- language-specific video ID and URL
-    local _,_,s = config:find('<video id="(%d+)"')
-    self.id     = s or error('no match: video id')
+    table.sort(t)
+    self.formats = table.concat(t, "|")
 
     return self
 end
 
--- Local variables:
--- mode: lua
--- fill-column: 80
--- auto-fill-mode: 1
--- lua-indent-level: 4
--- indent-tabs-mode: nil
--- End:
+-- Parse media URL.
+function parse(self)
+    self.host_id  = 'arte'
+    local config  = Arte.get_config(self)
+    local U       = require 'quvi/util'
+    local formats = Arte.iter_formats(config, U)
+    local format  = U.choose_format(self, formats,
+                                    Arte.choose_best,
+                                    Arte.choose_default,
+                                    Arte.to_s)
+    self.title         = format.title or error('no match: title')
+    self.id            = format.id or error('no match: id')
+    self.thumbnail_url = format.thumb or ''
+    self.url           = {format.url or error("no match: media url")}
+
+    return self
+end
+
+--
+-- Utility functions
+--
+
+function Arte.get_config(self)
+    local page       = quvi.fetch(self.page_url)
+    local _,_,s      = page:find('videorefFileUrl = "(.-)"')
+    local config_url = s or error('no match: config url')
+    local config     = quvi.fetch(config_url, {fetch_type = 'config'})
+    return Arte.get_lang_config(config)
+end
+
+function Arte.get_lang_config(config)
+    local t = {}
+    for lang,url in config:gfind('<video lang="(%w+)" ref="(.-)"') do
+        table.insert(t, {lang=lang,
+                         config=quvi.fetch(url, {fetch_type = 'config'})})
+    end
+    return t
+end
+
+function Arte.iter_lang_formats(lang_config, t, U)
+
+    local p = '<video id="(%d+)" lang="(%w+)"'
+           .. '.-<name>(.-)<'
+           .. '.-<firstThumbnailUrl>(.-)<'
+           .. '.-<dateExpiration>(.-)<'
+           .. '.-<dateVideo>(.-)<'
+
+    local config = lang_config.config
+
+    local id,lang,title,thumb,exp,date = config:match(p)
+    if not id then error("no match: media id, etc.") end
+
+    if lang ~= lang_config.lang then
+        error("no match: lang")
+    end
+
+    if Arte.has_expired(exp, U) then
+        error('error: media no longer available (expired)')
+    end
+
+    local urls = config:match('<urls>(.-)</urls>')
+                  or error('no match: urls')
+
+    for q,u in urls:gfind('<url quality="(%w+)">(.-)<') do
+--        print(q,u)
+        table.insert(t, {lang=lang,   quality=q,   url=u,
+                         thumb=thumb, title=title, id=id})
+    end
+end
+
+function Arte.iter_formats(config, U)
+    local t = {}
+    for _,v in pairs(config) do
+        Arte.iter_lang_formats(v, t, U)
+    end
+    return t
+end
+
+function Arte.has_expired(s, U)
+    return U.to_timestamp(s) - os.time() < 0
+end
+
+function Arte.choose_best(formats) -- Whatever matches 'hd' first
+    local r
+    for _,v in pairs(formats) do
+        if Arte.to_s(v):find('hd') then
+            return v
+        end
+    end
+    return r
+end
+
+function Arte.choose_default(formats) -- Whatever matches 'sd' first
+    local r
+    for _,v in pairs(formats) do
+        if Arte.to_s(v):find('sd') then
+            return v
+        end
+    end
+    return r
+end
+
+function Arte.to_s(t)
+    return string.format("%s_%s", t.quality, t.lang)
+end
+
 -- vim: set ts=4 sw=4 tw=72 expandtab:

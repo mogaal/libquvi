@@ -214,7 +214,7 @@ sub _run_cmd
     my $r = $? >> 8;
 
     print STDERR "\n$o"
-        if $r == 0 and $self->{config}{dump_json};
+      if $r == 0 and $self->{config}{dump_json};
 
     ($r, $o);
 }

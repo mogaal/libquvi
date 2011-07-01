@@ -14,11 +14,10 @@ use Test::Quvi;
 
 my $q = Test::Quvi->new;
 
-my @dirs =
-    qw(
-      data/format/default
-      data/format/default/ignore/length_bytes
-      );
+my @dirs = qw(
+  data/format/default
+  data/format/default/ignore/length_bytes
+  );
 
 my $c = $q->get_config;
 push @dirs, "data/format/default/todo" if $c->{todo};
@@ -39,7 +38,7 @@ foreach (@files)
 
     $q->mark_ignored(\$e, $1) if $_ =~ /$ign/;
 
-    my ($r, $o) = $q->run($e->{page_url}, "-qs");
+    my ($r, $o) = $q->run($e->{page_url}, "-qr");
     is($r, 0, "quvi exit status == 0")
       or diag $e->{page_url};
   SKIP:

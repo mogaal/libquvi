@@ -35,7 +35,9 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 target_triplet = @target@
-@ENABLE_EXAMPLES_TRUE@noinst_PROGRAMS = simple$(EXEEXT)
+@ENABLE_EXAMPLES_TRUE@noinst_PROGRAMS = simple$(EXEEXT) \
+@ENABLE_EXAMPLES_TRUE@	$(am__EXEEXT_1)
+@ENABLE_EXAMPLES_TRUE@@WITH_SOUP_TRUE@am__append_1 = callback_libsoup
 subdir = examples
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -49,14 +51,26 @@ mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
+@ENABLE_EXAMPLES_TRUE@@WITH_SOUP_TRUE@am__EXEEXT_1 = callback_libsoup$(EXEEXT)
 PROGRAMS = $(noinst_PROGRAMS)
-am__simple_SOURCES_DIST = simple.c
-@ENABLE_EXAMPLES_TRUE@am_simple_OBJECTS = simple-simple.$(OBJEXT)
-simple_OBJECTS = $(am_simple_OBJECTS)
-simple_LDADD = $(LDADD)
+am__callback_libsoup_SOURCES_DIST = callback_libsoup.c common.c \
+	common.h
+@ENABLE_EXAMPLES_TRUE@@WITH_SOUP_TRUE@am_callback_libsoup_OBJECTS = callback_libsoup-callback_libsoup.$(OBJEXT) \
+@ENABLE_EXAMPLES_TRUE@@WITH_SOUP_TRUE@	callback_libsoup-common.$(OBJEXT)
+callback_libsoup_OBJECTS = $(am_callback_libsoup_OBJECTS)
+callback_libsoup_LDADD = $(LDADD)
 AM_V_lt = $(am__v_lt_$(V))
 am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
 am__v_lt_0 = --silent
+callback_libsoup_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(callback_libsoup_CFLAGS) $(CFLAGS) \
+	$(callback_libsoup_LDFLAGS) $(LDFLAGS) -o $@
+am__simple_SOURCES_DIST = simple.c common.c common.h
+@ENABLE_EXAMPLES_TRUE@am_simple_OBJECTS = simple-simple.$(OBJEXT) \
+@ENABLE_EXAMPLES_TRUE@	simple-common.$(OBJEXT)
+simple_OBJECTS = $(am_simple_OBJECTS)
+simple_LDADD = $(LDADD)
 simple_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(simple_CFLAGS) $(CFLAGS) \
 	$(simple_LDFLAGS) $(LDFLAGS) -o $@
@@ -86,8 +100,9 @@ am__v_CCLD_0 = @echo "  CCLD  " $@;
 AM_V_GEN = $(am__v_GEN_$(V))
 am__v_GEN_ = $(am__v_GEN_$(AM_DEFAULT_VERBOSITY))
 am__v_GEN_0 = @echo "  GEN   " $@;
-SOURCES = $(simple_SOURCES)
-DIST_SOURCES = $(am__simple_SOURCES_DIST)
+SOURCES = $(callback_libsoup_SOURCES) $(simple_SOURCES)
+DIST_SOURCES = $(am__callback_libsoup_SOURCES_DIST) \
+	$(am__simple_SOURCES_DIST)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -113,7 +128,6 @@ DATE = @DATE@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
-DOXYGEN = @DOXYGEN@
 DSYMUTIL = @DSYMUTIL@
 DUMPBIN = @DUMPBIN@
 ECHO_C = @ECHO_C@
@@ -123,7 +137,6 @@ EGREP = @EGREP@
 EXEEXT = @EXEEXT@
 EXTRA_LIBQUVI_LDFLAGS = @EXTRA_LIBQUVI_LDFLAGS@
 FGREP = @FGREP@
-GENGETOPT = @GENGETOPT@
 GIT = @GIT@
 GREP = @GREP@
 INSTALL = @INSTALL@
@@ -144,6 +157,8 @@ LTLIBOBJS = @LTLIBOBJS@
 MAKEINFO = @MAKEINFO@
 MANIFEST_TOOL = @MANIFEST_TOOL@
 MKDIR_P = @MKDIR_P@
+ND = @ND@
+ND_FORMAT = @ND_FORMAT@
 NM = @NM@
 NMEDIT = @NMEDIT@
 OBJDUMP = @OBJDUMP@
@@ -161,8 +176,6 @@ PATH_SEPARATOR = @PATH_SEPARATOR@
 PKG_CONFIG = @PKG_CONFIG@
 PKG_CONFIG_LIBDIR = @PKG_CONFIG_LIBDIR@
 PKG_CONFIG_PATH = @PKG_CONFIG_PATH@
-POD2HTML = @POD2HTML@
-POD2MAN = @POD2MAN@
 POW_LIB = @POW_LIB@
 PROVE = @PROVE@
 QUVI_AGE = @QUVI_AGE@
@@ -215,6 +228,10 @@ libdir = @libdir@
 libexecdir = @libexecdir@
 liblua_CFLAGS = @liblua_CFLAGS@
 liblua_LIBS = @liblua_LIBS@
+libsoup_CFLAGS = @libsoup_CFLAGS@
+libsoup_LIBS = @libsoup_LIBS@
+libsoup_gnome_CFLAGS = @libsoup_gnome_CFLAGS@
+libsoup_gnome_LIBS = @libsoup_gnome_LIBS@
 localedir = @localedir@
 localstatedir = @localstatedir@
 mandir = @mandir@
@@ -236,10 +253,19 @@ target_vendor = @target_vendor@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-@ENABLE_EXAMPLES_TRUE@simple_SOURCES = simple.c
+@ENABLE_EXAMPLES_TRUE@simple_SOURCES = simple.c common.c common.h
 @ENABLE_EXAMPLES_TRUE@simple_CPPFLAGS = -I$(top_builddir)/include $(AM_CPPFLAGS)
 @ENABLE_EXAMPLES_TRUE@simple_CFLAGS = $(AM_CFLAGS)
 @ENABLE_EXAMPLES_TRUE@simple_LDFLAGS = $(top_builddir)/lib/libquvi.la $(AM_LDFLAGS)
+@ENABLE_EXAMPLES_TRUE@@WITH_SOUP_TRUE@callback_libsoup_SOURCES = callback_libsoup.c common.c common.h
+@ENABLE_EXAMPLES_TRUE@@WITH_SOUP_TRUE@callback_libsoup_CPPFLAGS = \
+@ENABLE_EXAMPLES_TRUE@@WITH_SOUP_TRUE@    -I$(top_builddir)/include -I$(top_srcdir)/include \
+@ENABLE_EXAMPLES_TRUE@@WITH_SOUP_TRUE@    $(libsoup_CFLAGS) $(AM_CPPFLAGS)
+
+@ENABLE_EXAMPLES_TRUE@@WITH_SOUP_TRUE@callback_libsoup_CFLAGS = $(AM_CFLAGS)
+@ENABLE_EXAMPLES_TRUE@@WITH_SOUP_TRUE@callback_libsoup_LDFLAGS = \
+@ENABLE_EXAMPLES_TRUE@@WITH_SOUP_TRUE@    $(top_builddir)/lib/libquvi.la $(libsoup_LIBS) $(AM_LDFLAGS)
+
 all: all-am
 
 .SUFFIXES:
@@ -283,6 +309,9 @@ clean-noinstPROGRAMS:
 	list=`for p in $$list; do echo "$$p"; done | sed 's/$(EXEEXT)$$//'`; \
 	echo " rm -f" $$list; \
 	rm -f $$list
+callback_libsoup$(EXEEXT): $(callback_libsoup_OBJECTS) $(callback_libsoup_DEPENDENCIES) 
+	@rm -f callback_libsoup$(EXEEXT)
+	$(AM_V_CCLD)$(callback_libsoup_LINK) $(callback_libsoup_OBJECTS) $(callback_libsoup_LDADD) $(LIBS)
 simple$(EXEEXT): $(simple_OBJECTS) $(simple_DEPENDENCIES) 
 	@rm -f simple$(EXEEXT)
 	$(AM_V_CCLD)$(simple_LINK) $(simple_OBJECTS) $(simple_LDADD) $(LIBS)
@@ -293,6 +322,9 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/callback_libsoup-callback_libsoup.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/callback_libsoup-common.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/simple-common.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/simple-simple.Po@am__quote@
 
 .c.o:
@@ -319,6 +351,38 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $<
 
+callback_libsoup-callback_libsoup.o: callback_libsoup.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(callback_libsoup_CPPFLAGS) $(CPPFLAGS) $(callback_libsoup_CFLAGS) $(CFLAGS) -MT callback_libsoup-callback_libsoup.o -MD -MP -MF $(DEPDIR)/callback_libsoup-callback_libsoup.Tpo -c -o callback_libsoup-callback_libsoup.o `test -f 'callback_libsoup.c' || echo '$(srcdir)/'`callback_libsoup.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/callback_libsoup-callback_libsoup.Tpo $(DEPDIR)/callback_libsoup-callback_libsoup.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='callback_libsoup.c' object='callback_libsoup-callback_libsoup.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(callback_libsoup_CPPFLAGS) $(CPPFLAGS) $(callback_libsoup_CFLAGS) $(CFLAGS) -c -o callback_libsoup-callback_libsoup.o `test -f 'callback_libsoup.c' || echo '$(srcdir)/'`callback_libsoup.c
+
+callback_libsoup-callback_libsoup.obj: callback_libsoup.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(callback_libsoup_CPPFLAGS) $(CPPFLAGS) $(callback_libsoup_CFLAGS) $(CFLAGS) -MT callback_libsoup-callback_libsoup.obj -MD -MP -MF $(DEPDIR)/callback_libsoup-callback_libsoup.Tpo -c -o callback_libsoup-callback_libsoup.obj `if test -f 'callback_libsoup.c'; then $(CYGPATH_W) 'callback_libsoup.c'; else $(CYGPATH_W) '$(srcdir)/callback_libsoup.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/callback_libsoup-callback_libsoup.Tpo $(DEPDIR)/callback_libsoup-callback_libsoup.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='callback_libsoup.c' object='callback_libsoup-callback_libsoup.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(callback_libsoup_CPPFLAGS) $(CPPFLAGS) $(callback_libsoup_CFLAGS) $(CFLAGS) -c -o callback_libsoup-callback_libsoup.obj `if test -f 'callback_libsoup.c'; then $(CYGPATH_W) 'callback_libsoup.c'; else $(CYGPATH_W) '$(srcdir)/callback_libsoup.c'; fi`
+
+callback_libsoup-common.o: common.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(callback_libsoup_CPPFLAGS) $(CPPFLAGS) $(callback_libsoup_CFLAGS) $(CFLAGS) -MT callback_libsoup-common.o -MD -MP -MF $(DEPDIR)/callback_libsoup-common.Tpo -c -o callback_libsoup-common.o `test -f 'common.c' || echo '$(srcdir)/'`common.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/callback_libsoup-common.Tpo $(DEPDIR)/callback_libsoup-common.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='common.c' object='callback_libsoup-common.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(callback_libsoup_CPPFLAGS) $(CPPFLAGS) $(callback_libsoup_CFLAGS) $(CFLAGS) -c -o callback_libsoup-common.o `test -f 'common.c' || echo '$(srcdir)/'`common.c
+
+callback_libsoup-common.obj: common.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(callback_libsoup_CPPFLAGS) $(CPPFLAGS) $(callback_libsoup_CFLAGS) $(CFLAGS) -MT callback_libsoup-common.obj -MD -MP -MF $(DEPDIR)/callback_libsoup-common.Tpo -c -o callback_libsoup-common.obj `if test -f 'common.c'; then $(CYGPATH_W) 'common.c'; else $(CYGPATH_W) '$(srcdir)/common.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/callback_libsoup-common.Tpo $(DEPDIR)/callback_libsoup-common.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='common.c' object='callback_libsoup-common.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(callback_libsoup_CPPFLAGS) $(CPPFLAGS) $(callback_libsoup_CFLAGS) $(CFLAGS) -c -o callback_libsoup-common.obj `if test -f 'common.c'; then $(CYGPATH_W) 'common.c'; else $(CYGPATH_W) '$(srcdir)/common.c'; fi`
+
 simple-simple.o: simple.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(simple_CPPFLAGS) $(CPPFLAGS) $(simple_CFLAGS) $(CFLAGS) -MT simple-simple.o -MD -MP -MF $(DEPDIR)/simple-simple.Tpo -c -o simple-simple.o `test -f 'simple.c' || echo '$(srcdir)/'`simple.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple-simple.Tpo $(DEPDIR)/simple-simple.Po
@@ -334,6 +398,22 @@ simple-simple.obj: simple.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='simple.c' object='simple-simple.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(simple_CPPFLAGS) $(CPPFLAGS) $(simple_CFLAGS) $(CFLAGS) -c -o simple-simple.obj `if test -f 'simple.c'; then $(CYGPATH_W) 'simple.c'; else $(CYGPATH_W) '$(srcdir)/simple.c'; fi`
+
+simple-common.o: common.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(simple_CPPFLAGS) $(CPPFLAGS) $(simple_CFLAGS) $(CFLAGS) -MT simple-common.o -MD -MP -MF $(DEPDIR)/simple-common.Tpo -c -o simple-common.o `test -f 'common.c' || echo '$(srcdir)/'`common.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple-common.Tpo $(DEPDIR)/simple-common.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='common.c' object='simple-common.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(simple_CPPFLAGS) $(CPPFLAGS) $(simple_CFLAGS) $(CFLAGS) -c -o simple-common.o `test -f 'common.c' || echo '$(srcdir)/'`common.c
+
+simple-common.obj: common.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(simple_CPPFLAGS) $(CPPFLAGS) $(simple_CFLAGS) $(CFLAGS) -MT simple-common.obj -MD -MP -MF $(DEPDIR)/simple-common.Tpo -c -o simple-common.obj `if test -f 'common.c'; then $(CYGPATH_W) 'common.c'; else $(CYGPATH_W) '$(srcdir)/common.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/simple-common.Tpo $(DEPDIR)/simple-common.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='common.c' object='simple-common.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(simple_CPPFLAGS) $(CPPFLAGS) $(simple_CFLAGS) $(CFLAGS) -c -o simple-common.obj `if test -f 'common.c'; then $(CYGPATH_W) 'common.c'; else $(CYGPATH_W) '$(srcdir)/common.c'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo

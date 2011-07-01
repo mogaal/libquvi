@@ -1,11 +1,4 @@
 
-if WITH_DOC
-doc_DATA = \
-HowtoWriteWebsiteScript \
-HowtoGetDevelopmentCode \
-HowtoHelp \
-HowtoSubmitPatches \
-CodingStyle
-endif
+SUBDIRS = man1
 
-EXTRA_DIST = $(doc_DATA)
+EXTRA_DIST = nd

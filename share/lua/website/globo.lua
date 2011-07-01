@@ -1,6 +1,6 @@
 
 -- quvi
--- Copyright (C) 2010  quvi project
+-- Copyright (C) 2010,2011  quvi project
 --
 -- This file is part of quvi <http://quvi.sourceforge.net/>.
 --
@@ -37,18 +37,25 @@ function ident (self)
     return r
 end
 
--- Parse video URL.
+-- Query available formats.
+function query_formats(self)
+    self.formats = 'default'
+    return self
+end
+
+-- Parse media URL.
 function parse (self)
     self.host_id = "globo"
     local page   = quvi.fetch(self.page_url)
 
     local _,_,s = page:find('midiaId: (.-),')
-    self.id     = s or error ("no match: video id")
+    self.id     = s or error ("no match: media id")
 
     local _,_,s = page:find('<title>.*-.*- (.-)</title>')
-    self.title  = s or error ("no match: video title")
+    self.title  = s or error ("no match: media title")
 
-    s = "http://playervideo.globo.com/webmedia/GMCPlayListASX"
+    local config_url =
+        "http://playervideo.globo.com/webmedia/GMCPlayListASX"
         .. "?flash=true&midiaId="
         .. self.id
 
@@ -56,10 +63,11 @@ function parse (self)
     -- *will* fail (HTTP/403) later. Fetching below itself does not
     -- need it, just the URL verification. We set it here to be safe.
 
-    local opts  = {fetch_type = 'config', user_agent = 'iphone'}
-    local xml   = quvi.fetch (s, opts)
-    local _,_,s = xml:find('<video duration=".*" src="(.-)%?')
-    self.url    = {s or error ('no match: video url')}
+    local opts    = {fetch_type = 'config', user_agent = 'iphone'}
+    local xml     = quvi.fetch(config_url, opts)
+    local _,_,d,s = xml:find('<video duration="(.-)" src="(.-)%?')
+    self.duration = tonumber(d) or 0
+    self.url      = {s or error('no match: media url')}
 
     return self
 end

@@ -32,7 +32,13 @@ function ident (self)
     return r
 end
 
--- Parse video URL.
+-- Query available formats.
+function query_formats(self)
+    self.formats = 'default'
+    return self
+end
+
+-- Parse media URL.
 function parse (self)
     self.host_id  = 'francetelevisions'
 
@@ -50,7 +56,7 @@ function parse (self)
     self.title   = s or error ('no match: title')
 
     local _,_,s  = config:find ('embed src="(.-)"')
-    self.url     = {s or error ('no match: video url')}
+    self.url     = {s or error ('no match: media url')}
 
     return self
 

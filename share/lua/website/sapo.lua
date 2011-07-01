@@ -35,31 +35,36 @@ function ident (self)
     local U      = require 'quvi/util'
     r.handles    = U.handles(self.page_url, {r.domain}, {p})
     return r
-
 end
 
--- Parse video URL.
+-- Query available formats.
+function query_formats(self)
+    self.formats = 'default'
+    return self
+end
+
+-- Parse media URL.
 function parse (self)
 
     self.host_id = "sapo"
     local page   = quvi.fetch (self.page_url)
 
     if (page:find ('rtmp:%/%/')) then
-        error ("video requires rtmp which we do not currently support")
+        error ("media requires rtmp which we do not currently support")
     end
 
     local _,_,s = page:find ('class="tit">(.-)</div>')
     if (s == nil) then
         _,_,s = page:find ('<title>(.-)%s+-%s+')
     end
-    self.title = s or error ("no match: video title")
+    self.title = s or error ("no match: media title")
 
     local _,_,s = page:find ('?file=(.-)/mov')
-    if (s == nil) then error ("no match: video url") end
+    if (s == nil) then error ("no match: media url") end
     self.url = {s .. "/mov"}
 
     local _,_,s = self.url[1]:find ('.*/(.-)/mov')
-    self.id     = s or error ("no match: video id")
+    self.id     = s or error ("no match: media id")
 
     return self
 end

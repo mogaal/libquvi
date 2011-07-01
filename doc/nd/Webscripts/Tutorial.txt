@@ -1,0 +1,387 @@
+
+Title: Webscript: Tutorial
+
+About: General tips
+
+General tips and recommendations.
+
+ * Read <Help: Style> and <Webscript: Guidelines>
+ * Work with the development code, read <Help: Development>
+ * Use git, this documentation uses git exclusively
+ * Amp up libquvi verbosity
+
+(start code)
+# Make libquvi print the LUA script search paths.
+env QUVI_SHOW_SCANDIR=1 quvi
+# Make libquvi print the found LUA scripts.
+env QUVI_SHOW_SCRIPT=1 quvi
+# Make libcurl print the messages.
+quvi --verbose-libcurl
+(end)
+ * Isolate problems, disect data, write smaller LUA scripts before you
+    put everything together
+
+
+About: Search paths
+
+Typical libquvi LUA script search paths. Listed below in search order.
+
+ * $QUVI_BASEDIR (see quvi manual for notes)
+ * Current working directory
+ * $HOME/.quvi/
+ * $HOME/.config/quvi/
+ * $HOME/.local/share/quvi/
+ * configure's --datadir=DIR (and pkgdatadir), usually these are
+    $prefix/share/ and $prefix/share/quvi/
+
+If you define QUVI_BASEDIR, make sure it points to the directory with
+the lua/ subdir. For example:
+
+(start code)
+tar xf quvi-$release.tar.gz && cd quvi-$release
+mkdir tmp ; cd tmp
+../configure ; make
+QUVI_BASEDIR=../share ./src/quvi/quvi --support
+(end)
+
+
+About: Webscript (or Website script)
+
+What does a webscript do?
+
+    * Identifies itself to the library (`ident' function)
+    * Queries for available formats (`query_formats' function)
+    * Parses and resolves the media details and returns the results
+
+
+About: Getting started
+
+Choose a website if you have not already.
+
+ * Visit our <Trac at http://sourceforge.net/apps/trac/quvi/report/3>
+    for open requests
+ * Or pick some other website
+
+There are typically two kinds of websites:
+
+ * Those that use complex systems to access the media (see youtube.lua)
+ * Those that do not (see gaskrank.lua)
+
+
+About: Generating network traffic logs
+
+Logs may be helpful sometimes. Further analyzation of the log data may
+hint how the media could be accessed if you have not found any other way
+to do that. The downside of this is that you typically need a system
+that can execute Adobe Flash object code which may not always be a choice.
+
+If you choose to take this path, find youself a system capable of
+executing Adobe Flash object code and capture the generated network
+traffic. You could use, for example, <Wireshark at
+http://www.wireshark.org/> and/or <Live HTTP Headers at
+https://addons.mozilla.org/en-US/firefox/addon/live-http-headers/>.
+
+
+About: Once a website is chosen
+
+Read <Webscript: Guidelines>. Go over the existing scripts for examples.
+Write down how your website provides the required data and how you could
+parse it in your webscript.
+
+About: Protocols
+
+Historically quvi only worked with HTTP. Support for other protocols,
+such as RTMP, RTSP and MMS were later. This means that if your website
+uses, say RTMP, then you must define this in the `ident' function of
+your webscript. See francetelevisions.lua for an example of this.
+
+For historical reasons, quvi defaults to HTTP category scripts. This is
+likely changed in the 0.2.20. Until then, make sure you use the
+--category-all (-a) or the --category-$scheme option when you run quvi.
+Otherwise quvi ignores the non-HTTP category scripts.
+
+For example:
+(start code)
+quvi --category-rtmp URL
+quvi -a URL
+(end)
+
+
+About: Additional reading
+
+For technical specifications.
+
+Please read:
+ * $top_srcdir/share/lua/website/README
+
+This README covers the webscript functions. Be sure to read the
+<Webscript: Guidelines> as well.
+
+
+About: Writing a webscript
+
+Let us assume you know the media data inside out. What left is writing
+the webscript.
+
+
+About: Working with dev code
+
+Clone the current development code. Or, see <Working with binaries>.
+
+(start code)
+git clone git://repo.or.cz/quvi.git quvi.git
+cd quvi.git ; sh autogen.sh
+mkdir tmp ; cd tmp
+../configure ; make
+(end)
+
+Let's use buzzhumor.lua as a template webscript.
+
+(start code)
+cp ../share/lua/website/buzzhumor.lua ../share/lua/website/foo.lua
+ # open foo.lua in an editor
+(end)
+
+Jump to <Customizing the foo.lua> to continue from here.
+
+
+About: Working with binaries
+
+Working with the precompiled binaries. Make sure you have at least
+0.2.17 installed to your system. Earlier version may work, although not
+confirmed. This HOWTO was written for 0.2.17.
+
+(start code)
+quvi --version
+quvi version 0.2.17 built on 2011-06-02 for i686-pc-linux-gnu
+(end)
+
+Let's use buzzhumor.lua as a template webscript.
+
+(start code)
+mkdir -p foo/lua/website/ ; cd foo
+cp -r $prefix/share/lua/util/ lua/
+cp -r $prefix/share/lua/website/quvi/ lua/website/
+cp $prefix/share/lua/website/buzzhumor.lua lua/website/foo.lua
+# foo/ dir should now look like:
+find .
+.
+./lua
+./lua/website
+./lua/website/foo.lua
+./lua/website/quvi
+./lua/website/quvi/const.lua
+./lua/website/quvi/url.lua
+./lua/website/quvi/util.lua
+./lua/website/quvi/bit.lua
+./lua/util
+./lua/util/content_type.lua
+./lua/util/charset.lua
+./lua/util/trim.lua
+# open foo.lua in an editor
+(end)
+
+
+About: Customizing the foo.lua
+
+You will be using LUA patterns. If you are new to LUA or the patterns, 
+read more about them from the <Programming in Lua at http://www.lua.org/pil/>
+book before you continue.
+
+Update the copyright notice:
+
+(start code)
+-- Copyright (C) $year  $your_name <$your_email>
+(end)
+
+Alternatively use the project default:
+
+(start code)
+-- Copyright (C) $year  quvi project <http://quvi.sourceforge.net/>
+(end)
+
+Modify the `ident' function:
+
+(start code)
+-   r.domain  = 'buzzhumor.com"
++   r.domain  = 'foo.bar'
+(end)
+
+(start code)
+- r.handles    = U.handles(self.page_url, {r.domain}, {"/videos/"})
++ r.handles    = U.handles(self.page_url, {r.domain}, {"/watch/"})
+(end)
+
+r.handles tells the library whether your webscript can handle the
+self.page_url. Notice how we use r.domain and additional "signatures" to
+check whether this URL is for this webscript.
+
+Consider the following URLs.
+  * http://www.buzzhumor.com/videos/32561/Girl_Feels_Shotgun_Power
+  * http://foo.bar/watch/1234/
+
+The `handles' function imported from quvi/util.lua simply confirms that
+the domain and path pattern(s) match the ones in the URL.
+
+r.formats:
+
+Leave it as it is. Let's assume that foo.bar only supports
+one format. The formats are a bit more complex topic to cover. You can
+read more about them in the <Overview: Formats>.
+
+(start code)
+r.formats = 'default'
+(end)
+
+r.categories:
+
+Modify this only if you know that the website uses some other protocol
+for streaming the media. Check francetelevisions.lua for an example of
+this. Let's assume that foo.bar uses only HTTP.
+
+(start code)
+r.categories = C.proto_http
+(end)
+
+query_formats function:
+
+Leave the dummy function as it is like we did with r.formats. If the
+webscript supported >1 formats, we'd add the code here to that would
+produce a dynamically created list of available format strings.
+
+(start code)
+function query_formats(self)
+    self.formats = 'default'
+    return self
+end
+(end)
+
+parse function:
+
+To keep things simple, let's go ahead and assume that our 'foo.bar'
+website is nearly identical to 'buzzhumor'.
+
+(start code)
+-   self.host_id = 'buzzhumor'
++   self.host_id = 'foo'
+(end)
+
+Fetch the page from the page URL so we have data to parse.
+
+(start code)
+local page = quvi.fetch(self.page_url)
+(end)
+
+Now that we have the page, it's time to parse the media details
+from it. Let's begin with the page title.
+
+(start code)
+local _,_,s = page:find('<title>(.-)</title>')
+self.title  = s or error('no match: media title')
+(end)
+
+And the media ID.
+
+(start code)
+local _,_,s = page:find('vid_id="(.-)"')
+self.id     = s or error('no match: media id')
+(end)
+
+This leaves the media URL.
+
+(start code)
+local _,_,s = page:find('vid_url="(.-)"')
+self.url    = {s or error('no match: media url')}
+(end)
+
+Note the use of '{}' here, the media URLs must be returned in an array.
+
+
+About: Testing webscript
+
+Test. Test. Test.
+
+If you are <Working with dev code>, run:
+
+(start code)
+# Still in $top_srcdir/tmp
+env QUVI_BASEDIR=../share ./src/quvi/quvi TEST_URL
+(end)
+
+Or, if you are <Working with binaries>, run:
+(start code)
+# Still in foo/
+quvi TEST_URL
+(end)
+
+You will probably spend most of the time tweaking the patterns in your
+webscript. It often helps to "isolate the problem", e.g. copy
+page data to a local file and write an additional script to perfect
+the LUA patterns.
+
+Read also $top_srcdir/tests/README for tips on how you can use the
+existing test suite files to test your script. This isn't necessary but
+recommended reading.
+
+
+About: Checklist
+
+Before you submit your webscript.
+
+Does your script set and parse everything as expected:
+
+ * Protocol category
+ * Media URL
+ * Media ID
+ * Host ID
+ * Title
+
+Does the website support >1 formats:
+
+If yes, see if you can add support for them, see youtube.lua,
+cbsnews.lua, dailymotion.lua for examples. The support may
+always be added later, too.
+
+Does the parsed title contain extra characters:
+ * We want the _media title only_
+ * Anything else, e.g. domain name, should be left out
+
+Finally:
+
+If you are unsure about something, don't hesitate to ask.
+
+
+About: Generate the patch
+
+We prefer new webscripts in the patch format. We appreciate especially the
+git produced patches since they preserve the additional info from the
+original contribution.
+
+If you are <Working with dev code>, run:
+
+(start code)
+# Still in $top_srcdir/tmp
+git add ../share/lua/website/foo.lua
+(end)
+
+Or, if you are <Working with binaries>:
+
+(start code)
+# Still in foo/
+git init ; git add lua/website/foo.lua
+(end)
+
+Once added, produce the patch with:
+(start code)
+git commit -am 'Add foo support'
+git format-patch -M -1
+(end)
+
+
+About: See also
+
+Related pages.
+
+ * <Webscript: Guidelines>
+ * <Overview: Formats>
+ * <Help: Patches>

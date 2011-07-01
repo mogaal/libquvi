@@ -34,13 +34,19 @@ function ident (self)
     return r
 end
 
--- Parse video URL.
+-- Query available formats.
+function query_formats(self)
+    self.formats = 'default'
+    return self
+end
+
+-- Parse media URL.
 function parse (self)
     self.host_id = "sevenload"
     local page   = quvi.fetch(self.page_url)
 
     local _,_,s = page:find('<meta name="title" content="(.-)"')
-    self.title  = s or error ("no match: video title")
+    self.title  = s or error ("no match: media title")
 
     local _,_,s      = page:find('configPath=(.-)"')
     local config_url = s or error ("no match: config")
@@ -50,7 +56,7 @@ function parse (self)
     local config     = quvi.fetch (config_url, {fetch_type = 'config'})
 
     local _,_,s = config_url:find("itemId=(%w+)")
-    self.id     = s or error ("no match: video id")
+    self.id     = s or error ("no match: media id")
 
     local _,_,s = config:find('<location seeking="yes">(.-)</')
     self.url    = {s or error ("no match: location")}

@@ -20,52 +20,93 @@
 -- 02110-1301  USA
 --
 
+-- "http://dai.ly/cityofscars",
+-- "http://www.dailymotion.com/video/xdpig1_city-of-scars_shortfilms",
+
+local Dailymotion = {} -- Utility functions unique to this script.
+
 -- Identify the script.
 function ident(self)
     package.path = self.script_dir .. '/?.lua'
     local C      = require 'quvi/const'
     local r      = {}
     r.domain     = "dailymotion."
-    r.formats    = "default|best|hq|hd"
+    r.formats    = "default|best"
     r.categories = C.proto_http
     local U      = require 'quvi/util'
--- "http://dai.ly/cityofscars",
--- "http://www.dailymotion.com/video/xdpig1_city-of-scars_shortfilms",
-    r.handles    =
-        U.handles(self.page_url, {r.domain, "dai.ly"}, {"/video/","/%w+$"})
+    r.handles    = U.handles(self.page_url, {r.domain, "dai.ly"},
+                    {"/video/","/%w+$","/family_filter"})
     return r
 end
 
--- Parse video URL.
-function parse(self)
-    self.host_id  = "dailymotion"
-    self.page_url = normalize(self.page_url)
+-- Query available formats.
+function query_formats(self)
+    local U       = require 'quvi/util'
+    local page    = Dailymotion.fetch_page(self, U)
+    local formats = Dailymotion.iter_formats(page, U)
 
-    local U = require 'quvi/util'
-
-    local _,_,s = self.page_url:find('/family_filter%?urlback=(.+)')
-    if s then -- Set family_filter arbitrary cookie below.
-        self.page_url = 'http://dailymotion.com' .. U.unescape(s)
+    local t = {}
+    for _,v in pairs(formats) do
+        table.insert(t, Dailymotion.to_s(v))
     end
 
-    local opts = {arbitrary_cookie = 'family_filter=off'}
-    local page = quvi.fetch(self.page_url, opts)
-
-    local _,_,s = page:find('title="(.-)"')
-    self.title  = s or error("no match: video title")
-
-    local _,_,s = page:find("video/(.-)_")
-    self.id     = s or error("no match: video id")
-
-    self.url    = get_url(self, page, U)
-    if not self.url then
-        error("no match: video url")
-    end
+    table.sort(t)
+    self.formats = table.concat(t, "|")
 
     return self
 end
 
-function get_url(self, page, U)
+-- Parse media URL.
+function parse(self)
+    self.host_id = "dailymotion"
+
+    local U    = require 'quvi/util'
+    local page = Dailymotion.fetch_page(self, U)
+
+    local _,_,s = page:find('title="(.-)"')
+    self.title  = s or error("no match: media title")
+
+    local _,_,s = page:find("video/(.-)_")
+    self.id     = s or error("no match: media id")
+
+    local _,_,s = page:find('"og:image" content="(.-)"')
+    self.thumbnail_url = s or ''
+
+    local formats = Dailymotion.iter_formats(page, U)
+    self.url      = {U.choose_format(self, formats,
+                                     Dailymotion.choose_best,
+                                     Dailymotion.choose_default,
+                                     Dailymotion.to_s).url
+                        or error("no match: media url")}
+
+    return self
+end
+
+--
+-- Utility functions
+--
+
+function Dailymotion.fetch_page(self, U)
+    self.page_url = Dailymotion.normalize(self.page_url)
+
+    local _,_,s = self.page_url:find('/family_filter%?urlback=(.+)')
+    if s then
+        self.page_url = 'http://dailymotion.com' .. U.unescape(s)
+    end
+
+    local opts = {arbitrary_cookie = 'family_filter=off'}
+    return quvi.fetch(self.page_url, opts)
+end
+
+function Dailymotion.normalize(page_url) -- "Normalize" embedded URLs
+    if page_url:find("/swf/") then
+        page_url = page_url:gsub("/video/", "/")
+        page_url = page_url:gsub("/swf/", "/video/")
+    end
+    return page_url
+end
+
+function Dailymotion.iter_formats(page, U)
     local _,_,seq = page:find('"sequence",%s+"(.-)"')
     if not seq then
         local e = "no match: sequence"
@@ -76,56 +117,60 @@ function get_url(self, page, U)
     end
     seq = U.unescape(seq)
 
+    local _,_,msg = seq:find('"message":"(.-)[<"]')
+    if msg then
+        msg = msg:gsub('+',' ')
+        error(msg:gsub('\\',''))
+    end
+
     local _,_,vpp = seq:find('"videoPluginParameters":{(.-)}')
     if not vpp then
-        local _,_,s = page:find('"video", "(.-)"')
-        if not s then
-            error("no match: video plugin params")
-        else
-            -- some videos (that require setting family_filter cookie)
-            -- may list only one link which is not found under
-            -- "videoPluginParameters". See also:
-            -- http://sourceforge.net/apps/trac/clive/ticket/4
-            return {s}
-        end
+        -- See also <http://sourceforge.net/apps/trac/clive/ticket/4>
+        error("no match: video plugin params")
     end
 
-    -- "sd" is our "default".
-    local req_fmt = self.requested_format
-    req_fmt = (req_fmt == "default") and "sd" or req_fmt
-
-    -- choose "best" from the array, check against reported video
-    -- resolution height. pick the highest available.
-    local best,curr
-    local best_h = 0
-
-    for id,url in vpp:gfind('(%w+)URL":"(.-)"') do -- id=format id.
+    local t = {}
+    for url in vpp:gfind('%w+URL":"(.-)"') do
         url = url:gsub("\\/", "/")
-        -- found requested format id.
-        if id == req_fmt then
-            curr = url
-            break
+        local _,_,c,w,h,cn = url:find('(%w+)%-(%d+)x(%d+).-%.(%w+)')
+        if not c then
+            error('no match: codec, width, height, container')
         end
-        -- default to whatever is the first in the array.
-        if not curr then curr = url end
-        -- compare heights as reported in the URLs.
-        local _,_,w,h = url:find("(%d+)x(%d+)")
-        if tonumber(h) > tonumber(best_h) then
-            best_h = h
-            best = url
-        end
+--        print(c,w,h,cn)
+        table.insert(t, {width=tonumber(w), height=tonumber(h),
+                         container=cn,      codec=string.lower(c),
+                         url=url})
     end
 
-    curr = (req_fmt == "best") and best or curr
-    return {curr}
+    return t
 end
 
-function normalize(page_url) -- embedded URL to "regular".
-    if page_url:find("/swf/") then
-        page_url = page_url:gsub("/video/", "/")
-        page_url = page_url:gsub("/swf/", "/video/")
+function Dailymotion.choose_default(formats) -- Lowest quality available
+    local r = {width=0xffff, height=0xffff, url=nil}
+    local U = require 'quvi/util'
+    for _,v in pairs(formats) do
+        if U.is_lower_quality(v,r) then
+            r = v
+        end
     end
-    return page_url
+--    for k,v in pairs(r) do print(k,v) end
+    return r
+end
+
+function Dailymotion.choose_best(formats) -- Highest quality available
+    local r = {width=0, height=0, url=nil}
+    local U = require 'quvi/util'
+    for _,v in pairs(formats) do
+        if U.is_higher_quality(v,r) then
+            r = v
+        end
+    end
+--    for k,v in pairs(r) do print(k,v) end
+    return r
+end
+
+function Dailymotion.to_s(t)
+    return string.format("%s_%sp", t.container, t.height)
 end
 
 -- vim: set ts=4 sw=4 tw=72 expandtab:

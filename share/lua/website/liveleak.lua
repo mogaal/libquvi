@@ -1,6 +1,6 @@
 
 -- quvi
--- Copyright (C) 2010  Toni Gundogdu <legatvs@gmail.com>
+-- Copyright (C) 2010,2011  Toni Gundogdu <legatvs@gmail.com>
 --
 -- This file is part of quvi <http://quvi.sourceforge.net/>.
 --
@@ -33,30 +33,32 @@ function ident (self)
     return r
 end
 
--- Parse video URL.
+-- Query available formats.
+function query_formats(self)
+    self.formats = 'default'
+    return self
+end
+
+-- Parse media URL.
 function parse (self)
     self.host_id = "liveleak"
     local page   = quvi.fetch(self.page_url)
 
-    local _,_,s = page:find("<title>LiveLeak.com%s+-%s+(.-)</title>")
-    self.title  = s or error ("no match: video title")
+    local _,_,s = page:find("<title>LiveLeak.com%s+%-%s+(.-)</")
+    self.title  = s or error ("no match: media title")
 
-    local _,_,s = page:find("token=(.-)['&]")
-    self.id     = s or error ("no match: video id")
+    local _,_,s = self.page_url:find('view%?i=([%w_]+)')
+    self.id     = s or error ("no match: media id")
 
-    local _,_,s      = page:find("'config','(.-)'")
+    local _,_,s      = page:find('config: "(.-)"')
     local config_url = s or error ("no match: config")
+
     local opts       = { fetch_type = 'config' }
     local U          = require 'quvi/util'
     local config     = quvi.fetch (U.unescape(config_url), opts)
 
-    local _,_,s        = config:find("<file>(.-)</")
-    local playlist_url = s or error ("no match: playlist")
-    opts.fetch_type    = 'playlist'
-    local playlist     = quvi.fetch (playlist_url, opts)
-
-    local _,_,s = playlist:find("<location>(.-)</")
-    self.url    = {s or error ("no match: location")}
+    local _,_,s = config:find("<file>(.-)</")
+    self.url    = {s or error ("no match: file")}
 
     return self
 end

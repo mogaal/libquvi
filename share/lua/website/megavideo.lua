@@ -22,8 +22,10 @@
 -- 02110-1301  USA
 --
 
+local Megavideo = {} -- Utility functions unique to this script.
+
 -- Identify the script.
-function ident (self)
+function ident(self)
     package.path = self.script_dir .. '/?.lua'
     local C      = require 'quvi/const'
     local r      = {}
@@ -35,92 +37,18 @@ function ident (self)
     return r
 end
 
-function hexchar2decimal (s)
-    local n = tonumber(s) or string.byte(string.upper(s)) - 55
-
-    if n > 15 then
-        error("Hexadecimal value is too high.")
-    end
-
-    return n
+-- Query available formats.
+function query_formats(self)
+    self.formats = 'default'
+    return self
 end
 
-function decimal2hex (s)
-    return string.format("%x", s)
-end
-
-function decimal2binary (s)
-    local bin   = 0
-    local i     = 0
-
-    while s > 0
-    do
-        bin=bin + (s%2) * math.pow(10, i)
-		s=(s-s%2)/2
-        i=i+1
-    end
-
-    return bin
-end
-
-function binary2decimal (s)
-    local dec   = 0
-    local i     = 0
-
-    while s > 0
-    do
-        dec = dec + (s%10) * math.pow(2, i)
-        s=(s-(s % 10)) / 10
-        i=i+1
-    end
-
-    return dec
-end
-
-function splitall (s)
-    local c = ""
-    local i = 1
-    local t = {}
-
-    while i <= string.len(s)
-    do
-        c = string.sub(s, i, i)
-        table.insert(t, c)
-        i=i+1
-    end
-
-    return t
-end
-
-function binaryxor (s1, s2)
-    local r     = 0
-    local t     = 1
-    local i     = 0
-    local l     = math.abs(s1 - s2)
-
-    while t > 0
-    do
-        if ((s1%2) + (s2%2)) == 1
-        then
-            r=r+math.pow(2, i)
-        end
-
-		s1=(s1-s1%2)/2
-		s2=(s2-s2%2)/2
-
-        i=i+1
-        t=s1+s2
-    end
-
-    return r
-end
-
--- Parse video URL.
-function parse (self)
+-- Parse media URL.
+function parse(self)
     self.host_id = "megavideo"
 
     local _,_,s = self.page_url:find('?v=([^&]+)')
-    self.id     = s or error ("no match: video id")
+    self.id     = s or error ("no match: media id")
 
     local videolink_url =
         "http://www.megavideo.com/xml/videolink.php?v=" .. self.id
@@ -129,7 +57,7 @@ function parse (self)
         quvi.fetch(videolink_url, {fetch_type = 'config'})
 
     local _,_,s = videolink_url_page:find(' title="([^"]+)"')
-    self.title  = s or error ("no match: video title")
+    self.title  = s or error ("no match: media title")
     self.title  = string.gsub(self.title, "+", " ")
 
     local _,_,s = videolink_url_page:find(' un="([^"]+)"')
@@ -165,11 +93,12 @@ function parse (self)
     for loc3 = 1,string.len(str)
     do
         local s = "000"
-          .. decimal2binary(hexchar2decimal(string.sub(str,loc3,loc3)))
+          .. Megavideo.decimal2binary(
+                Megavideo.hexchar2decimal(string.sub(str,loc3,loc3)))
         table.insert(loc1, string.sub(s, string.len(s)-3))
     end
 
-    loc1 = splitall(table.concat(loc1))
+    loc1 = Megavideo.splitall(table.concat(loc1))
 
     for loc3 = 0, 384-1
     do
@@ -193,7 +122,7 @@ function parse (self)
     for loc3=0, 128-1
     do
         loc1[loc3+1] =
-          binaryxor(loc1[loc3 + 1], loc6[loc3 + 1 + 256]) % 2
+          Megavideo.binaryxor(loc1[loc3 + 1], loc6[loc3 + 1 + 256]) % 2
     end
 
     loc12 = table.concat(loc1)
@@ -208,8 +137,8 @@ function parse (self)
 
     for loc3 = 0,table.getn(loc7)-1
     do
-        table.insert(loc2,
-            decimal2hex(binary2decimal(tonumber(loc7[loc3+1]))) )
+        table.insert(loc2, Megavideo.decimal2hex(
+                            Megavideo.binary2decimal(tonumber(loc7[loc3+1]))) )
     end
 
     self.url = {
@@ -218,6 +147,90 @@ function parse (self)
     }
 
     return self
+end
+
+--
+-- Utility functions
+--
+
+function Megavideo.hexchar2decimal(s)
+    local n = tonumber(s) or string.byte(string.upper(s)) - 55
+
+    if n > 15 then
+        error("Hexadecimal value is too high.")
+    end
+
+    return n
+end
+
+function Megavideo.decimal2hex(s)
+    return string.format("%x", s)
+end
+
+function Megavideo.decimal2binary(s)
+    local bin   = 0
+    local i     = 0
+
+    while s > 0
+    do
+        bin=bin + (s%2) * math.pow(10, i)
+		s=(s-s%2)/2
+        i=i+1
+    end
+
+    return bin
+end
+
+function Megavideo.binary2decimal(s)
+    local dec   = 0
+    local i     = 0
+
+    while s > 0
+    do
+        dec = dec + (s%10) * math.pow(2, i)
+        s=(s-(s % 10)) / 10
+        i=i+1
+    end
+
+    return dec
+end
+
+function Megavideo.splitall(s)
+    local c = ""
+    local i = 1
+    local t = {}
+
+    while i <= string.len(s)
+    do
+        c = string.sub(s, i, i)
+        table.insert(t, c)
+        i=i+1
+    end
+
+    return t
+end
+
+function Megavideo.binaryxor(s1, s2)
+    local r     = 0
+    local t     = 1
+    local i     = 0
+    local l     = math.abs(s1 - s2)
+
+    while t > 0
+    do
+        if ((s1%2) + (s2%2)) == 1
+        then
+            r=r+math.pow(2, i)
+        end
+
+		s1=(s1-s1%2)/2
+		s2=(s2-s2%2)/2
+
+        i=i+1
+        t=s1+s2
+    end
+
+    return r
 end
 
 -- vim: set ts=4 sw=4 tw=72 expandtab:

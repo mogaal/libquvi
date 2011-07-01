@@ -19,7 +19,7 @@ AC_SUBST(QUVI_CURRENT)
 AC_SUBST(QUVI_REVISION)
 AC_SUBST(QUVI_AGE)
 
-AC_CONFIG_SRCDIR([lib/quvi.c])
+AC_CONFIG_SRCDIR([src/libquvi/quvi_api.c])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_AUX_DIR([config.aux])
 AC_CONFIG_MACRO_DIR([m4])
@@ -31,6 +31,7 @@ AC_DEFINE_UNQUOTED([CANONICAL_TARGET], "$target", [...])
 AC_DEFINE_UNQUOTED([CANONICAL_HOST], "$host", [...])
 
 AM_INIT_AUTOMAKE([-Wall -Werror foreign dist-bzip2 dist-xz])
+AM_SILENT_RULES([yes])
 
 LT_INIT()
 LT_PREREQ([2.2])
@@ -58,14 +59,6 @@ AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 AC_PROG_MKDIR_P
 
-AC_PATH_PROG(GENGETOPT, gengetopt, no)
-AM_CONDITIONAL([HAVE_GENGETOPT], [test x"$GENGETOPT" != "xno"])
-AC_SUBST(GENGETOPT)
-
-AC_PATH_PROG(DOXYGEN, doxygen, no)
-AM_CONDITIONAL([HAVE_DOXYGEN], [test x"$DOXYGEN" != "xno"])
-AC_SUBST(DOXYGEN)
-
 AC_PATH_PROG(PROVE, prove, no)
 AM_CONDITIONAL([HAVE_PROVE], [test x"$PROVE" != "xno"])
 AC_SUBST(PROVE)
@@ -73,14 +66,6 @@ AC_SUBST(PROVE)
 AC_PATH_PROG(VALGRIND, valgrind, no)
 AM_CONDITIONAL([HAVE_VALGRIND], [test x"$VALGRIND" != "xno"])
 AC_SUBST(VALGRIND)
-
-AC_PATH_PROG(POD2MAN, pod2man, no)
-AM_CONDITIONAL([HAVE_POD2MAN], [test x"$POD2MAN" != "xno"])
-AC_SUBST(POD2MAN)
-
-AC_PATH_PROG(POD2HTML, pod2html, no)
-AM_CONDITIONAL([HAVE_POD2HTML], [test x"$POD2HTML" != "xno"])
-AC_SUBST(POD2HTML)
 
 AC_PATH_PROG(DATE, date, no)
 if [ test x"$DATE" != "xno" ]; then
@@ -100,17 +85,54 @@ if [ test x"$GIT" != "xno" ]; then
     fi
 fi
 
+AC_PATH_PROGS(ND, [naturaldocs NaturalDocs], no)
+AM_CONDITIONAL([HAVE_ND], [test "x$ND" != "xno"])
+
 # Checks for libraries.
 AM_ICONV
-PKG_CHECK_MODULES(libcurl, libcurl >= 7.18.0)
-PKG_CHECK_MODULES(liblua, lua >= 5.1, [], [
-    PKG_CHECK_MODULES(liblua, lua51 >= 5.1, [], [
-        PKG_CHECK_MODULES(liblua, lua5.1 >= 5.1, [], [
-            PKG_CHECK_MODULES(liblua, lua-5.1 >= 5.1)
+PKG_CHECK_MODULES([libcurl], [libcurl >= 7.18.2])
+PKG_CHECK_MODULES([liblua], [lua >= 5.1], [], [
+    PKG_CHECK_MODULES([liblua], [lua51 >= 5.1], [], [
+        PKG_CHECK_MODULES([liblua], [lua5.1 >= 5.1], [], [
+            PKG_CHECK_MODULES(liblua, [lua-5.1 >= 5.1])
         ])
     ])
 ])
-AM_SILENT_RULES([yes])
+
+AC_ARG_WITH([soup], AS_HELP_STRING([--with-soup], [Build with libsoup]))
+
+AS_IF([test "x$with_soup" = "xyes"], [
+    # Either libsoup-gnome or libsoup.
+    PKG_CHECK_MODULES( [libsoup_gnome], [libsoup-gnome-2.4 >= 2.26], [
+        AC_DEFINE([HAVE_LIBSOUP_GNOME], [1], [Have libsoup-gnome])
+        libsoup_CFLAGS="$libsoup_gnome_CFLAGS"
+        libsoup_LIBS="$libsoup_gnome_LIBS"
+        ], [PKG_CHECK_MODULES([libsoup], [libsoup-2.4 >= 2.26])]
+    )
+    AC_SUBST(libsoup_CFLAGS)
+    AC_SUBST(libsoup_LIBS)
+])
+
+AM_CONDITIONAL([WITH_SOUP], [test x"$with_soup" = "xyes"])
+
+ND_FORMAT=HTML
+AC_ARG_WITH([nd-output],
+  [AS_HELP_STRING([--with-nd-output=FORMAT],
+    [NaturalDocs output format (HTML or FramedHTML)])],
+  [
+    if [ test x"$ND" = "xno" ]; then
+      AC_MSG_ERROR([NaturalDocs not found. No point in setting output format])
+    fi
+    case $withval in
+      HTML|FramedHTML)
+        ND_FORMAT=$withval
+        ;;
+      *)
+        AC_MSG_ERROR([NaturalDocs does not support $withval output format])
+        ;;
+    esac
+  ])
+AC_SUBST(ND_FORMAT)
 
 # Checks for header files.
 AC_HEADER_STDC # `stdlib.h', `stdarg.h', `string.h', ...
@@ -162,15 +184,6 @@ AC_ARG_ENABLE([tests],
     [enable_tests=no])
 AM_CONDITIONAL([ENABLE_TESTS], [test x"$enable_tests" != "xno"])
 
-# --enable-verbose-tests
-AC_ARG_ENABLE([verbose-tests],
-    [AS_HELP_STRING([--enable-verbose-tests],
-        [enable verbose tests @<:@default=no@:>@])],
-    [],
-    [enable_verbose_tests=no])
-AM_CONDITIONAL([ENABLE_VERBOSE_TESTS],
-    [test x"$enable_verbose_tests" != "xno"])
-
 # --enable-nsfw
 AC_ARG_ENABLE([nsfw],
     [AS_HELP_STRING([--enable-nsfw],
@@ -203,71 +216,51 @@ AC_ARG_ENABLE([nlfy],
     [enable_nlfy=no])
 AM_CONDITIONAL([ENABLE_NLFY], [test x"$enable_nlfy" != "xno"])
 
-# --with-man
-AC_ARG_WITH([man],
-    [AS_HELP_STRING([--with-man],
+# --with-manual
+AC_ARG_WITH([manual],
+    [AS_HELP_STRING([--with-manual],
         [install manual pages @<:@default=yes@:>@])],
     [],
-    [with_man=yes])
-AM_CONDITIONAL([WITH_MAN], [test x"$with_man" != "xno"])
-
-# --with-doc
-AC_ARG_WITH([doc],
-    [AS_HELP_STRING([--with-doc],
-        [install documentation @<:@default=yes@:>@])],
-    [],
-    [with_doc=yes])
-AM_CONDITIONAL([WITH_DOC], [test x"$with_doc" != "xno"])
+    [with_manual=yes])
+AM_CONDITIONAL([WITH_MANUAL], [test x"$with_manual" != "xno"])
 
 # GNU ld?
 AM_CONDITIONAL([HAVE_GNU_LD], [test x"$with_gnu_ld" = "xyes"])
 
 AC_CONFIG_FILES([
     Makefile
-    include/Makefile
-    include/quvi/Makefile
-    include/quvi/quvi.h
-    lib/Makefile
-    man1/Makefile
-    share/Makefile
-    doc/Makefile
     src/Makefile
+    src/libquvi/Makefile
+    src/libquvi/quvi/Makefile
+    src/quvi/Makefile
     examples/Makefile
     tests/Makefile
+    doc/Makefile
+    doc/man1/Makefile
+    share/Makefile
     scripts/Makefile
     libquvi.pc
-    doxygen.conf
 ])
 
 AC_OUTPUT
 
 AC_MSG_NOTICE([
 
-Configured:
-    quvi version:   ${VERSION}  g:${git_describe}  b:${build_date}
-    host setup:     ${host}
-    compiler:       ${CC}
-    cflags:         ${CFLAGS}
-    prefix:         ${prefix}
+ quvi version:   ${VERSION}  g:${git_describe}  b:${build_date}
+ host setup:     ${host}
+ compiler:       ${CC}
+ cflags:         ${CFLAGS}
+ prefix:         ${prefix}
 
 Options:
-    build libquvi:  shared=${enable_shared} static=${enable_static}
-    build examples: ${enable_examples}
-    build quvi:     ${enable_quvi}
-    --
-    enable tests:   ${enable_tests}
-    enable todo:    ${enable_todo}
-    enable nsfw:    ${enable_nsfw}
-    enable nlfy:    ${enable_nlfy}
-    --
-    install manual: ${with_man}
-    install docs:   ${with_doc}
+ build examples: ${enable_examples}
+ build libquvi:  shared=${enable_shared} static=${enable_static}
+ build quvi:     ${enable_quvi}
+--
+ enable tests:   ${enable_tests}
+ enable todo:    ${enable_todo}
+ enable nsfw:    ${enable_nsfw}
+ enable nlfy:    ${enable_nlfy}
+--
+ install manual: ${with_manual}
 ])
-
-#Other:
-#    gengetopt:      ${GENGETOPT}
-#    doxygen:        ${DOXYGEN}
-#    prove:          ${PROVE}
-#    pod2man:        ${POD2MAN}
-#    pod2html:       ${POD2HTML}
-

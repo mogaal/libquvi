@@ -1,4 +1,82 @@
 
+0.2.17  Fri Jun 17 2011  Toni Gundogdu
+
+Changes: dist
+    - Remove --enable-verbose-test, set TEST_VERBOSE for same effect
+    - Rewrite doc/ files for NaturalDocs and place under doc/nd/
+    - Add doc/nd/ with NaturalDocs formatted text files
+        - These are not installed with quvi, see also --with-doc below
+    - Bump libcurl prerequisite to 7.18.2 (#58)
+    - Rename --with-man -> --with-manual
+    - Remove --with-doc
+        - Apart from doc/man1/quvi.1, nothing is installed from doc/
+        - See also --with-manual
+
+Changes: API
+    - Mark QUVIOPT_WRITEFUNCTION as deprecated (removed in 0.2.20)
+        - Remove QUVI_WRITEFUNC_ABORT
+        - Remove quvi_callback_write
+    - Rewrite header files to use NaturalDocs comments instead
+        - Move function descriptions to src/lib/*_api.c
+    - Add quvi_query_formats
+
+Changes: quvi
+    - Make minor changes to "--support arg" output
+    - Add --query-formats
+
+Changes: Webscripts
+    - academicearth.lua: Rewrite to redirect to Blip
+    - collegehumor.lua: Add support for dorkly (#55)
+        - Thanks to Lionel Elie Mamane for the original patch
+    - vimeo.lua: Handle player.vimeo.com URLs (#56)
+        - Thanks Lionel
+
+Fixes: Webscripts
+    - bikeradar.lua: Title parsing
+
+
+0.2.16  Sat May 21 2011  Toni Gundogdu
+
+Changes: quvi
+    - Rename '-s,--no-shortened' -> '-r,--no-resolve'
+    - Add support for reading input from files
+
+Changes: API
+    - Add "Network interface" (quvi_net_*, QUVI_NET_*, quvi/net.h)
+        - Add examples/callback_libsoup.c
+    - Make LUA errors more informative (e.g. fname, func, etc.)
+    - Add "Linked list interface" (quvi_llst_*, quvi/llst.h)
+    - Add quvi_supported_ident (#44)
+        - Add quvi_supported_ident_close
+        - Add quvi_ident_getprop
+    - Deprecate remaining symbols that use 'video' and 'link' in names
+    - Rename (&depr.) QUVISTATUS_SHORTENED -> QUVISTATUS_RESOLVE
+    - Rename (&depr.) QUVIOPT_NOSHORTENED -> QUVIOPT_NORESOLVE
+    - Deprecate QUVIINFO_HTTPCODE, QUVIPROP_HTTPCODE
+
+Changes: Webscripts
+    - Pass _quvi_media_t to quvi object functions in LUA reg. index
+    - collegehumor.lua: Add 'best' ('hq') format
+    - LUA: Add resolve function to quvi object
+    - Add bikeradar.lua (#50)
+    - Add guardian.lua (#51)
+    - Add more NSFW scripts
+    - Add blip.lua (#39)
+
+Changes: Build system
+    - Add --with-soup (see INSTALL)
+
+Changes: Documentation
+    - INSTALL: Remove list of (obsolete) env. variables
+    - Add doc/WebsiteScriptGuideLines
+    - API: Reorganize "Modules"
+
+Bugfixes: Webscripts
+    - collegehumor.lua:51: server response code 404 (#35)
+    - vimeo.lua:62: no match: hd button (#48)
+    - liveleak.lua:48: no match: config (#47)
+
+
 0.2.15  Fri Apr 15 2011  Toni Gundogdu
 Changes:
         - Add support for reading URLs from the stdin

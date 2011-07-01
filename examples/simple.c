@@ -23,18 +23,7 @@
 #include <stdio.h>
 #include <quvi/quvi.h>
 
-static void check_error(quvi_t q, QUVIcode rc)
-{
-  if (rc == QUVI_OK)
-    return;
-
-  fprintf(stderr, "error: %s\n", quvi_strerror(q, rc));
-
-  if (q != NULL)
-    quvi_close(&q);
-
-  exit(1);
-}
+#include "common.h"
 
 /* See src/quvi.c for a more complete example of status callback
  * function */
@@ -52,9 +41,9 @@ static int status_callback(long param, void *data)
 
 int main(int argc, char **argv)
 {
-  quvi_video_t v;               /* Video handle */
+  quvi_media_t m;               /* Media handle */
   QUVIcode rc;                  /* quvi return code */
-  char *lnk;                    /* Holds parsed video link */
+  char *url;                    /* Holds parsed media stream URL */
   quvi_t q;                     /* Session handle */
 
   /* Start a new session. */
@@ -63,18 +52,18 @@ int main(int argc, char **argv)
 
   /* Set session options. */
   quvi_setopt(q, QUVIOPT_STATUSFUNCTION, &status_callback);
-  quvi_setopt(q, QUVIOPT_NOVERIFY, 1L); /* Do not verify video link. */
+  quvi_setopt(q, QUVIOPT_NOVERIFY, 1L); /* Do not verify media stream URL */
 
-  /* Parse video details from the specified URL. */
-  rc = quvi_parse(q, "http://vimeo.com/1485507", &v);
+  /* Parse media details from the specified URL. */
+  rc = quvi_parse(q, "http://vimeo.com/1485507", &m);
   check_error(q, rc);
 
-  /* Access the parsed video details. */
-  quvi_getprop(v, QUVIPROP_VIDEOURL, &lnk);
-  puts(lnk);
+  /* Access the parsed media details. */
+  quvi_getprop(m, QUVIPROP_MEDIAURL, &url);
+  puts(url);
 
   /* When done with the parsed details, free them. */
-  quvi_parse_close(&v);
+  quvi_parse_close(&m);
 
   /* When done, close the session. */
   quvi_close(&q);

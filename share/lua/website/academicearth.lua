@@ -1,6 +1,6 @@
 
 -- quvi
--- Copyright (C) 2010  Toni Gundogdu <legatvs@gmail.com>
+-- Copyright (C) 2010,2011  Toni Gundogdu <legatvs@gmail.com>
 --
 -- This file is part of quvi <http://quvi.sourceforge.net/>.
 --
@@ -20,10 +20,13 @@
 -- 02110-1301  USA
 --
 
--- Note: the videos are hosted by blip.tv (direct URL) and youtube (redirect).
+-- academicearth.org hosts videos at either blip.tv or youtube.com
+-- This webscript uses the "redirect_url" to point to the source.
+
+local AcademicEarth = {} -- Utility functions specific to this script
 
 -- Identify the script.
-function ident (self)
+function ident(self)
     package.path = self.script_dir .. '/?.lua'
     local C      = require 'quvi/const'
     local r      = {}
@@ -35,31 +38,34 @@ function ident (self)
     return r
 end
 
--- Parse video URL.
-function parse (self)
-    self.host_id = "academicearth"
-    local page   = quvi.fetch (self.page_url)
+-- Query available formats.
+function query_formats(self)
+    return AcademicEarth.get_redirect_url(self)
+end
 
-    local _,_,s  = page:find ('flashVars.flvURL = "(.-)"')
-    if (s ~= nil) then
-        self.url = {s}
+-- Parse media URL.
+function parse(self)
+    return AcademicEarth.get_redirect_url(self)
+end
 
-        local _,_,s = s:find ('%-(.-)%.')
-        self.id     = s or error ("no match: video id")
+--
+-- Utility functions
+--
 
-        local _,_,s = page:find ('<title>(.-)%s+%|')
-        self.title  = s or error ("no match: video title")
+function AcademicEarth.get_redirect_url(self)
+    local page = quvi.fetch(self.page_url)
+
+    local _,_,s = page:find('ytID = "(.-)"')
+    if s then
+        self.redirect_url = 'http://youtube.com/e/' .. s
     else
-        local _,_,s = page:find ('flashVars.ytID = "(.-)"')
-
-        if (s ~= nil) then
-            self.redirect_url = "http://youtube.com/watch?v=" .. s
-            return self
+        local _,_,s = page:find('embed src="(.-)"') -- blip
+        if s then
+            self.redirect_url = s
         else
-            error ("no match: flv: no clip available for this lecture")
+            error('no match: blip or youtube pattern')
         end
     end
-
     return self
 end
 

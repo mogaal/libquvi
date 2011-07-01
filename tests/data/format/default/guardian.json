@@ -1,0 +1,17 @@
+{
+  "host": "guardian",
+  "page_title": "Euro 2012 qualifier preview: England v Switzerland",
+  "page_url": "http://www.guardian.co.uk/football/video/2011/jun/02/euro-2012-england-switzerland-video",
+  "id": "375254492",
+  "format_requested": "default",
+  "thumbnail_url": "http://cdn.theguardian.tv/bc/281851582/281851582_972052511001_020611england-4772269.jpg?pubId=281851582",
+  "link": [
+    {
+      "id": "1",
+      "length_bytes": "11942522",
+      "content_type": "video/mp4",
+      "file_suffix": "mp4",
+      "url": ""
+    }
+  ]
+}

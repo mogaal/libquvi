@@ -1,6 +1,6 @@
 
 -- quvi
--- Copyright (C) 2010  Toni Gundogdu <legatvs@gmail.com>
+-- Copyright (C) 2010,2011  Toni Gundogdu <legatvs@gmail.com>
 --
 -- This file is part of quvi <http://quvi.sourceforge.net/>.
 --
@@ -83,6 +83,73 @@ end
 
 function M.ends(s,e) -- http://lua-users.org/wiki/StringRecipes
     return e == '' or s:sub(-#e) == e
+end
+
+function M.is_higher_quality(a,b)
+    if a.height > b.height then
+        if a.width > b.width then
+            if a['bitrate'] then -- Optional: bitrate
+                if a.bitrate > b.bitrate then
+                    return true
+                end
+            else
+                return true
+            end
+        end
+    end
+    return false
+end
+
+function M.is_lower_quality(a,b)
+    if a.height < b.height then
+        if a.width < b.width then
+            if a['bitrate'] then -- Optiona: bitrate
+                if a.bitrate < b.bitrate then
+                    return true
+                end
+            else
+                return true
+            end
+        end
+    end
+    return false
+end
+
+function M.choose_format(self,
+                         formats,
+                         callback_choose_best,
+                         callback_choose_default,
+                         callback_to_s)
+    local r_fmt = self.requested_format
+
+    if r_fmt == 'best' then
+        return callback_choose_best(formats)
+    end
+
+    for _,v in pairs(formats) do
+        if r_fmt == callback_to_s(v) then
+            return v
+        end
+    end
+
+    return callback_choose_default(formats)
+end
+
+function M.to_timestamp(s) -- Based on <http://is.gd/ee9ZTD>
+    local p = "%a+, (%d+) (%a+) (%d+) (%d+):(%d+):(%d+)"
+
+    local d,m,y,hh,mm,ss = s:match(p)
+    if not d then error('no match: date') end
+
+    local MON = {Jan=1, Feb=2, Mar=3, Apr=4, May=5, Jun=6, Jul=7, Aug=8,
+                 Sep=9, Oct=10, Nov=11, Dec=12}
+
+    local m = MON[m]
+
+    local offset = os.time() - os.time(os.date("!*t"))
+
+    return os.time({day=d,month=m,year=y,
+                    hour=hh,min=mm,sec=ss}) + offset
 end
 
 return M

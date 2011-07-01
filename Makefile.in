@@ -35,16 +35,15 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 target_triplet = @target@
-@WITH_DOC_TRUE@am__append_1 = doc
-@ENABLE_TESTS_TRUE@am__append_2 = tests
+@ENABLE_TESTS_TRUE@am__append_1 = tests
 subdir = .
 DIST_COMMON = README $(am__configure_deps) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(srcdir)/config.h.in \
-	$(srcdir)/doxygen.conf.in $(srcdir)/libquvi.pc.in \
-	$(top_srcdir)/configure AUTHORS COPYING ChangeLog INSTALL NEWS \
-	config.aux/config.guess config.aux/config.rpath \
-	config.aux/config.sub config.aux/depcomp config.aux/install-sh \
-	config.aux/ltmain.sh config.aux/missing config.guess
+	$(srcdir)/libquvi.pc.in $(top_srcdir)/configure AUTHORS \
+	COPYING ChangeLog INSTALL NEWS config.aux/config.guess \
+	config.aux/config.rpath config.aux/config.sub \
+	config.aux/depcomp config.aux/install-sh config.aux/ltmain.sh \
+	config.aux/missing
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/libtool.m4 \
 	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
@@ -56,7 +55,7 @@ am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
  configure.lineno config.status.lineno
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = config.h
-CONFIG_CLEAN_FILES = libquvi.pc doxygen.conf
+CONFIG_CLEAN_FILES = libquvi.pc
 CONFIG_CLEAN_VPATH_FILES =
 AM_V_GEN = $(am__v_GEN_$(V))
 am__v_GEN_ = $(am__v_GEN_$(AM_DEFAULT_VERBOSITY))
@@ -103,7 +102,7 @@ AM_RECURSIVE_TARGETS = $(RECURSIVE_TARGETS:-recursive=) \
 	distdir dist dist-all distcheck
 ETAGS = etags
 CTAGS = ctags
-DIST_SUBDIRS = include lib man1 src examples share scripts doc tests
+DIST_SUBDIRS = src examples share scripts doc tests
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -162,7 +161,6 @@ DATE = @DATE@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
-DOXYGEN = @DOXYGEN@
 DSYMUTIL = @DSYMUTIL@
 DUMPBIN = @DUMPBIN@
 ECHO_C = @ECHO_C@
@@ -172,7 +170,6 @@ EGREP = @EGREP@
 EXEEXT = @EXEEXT@
 EXTRA_LIBQUVI_LDFLAGS = @EXTRA_LIBQUVI_LDFLAGS@
 FGREP = @FGREP@
-GENGETOPT = @GENGETOPT@
 GIT = @GIT@
 GREP = @GREP@
 INSTALL = @INSTALL@
@@ -193,6 +190,8 @@ LTLIBOBJS = @LTLIBOBJS@
 MAKEINFO = @MAKEINFO@
 MANIFEST_TOOL = @MANIFEST_TOOL@
 MKDIR_P = @MKDIR_P@
+ND = @ND@
+ND_FORMAT = @ND_FORMAT@
 NM = @NM@
 NMEDIT = @NMEDIT@
 OBJDUMP = @OBJDUMP@
@@ -210,8 +209,6 @@ PATH_SEPARATOR = @PATH_SEPARATOR@
 PKG_CONFIG = @PKG_CONFIG@
 PKG_CONFIG_LIBDIR = @PKG_CONFIG_LIBDIR@
 PKG_CONFIG_PATH = @PKG_CONFIG_PATH@
-POD2HTML = @POD2HTML@
-POD2MAN = @POD2MAN@
 POW_LIB = @POW_LIB@
 PROVE = @PROVE@
 QUVI_AGE = @QUVI_AGE@
@@ -264,6 +261,10 @@ libdir = @libdir@
 libexecdir = @libexecdir@
 liblua_CFLAGS = @liblua_CFLAGS@
 liblua_LIBS = @liblua_LIBS@
+libsoup_CFLAGS = @libsoup_CFLAGS@
+libsoup_LIBS = @libsoup_LIBS@
+libsoup_gnome_CFLAGS = @libsoup_gnome_CFLAGS@
+libsoup_gnome_LIBS = @libsoup_gnome_LIBS@
 localedir = @localedir@
 localstatedir = @localstatedir@
 mandir = @mandir@
@@ -289,13 +290,11 @@ ACLOCAL_AMFLAGS = -I m4
 EXTRA_DIST = \
 libquvi.pc.in \
 libquvi.ver \
-doxygen.conf.in \
 ChangeLog.pre-gitlog
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libquvi.pc
-SUBDIRS = include lib man1 src examples share scripts $(am__append_1) \
-	$(am__append_2)
+SUBDIRS = src examples share scripts doc $(am__append_1)
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
@@ -352,8 +351,6 @@ $(srcdir)/config.h.in:  $(am__configure_deps)
 distclean-hdr:
 	-rm -f config.h stamp-h1
 libquvi.pc: $(top_builddir)/config.status $(srcdir)/libquvi.pc.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-doxygen.conf: $(top_builddir)/config.status $(srcdir)/doxygen.conf.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 
 mostlyclean-libtool:
@@ -736,7 +733,7 @@ distclean: distclean-recursive
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
 	-rm -f Makefile
 distclean-am: clean-am distclean-generic distclean-hdr \
-	distclean-libtool distclean-local distclean-tags
+	distclean-libtool distclean-tags
 
 dvi: dvi-recursive
 
@@ -806,18 +803,17 @@ uninstall-am: uninstall-pkgconfigDATA
 	clean-libtool ctags ctags-recursive dist dist-all dist-bzip2 \
 	dist-gzip dist-lzma dist-shar dist-tarZ dist-xz dist-zip \
 	distcheck distclean distclean-generic distclean-hdr \
-	distclean-libtool distclean-local distclean-tags \
-	distcleancheck distdir distuninstallcheck dvi dvi-am html \
-	html-am info info-am install install-am install-data \
-	install-data-am install-dvi install-dvi-am install-exec \
-	install-exec-am install-html install-html-am install-info \
-	install-info-am install-man install-pdf install-pdf-am \
-	install-pkgconfigDATA install-ps install-ps-am install-strip \
-	installcheck installcheck-am installdirs installdirs-am \
-	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
-	tags tags-recursive uninstall uninstall-am \
-	uninstall-pkgconfigDATA
+	distclean-libtool distclean-tags distcleancheck distdir \
+	distuninstallcheck dvi dvi-am html html-am info info-am \
+	install install-am install-data install-data-am install-dvi \
+	install-dvi-am install-exec install-exec-am install-html \
+	install-html-am install-info install-info-am install-man \
+	install-pdf install-pdf-am install-pkgconfigDATA install-ps \
+	install-ps-am install-strip installcheck installcheck-am \
+	installdirs installdirs-am maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-generic \
+	mostlyclean-libtool pdf pdf-am ps ps-am tags tags-recursive \
+	uninstall uninstall-am uninstall-pkgconfigDATA
 
 
 @ENABLE_TESTS_TRUE@check: test
@@ -825,38 +821,29 @@ uninstall-am: uninstall-pkgconfigDATA
 @ENABLE_TESTS_TRUE@test:
 @ENABLE_TESTS_TRUE@	@(cd tests; $(MAKE) all test)
 
-.PHONY: pod2man pod2html dox cmdline
-pod2man:
-@HAVE_POD2MAN_TRUE@	@POD2MAN@ -c "quvi manual" -n quvi \
-@HAVE_POD2MAN_TRUE@		 -s 1 -r @VERSION@ $(top_srcdir)/man1/quvi.1.pod $(top_builddir)/man1/quvi.1
-@HAVE_POD2MAN_FALSE@	@echo "error: configure did not find pod2man command"
-pod2html:
-@HAVE_POD2HTML_TRUE@	@POD2HTML@ --title="quvi manual" \
-@HAVE_POD2HTML_TRUE@		--infile=$(top_srcdir)/man1/quvi.1.pod \
-@HAVE_POD2HTML_TRUE@        --outfile=$(top_builddir)/man1/quvi.1.html
-@HAVE_POD2HTML_FALSE@	@echo "error: configure did not find pod2html command"
-dox:
-@HAVE_DOXYGEN_TRUE@	@$(DOXYGEN) $(top_builddir)/doxygen.conf
-@HAVE_DOXYGEN_TRUE@	@echo doxygen generated pages can be found in doc/ subdir
-@HAVE_DOXYGEN_FALSE@	@echo configure did not find doxygen
-cmdline:
-@HAVE_GENGETOPT_TRUE@	@GENGETOPT@ < $(top_srcdir)/src/cmdline.ggo -C --unamed-opts=URL \
-@HAVE_GENGETOPT_TRUE@		--output-dir $(top_srcdir)/src --no-version
-@HAVE_GENGETOPT_FALSE@	@echo "error: configure did not find 'gengetopt' command"
-
-local-clean:
-	@rm -rf *.tmp *.core *.html
+.PHONY: doc dist-doc
+doc:
+@HAVE_ND_TRUE@	@test -d $(top_builddir)/doc/quvi-@VERSION@ || \
+@HAVE_ND_TRUE@		mkdir $(top_builddir)/doc/quvi-@VERSION@
+@HAVE_ND_TRUE@	@test -d $(top_builddir)/doc/nd_temp || \
+@HAVE_ND_TRUE@		mkdir $(top_builddir)/doc/nd_temp
+@HAVE_ND_TRUE@	@@ND@ -i $(top_srcdir)/doc/ -i $(top_srcdir)/src/ \
+@HAVE_ND_TRUE@		-o $(ND_FORMAT) $(top_builddir)/doc/quvi-@VERSION@/ \
+@HAVE_ND_TRUE@		-p $(top_builddir)/doc/nd_temp/ && echo See doc/quvi-@VERSION@
+@HAVE_ND_FALSE@	@echo "error: configure did not find NaturalDocs" && exit 1
+dist-doc: doc
+	@tar chof - $(top_builddir)/doc/quvi-@VERSION@ | \
+			GZIP=--best gzip -c >quvi-doc-@VERSION@.tar.gz \
+			&& echo Created quvi-doc-@VERSION@.tar.gz
 
 ChangeLog:
 	@if test -f $(top_srcdir)/.git/HEAD; then \
-		git log --stat --after="Sun Nov 14 11:03:50 2010" > $@; \
+		@GIT@ log --stat --after="Sun Nov 14 11:03:50 2010" > $@; \
 	fi
 
 dist: ChangeLog
 
 .PHONY: ChangeLog
-
-distclean-local: local-clean
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
