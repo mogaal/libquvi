@@ -1,3 +1,11 @@
+libquvi (0.2.17-1) unstable; urgency=low
+
+  * New upstream release. 
+  * Remove override_dh_auto_test in d/rules because NO_INTERNET var is not
+    used anymore.
+
+ -- Alejandro Garrido Mota <garridomota@gmail.com>  Fri, 01 Jul 2011 12:32:17 -0430
+
 libquvi (0.2.15-1) unstable; urgency=low
 
   * New upstream release (Closes: #622253). 
