@@ -2,133 +2,160 @@
 1. Foreword
 ===========
 
-This directory contains the website scripts quvi uses to parse the video
-links. Should video link parsing ever break (and they will eventually),
-these are the scripts that one should take a look at first.
+This directory contains the website scripts quvi uses to parse the media
+stream URLs. Should the parsing ever break, these are the scripts that
+should be looked at first.
+
+If you are looking to write a new script, see the existing scripts and
+read the HowtoWriteWebsiteScript (found typically in either
+$prefix/doc/quvi/ or $top_srcdir/doc).
 
 These scripts are written in Lua. If you are new to Lua,
 <http://www.lua.org/pil/> is a good place to start.
 
 
-1.1. Notes
-----------
+2. Website script
+=================
 
-See quvi/ subdir for additional scripts that can be used in your
-scripts. You can find plenty of examples in the website scripts.
+Each website script is expected to have the following functions:
+  * ident (identifies the script to the library)
+  * parse (parses the media details and returns them to the library)
 
-You may need to unescape URLs from time to time. The "quvi" object
-(described below) previously contained a function `quvi.unescape' which
-could be used to do this. This function was removed in 0.2.14 and as
-of 0.2.14 you can do the following in your scripts instead:
-
+To access the "utility functions" from your script, e.g.:
   local U = require 'quvi/util'
   local s = U.unescape(url)
 
-
-2. Structure of an quvi website script
-======================================
-
-Each website script must contain the following functions:
-  * ident
-  * parse
+See the 'util.lua' script in the lua/website/quvi/ directory for the
+available functions.
 
 
-2.1. function ident (self)
-------------------------------
+table ident(self) [REQUIRED]
+----------------------------
 
-quvi calls this function to check if the script can handle
-the user specified video page URL.
+Identifies the script to the library. The library calls this function to
+check if the script can handle the user specified URL.
 
 Parameters:
   * self (table)
-    - page_url (string)   -- User specified video page URL
+    - page_url (string)   -- User specified page URL
     - script_dir (string) -- Path to the directory containing this script
 
-Returns:
-  * A table containing the following details
+Returns: table containing the following details:
 
-    * domain (string)
-      - Identifies the script, essentially a pattern
-      - Used to match the user specified video page URL
-      - Should cover any additional TLDs and website domain  names
-      - Examples: youtube.com, video.google.
+  * domain (string)
+    - Identifies the script, this is essentially a pattern, e.g.
+      "video.google." (note the lack of TLD) or "youtube.com"
+    - Should cover any additional TLDs and website domain names
+    - If the script can handle >1 (_different_) websites, put the
+      domain names into an array, each domain name separated by '|',
+      see collegehumor.lua for an example of this
 
-    * formats (string)
-      - Array of available video format IDs (e.g. "default|best|hq|hd")
-      - Specify at least 'default' in this
-      - Append 'best' to the list only if there are more than one format
-        IDs and the script contains an algorithm for this purpose
+  * formats (string)
+    - Array of available format IDs (e.g. "default|best|hq|hd")
+    - Contains at least "default"
+    - Add "best" to the list *only if* there are more than one format
+      ("default") IDs and the script contains an algorithm for parsing
+      these additional formats
 
-    * categories (number)
-      - Bit pattern defining which categories this script belongs to
-      - See quvi/const.lua for the available category bits (e.g. proto_*)
-      - You can also use bit_or of quvi/bit.lua for multi-categorization
-      - Most scripts usually set this to proto_http
+  * categories (number)
+    - Bit pattern defining which categories this script belongs to
+    - See quvi/const.lua for the available category bits (e.g. proto_*)
+    - You can also use bit_or of quvi/bit.lua for multi-categorization
+    - Most scripts usually set this to proto_http
 
-    * handles (boolean)
-      - Whether this script can handle the user specified video page URL
+  * handles (boolean)
+    - Whether this script can handle the user specified page URL
+    - For better results, use:
+
+        local U   = require 'quvi/util'
+        r.handles = U.handles(self.page_url,
+            domain_patterns, path_patterns, query_patterns)
+
+        See quvi/util.lua for "handles" function.
 
 
-2.2. function parse (self)
----------------------------
+self query_formats(self) [REQUIRED]
+-----------------------------------
 
-quvi calls this function to fetch and parse the user specified URL.
-This function looks typically very different for each website. Compare
-buzzhumor.lua and youtube.lua for an example of this.
-
-The "parse" function is expected set the following details:
-  * host_id (string)
-  * title (string)
-  * id (string)
-  * url (array of strings)
-  * redirect_url (string) [see notes below]
-
-Optional details (set if available):
-  * thumbnail_url (string)
-  * duration (numeric)
-
-Each of these belong to the `self' table passed to the function
-as a parameter. e.g. self.host_id = 'youtube' or self.id = '1234'
+Queries the URL for available formats.
 
 Parameters:
-  * quvi sets the following table keys before it runs the script
-    - page_url (string)         -- User specified video page URL
-    - requested_format (string) -- User requested video format ID
-    - script_dir (string)       -- Path to the directory containing this script
+  * self (table)
+    - page_url (string) -- User specified page URL
+
+Sets:
+  * self.formats (string) -- Each format string separated by '|'
+  Optional:
+  * redirect_url (string, see collegehumor.lua)
 
 Returns:
-  * The updated `self' table
-
-Notes:
-  * "redirect_url", special field, if set (default:empty):
-    - Follow to a new location (of redirect_url)
-    - Replaces the original user defined "page_url" (set by quvi_parse)
-    - See academicearth.lua script for an example
+  * Updated `self' table
 
 
-3. Exposed C functions
-======================
+self parse(self) [REQUIRED]
+---------------------------
 
-quvi exposes the following C functions to the website scripts. Each of
-these are in the "quvi" object, e.g. quvi.fetch.
+Parses the media details.
+
+Parameters:
+  * self (table)
+    - page_url         (string) -- User specified page URL
+    - requested_format (string) -- User requested format ID
+
+Sets:
+  * host_id (string)
+  * title   (string)
+  * id      (string)
+  * url     (array of strings)
+  Optional:
+  * redirect_url  (string, see academicearth.lua)
+  * start_time    (string, see youtube.lua)
+  * thumbnail_url (string)
+  * duration      (numeric, msec)
+
+Returns:
+  * Updated `self' table
 
 
-3.1. Function: string quvi.fetch (url, options)
---------------------------------------------------------------
+3. quvi object
+==============
+
+string quvi.fetch(url, options)
+-------------------------------
 
 Fetches data from the specified URL.
 
 Parameters:
-  * url (string)                - URL to fetch
-  * options (table)             - Additional options* [optional]
-
-options:
-  * fetch_type       (string)   ("page"|"config"|"playlist") =page
-  * arbitrary_cookie (string)   e.g. "foo=1;bar=2"
-  * user_agent       (string)   e.g. "foo/0.1"
-
-arbitrary_cookie value is passed (as it is) to libcurl, see:
-  http://curl.haxx.se/libcurl/c/curl_easy_setopt.html#CURLOPTCOOKIE
+  * url     (string) -- URL to fetch
+  * options (table)  -- Additional options [OPTIONAL]
+    - fetch_type       (string)   ("page"|"config"|"playlist") =page
+    - arbitrary_cookie (string)   e.g. "foo=1;bar=2"
+        - <http://curl.haxx.se/libcurl/c/curl_easy_setopt.html#CURLOPTCOOKIE>
+    - user_agent       (string)   e.g. "foo/0.1"
 
 Returns:
   * Fetched data
+
+Examples:
+  local data = quvi.fetch(url) -- fetch_type default is "page"
+  local data = quvi.fetch(url, {fetch_type = 'config'})
+  local data = quvi.fetch(url, {arbitrary_cookie = 'foo=1'})
+  local data = quvi.fetch(url, {user_agent = 'foo/1.0'})
+
+
+string quvi.resolve(url)
+------------------------
+
+Check whether the specified `url' redirects to a new location.
+
+Parameters:
+  * url (string) - URL to be checked
+
+Returns:
+  * New location or an empty string
+
+Example:
+  local n = quvi.resolve('http://is.gd/foobar')
+  if #n > 0 then
+    print('redirects to', n)
+  end

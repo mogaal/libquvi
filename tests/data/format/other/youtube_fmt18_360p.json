@@ -1,0 +1,18 @@
+{
+  "host": "youtube",
+  "page_title": "Surf NYC (4K resolution)",
+  "page_url": "http://www.youtube.com/watch?v=9dgSa4wmMzk",
+  "id": "9dgSa4wmMzk",
+  "format_requested": "fmt18_360p",
+  "thumbnail_url": "http://i2.ytimg.com/vi/9dgSa4wmMzk/default.jpg",
+  "duration": "130000",
+  "link": [
+    {
+      "id": "1",
+      "length_bytes": "8507112",
+      "content_type": "video/mp4",
+      "file_suffix": "mp4",
+      "url": ""
+    }
+  ]
+}

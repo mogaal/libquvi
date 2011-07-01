@@ -33,19 +33,25 @@ function ident (self)
     return r
 end
 
--- Parse video URL.
+-- Query available formats.
+function query_formats(self)
+    self.formats = 'default'
+    return self
+end
+
+-- Parse media URL.
 function parse (self)
     self.host_id = "clipfish"
     local page   = quvi.fetch(self.page_url)
 
     local _,_,s = page:find("<title>(.-)</title>")
-    self.title  = s or error ("no match: video title")
+    self.title  = s or error ("no match: media title")
 
     self.title = self.title:gsub("Video:%s+", "")
     self.title = self.title:gsub("%s+-%s+Clipfish", "")
 
     local _,_,s = page:find("/video/(.-)/")
-    self.id     = s or error ("no match: video id")
+    self.id     = s or error ("no match: media id")
 
     local config_url =
         string.format("http://www.clipfish.de/video_n.php?p=0|DE&vid=%s",

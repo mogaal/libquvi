@@ -33,16 +33,22 @@ function ident (self)
     return r
 end
 
--- Parse video URL.
+-- Query available formats.
+function query_formats(self)
+    self.formats = 'default'
+    return self
+end
+
+-- Parse media URL.
 function parse (self)
     self.host_id = "break"
     local page   = quvi.fetch(self.page_url)
 
     local _,_,s = page:find('id="vid_title" content="(.-)"')
-    self.title  = s or error ("no match: video title")
+    self.title  = s or error ("no match: media title")
 
     local _,_,s = page:find("ContentID='(.-)'")
-    self.id     = s or error ("no match: video id")
+    self.id     = s or error ("no match: media id")
 
     local _,_,s = page:find("FileName='(.-)'")
     local fname = s or error ("no match: content file name")

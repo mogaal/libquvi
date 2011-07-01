@@ -1,0 +1,11 @@
+
+Title: Help: Development
+
+About: How to get the code
+
+quvi project uses the repo.or.cz service for hosting the git repo.
+Visit the <web interface at http://repo.or.cz/w/quvi.git>.
+
+(start code)
+git clone git://repo.or.cz/quvi.git
+(end)

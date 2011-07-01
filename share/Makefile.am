@@ -11,6 +11,8 @@ lua/website/quvi/url.lua \
 lua/website/quvi/util.lua \
 lua/website/academicearth.lua \
 lua/website/arte.lua \
+lua/website/bikeradar.lua \
+lua/website/blip.lua \
 lua/website/bloomberg.lua \
 lua/website/break.lua \
 lua/website/buzzhumor.lua \
@@ -25,6 +27,7 @@ lua/website/funnyordie.lua \
 lua/website/globo.lua \
 lua/website/golem.lua \
 lua/website/google.lua \
+lua/website/guardian.lua \
 lua/website/liveleak.lua \
 lua/website/megavideo.lua \
 lua/website/pluzz.lua \
@@ -37,9 +40,9 @@ lua/website/tagtele.lua \
 lua/website/ted.lua \
 lua/website/tmunderground.lua \
 lua/website/theonion.lua \
-lua/website/tvlux.lua \
 lua/website/vimeo.lua \
-lua/website/youtube.lua
+lua/website/youtube.lua \
+lua/website/collegehumor.lua
 
 if ENABLE_NSFW
 DIST_lua += \
@@ -47,12 +50,14 @@ lua/website/keezmovies.lua \
 lua/website/tube8.lua \
 lua/website/xhamster.lua \
 lua/website/xvideos.lua \
-lua/website/youjizz.lua
+lua/website/youjizz.lua \
+lua/website/pornhub.lua \
+lua/website/spankwire.lua
 endif
 
 if ENABLE_TODO
 DIST_lua += \
-lua/website/collegehumor.lua
+lua/website/tvlux.lua
 endif
 
 EXTRA_DIST = $(DIST_lua)

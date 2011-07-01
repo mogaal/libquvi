@@ -4,12 +4,13 @@
   "page_url": "http://www.spiegel.de/video/video-1012582.html",
   "id": "1012582",
   "format_requested": "best",
+  "duration": "52000",
   "link": [
     {
       "id": "1",
-      "length_bytes": "8477540",
-      "content_type": "video/mp4",
-      "file_suffix": "mp4",
+      "length_bytes": "5197155",
+      "content_type": "video/x-flv",
+      "file_suffix": "flv",
       "url": ""
     }
   ]

@@ -1,7 +1,0 @@
-Howto: Get the development code
-===============================
-
-We use the repo.or.cz service for hosting our git repo.
-The web interface can be accessed at: <http://repo.or.cz/w/quvi.git>
-
-git clone git://repo.or.cz/quvi.git

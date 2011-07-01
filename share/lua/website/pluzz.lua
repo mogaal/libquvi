@@ -37,7 +37,13 @@ function ident (self)
     return t
 end
 
--- Parse video URL.
+-- Query available formats.
+function query_formats(self)
+    self.formats = 'default'
+    return self
+end
+
+-- Parse media URL.
 function parse (self)
     self.host_id = "pluzz"
 
@@ -45,7 +51,7 @@ function parse (self)
     local _,_,s  = page:find('<div id="playerCtnr">.-<a href="(.-)"')
 
     local errmsg = 
-        "no match: video id (note: pluzz.fr videos expire 7 days after "
+        "no match: media id (note: pluzz.fr videos expire 7 days after "
         .. "their original broadcast on France Televisions)"
 
     self.redirect_url = s or error (errmsg)

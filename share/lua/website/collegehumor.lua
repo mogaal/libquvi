@@ -1,6 +1,7 @@
 
 -- quvi
--- Copyright (C) 2010  Lionel Elie Mamane <lionel@mamane.lu>
+-- Copyright (C) 2011  Toni Gundogdu <legatvs@gmail.com>
+-- Copyright (C) 2010-2011  Lionel Elie Mamane <lionel@mamane.lu>
 --
 -- This file is part of quvi <http://quvi.sourceforge.net/>.
 --
@@ -20,63 +21,149 @@
 -- 02110-1301  USA
 --
 
+local CollegeHumor = {} -- Utility functions unique to this script
+
 -- Identify the script.
-function ident (self)
+function ident(self)
     package.path = self.script_dir .. '/?.lua'
     local C      = require 'quvi/const'
     local r      = {}
-    r.domain     = "collegehumor.com"
-    r.formats    = "default"
--- default and hq seem to be the same. see also 'hq' parsing.
---    r.formats    = "default|best|hq"
+    local domains= {"collegehumor.com", "dorkly.com"}
+    r.domain     = table.concat(domains, "|")
+    r.formats    = "default|best"
     r.categories = C.proto_http
     local U      = require 'quvi/util'
-    local u      = collegehumorify(self.page_url)
-    r.handles    = U.handles(u, {r.domain}, {"/video%:%d+/?"})
+    r.handles    = U.handles(self.page_url, domains,
+                    {"/video[:/]%d+/?", "/embed/%d+"})
     return r
 end
 
--- Parse video URL.
-function parse (self)
-    self.host_id = "collegehumor"
+-- Query formats.
+function query_formats(self)
+    if CollegeHumor.redirect_if_embed(self) then
+        return self
+    end
 
-    self.page_url, self.id = collegehumorify(self.page_url)
-    self.id = self.id or error("no match: video id")
+    local config  = CollegeHumor.get_config(self)
+    local formats = CollegeHumor.iter_formats(config)
 
-    -- http://www.collegehumor.com/video:1942317 - OK
-    -- http://www.collegehumor.com/video:6463979 - FAILS
+    local t = {}
+    for k,v in pairs(formats) do
+        table.insert(t, CollegeHumor.to_s(v))
+    end
 
-    local page  = quvi.fetch(
-        "http://www.collegehumor.com/moogaloop/video:" .. self.id,
-        {fetch_type = 'config'})
-
-    local _,_,sd_url = page:find('<file><!%[%w+%[(.-)%]')
-    local _,_,hq_url = page:find('<hq><!%[%w+%[(.-)%]')
-
-    local url = sd_url or hq_url -- default to 'sd'
-    url = url or error("no match: video url") -- we need this at least
-
-    local r = self.requested_format
-    url = ((r == 'hq' or r == 'best') and hq_url) and hq_url or sd_url
-
-    self.url = {url}
-
-    local _,_,s = page:find('<caption>(.-)<')
-    self.title  = s or error("no match: video title")
-
-    local _,_,s = page:find('<thumbnail><!%[%w+%[(.-)%]')
-    self.thumbnail_url = s or ""
+    table.sort(t)
+    self.formats = table.concat(t, "|")
 
     return self
 end
 
-function collegehumorify(url)
-    if not url then return url end
-    local _,_,id = url:find('collegehumor%.com/video[/:](%d+)')
-    if id then
-        url = "http://www.collegehumor.com/video:" .. id
+-- Parse media URL.
+function parse(self)
+    self.host_id  = "collegehumor"
+
+    if CollegeHumor.redirect_if_embed(self) then
+        return self
     end
-    return url,id
+
+    local config = CollegeHumor.get_config(self)
+
+    local _,_,s = config:find('<caption>(.-)<')
+    self.title  = s or error("no match: media title")
+
+    local _,_,s = config:find('<thumbnail><!%[.-%[(.-)%]')
+    self.thumbnail_url = s or ""
+
+    local formats = CollegeHumor.iter_formats(config)
+    local U       = require 'quvi/util'
+    self.url      = {U.choose_format(self, formats,
+                                     CollegeHumor.choose_best,
+                                     CollegeHumor.choose_default,
+                                     CollegeHumor.to_s).url
+                        or error('no match: media url')}
+    return self
+end
+
+--
+-- Utility functions
+--
+
+function CollegeHumor.redirect_if_embed(self) -- dorkly embeds YouTube videos
+    if self.page_url:match('/embed/%d+') then
+        local page  = quvi.fetch(self.page_url)
+        local _,_,s = page:find('youtube.com/embed/([%w-_]+)')
+        if s then
+            -- Hand over to youtube.lua
+            self.redirect_url = 'http://youtube.com/watch?v=' .. s
+            return true
+        end
+    end
+    return false
+end
+
+function CollegeHumor.get_media_id(self)
+    local R         = require 'quvi/url'
+    local domain    = R.parse(self.page_url).host:gsub('^www%.', '', 1)
+
+    _,_,self.host_id = domain:find('^(.+)%.[^.]+$')
+    if not self.host_id then
+        error("no match: domain")
+    end
+
+    _,_,self.id = self.page_url:find('/video[/:](%d+)')
+    if not self.id then
+        error("no match: media id")
+    end
+
+    return domain
+end
+
+function CollegeHumor.get_config(self)
+    local domain = CollegeHumor.get_media_id(self)
+
+    -- quvi normally checks the page URL for a redirection to another
+    -- URL. Disabling this check (QUVIOPT_NORESOLVE) breaks the support
+    -- which is why we do this manually here.
+    local r = quvi.resolve(self.page_url)
+
+    -- Make a note of the use of the quvi.resolve returned string.
+    local config_url =
+        string.format("http://www.%s/moogaloop/video%s%s",
+            domain, (#r > 0) and ':' or '/', self.id)
+
+    return quvi.fetch(config_url, {fetch_type='config'})
+end
+
+function CollegeHumor.iter_formats(config)
+    local _,_,sd_url = config:find('<file><!%[.-%[(.-)%]')
+    local _,_,hq_url = config:find('<hq><!%[.-%[(.-)%]')
+    local hq_avail   = (hq_url and #hq_url > 0) and 1 or 0
+
+    local t = {}
+
+    local _,_,s = sd_url:find('%.(%w+)$')
+    table.insert(t, {quality='sd', url=sd_url, container=s})
+
+    if hq_avail == 1 and hq_url then
+        local _,_,s = hq_url:find('%.(%w+)$')
+        table.insert(t, {quality='hq', url=hq_url, container=s})
+    end
+
+    return t
+end
+
+function CollegeHumor.choose_best(formats) -- Assume last is best.
+    local r
+    for _,v in pairs(formats) do r = v end
+    return r
+end
+
+function CollegeHumor.choose_default(formats) -- Whatever is found first.
+    for _,v in pairs(formats) do return v end
+end
+
+function CollegeHumor.to_s(t)
+    return string.format('%s_%s', t.container, t.quality)
 end
 
 -- vim: set ts=4 sw=4 tw=72 expandtab:

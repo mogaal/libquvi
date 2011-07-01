@@ -34,11 +34,10 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 target_triplet = @target@
-@ENABLE_VERBOSE_TESTS_TRUE@am__append_1 = -v
-@HAVE_VALGRIND_TRUE@am__append_2 = -v $(VALGRIND)
-@ENABLE_TODO_TRUE@am__append_3 = --todo
-@ENABLE_NLFY_TRUE@am__append_4 = --nlfy
-@ENABLE_NSFW_TRUE@am__append_5 = --nsfw
+@HAVE_VALGRIND_TRUE@am__append_1 = -v $(VALGRIND)
+@ENABLE_TODO_TRUE@am__append_2 = --todo
+@ENABLE_NLFY_TRUE@am__append_3 = --nlfy
+@ENABLE_NSFW_TRUE@am__append_4 = --nsfw
 subdir = tests
 DIST_COMMON = README $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -83,7 +82,6 @@ DATE = @DATE@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
-DOXYGEN = @DOXYGEN@
 DSYMUTIL = @DSYMUTIL@
 DUMPBIN = @DUMPBIN@
 ECHO_C = @ECHO_C@
@@ -93,7 +91,6 @@ EGREP = @EGREP@
 EXEEXT = @EXEEXT@
 EXTRA_LIBQUVI_LDFLAGS = @EXTRA_LIBQUVI_LDFLAGS@
 FGREP = @FGREP@
-GENGETOPT = @GENGETOPT@
 GIT = @GIT@
 GREP = @GREP@
 INSTALL = @INSTALL@
@@ -114,6 +111,8 @@ LTLIBOBJS = @LTLIBOBJS@
 MAKEINFO = @MAKEINFO@
 MANIFEST_TOOL = @MANIFEST_TOOL@
 MKDIR_P = @MKDIR_P@
+ND = @ND@
+ND_FORMAT = @ND_FORMAT@
 NM = @NM@
 NMEDIT = @NMEDIT@
 OBJDUMP = @OBJDUMP@
@@ -131,8 +130,6 @@ PATH_SEPARATOR = @PATH_SEPARATOR@
 PKG_CONFIG = @PKG_CONFIG@
 PKG_CONFIG_LIBDIR = @PKG_CONFIG_LIBDIR@
 PKG_CONFIG_PATH = @PKG_CONFIG_PATH@
-POD2HTML = @POD2HTML@
-POD2MAN = @POD2MAN@
 POW_LIB = @POW_LIB@
 PROVE = @PROVE@
 QUVI_AGE = @QUVI_AGE@
@@ -185,6 +182,10 @@ libdir = @libdir@
 libexecdir = @libexecdir@
 liblua_CFLAGS = @liblua_CFLAGS@
 liblua_LIBS = @liblua_LIBS@
+libsoup_CFLAGS = @libsoup_CFLAGS@
+libsoup_LIBS = @libsoup_LIBS@
+libsoup_gnome_CFLAGS = @libsoup_gnome_CFLAGS@
+libsoup_gnome_LIBS = @libsoup_gnome_LIBS@
 localedir = @localedir@
 localstatedir = @localstatedir@
 mandir = @mandir@
@@ -218,107 +219,26 @@ t/shortened.t
 TESTS_D_T = t/d/url.t
 TESTS_POD_T = t/pod.t
 TESTS_LIB = lib/Test/Quvi.pm
-JSON = \
-data/resolve/inscript_redirect.json \
-data/resolve/shortened.json \
-data/format/default/megavideo.json \
-data/format/default/charlierose.json \
-data/format/default/liveleak.json \
-data/format/default/publicsenat.json \
-data/format/default/tmunderground.json \
-data/format/default/gaskrank.json \
-data/format/default/spiegel.json \
-data/format/default/funnyordie.json \
-data/format/default/funnyhub.json \
-data/format/default/academicearth.json \
-data/format/default/theonion.json \
-data/format/default/ted.json \
-data/format/default/tagtele.json \
-data/format/default/break.json \
-data/format/default/youtube.json \
-data/format/default/golem.json \
-data/format/default/google.json \
-data/format/default/soundcloud.json \
-data/format/default/globo.json \
-data/format/default/cbsnews.json \
-data/format/default/sapo.json \
-data/format/default/tvlux.json \
-data/format/default/bloomberg.json \
-data/format/default/buzzhumor.json \
-data/format/default/vimeo.json \
-data/format/other/cbsnews_mp4_240p.json \
-data/format/other/cbsnews_m4v_216p.json \
-data/format/other/ted_best.json \
-data/format/other/spiegel_1400k.json \
-data/format/other/spiegel_best.json \
-data/format/other/youtube_mp4_720p.json \
-data/format/other/cbsnews_mp4_480p.json \
-data/format/other/youtube_mp4_360p.json \
-data/format/other/youtube_mp4_3072p.json \
-data/format/other/youtube_mp4_1080p.json \
-data/format/other/cbsnews_m4v_360p.json \
-data/format/other/spiegel_576k.json \
-data/format/other/golem_ipod.json \
-data/format/other/ted_hd.json \
-data/format/other/cbsnews_best.json \
-data/format/other/cbsnews_mp4_180p.json \
-data/format/other/cbsnews_m4v_480p.json \
-data/format/other/golem_high.json \
-data/format/other/youtube_best.json \
-data/format/other/youtube_flv_480p.json \
-data/format/other/vimeo_best.json \
-data/format/other/spiegel_928k.json \
-data/format/other/youtube_flv_240p.json \
-data/format/other/golem_best.json \
-data/format/other/youtube_flv_360p.json \
-data/format/other/vimeo_hd.json
-
-JSON_IGNORE = \
-data/format/default/ignore/length_bytes/dailymotion.json \
-data/format/other/ignore/length_bytes/dailymotion_hq.json \
-data/format/other/ignore/length_bytes/dailymotion_hd.json \
-data/format/other/ignore/length_bytes/dailymotion_best.json
-
-JSON_TODO = \
-data/format/default/todo/collegehumor.json
-
-JSON_NLFY = \
-data/format/default/nlfy/sevenload.json \
-data/format/default/nlfy/clipfish.json
-
-JSON_NSFW = \
-data/format/default/nsfw/xvideos.json \
-data/format/default/nsfw/tube8.json \
-data/format/default/nsfw/keezmovies.json \
-data/format/default/nsfw/xhamster.json \
-data/format/default/nsfw/youjizz.json
-
-README = \
-README \
-data/format/default/ignore/README \
-data/format/default/todo/README \
-data/format/default/non-http/README \
-data/format/other/ignore/README
-
+JSON = data
 EXTRA_DIST = \
  $(README) $(TESTS_LIB) \
  $(TESTS_T) $(TESTS_NSFW_T) $(TESTS_D_T) $(TESTS_POD_T) \
- $(JSON) $(JSON_IGNORE) $(JSON_TODO) $(JSON_NLFY) $(JSON_NSFW)
+ $(JSON)
 
-PROVE_OPTS_COMMON = --nocolor $(am__append_1)
+PROVE_OPTS_COMMON = --nocolor
 
 # Options for those tests that use Test::Quvi.
 PROVE_OPTS = -I $(top_srcdir)/tests/lib/ $(PROVE_OPTS_COMMON)
-TESTQUVI_OPTS = -q $(top_builddir)/src/quvi -d $(top_srcdir)/tests -b \
-	$(top_srcdir)/share $(am__append_2) $(am__append_3) \
-	$(am__append_4) $(am__append_5)
+TESTQUVI_OPTS = -q $(top_builddir)/src/quvi/quvi -d \
+	$(top_srcdir)/tests -b $(top_srcdir)/share $(am__append_1) \
+	$(am__append_2) $(am__append_3) $(am__append_4)
 
 # Options for those tests that *do not* use Test::Quvi.
 
 # t/pod.t: GetOptions accepts a different (from those used in
 # Test::Quvi) set of options.
 PROVE_OPTS_POD = $(PROVE_OPTS_COMMON)
-TESTQUVI_OPTS_POD = -p $(top_srcdir)/man1
+TESTQUVI_OPTS_POD = -p $(top_srcdir)/doc/man1
 all: all-am
 
 .SUFFIXES:
@@ -505,12 +425,13 @@ uninstall-am:
 
 
 test: all
-	@ ok=1; for t in $(TESTS_T); do \
-		( $(PROVE) $(PROVE_OPTS) $(top_srcdir)/tests/$$t \
+	@verbose=; test -n "$$TEST_VERBOSE" && verbose=-v; \
+	ok=1; for t in $(TESTS_T); do \
+		( $(PROVE) $$verbose $(PROVE_OPTS) $(top_srcdir)/tests/$$t \
 		:: $(TESTQUVI_OPTS) ) || ok=; \
 	done; \
 	for t in $(TESTS_POD_T); do \
-		( $(PROVE) $(PROVE_OPTS_POD) $(top_srcdir)/tests/$$t \
+		( $(PROVE) $$verbose $(PROVE_OPTS_POD) $(top_srcdir)/tests/$$t \
 		:: $(TESTQUVI_OPTS_POD) ) || ok=; \
 	done; \
 	if test -z "$$ok"; then exit 1; fi

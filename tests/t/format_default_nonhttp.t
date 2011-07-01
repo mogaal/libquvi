@@ -28,7 +28,7 @@ my $j = $q->get_json_obj;
 foreach (@files)
 {
     my $e = $q->read_json($_);
-    my ($r, $o) = $q->run($e->{page_url}, '-qsa');
+    my ($r, $o) = $q->run($e->{page_url}, '-qra');
     is($r, 0, "quvi exit status == 0")
       or diag $e->{page_url};
   SKIP:
