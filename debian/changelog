@@ -3,9 +3,11 @@ libquvi (0.2.19-1) unstable; urgency=low
   * New upstream release. 
   * Remove override_dh_auto_test in d/rules because NO_INTERNET var is not
     used anymore.
-  * Change package name to libquvi6
-  * Get lua scripts from libquvi6 and make libquvi-common with its
+  * Change package name to libquvi6. Rename d/libquvi0.install to 
+    d/libquvi6.install and d/libquvi0.symbols to d/libquvi6.symbols 
+  * Get lua scripts from libquvi6 and make libquvi-common with it.
   * Change libquvi-doc to all
+  * Update symbol (d/libquvi6.symbols) file 
 
  -- Alejandro Garrido Mota <garridomota@gmail.com>  Fri, 01 Jul 2011 12:32:17 -0430
 
