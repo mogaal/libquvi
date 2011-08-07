@@ -1,18 +1,32 @@
-libquvi.so.0 libquvi0 #MINVER#
+libquvi.so.6 libquvi6 #MINVER#
  VER_0.1.0@VER_0.1.0 0.2.15
  quvi_close@VER_0.1.0 0.2.15
  quvi_free@VER_0.1.0 0.2.15
  quvi_getinfo@VER_0.1.0 0.2.15
  quvi_getprop@VER_0.1.0 0.2.15
+ quvi_ident_getprop@VER_0.1.0 0.2.19
  quvi_init@VER_0.1.0 0.2.15
+ quvi_llst_append@VER_0.1.0 0.2.19
+ quvi_llst_data@VER_0.1.0 0.2.19
+ quvi_llst_free@VER_0.1.0 0.2.19
+ quvi_llst_next@VER_0.1.0 0.2.19
+ quvi_llst_size@VER_0.1.0 0.2.19
+ quvi_net_get_one_prop_feat@VER_0.1.0 0.2.19
+ quvi_net_getprop@VER_0.1.0 0.2.19
+ quvi_net_getprop_feat@VER_0.1.0 0.2.19
+ quvi_net_seterr@VER_0.1.0 0.2.19
+ quvi_net_setprop@VER_0.1.0 0.2.19
  quvi_next_host@VER_0.1.0 0.2.15
  quvi_next_media_url@VER_0.1.0 0.2.15
  quvi_next_supported_website@VER_0.1.0 0.2.15
  quvi_next_videolink@VER_0.1.0 0.2.15
  quvi_parse@VER_0.1.0 0.2.15
  quvi_parse_close@VER_0.1.0 0.2.15
+ quvi_query_formats@VER_0.1.0 0.2.19
  quvi_setopt@VER_0.1.0 0.2.15
  quvi_strerror@VER_0.1.0 0.2.15
  quvi_supported@VER_0.1.0 0.2.15
+ quvi_supported_ident@VER_0.1.0 0.2.19
+ quvi_supported_ident_close@VER_0.1.0 0.2.19
  quvi_version@VER_0.1.0 0.2.15
  quvi_write_callback_default@VER_0.1.0 0.2.15
