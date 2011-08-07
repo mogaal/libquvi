@@ -1,0 +1,17 @@
+{
+  "host": "audioboo",
+  "page_title": "QI iBoo 16",
+  "page_url": "http://audioboo.fm/boos/386995-qi-iboo-16",
+  "id": "386995",
+  "format_requested": "default",
+  "thumbnail_url": "http://audioboo.fm/files/images/0128/7490/07908315-C3C1-43FD-B993-9BDC130D1C85-7675-000011AE77684DC0_small.jpg",
+  "link": [
+    {
+      "id": "1",
+      "length_bytes": "280704",
+      "content_type": "audio/mpeg",
+      "file_suffix": "mpeg",
+      "url": ""
+    }
+  ]
+}

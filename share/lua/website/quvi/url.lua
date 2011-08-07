@@ -56,11 +56,11 @@ local function protect_segment(s)
 end
 
 -----------------------------------------------------------------------------
--- Encodes a string into its escaped hexadecimal representation
+-- Decodes a string from its escaped hexadecimal representation
 -- Input
---   s: binary string to be encoded
+--   s: binary string to be decoded
 -- Returns
---   escaped representation of string binary
+--   unescaped representation of string binary
 -----------------------------------------------------------------------------
 function M.unescape(s)
     return string.gsub(s, "%%(%x%x)", function(hex)

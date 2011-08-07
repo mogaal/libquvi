@@ -54,21 +54,19 @@ end
 
 -- Parse video URL.
 function parse(self)
-    self.host_id  = "ted"
+    self.host_id = "ted"
+    local page   = quvi.fetch(self.page_url)
 
-    local page = quvi.fetch(self.page_url)
+    self.id      = page:match('ti:"(%d+)"')
+                    or error("no match: media id")
 
-    local _,_,s = page:find('ti:"(%d+)"')
-    self.id = s or error("no match: media id")
+    self.title   = page:match('<title>(.-)%s+|')
+                    or error("no match: media title")
 
-    local _,_,s = page:find('<span id="altHeadline">(.-)</span>')
-    local U      = require 'quvi/util'
-    self.title  = U.unescape(s) or error("no match: media title")
-
-    local _,_,s = page:find('&amp;su=(.-)&amp;')
-    self.thumbnail_url = s or ""
+    self.thumbnail_url = page:match('&amp;su=(.-)&amp;') or ''
 
     local formats = Ted.iter_formats(page)
+    local U       = require 'quvi/util'
     self.url      = {U.choose_format(self, formats,
                                      Ted.choose_best,
                                      Ted.choose_default,
@@ -83,36 +81,42 @@ end
 --
 
 function Ted.iter_formats(page)
-    --
-    -- Assume first mp4 to be the 'sd' and the following (if any) the
-    -- 'hd'. Some media have also audio tracks (e.g. 'mp3').
-    --
-    local have_sd = false
-    local t = {}
-    for src,c in page:gfind('href="(.-)">.-%((%w+)%)') do
-        if src:find('/download/') then
-            local u,q = 'http://www.ted.com' .. src
-            c         = string.lower(c)
-            if c == 'mp4' then
-                if not have_sd then
-                    have_sd = true
-                    q = 'sd'
-                else
-                    q = 'hd'
-                end
-            end
---            print(u,c,q)
+    local pp = 'http://download.ted.com'
+    local p  = 'href="' ..pp.. '(.-)"'
+    local t  = {}
+    for u in page:gfind(p) do
+        local c = u:match('%.(%w+)$') or error('no match: container')
+        local q = u:match('%-(%w+)%.%w+$') -- nil is acceptable here
+        u = pp .. u
+        if not Ted.find_duplicate(t,u) then
             table.insert(t, {url=u, container=c, quality=q})
+--            print(u,c,q)
         end
     end
     return t
 end
 
+function Ted.find_duplicate(t,u)
+    for _,v in pairs(t) do
+        if v.url == u then return true end
+    end
+    return false
+end
+
 function Ted.choose_best(formats) -- Last 'mp4' is the 'best'
     local r = Ted.choose_default(formats)
+    local p = '(%d+)p'
     for _,v in pairs(formats) do
-        if v.container == 'mp4' then
-            r = v
+        if v.container:match('mp4') then
+            if v.quality then
+                local a = v.quality:match(p)
+                local b = (r.quality) and r.quality:match(p) or 0
+                if a and tonumber(a) > tonumber(b) then
+                    r = v
+                end
+            else
+                r = v
+            end
         end
     end
     return r
@@ -121,7 +125,7 @@ end
 function Ted.choose_default(formats) -- First 'mp4' is the 'default'
     local r -- Return this if mp4 is not found for some reason
     for _,v in pairs(formats) do
-        if v.container == 'mp4' then
+        if v.container:match('mp4') then
             return v
         end
         r = v
@@ -131,8 +135,8 @@ end
 
 function Ted.to_s(t)
     return (t.quality)
-            and string.format("%s_%s", t.container, t.quality)
-            or  string.format("%s", t.container)
+        and string.format("%s_%s", t.container, t.quality)
+        or  string.format("%s", t.container)
 end
 
 -- vim: set ts=4 sw=4 tw=72 expandtab:

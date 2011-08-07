@@ -1,6 +1,6 @@
 
 -- quvi
--- Copyright (C) 2010  quvi project
+-- Copyright (C) 2011  Toni Gundogdu <legatvs@gmail.com>
 --
 -- This file is part of quvi <http://quvi.sourceforge.net/>.
 --
@@ -20,19 +20,16 @@
 -- 02110-1301  USA
 --
 
-local Xvideos = {} -- Utility functions unique to this script
-
 -- Identify the script.
 function ident (self)
     package.path = self.script_dir .. '/?.lua'
     local C      = require 'quvi/const'
     local r      = {}
-    r.domain     = "xvideos.com"
+    r.domain     = "audioboo.fm"
     r.formats    = "default"
     r.categories = C.proto_http
     local U      = require 'quvi/util'
-    Xvideos.normalize(self)
-    r.handles    = U.handles(self.page_url, {r.domain}, {"/video%d+"})
+    r.handles    = U.handles(self.page_url, {r.domain}, {"/boos/%d+%-"})
     return r
 end
 
@@ -44,39 +41,25 @@ end
 
 -- Parse media URL.
 function parse (self)
-    self.host_id = "xvideos"
-    Xvideos.normalize(self)
-    local page   = quvi.fetch(self.page_url)
+    self.host_id = "audioboo"
 
-    local _,_,s = page:find("<title>(.-)%s+-%s+XVID")
-    self.title  = s or error ("no match: media title")
+    local oe_url =
+        "http://audioboo.fm/publishing/oembed.json?url=" .. self.page_url
 
-    local _,_,s = page:find("id_video=(.-)&amp;")
-    self.id     = s or error ("no match: media id")
+    local oe = quvi.fetch(oe_url, {fetch_type='config'})
 
-    local _,_,s = page:find("url_bigthumb=(.-)&amp;")
-    self.thumbnail_url = s or ''
+    self.title = oe:match('"title":"(.-)"')
+                    or error('no match: media title')
 
-    local _,_,s = page:find("flv_url=(.-)&amp;")
-    s           = s or error ("no match: flv url")
-    local U     = require 'quvi/util'
-    self.url    = {U.unescape(s)}
+    self.thumbnail_url = oe:match('"thumbnail_url":"(.-)"') or ''
+
+    self.id = oe:match('id=."boo_embed_(.-)."')
+                or error('no match: media id')
+
+    self.url = {oe:match('a href=."(.-)."')
+                    or error('no match: media url')}
 
     return self
-end
-
---
--- Utility functions
---
-
-function Xvideos.normalize(self) -- "Normalize" embedded URL
-    if not self.page_url then return end
-    -- http://flashservice.xvideos.com/embedframe/ID to
-    -- http://www.xvideos.com/videoID/
-    local url = self.page_url
-    url = url:gsub("flashservice.xvideos.com", "www.xvideos.com")
-    url = url:gsub("/embedframe/", "/video")
-    self.page_url = url
 end
 
 -- vim: set ts=4 sw=4 tw=72 expandtab:

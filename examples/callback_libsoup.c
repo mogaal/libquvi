@@ -17,7 +17,7 @@
  * 02110-1301  USA
  */
 
-/* callback_libsoup.c -- Use libsoup (async) instead of libcurl (easy) */
+/* callback_libsoup.c - use libsoup instead of library default libcurl */
 
 #include "config.h"
 

@@ -8,10 +8,10 @@
   "link": [
     {
       "id": "1",
-      "length_bytes": "23256236",
+      "length_bytes": "22120752",
       "content_type": "video/mp4",
       "file_suffix": "mp4",
-      "url": ""
+      "url": "http://download.ted.com/talks/EythorBender_2011.mp4"
     }
   ]
 }

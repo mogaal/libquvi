@@ -1,0 +1,17 @@
+{
+  "host": "foxnews",
+  "page_title": "Atheist Raises Money for Vandalized Church",
+  "page_url": "http://video.foxnews.com/v/1004005450001",
+  "id": "1004005450001",
+  "format_requested": "best",
+  "thumbnail_url": "http://video.foxnews.com/thumbnails/061811/640/360/061811_ff_vandalized_640.jpg",
+  "link": [
+    {
+      "id": "1",
+      "length_bytes": "31741475",
+      "content_type": "video/mp4",
+      "file_suffix": "mp4",
+      "url": ""
+    }
+  ]
+}

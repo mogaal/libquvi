@@ -66,7 +66,8 @@ Print license and exit.
 =item B<--support> [I<arg>]
 
 Print supported hosts and exit. If an I<arg> is specified, the program
-checks, instead, whether the I<arg> is supported.
+checks, instead, whether the I<arg> is supported. For checking which
+formats are available to an URL, use C<--query-formats> instead.
 
 =item B<--xml>
 
@@ -128,7 +129,7 @@ Enable all categories of webscripts.
 
 =item B<-F, --query-formats>
 
-Query available formats.
+Query available formats to an URL.
 
 =item B<-f, --format> I<arg>
 

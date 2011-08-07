@@ -100,8 +100,9 @@ end
 
 function Dailymotion.normalize(page_url) -- "Normalize" embedded URLs
     if page_url:find("/swf/") then
-        page_url = page_url:gsub("/video/", "/")
-        page_url = page_url:gsub("/swf/", "/video/")
+        page_url = page_url:gsub("/swf/", "/")
+    elseif page_url:find("/embed/") then
+        page_url = page_url:gsub("/embed/", "/")
     end
     return page_url
 end

@@ -11,6 +11,7 @@ lua/website/quvi/url.lua \
 lua/website/quvi/util.lua \
 lua/website/academicearth.lua \
 lua/website/arte.lua \
+lua/website/audioboo.lua \
 lua/website/bikeradar.lua \
 lua/website/blip.lua \
 lua/website/bloomberg.lua \
@@ -19,17 +20,20 @@ lua/website/buzzhumor.lua \
 lua/website/cbsnews.lua \
 lua/website/charlierose.lua \
 lua/website/clipfish.lua \
+lua/website/collegehumor.lua \
 lua/website/dailymotion.lua \
-lua/website/gaskrank.lua \
+lua/website/foxnews.lua \
 lua/website/francetelevisions.lua \
 lua/website/funnyhub.lua \
 lua/website/funnyordie.lua \
+lua/website/gaskrank.lua \
 lua/website/globo.lua \
 lua/website/golem.lua \
 lua/website/google.lua \
 lua/website/guardian.lua \
 lua/website/liveleak.lua \
 lua/website/megavideo.lua \
+lua/website/metacafe.lua \
 lua/website/pluzz.lua \
 lua/website/publicsenat.lua \
 lua/website/sapo.lua \
@@ -41,8 +45,8 @@ lua/website/ted.lua \
 lua/website/tmunderground.lua \
 lua/website/theonion.lua \
 lua/website/vimeo.lua \
-lua/website/youtube.lua \
-lua/website/collegehumor.lua
+lua/website/yfrog.lua \
+lua/website/youtube.lua
 
 if ENABLE_NSFW
 DIST_lua += \
