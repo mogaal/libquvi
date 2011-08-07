@@ -1,4 +1,26 @@
 
+0.2.19  Fri Aug 05 2011  Toni Gundogdu
+
+Fixes: Webscripts
+    - ted.lua: attempt to index local 's' (#65)
+    - youtube.lua: no match: fmt_url_map (#63)
+        - Thanks to Zefram <zefram@fysh.org> for the patch
+    - funnyordie.lua: no match: flv url (#64)
+
+
+0.2.18  Mon Jul 18 2011  Toni Gundogdu
+
+Changes: Webscripts
+    - xvideos.lua: Add support for embedded URLs, thanks for the patch anon
+    - soundcloud.lua: Add support for embedded URLs (#57)
+    - Add audioboo.lua (#53)
+    - Add yfrog.lua (#62)
+    Lionel Elie Mamane (thanks!):
+    - dailymotion.lua: support for /embed/video/ URLs
+    - Add metacafe.lua (#59)
+    - Add foxnews.lua (#60)
+
+
 0.2.17  Fri Jun 17 2011  Toni Gundogdu
 
 Changes: dist

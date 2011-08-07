@@ -14,6 +14,9 @@ Considerations.
     % quvi -q TEST_URL > foo.json
 (end)
 
+Please set the "url" field to empty ("") in the JSON. The URL is
+typically unique and the test suite ignores the value.
+
  * Please read also <Help: Style>
 
 

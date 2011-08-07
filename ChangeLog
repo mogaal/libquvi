@@ -1,3 +1,404 @@
+commit fd65fc7117c1a52750cdbc999283a70c4fa3fef9
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Fri Aug 5 00:25:28 2011 +0300
+
+    Manual: Add --query-formats note
+
+ doc/man1/quvi.1.pod |    5 +++--
+ 1 files changed, 3 insertions(+), 2 deletions(-)
+
+commit 33d1d28b13276536f8a914003fbb92a786b7546f
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Fri Aug 5 00:13:56 2011 +0300
+
+    Add release notes for 0.2.19
+
+ NEWS |    9 +++++++++
+ 1 files changed, 9 insertions(+), 0 deletions(-)
+
+commit 4580d481b827b87d021cfff93df4626516e48594
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Aug 4 22:03:05 2011 +0300
+
+    Bump version to 0.2.19
+
+ m4/version.m4 |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 322854e4dde8621ae71a0948f9936cfc094c2ac2
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Aug 4 18:46:06 2011 +0300
+
+    Update funnyordie tests
+
+ tests/data/format/default/funnyordie.json        |    3 ++-
+ tests/data/format/other/funnyordie_best.json     |   17 +++++++++++++++++
+ tests/data/format/other/funnyordie_mp4_ipad.json |   17 +++++++++++++++++
+ tests/data/format/other/funnyordie_mp4_wifi.json |   17 +++++++++++++++++
+ 4 files changed, 53 insertions(+), 1 deletions(-)
+
+commit 1e66ef2838245f4774cb8ae9607419d3d8ebb143
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Aug 4 18:23:25 2011 +0300
+
+    Fix funnyordie.lua: no match: flv url (#64)
+    
+    Rewrite using format iteration, use string.match instead where
+    applicable.
+    
+      * Add choose_default, choose_best, to_s
+      * Rewrite query_formats
+      * Add thumbnail URL
+
+ share/lua/website/funnyordie.lua |   72 ++++++++++++++++++++++++++++++++------
+ 1 files changed, 61 insertions(+), 11 deletions(-)
+
+commit b3df99a6e4571c8d55a977669f9c93bae82dd0de
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Aug 4 17:17:59 2011 +0300
+
+    Update ted tests
+
+ tests/data/format/default/ted.json         |    4 ++--
+ tests/data/format/other/ted_best.json      |    2 +-
+ tests/data/format/other/ted_mp4.json       |   17 +++++++++++++++++
+ tests/data/format/other/ted_mp4_480p.json  |   17 +++++++++++++++++
+ tests/data/format/other/ted_mp4_hd.json    |   17 -----------------
+ tests/data/format/other/ted_mp4_light.json |   17 +++++++++++++++++
+ tests/data/format/other/ted_mp4_sd.json    |   17 -----------------
+ 7 files changed, 54 insertions(+), 37 deletions(-)
+
+commit 3efed1a46228036d052696475581c7b72e0e3e40
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Aug 4 16:50:02 2011 +0300
+
+    ted.lua: attempt to index local 's' (#65)
+    
+    Fix:
+      * Media URL parsing - rewrite iter_formats, choose_best
+      * Title parsing - caused "attempt to index local 's'"
+    
+    Additionally, use string.match instead of string.find where applicable.
+
+ share/lua/website/ted.lua |   72 +++++++++++++++++++++++---------------------
+ 1 files changed, 38 insertions(+), 34 deletions(-)
+
+commit 909b3ce7d14d2b19560ae150cc5310df599ec3c6
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Aug 4 14:24:59 2011 +0300
+
+    Fix youtube.lua: no match: fmt_url_map (#63)
+    
+    Contributed by Zefram <zefram@fysh.org>. Thanks!
+
+ share/lua/website/youtube.lua |   19 +++++++++----------
+ 1 files changed, 9 insertions(+), 10 deletions(-)
+
+commit b8e333bfd6493acfa2f3b24518973711ec644cb7
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sat Jul 23 13:54:34 2011 +0300
+
+    examples/*.c: Tweak comments
+
+ examples/callback_libsoup.c |    2 +-
+ examples/common.c           |    2 +-
+ examples/simple.c           |    7 ++-----
+ 3 files changed, 4 insertions(+), 7 deletions(-)
+
+commit 64cc185d05913a9863c9926f0161f3855f65336f
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Mon Jul 18 19:07:46 2011 +0300
+
+    Bump interface (C:R+1:A)
+
+ m4/version.m4 |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 09fe91bc470a7f1392d5e0c98f3fec93f5c425c8
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Mon Jul 18 19:07:01 2011 +0300
+
+    Set release notes for 0.2.18
+
+ NEWS |   13 +++++++++++++
+ 1 files changed, 13 insertions(+), 0 deletions(-)
+
+commit 5c6a338297f5a27921698c9a7e64c62d096b90f1
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sat Jul 16 22:26:22 2011 +0300
+
+    Add audioboo.json
+
+ tests/data/format/default/audioboo.json |   17 +++++++++++++++++
+ 1 files changed, 17 insertions(+), 0 deletions(-)
+
+commit 8ea4ce2a9cf2e9deb3329d09ed80ff8981951810
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sat Jul 16 22:26:15 2011 +0300
+
+    share/Makefile.am: Add audioboo.lua
+
+ share/Makefile.am |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+commit d2d54975fc8bcce824dcf3823dcea316f11766ed
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sat Jul 16 22:25:44 2011 +0300
+
+    Add audioboo.lua (#53)
+
+ share/lua/website/audioboo.lua |   65 ++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 65 insertions(+), 0 deletions(-)
+
+commit 8f84efb8dc0ff56e069b31cef099bbeae3a0d508
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sat Jul 16 21:06:36 2011 +0300
+
+    autogen.sh: Remove unnecessary flag
+
+ autogen.sh |    1 -
+ 1 files changed, 0 insertions(+), 1 deletions(-)
+
+commit 9579bc3b7fe97f5f97e63c697083c83d7fc4a0da
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sat Jul 9 22:06:43 2011 +0300
+
+    Add yfrog.json
+
+ tests/data/format/default/yfrog.json |   17 +++++++++++++++++
+ 1 files changed, 17 insertions(+), 0 deletions(-)
+
+commit e7bccefc2b10b6052c595ccf8883711ebb50a332
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sat Jul 9 22:06:31 2011 +0300
+
+    share/Makefile.am: Add yfrog.lua
+
+ share/Makefile.am |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+commit e63f0b66211c075a86e1f538ed9132d744f624a1
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sat Jul 9 22:06:05 2011 +0300
+
+    Add yfrog.lua
+
+ share/lua/website/yfrog.lua |   63 +++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 63 insertions(+), 0 deletions(-)
+
+commit 7040361ac792ab7553f35f12eb8a8b811496ac75
+Author: Lionel Elie Mamane <lionel@mamane.lu>
+Date:   Fri Jul 8 07:19:18 2011 +0200
+
+    dailymotion: support for /embed/video/ URLs
+
+ share/lua/website/dailymotion.lua |    5 +++--
+ 1 files changed, 3 insertions(+), 2 deletions(-)
+
+commit 56c3067fe7f064dc7610614edcd9159970323ad7
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Jun 30 19:20:16 2011 +0300
+
+    foxnews.json: Changed expected length
+
+ tests/data/format/default/foxnews.json |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 58b9a04a7873f327ed1054b8503635ba045947c0
+Author: Lionel Elie Mamane <lionel@mamane.lu>
+Date:   Mon Jun 27 14:27:04 2011 +0200
+
+    Foxnews: handle 'only one format' case
+
+ share/lua/website/foxnews.lua |   12 ++++++++++--
+ 1 files changed, 10 insertions(+), 2 deletions(-)
+
+commit 64e567bccfffe1afbeaec8ff4c8aad60100f09fe
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Jun 23 01:23:01 2011 +0300
+
+    xvideos.lua: Fix handles
+
+ share/lua/website/xvideos.lua |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit edb5c17a0bfcd0238dc310bf7351a1f94938e96a
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Jun 23 01:06:51 2011 +0300
+
+    xvideos.json: Add thumbnail_url
+
+ tests/data/format/default/nsfw/xvideos.json |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+commit fdb3ec9a5e3329ac067ab121fdd7bb22bae6869f
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Jun 23 01:06:39 2011 +0300
+
+    xvideos.lua: Add support for embedded URLs, thumbnail_url
+
+ share/lua/website/xvideos.lua |   21 +++++++++++++++++++++
+ 1 files changed, 21 insertions(+), 0 deletions(-)
+
+commit 5302a254a121e28d34d9b2e74499e49e9a0e5b12
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Thu Jun 23 00:08:20 2011 +0300
+
+    tests/README: Add TEST_VERBOSE
+
+ tests/README |    4 ++++
+ 1 files changed, 4 insertions(+), 0 deletions(-)
+
+commit f0bececd96b5a7bbbc70900ad46ab29fa40fcd44
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Wed Jun 22 23:07:53 2011 +0300
+
+    foxnews*.json: Strip URL
+
+ tests/data/format/default/foxnews.json       |    1 -
+ tests/data/format/other/foxnews_best.json    |    1 -
+ tests/data/format/other/foxnews_high.json    |    1 -
+ tests/data/format/other/foxnews_low.json     |    1 -
+ tests/data/format/other/foxnews_med.json     |    1 -
+ tests/data/format/other/foxnews_med_low.json |    1 -
+ 6 files changed, 0 insertions(+), 6 deletions(-)
+
+commit ba95cd6c777f29813ad833b538ac24c1171a288f
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Mon Jun 20 23:28:18 2011 +0300
+
+    foxnews*.json: Set "url" to empty
+
+ tests/data/format/default/foxnews.json       |    2 +-
+ tests/data/format/other/foxnews_best.json    |    2 +-
+ tests/data/format/other/foxnews_high.json    |    2 +-
+ tests/data/format/other/foxnews_low.json     |    2 +-
+ tests/data/format/other/foxnews_med.json     |    2 +-
+ tests/data/format/other/foxnews_med_low.json |    2 +-
+ 6 files changed, 6 insertions(+), 6 deletions(-)
+
+commit 217a4c90e580bcc65a346f214d8820a1d49d92e7
+Author: Lionel Elie Mamane <lionel@mamane.lu>
+Date:   Mon Jun 20 00:56:01 2011 +0200
+
+    Add foxnews JSONs
+
+ tests/data/format/default/foxnews.json       |   18 ++++++++++++++++++
+ tests/data/format/other/foxnews_best.json    |   18 ++++++++++++++++++
+ tests/data/format/other/foxnews_high.json    |   18 ++++++++++++++++++
+ tests/data/format/other/foxnews_low.json     |   18 ++++++++++++++++++
+ tests/data/format/other/foxnews_med.json     |   18 ++++++++++++++++++
+ tests/data/format/other/foxnews_med_low.json |   18 ++++++++++++++++++
+ 6 files changed, 108 insertions(+), 0 deletions(-)
+
+commit 1c1e62685b1acac142046252101cf5dcd37c0e1a
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Mon Jun 20 21:42:21 2011 +0300
+
+    foxnews.lua: Re-adjust lines
+    
+    * Make lines fit 80 chars
+    * Remove unused functions
+    * Change r.formats
+
+ share/lua/website/foxnews.lua |   43 ++++++++++++++--------------------------
+ 1 files changed, 15 insertions(+), 28 deletions(-)
+
+commit 9573b54d0ef0c5cb3c893fb4a29e00cce1a99d36
+Author: Lionel Elie Mamane <lionel@mamane.lu>
+Date:   Mon Jun 20 00:56:01 2011 +0200
+
+    Add support for foxnews
+
+ share/Makefile.am             |    7 +-
+ share/lua/website/foxnews.lua |  219 +++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 223 insertions(+), 3 deletions(-)
+
+commit cf63788fcd4b576b136caa307695ddd59b238948
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Tue Jun 21 00:41:44 2011 +0300
+
+    soundcloud.lua: Add embedded URL support (#57)
+
+ share/lua/website/soundcloud.lua |   23 ++++++++++++++++++++++-
+ 1 files changed, 22 insertions(+), 1 deletions(-)
+
+commit e35f774e41e55694192d71739ec4ab18019ed1fc
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sat Jun 18 14:30:36 2011 +0300
+
+    Bump version to 0.2.18
+
+ m4/version.m4 |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 7a1ed121f12435a7bd8d627c1104d34260554a6a
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sat Jun 18 14:02:43 2011 +0300
+
+    Help: Patches: Add "url" note
+
+ doc/nd/Help/Patches.txt |    3 +++
+ 1 files changed, 3 insertions(+), 0 deletions(-)
+
+commit 62d6916d5928a9795b68150257f4c1be068e8366
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sat Jun 18 13:57:40 2011 +0300
+
+    tests/README: Add -j example
+
+ tests/README |    8 +++++---
+ 1 files changed, 5 insertions(+), 3 deletions(-)
+
+commit 95cc0c33b4b6dfefd4e2c565af03e247ff7b6135
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sat Jun 18 13:53:00 2011 +0300
+
+    metacafe.json: Set "url" to empty
+
+ tests/data/format/default/metacafe.json |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit e57f1c14c8b774b907238a5086df4b2cfa87efd8
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sat Jun 18 13:52:35 2011 +0300
+
+    tests/README: Fix path
+
+ tests/README |    6 +++---
+ 1 files changed, 3 insertions(+), 3 deletions(-)
+
+commit 5d6f66813630f27b381e1ebb6cf4b1f383158891
+Author: Toni Gundogdu <legatvs.git@gmail.com>
+Date:   Sat Jun 18 13:48:25 2011 +0300
+
+    metacafe.lua: Add query_formats
+
+ share/lua/website/metacafe.lua |   10 +++++++++-
+ 1 files changed, 9 insertions(+), 1 deletions(-)
+
+commit 9df3e902b9c730c70bc09781a53263341dc56c93
+Author: Lionel Elie Mamane <lionel@mamane.lu>
+Date:   Sat Jun 18 09:57:14 2011 +0200
+
+    metacafe: handle youtube redirects
+
+ share/lua/website/metacafe.lua |   16 +++++++++++++++-
+ 1 files changed, 15 insertions(+), 1 deletions(-)
+
+commit b08d90b3fbb7711c8ecc4110fe7a8673c37a2693
+Author: Lionel Elie Mamane <lionel@mamane.lu>
+Date:   Sat Jun 18 08:31:13 2011 +0200
+
+    Add support for metacafe
+
+ share/Makefile.am                       |    1 +
+ share/lua/website/metacafe.lua          |   79 +++++++++++++++++++++++++++++++
+ share/lua/website/quvi/url.lua          |    6 +-
+ share/lua/website/quvi/util.lua         |    5 ++
+ tests/data/format/default/metacafe.json |   17 +++++++
+ 5 files changed, 105 insertions(+), 3 deletions(-)
+
 commit 0bf818bff1d0798a1887ce2833217d3e297731cb
 Author: Toni Gundogdu <legatvs.git@gmail.com>
 Date:   Fri Jun 17 22:26:23 2011 +0300

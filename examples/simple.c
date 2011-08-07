@@ -1,5 +1,5 @@
 /* quvi
- * Copyright (C) 2009,2010,2011  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2009-2011  Toni Gundogdu <legatvs@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,16 +17,13 @@
  * 02110-1301  USA
  */
 
-/* simple.c -- A very basic example. See src/quvi.c for a more complete
- * example. */
+/* simple.c - basic example */
 
 #include <stdio.h>
 #include <quvi/quvi.h>
 
 #include "common.h"
 
-/* See src/quvi.c for a more complete example of status callback
- * function */
 static int status_callback(long param, void *data)
 {
   quvi_word status, type;

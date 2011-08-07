@@ -107,21 +107,20 @@ function YouTube.get_config(self)
 end
 
 function YouTube.iter_formats(config, U)
-    local fmt_url_map = config['fmt_url_map']
-                        or error("no match: fmt_url_map")
+    local fmt_stream_map = config['url_encoded_fmt_stream_map']
+                        or error("no match: url_encoded_fmt_stream_map")
 
-    fmt_url_map = U.unescape(fmt_url_map) .. ","
+    fmt_stream_map = U.unescape(fmt_stream_map) .. ","
 
     local urls = {}
-    for f,u in fmt_url_map:gfind('(%d+)%|(.-),') do
---        print(f,u)
-        urls[f] = u
+    for f in fmt_stream_map:gfind('([^,]*),') do
+        local d = U.decode(f)
+        if d['itag'] and d['url'] then
+            urls[U.unescape(d['itag'])] = U.unescape(d['url'])
+        end
     end
 
-    local fmt_url_map =
-        config['fmt_url_map'] or error("no match: fmt_url_map")
-
-    local fmt_map = config['fmt_map'] or error("no match: fmt_map")
+    local fmt_map = config['fmt_list'] or error("no match: fmt_list")
     fmt_map = U.unescape(fmt_map)
 
     local r = {}

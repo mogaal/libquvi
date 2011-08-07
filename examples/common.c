@@ -17,7 +17,7 @@
  * 02110-1301  USA
  */
 
-/* common.c -- Common functions etc. used by the examples */
+/* common.c - common functions used by the examples */
 
 #include <stdio.h>
 #include <stdarg.h>

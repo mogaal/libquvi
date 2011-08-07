@@ -41,6 +41,11 @@ function M.unescape (s)
     return s
 end
 
+function M.slash_unescape (s)
+    s = s:gsub ('\\(.)', '%1')
+    return s
+end
+
 -- handles
 --  Check whether a website script can "handle" the specified URL
 -- Params:

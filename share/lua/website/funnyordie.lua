@@ -1,6 +1,7 @@
 
 -- quvi
--- Copyright (C) 2010  quvi project
+-- Copyright (C) 2011  Toni Gundogdu
+-- Copyright (C) 2010 quvi project
 --
 -- This file is part of quvi <http://quvi.sourceforge.net/>.
 --
@@ -20,8 +21,10 @@
 -- 02110-1301  USA
 --
 
+local FunnyOrDie = {} -- Utility functions unique to this script
+
 -- Identify the script.
-function ident (self)
+function ident(self)
     package.path = self.script_dir .. '/?.lua'
     local C      = require 'quvi/const'
     local r      = {}
@@ -35,26 +38,73 @@ end
 
 -- Query available formats.
 function query_formats(self)
-    self.formats = 'default'
+    local page    = quvi.fetch(self.page_url)
+    local formats = FunnyOrDie.iter_formats(page)
+
+    local t = {}
+    for _,v in pairs(formats) do
+        table.insert(t, FunnyOrDie.to_s(v))
+    end
+
+    table.sort(t)
+    self.formats = table.concat(t, "|")
+
     return self
 end
 
 -- Parse media URL.
-function parse (self)
-
+function parse(self)
     self.host_id = "funnyordie"
     local page   = quvi.fetch(self.page_url)
 
-    local _,_,s = page:find('rel=".-"%s+type=".-"%s+href=".-"%s+title="(.-)">')
-    self.title  = s or error ("no match: media title")
+    self.title = page:match('"og:title" content="(.-)">')
+                    or error ("no match: media title")
 
-    local _,_,s = page:find("videos%/(.-)%/")
-    self.id     = s or error ("no match: media id")
+    self.id = page:match('key:%s+"(.-)"')
+                or error ("no match: media id")
 
-    local _,_,s = page:find('<video src="(.-)"')
-    self.url    = {s or error ("no match: flv url")}
+    self.thumbnail_url = page:match('"og:image" content="(.-)"') or ''
 
+    local formats = FunnyOrDie.iter_formats(page)
+    local U       = require 'quvi/util'
+    self.url      = {U.choose_format(self, formats,
+                                     FunnyOrDie.choose_best,
+                                     FunnyOrDie.choose_default,
+                                     FunnyOrDie.to_s).url
+                        or error('no match: media url')}
     return self
+end
+
+--
+-- Utility functions
+--
+
+function FunnyOrDie.iter_formats(page)
+    local t = {}
+    for u in page:gfind("'src',%s+'(.-)'") do
+        local q,c = u:match('(%w+)%.(%w+)$')
+        table.insert(t, {url=u, quality=q, container=c})
+--        print(u,c)
+    end
+    return t
+end
+
+function FunnyOrDie.choose_best(formats) -- Last is 'best'
+    local r = FunnyOrDie.choose_default(formats)
+    for _,v in pairs(formats) do
+        r = v
+    end
+    return r
+end
+
+function FunnyOrDie.choose_default(formats) -- First is 'default'
+    for _,v in pairs(formats) do
+        return v
+    end
+end
+
+function FunnyOrDie.to_s(t)
+    return string.format("%s_%s", t.container, t.quality)
 end
 
 -- vim: set ts=4 sw=4 tw=72 expandtab:

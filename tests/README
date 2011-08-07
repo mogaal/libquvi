@@ -40,11 +40,11 @@ Run: Tests ($top_srcdir/tests/t/*.t)
 
     (assuming you have build quvi in $top_srcdir/tmp)
     % cd $top_srcdir/tests
-    % prove -l t/ :: -q ../tmp/src/quvi -b ../share
+    % prove -l t/ :: -q ../tmp/src/quvi/quvi -b ../share
 
     You can also choose which of the tests to run by specifying them in
     the command line, e.g.:
-        % prove -l t/nosupport.t :: -q ../tmp/src/quvi -b ../share
+        % prove -l t/nosupport.t :: -q ../tmp/src/quvi/quvi -b ../share
 
     See also the prove manual. Use script(1) or something similar if you
     need to produce log the output.
@@ -57,7 +57,7 @@ Run: Tests ($top_srcdir/tests/t/d/*.t) -- Note the 'd'
     (assuming you have build quvi in $top_srcdir/tmp and the LUA
     scripts reside in $top_srcdir/share/)
     % cd $top_srcdir/tests
-    % prove -l t/d/url.t :: -q ../tmp/src/quvi -b ../share \
+    % prove -l t/d/url.t :: -q ../tmp/src/quvi/quvi -b ../share \
         -u $test_url
 
     Or, if you have been following the steps in HowtoWriteWebsiteScript
@@ -111,9 +111,11 @@ Arguments to tests
     The test suite can check the returned against JSONs. Use the
     --json-file if you need to do this.
 
-    Note about the t/d/url.t:  you can tell the test to use the
-    (page) URL from the JSON instead of specifying it in the command
-    line with --url.
+    Tip: url.t can read page URL from the JSON with -j
+    For example:
+        prove -l t/d/url.t :: \
+            -q ../tmp/src/quvi/quvi -b ../share \
+            -j data/format/default/youtube.json
 
     Use the --ignore option if you need to ignore any of the JSON
     values. e.g.:
@@ -125,6 +127,10 @@ Arguments to tests
 
     NOTE: The test suite ignores some of the values (e.g. media URL,
     thumbnail URL) by default.
+
+Environment:
+
+    Set TEST_VERBOSE to amp up the verbosity level of the tests.
 
 Data: JSON
 
