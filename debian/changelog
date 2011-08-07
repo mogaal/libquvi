@@ -3,6 +3,7 @@ libquvi (0.2.19-1) unstable; urgency=low
   * New upstream release. 
   * Remove override_dh_auto_test in d/rules because NO_INTERNET var is not
     used anymore.
+  * Change package name to libquvi6
 
  -- Alejandro Garrido Mota <garridomota@gmail.com>  Fri, 01 Jul 2011 12:32:17 -0430
 
