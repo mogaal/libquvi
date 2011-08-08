@@ -8,10 +8,45 @@ Files: *
 Copyright: 2009,2010,2011 Toni Gundogdu <legatvs@gmail.com>
 License: LGPL-2.1+
 
-Files: lib/strepl.c
+Files: src/libquvi/strepl.c
 Copyright: 2009, Toni Gundogdu <legatvs@gmail.com>
            2009, Laird Shaw.
 License: PD
+
+Files: share/lua/website/soundcloud.lua
+Copyright: 2011, Bastien Nocera <hadess@hadess.net>
+License: LGPL-2.1+
+
+Files: share/lua/website/metacafe.lua,
+       share/lua/website/collegehumor.lua,
+       share/lua/website/foxnews.lua
+Copyright: 2010-2011, Lionel Elie Mamane <lionel@mamane.lu>
+License: LGPL-2.1+
+
+Files: share/lua/website/megavideo.lua,
+       share/lua/website/xhamster.lua,
+       share/lua/website/keezmovies.lua,
+       share/lua/website/tagtele.lua
+Copyright: 2010,2011, Paul Kocialkowski <contact@paulk.fr>
+License: LGPL-2.1+
+
+Files: share/lua/website/megavideo.lua
+Copyright: 2011, 
+License: LGPL-2.1+
+
+Files: share/lua/website/arte.lua
+Copyright: 2011, Toni Gundogdu <legatvs@gmail.com>
+           2011, Raphaël Droz <raphael.droz+floss@gmail.com>
+License: LGPL-2.1+
+
+Files: share/lua/website/ted.lua
+Copyright: 2011, Toni Gundogdu <legatvs@gmail.com>
+           2011, Bastien Nocera <hadess@hadess.net>
+License: LGPL-2.1+
+
+Files: share/lua/website/publicsenat.lua
+Copyright: 2011, Raphaël Droz <raphael.droz+floss@gmail.com>
+License: LGPL-2.1+
 
 Files: debian/*
 Copyright: 2009,2010,2011 Alejandro Garrido Mota <garridomota@gmail.com>
