@@ -9,7 +9,7 @@ Homepage: http://quvi.sourceforge.net
 
 Package: libquvi6
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, libquvi-common (= ${binary:Version})
 Description: library for parsing video download links (runtime libraries)
  Library to parse Adobe flash video download links. It supports Youtube
  and other similar video websites. It provides access to functionality and
