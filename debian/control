@@ -2,7 +2,8 @@ Source: libquvi
 Section: libs
 Priority: extra
 Maintainer: Alejandro Garrido Mota <garridomota@gmail.com>
-Build-Depends: debhelper (>= 7.0.50~), libcurl4-gnutls-dev | libcurl4-dev, liblua5.1-0-dev
+Build-Depends: debhelper (>= 7.0.50~), libcurl4-gnutls-dev | libcurl4-dev, liblua5.1-0-dev, 
+               libtest-deep-perl
 Standards-Version: 3.9.2
 Homepage: http://quvi.sourceforge.net
 
