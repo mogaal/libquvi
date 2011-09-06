@@ -10,7 +10,9 @@ libquvi (0.2.19-1) unstable; urgency=low
   * Change libquvi-doc to all
   * Update symbol (d/libquvi6.symbols) file 
   * d/copyright: Add new copyright holders for a share/lua/website/*
-  * d/rules: Add --enable-examples option for dh_auto_configure 
+                 Add new MIT-licensed file: share/lua/website/quvi/url.lua 
+  * d/control: Add Vcs-* header 
+  * d/watch: use of (\d.*) instead of (.*). 
 
  -- Alejandro Garrido Mota <garridomota@gmail.com>  Fri, 01 Jul 2011 12:32:17 -0430
 

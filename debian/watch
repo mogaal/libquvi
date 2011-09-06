@@ -1,2 +1,2 @@
 version=3
-http://sf.net/quvi/quvi-(.*).tar.gz
+http://sf.net/quvi/quvi-(\d.*).tar.gz

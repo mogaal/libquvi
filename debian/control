@@ -5,6 +5,8 @@ Maintainer: Alejandro Garrido Mota <garridomota@gmail.com>
 Build-Depends: debhelper (>= 7.0.50~), libcurl4-gnutls-dev | libcurl4-dev, liblua5.1-0-dev, 
                libtest-deep-perl
 Standards-Version: 3.9.2
+Vcs-Git: git://github.com/mogaal/libquvi.git
+Vcs-Browser: https://github.com/mogaal/libquvi
 Homepage: http://quvi.sourceforge.net
 
 Package: libquvi6
