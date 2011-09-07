@@ -31,19 +31,6 @@ Description: library for parsing video download links (development package)
  This package provides the necessary files to compile programs which
  use libquvi6.
 
-Package: libquvi-common
-Architecture: all
-Depends: ${misc:Depends}
-Breaks: libquvi0
-Replaces: libquvi0
-Description: library for parsing video download links (common package)
- Library to parse Adobe flash video download links. It supports Youtube
- and other similar video websites. It provides access to functionality and
- data through an API, and does not enable or require the use of the
- flash technology.
- .
- This package provide lua scripts.
-
 Package: libquvi-doc
 Section: doc
 Architecture: all
