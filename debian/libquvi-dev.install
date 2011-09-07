@@ -1,4 +1,4 @@
 /usr/lib/*/*.so usr/lib
 /usr/lib/*/*.a usr/lib
-/usr/lib/*/pkgconfig/*.pc usr/lib/pkgconfig
+/usr/lib/*/pkgconfig/*.pc usr/lib/*/pkgconfig
 /usr/include/quvi/*.h usr/include/quvi
