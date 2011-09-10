@@ -1,19 +1,24 @@
 libquvi (0.2.19-1) unstable; urgency=low
 
+  [ Alejandro Garrido Mota ]
   * New upstream release (Closes: #636591). 
   * d/rules: Remove override_dh_auto_test in d/rules because NO_INTERNET var is
     not used anymore.
   * Add multiarch support.        
   * Change package name to libquvi6. Rename d/libquvi0.install to 
     d/libquvi6.install and d/libquvi0.symbols to d/libquvi6.symbols 
-  * Get lua scripts from libquvi6 and make libquvi-common package with it
-    (Closes: #614384). PROBLEM DELETE IT
-  * Change libquvi-doc to all
+  * Install lua scripts to /usr/share/libquvi6. (Closes: #614384)
+  * Change Architecture for libquvi-doc to all
   * Update symbol (d/libquvi6.symbols) file 
   * d/copyright: - Add new copyright holders for a share/lua/website/*
                  - Add new MIT-licensed file: share/lua/website/quvi/url.lua 
-  * d/control: Add Vcs-* header 
+  * d/control: Add Vcs-* fields.
   * d/watch: use of (\d.*) instead of (.*). 
+
+  [ Ansgar Burchardt ]
+  * Build and install library documentation.
+    + debian/control: Add build-dep on naturaldocs.
+  * No longer include Makefile.* as examples in libquvi-doc.
 
  -- Alejandro Garrido Mota <garridomota@gmail.com>  Fri, 01 Jul 2011 12:32:17 -0430
 
