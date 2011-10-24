@@ -1,4 +1,4 @@
-/* quvi
+/* libquvi
  * Copyright (C) 2010  Toni Gundogdu <legatvs@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
@@ -29,6 +29,9 @@ QUVIcode run_ident_func(_quvi_ident_t, _quvi_llst_node_t);
 
 QUVIcode find_host_script_and_parse(_quvi_media_t);
 QUVIcode find_host_script(_quvi_media_t, _quvi_ident_t*);
+QUVIcode find_host_script_and_query_formats(quvi_media_t, char **);
+
+char *read_scripts_version();
 
 #endif
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

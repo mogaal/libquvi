@@ -3,40 +3,47 @@ Title: Help: Patches
 
 About: Before you submit patches
 
-Considerations.
+Checklist.
 
- * You agree to put your changes and new code under the same license quvi
-    and libquvi are using already unless stated and agreed otherwise
+License:
 
- * If you are submitting a new website script, please include a test JSON
-    file with it
+You agree to put your changes and new code under the same license
+quvi, libquvi and libquvi-scripts are using already unless stated
+and agreed otherwise.
+
+Webscripts:
+
+If you are submitting a new website script, please include a test
+JSON file with it.
+
 (start code)
-    % quvi -q TEST_URL > foo.json
+quvi -q $TEST_URL > foo.json
 (end)
 
-Please set the "url" field to empty ("") in the JSON. The URL is
-typically unique and the test suite ignores the value.
+Please set the "url" field to *empty* ("") in the JSON. The test
+suite ignores this value because many websites generate unique URLs
+rather than use static ones. Omitting these URLs from the test data,
+helps keep the test suite uncluttered.
 
- * Please read also <Help: Style>
+Style:
+
+Read also <Help: Style>.
 
 
 About: Creating a patch
 
-Please submit your contributions in the <patch at
+Whenever possible, please submit your contributions in the <patch at
 http://en.wikipedia.org/wiki/Patch_%28Unix%29> format.
 
-Create your patches with <git at http://git-scm.com/>:
+If you create your patches with <git at http://git-scm.com/>
+
   * Check for unnecessary whitespace with "git diff --check" and fix them
   * Use "git format-patch -M" to create the patch
+  * Or send a pull request to the mailing list (see <Help>)
 
-We prefer the git format as this allows us to preserve the contribution
-details in the git log.
+If you use diff(1) instead, make sure you use the "-u" switch.
 
-Otherwise:
-    * If you do not know or use git, then please use "diff -u" if possible
-    * If you are submitting a new webscript, you can submit it as it is
 
 About: Where to submit
 
-Please use our <Trac at http://sourceforge.net/apps/trac/quvi> to submit
-your patches.
+See <Help> for the mailing list.

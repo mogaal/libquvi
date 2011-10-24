@@ -2,9 +2,9 @@ Title: Overview: Linked list
 
 About: About
 
-Some of the quvi API functions use <Linked list at
-http://en.wikipedia.org/wiki/Linked_list>. You can also use the <quvi
-Linked list API> in your own applications.
+Some of the libquvi API functions use <Linked list at
+http://en.wikipedia.org/wiki/Linked_list>. You can also use the
+<Linked list API> in your own applications.
 
 About: Example
 

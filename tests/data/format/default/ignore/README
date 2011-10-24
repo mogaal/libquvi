@@ -1,5 +1,0 @@
-
-Test data for the websites that are known to return inconsistent results.
-
-e.g. Dailymotion sometimes returns different (by a few bytes) content-length
-values for the same query at a later time.

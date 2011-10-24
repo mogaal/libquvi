@@ -2,7 +2,7 @@ Title: Overview
 
 About: Return codes
 
-Check the return codes of the quvi API functions. You can use
+Check the return codes of the libquvi API functions. You can use
 <quvi_strerror> to convert the return codes to more meaningful
 error messages.
 

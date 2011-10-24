@@ -1,4 +1,4 @@
-/* quvi
+/* libquvi
  * Copyright (C) 2011  Toni Gundogdu <legatvs@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
@@ -26,24 +26,17 @@
 /*
  * Function: quvi_next_videolink
  *
- * Deprecated since 0.2.15. Removed in 0.2.20, use
+ * Deprecated since 0.2.15. Removed in 0.4.0, use
  * <quvi_next_media_url> instead.
  */
-QUVIcode quvi_next_videolink(quvi_video_t handle)
-{
-  return (quvi_next_media_url(handle));
-}
+QUVIcode quvi_next_videolink(void *handle);
 
 /*
  * Function: quvi_next_host
  *
- * Deprecated since 0.2.0. Removed in 0.2.20, use
+ * Deprecated since 0.2.0. Removed in 0.4.0, use
  * <quvi_next_supported_website> instead.
  */
-QUVIcode quvi_next_host(char **domain, char **formats)
-{
-  *domain = *formats = NULL;
-  return (QUVI_LAST);
-}
+QUVIcode quvi_next_host(char **domain, char **formats);
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

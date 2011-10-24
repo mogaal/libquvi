@@ -1,4 +1,4 @@
-/* quvi
+/* libquvi
  * Copyright (C) 2011  Toni Gundogdu <legatvs@gmail.com>
  *
  * This library is free software; you can redistribute it and/or

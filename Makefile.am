@@ -1,47 +1,37 @@
-ACLOCAL_AMFLAGS = -I m4
+ACLOCAL_AMFLAGS=-I m4
+EXTRA_DIST=	libquvi.pc.in gen-ver.sh VERSION
 
-EXTRA_DIST = \
-libquvi.pc.in \
-libquvi.ver \
-ChangeLog.pre-gitlog
+pkgconfigdir=	$(libdir)/pkgconfig
+pkgconfig_DATA=	libquvi.pc
 
-pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = libquvi.pc
+SUBDIRS=	src examples doc
 
-SUBDIRS = src examples share scripts doc
-
-if ENABLE_TESTS
-SUBDIRS += tests
-
-check: test
-
-test:
-	@(cd tests; $(MAKE) all test)
-endif
-
-.PHONY: doc dist-doc
+.PHONY: doc distdoc ChangeLog VERSION
 doc:
 if HAVE_ND
-	@test -d $(top_builddir)/doc/quvi-@VERSION@ || \
-		mkdir $(top_builddir)/doc/quvi-@VERSION@
+	@test -d $(top_builddir)/doc/libquvi-@VERSION@ || \
+		mkdir $(top_builddir)/doc/libquvi-@VERSION@
 	@test -d $(top_builddir)/doc/nd_temp || \
 		mkdir $(top_builddir)/doc/nd_temp
 	@@ND@ -i $(top_srcdir)/doc/ -i $(top_srcdir)/src/ \
-		-o $(ND_FORMAT) $(top_builddir)/doc/quvi-@VERSION@/ \
-		-p $(top_builddir)/doc/nd_temp/ && echo See doc/quvi-@VERSION@
+		-o $(ND_FORMAT) $(top_builddir)/doc/libquvi-@VERSION@/ \
+		-p $(top_builddir)/doc/nd_temp/ && echo See doc/libquvi-@VERSION@
 else
 	@echo "error: configure did not find NaturalDocs" && exit 1
 endif
-dist-doc: doc
-	@tar chof - $(top_builddir)/doc/quvi-@VERSION@ | \
-			GZIP=--best gzip -c >quvi-doc-@VERSION@.tar.gz \
-			&& echo Created quvi-doc-@VERSION@.tar.gz
+distdoc: doc
+	@tar chof - $(top_builddir)/doc/libquvi-@VERSION@ | \
+			GZIP=--best gzip -c >libquvi-doc-@VERSION@.tar.gz \
+			&& echo Created libquvi-doc-@VERSION@.tar.gz
 
-ChangeLog:
-	@if test -f $(top_srcdir)/.git/HEAD; then \
-		@GIT@ log --stat --after="Sun Nov 14 11:03:50 2010" > $@; \
+VERSION:
+	@if test -d "$(top_srcdir)/.git" -o -f "$(top_srcdir)/.git"; then \
+		"$(top_srcdir)/gen-ver.sh" "$(top_srcdir)" > $@; \
 	fi
 
-dist: ChangeLog
+ChangeLog:
+	@if test -d "$(top_srcdir)/.git" -o -f "$(top_srcdir)/.git"; then \
+		git log --stat --name-only --date=short --abbrev-commit > $@; \
+	fi
 
-.PHONY: ChangeLog
+dist-hook: ChangeLog VERSION

@@ -1,91 +1,76 @@
 
 
 Prerequisites
--------------
+=============
 
-* libcurl   7.18.2+  <http://curl.haxx.se/>
-* libiconv  1.12.0+  <http://www.gnu.org/software/libiconv/>
-* (lib)lua  5.1+     <http://lua.org/>
-
-         [quvi]
-          /
-         /
-  [libquvi]-----[libcurl]
-       |   \       \
-   [liblua] \       \
-            |    [dragons be here]
-      [libiconv]
+  * libquvi-scripts   0.4.0+      <http://quvi.sourceforge.net/>
+  * libcurl           7.18.2+     <http://curl.haxx.se/>
+  * libiconv          1.12.0+     <http://www.gnu.org/software/libiconv/>
+  * (lib)lua          5.1+        <http://lua.org/>
 
 
 Installation from source
-------------------------
+========================
+
+REMINDER: Run "make uninstall" if you have installed libquvi from the
+source previously.
+
+  * How to use GNU Autotools build system falls outside of the scope of
+  this documentation, refer to the appropriate sources instead
+
+  * IF you are unsure, THEN do not install from the source
+    - libquvi is available to many distros as a precompiled package
+
+    - Precompiled packages (ideally) make sure that no old files are
+      left behind when the software is upgraded or uninstalled
+
+    - Any old files left behind on your system may potentially interfere
+      with the new version of libquvi
+
+  * Consider yourself reminded
 
 "./configure && make install", typically. See also "./configure --help".
-If you are compiling quvi from the development code from the git
+If you are compiling libquvi from the development code from the git
 repository, see "Installation from development code", instead.
 
-    --enable-tests          Enable tests (e.g. "make check", req. Perl)
-                                The tests are not run by default. For
-                                verbose tests, set TEST_VERBOSE
-                                environment.
+  --with-examples         Build examples which are not compiled by default,
+                            No real value to the users, developers
+                            may want to use this switch
 
-    --enable-nsfw           Install (&test) webscripts marked as "NSFW"
-                                "Not safe for work" webscripts. Not installed
-                                by default.
+  --with-soup             Build with libsoup(-gnome) examples
+                            Required *only* by examples/callback_libsoup.c,
+                            ignored unless both --with-examples and
+                            --with-soup are used. No real value to the
+                            users, recommended for developers only
 
-    --enable-todo           Install (&test) webscripts marked as "TODO"
-                                Broken, outdated etc. webscripts. Not
-                                installed by default. Recommended for
-                                developers only.
+  --with-nd-output =arg   Where arg can be either "HTML" or "FramedHTML"
+                            May be used to define the output format
+                            for the API documentation produced by
+                            NaturalDocs
 
-    --enable-nlfy           Enable *tests* for webscripts marked as "NLFY"
-                                "No love for you" scripts for websites that
-                                follow strict country policies (a.k.a.
-                                "Sorry, we do not accept connections from
-                                your country"). Not tested by default.
-                                See also --enable-tests above. These
-                                webscripts are installed *always*.
-
-    --disable-quvi          Do not build (&install) the quvi command
-    --enable-examples       Build examples which are not compiled by default
-
-    --with-soup             Build with libsoup(-gnome)
-                                Required *only* by examples/callback_libsoup.c,
-                                ignored unless both --enable-examples and
-                                --with-soup are used
-
-    --without-manual        Do not install manual page(s).
+  --without-manual        Do not install manual page(s)
 
 
 Installation from development code
-----------------------------------
+==================================
 
-If you are compiling quvi from the development code, run "autogen.sh",
+If you are compiling libquvi from the development code, run "autogen.sh",
 first. This generates the configuration files that are not in the git
 repository. You will need:
 
-  * Perl (with pod2man)
-  * GNU autoconf
-  * GNU automake
-  * GNU gengetopt
+  * GNU Autotools (autoconf, automake, etc.)
+  * GNU libiconv (for AM_ICONV macro, in configure.ac)
 
 Once the files have been generated, follow the instructions in "Installation
 from source" above.
 
 
-C API documentation
--------------------
+API documentation
+=================
 
 "make doc" generates the C API reference documentation from the
 NaturalDocs tags. The same documentation is available at:
-    <http://quvi.sourceforge.net/>
+  <http://quvi.sourceforge.net/>
 
-The documentation is not installed with quvi.
-
-
-Tests
------
-
-"configure --enable-tests && make check", typically. The test suite is
-intended for developers only and will use the Internet. See also
-$top_srcdir/tests/README.
+The documentation is *not* installed with libquvi. Additional make target
+"make distdoc" exists that creates a tarball from the generated HTML.
