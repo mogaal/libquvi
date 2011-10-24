@@ -1,4 +1,4 @@
-
-SUBDIRS = man1
-
-EXTRA_DIST = nd
+EXTRA_DIST=	nd
+if WITH_MANUAL
+SUBDIRS=	man3
+endif

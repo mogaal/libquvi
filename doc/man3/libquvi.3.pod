@@ -1,0 +1,61 @@
+=head1 NAME
+
+libquvi - Overview of query media library
+
+=head1 DESCRIPTION
+
+libquvi is a cross-platform library for parsing flash media stream
+URLs with C API. The term "quvi" is a shorthand for "query video".
+
+=head2 API documentation
+
+E<lt>http://quvi.sourceforge.net/doc/E<gt>
+
+=head2 Motivation
+
+libquvi originates from the idea of allowing users to view the videos
+without having to install or use flash. It is a "workaround", not an
+"alternative" to flash.
+
+See also:
+ <http://en.wikipedia.org/wiki/Adobe_Flash#Performance>
+ <http://en.wikipedia.org/wiki/Adobe_Flash#Flash_client_security>
+ <http://en.wikipedia.org/wiki/Adobe_Flash#Alternatives_to_Flash>
+
+=head1 ENVIRONMENT
+
+=head2 LIBQUVI_SCRIPTSDIR
+
+Path to the libquvi-scripts directory. This overrides the libquvi default
+search paths for the scripts. See also the tutorial in the
+L</API documentation>.
+
+=head2 LIBQUVI_SHOW_SCANDIR
+
+If set, libquvi prints the lua script search paths to the stderr.
+
+=head2 LIBQUVI_SHOW_SCRIPT
+
+If set, the lua scripts found by libquvi are printed to the stderr.
+
+=head1 WWW
+
+ Home  : <http://quvi.sourceforge.net>
+ gitweb: <http://repo.or.cz/w/libquvi.git>
+
+=head1 LICENSE
+
+libquvi is free software, licensed under the LGPLv2.1+. The lua scripts
+that libquvi uses are considered as programs and using the lua scripts
+is I<linking>.
+
+=head1 SEE ALSO
+
+C<libquvi-scripts(7)>, C<quvi(1)>
+
+=head1 AUTHOR
+
+Toni Gundogdu E<lt>legatvs at sign gmail comE<gt>
+
+Thanks to all those who have contributed to the project by sending patches,
+reporting bugs and writing feedback. You know who you are.

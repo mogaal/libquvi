@@ -63,7 +63,7 @@ Important notes.
 
 About: parse: Errors
 
-Parsing (e.g. no match) should call LUA's error function. Note however
+Parsing (e.g. no match) should call lua's error function. Note however
 that format parsing is exception to this rule:
 
  * Script must fallback to 'default' format and only if that fails too,
@@ -97,7 +97,7 @@ See the quvi/ subdir in the website/ directory for the other modules.
 
 About: Idioms
 
-Useful LUA idioms.
+Useful lua idioms.
 
 (start code)
 /* Consider the following in C */
@@ -105,7 +105,7 @@ b = (a == 1) 0:1;
 (end)
 
 (start code)
--- Equivalent in LUA:
+-- Equivalent in lua:
 b = (a == 1) and 0 or 1
 (end)
 

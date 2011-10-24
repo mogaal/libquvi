@@ -5,9 +5,7 @@ includedir=@includedir@
 
 Name: libquvi
 URL: http://quvi.sourceforge.net/
-Description: Query video library for Youtube like websites.
+Description: Query media library for Youtube like websites
 Version: @VERSION@
 Libs: -L${libdir} -lquvi
 Cflags: -I${includedir}
-
-

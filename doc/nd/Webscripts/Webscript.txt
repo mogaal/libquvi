@@ -4,7 +4,7 @@ About: About
 
 libquvi runs "webscripts" (or "website scripts") to parse the media
 details. These details are then returned to the applications using
-libquvi. The scripts are written in <LUA at http://www.lua.org/about.html>.
+libquvi. The scripts are written in <lua at http://www.lua.org/about.html>.
 There is a corresponding script for each supported website, although some
 exceptions to this rule exist.
 

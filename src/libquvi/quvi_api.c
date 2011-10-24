@@ -1,4 +1,4 @@
-/* quvi
+/* libquvi
  * Copyright (C) 2009-2011  Toni Gundogdu <legatvs@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
@@ -89,7 +89,7 @@ QUVIcode quvi_init(quvi_t *session)
 
   /* Set quvi defaults. */
   quvi_setopt(quvi, QUVIOPT_FORMAT, "default");
-  quvi_setopt(quvi, QUVIOPT_CATEGORY, QUVIPROTO_HTTP);
+  quvi_setopt(quvi, QUVIOPT_CATEGORY, QUVIPROTO_ALL);
 
   return (init_lua(quvi));
 }
@@ -233,8 +233,6 @@ static QUVIcode _getinfo(_quvi_t quvi, QUVIinfo info, ...)
     {
     case QUVIINFO_CURL:
       _set_v(quvi->curl);
-    case QUVIINFO_CURLCODE:
-      _set_from_value_n(lp, quvi->curlcode);
     case QUVIINFO_RESPONSECODE:
       _set_from_value_n(lp, quvi->resp_code);
     default:
@@ -595,15 +593,12 @@ QUVIcode quvi_getprop(quvi_media_t media, QUVIproperty property, ...)
  * supported, similarly to that <quvi_supported>.
  *
  * Unlike <quvi_supported>, <quvi_supported_ident> and
- * <quvi_next_supported_website> which all return a _static_ format ID
- * list as specified in the webscript's `ident' function,
- * <quvi_query_formats> constructs the list of format IDs dynamically
- * for each URL.
+ * <quvi_next_supported_website> which all return a static list of format
+ * string, <quvi_query_formats> constructs the list from the data returned
+ * by the server.
  *
- * Please note that this function returns only 'default' to those URLs
- * that have their corresponding webscripts handle only one (1) format.
- * e.g. No internet connection is required in such case and a static
- * string ('default') is returned to the caller instead.
+ * The exception to the above are the webscripts that support only _1_
+ * format. They will always return the string 'default'.
  *
  * Parameters:
  *  session - Session handle
@@ -913,7 +908,7 @@ QUVIcode quvi_ident_getprop(quvi_ident_t ident,
  *
  * Parameters:
  *  session - Session handle
- *  domain  - Null-terminated string containing the domain (receives)
+ *  domain  - Null-terminated string containing the domain _pattern_ (receives)
  *  formats - Null-terminated (static) string containing formats (receives)
  *
  * Returns:
@@ -1033,30 +1028,30 @@ char *quvi_strerror(quvi_t session, QUVIcode code)
  */
 char *quvi_version(QUVIversion id)
 {
-  static const char version[] = PACKAGE_VERSION;
-  static const char version_long[] =
-#ifdef GIT_DESCRIBE
-    GIT_DESCRIBE
+  static const char version[] =
+#ifdef VN
+    VN
 #else
     PACKAGE_VERSION
 #endif
-#ifdef BUILD_DATE
-    " built on " BUILD_DATE
+    ;
+  static const char version_long[] =
+#ifdef VN
+    VN
+#else
+    PACKAGE_VERSION
 #endif
-    " for " CANONICAL_TARGET " ("
-#ifdef HAVE_ICONV
-    "i"
-#endif
-#ifdef ENABLE_TODO
-    "t"
-#endif
-#ifdef ENABLE_NSFW
-    "n"
-#endif
-    ")";
+    " for " CANONICAL_TARGET;
 
-  if (id == QUVI_VERSION_LONG)
-    return ((char *)version_long);
+  switch (id)
+    {
+    case QUVI_VERSION_SCRIPTS:
+      return (read_scripts_version());
+    case QUVI_VERSION_LONG:
+      return ((char*)version_long);
+    default:
+      break;
+    }
 
   return ((char *)version);
 }

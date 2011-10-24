@@ -1,5 +1,5 @@
-/* quvi
- * Copyright (C) 2010,2011  Toni Gundogdu <legatvs@gmail.com>
+/* libquvi
+ * Copyright (C) 2010-2011  Toni Gundogdu <legatvs@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -98,22 +98,28 @@ static const char *err_fmt =
     } \
   while(0)
 
-static const char *getfield_s(lua_State *l, const char *k,
-                              _quvi_lua_script_t s, const char *f)
+static const char *getfield_s(lua_State *l,
+                              const char *k,
+                              _quvi_lua_script_t s,
+                              const char *f)
 {
   _push(string, const char*, NULL);
 }
 
-static long getfield_n(lua_State *l, const char *k,
-                       _quvi_lua_script_t s, const char *f)
+static long getfield_n(lua_State *l,
+                       const char *k,
+                       _quvi_lua_script_t s,
+                       const char *f)
 {
   _push(number, long, 0);
 }
 
 #undef _push
 
-static int getfield_b(lua_State *l, const char *k,
-                      _quvi_lua_script_t s, const char *f)
+static int getfield_b(lua_State *l,
+                      const char *k,
+                      _quvi_lua_script_t s,
+                      const char *f)
 {
   int b = 0;
 
@@ -144,8 +150,10 @@ static void *getfield_reg_userdata(lua_State *l, const char *k)
   return (p);
 }
 
-static QUVIcode getfield_iter_table_s(lua_State *l, const char *k,
-                                      _quvi_media_t m, _quvi_lua_script_t s,
+static QUVIcode getfield_iter_table_s(lua_State *l,
+                                      const char *k,
+                                      _quvi_media_t m,
+                                      _quvi_lua_script_t s,
                                       const char *f)
 {
   QUVIcode rc = QUVI_OK;
@@ -206,7 +214,7 @@ static void setfield_reg_userdata(lua_State *l, const char *k, void *p)
 
 /* "quvi" object functions for LUA scripts. */
 
-static int l_quvi_fetch(lua_State * l)
+static int l_quvi_fetch(lua_State *l)
 {
   _quvi_media_t m;
   _quvi_net_t n;
@@ -267,7 +275,7 @@ static int l_quvi_resolve(lua_State *l)
   return (1);
 }
 
-static QUVIcode new_lua_script(_quvi_lua_script_t * dst)
+static QUVIcode new_lua_script(_quvi_lua_script_t *dst)
 {
   _quvi_lua_script_t s;
 
@@ -282,15 +290,16 @@ static QUVIcode new_lua_script(_quvi_lua_script_t * dst)
 
 typedef int (*filter_func) (const struct dirent *);
 
-static QUVIcode
-scan_dir(_quvi_llst_node_t * dst, const char *path, filter_func filter)
+static QUVIcode scan_dir(_quvi_llst_node_t *dst,
+                         const char *path,
+                         filter_func filter)
 {
   char *show_scandir, *show_script;
   struct dirent *de;
   DIR *dir;
 
-  show_scandir = getenv("QUVI_SHOW_SCANDIR");
-  show_script = getenv("QUVI_SHOW_SCRIPT");
+  show_scandir = getenv("LIBQUVI_SHOW_SCANDIR");
+  show_script = getenv("LIBQUVI_SHOW_SCRIPT");
 
   dir = opendir(path);
   if (!dir)
@@ -325,7 +334,6 @@ scan_dir(_quvi_llst_node_t * dst, const char *path, filter_func filter)
               fprintf(stderr, "quvi: %s: found script: %s\n",
                       __PRETTY_FUNCTION__, s->path);
             }
-
           quvi_llst_append((quvi_llst_node_t*)dst, s);
         }
     }
@@ -335,30 +343,30 @@ scan_dir(_quvi_llst_node_t * dst, const char *path, filter_func filter)
   return (QUVI_OK);
 }
 
-static QUVIcode
-scan_known_dirs(_quvi_llst_node_t * dst, const char *spath,
-                filter_func filter)
+static QUVIcode scan_known_dirs(_quvi_llst_node_t *dst,
+                                const char *spath,
+                                filter_func filter)
 {
-  char *homedir, *path, *basedir, *buf;
+  char *homedir, *path, *scriptsdir, *buf;
 
 #define _scan \
     do { \
-        QUVIcode rc = scan_dir (dst, path, filter); \
-        _free (path); \
+        QUVIcode rc = scan_dir(dst, path, filter); \
+        _free(path); \
         if (rc != QUVI_OK) \
             return (rc); \
     } while (0)
 
-  /* QUVI_BASEDIR. */
-  basedir = getenv("QUVI_BASEDIR");
-  if (basedir)
+  /* LIBQUVI_SCRIPTSDIR */
+  scriptsdir = getenv("LIBQUVI_SCRIPTSDIR");
+  if (scriptsdir)
     {
-      asprintf(&path, "%s/%s", basedir, spath);
+      asprintf(&path, "%s/%s", scriptsdir, spath);
       _scan;
       return (QUVI_OK);
     }
 
-  /* Current working directory. */
+  /* Current working directory */
   buf = getcwd(NULL,0);
   if (!buf)
     return(QUVI_MEM);
@@ -367,24 +375,19 @@ scan_known_dirs(_quvi_llst_node_t * dst, const char *spath,
   _free(buf);
   _scan;
 
-  /* Home directory. */
+  /* Home directory */
   homedir = getenv("HOME");
   if (homedir)
     {
-      asprintf(&path, "%s/.quvi/%s", homedir, spath);
+      asprintf(&path, "%s/.libquvi-scripts/%s", homedir, spath);
       _scan;
-      asprintf(&path, "%s/.config/quvi/%s", homedir, spath);
+      asprintf(&path, "%s/.config/libquvi-scripts/%s", homedir, spath);
       _scan;
-      asprintf(&path, "%s/.local/share/quvi/%s", homedir, spath);
+      asprintf(&path, "%s/.local/share/libquvi-scripts/%s", homedir, spath);
       _scan;
     }
 
-  /* --datadir. */
-  asprintf(&path, "%s/%s", DATADIR, spath);
-  _scan;
-
-  /* pkgdatadir. */
-  asprintf(&path, "%s/%s", PKGDATADIR, spath);
+  asprintf(&path, "%s/%s", SCRIPTSDIR, spath);
   _scan;
 
 #undef _scan
@@ -426,8 +429,7 @@ int init_lua(_quvi_t quvi)
   if (quvi_llst_size(quvi->util_scripts) == 0)
     return (QUVI_NOLUAUTIL);
 
-  rc = scan_known_dirs(&quvi->website_scripts, "lua/website",
-                       lua_files_only);
+  rc = scan_known_dirs(&quvi->website_scripts, "lua/website", lua_files_only);
 
   if (rc != QUVI_OK)
     return (rc);
@@ -442,13 +444,13 @@ static void free_llst(_quvi_llst_node_t llst)
   while (curr)
     {
       _quvi_lua_script_t s = (_quvi_lua_script_t) curr->data;
-      _free (s->basename);
-      _free (s->path);
+      _free(s->basename);
+      _free(s->path);
       curr = curr->next;
     }
 }
 
-void free_lua(_quvi_t * quvi)
+void free_lua(_quvi_t *quvi)
 {
   free_llst((*quvi)->util_scripts);
   free_llst((*quvi)->website_scripts);
@@ -467,8 +469,9 @@ void free_lua(_quvi_t * quvi)
 
 /* Finds the specified util script from the list. */
 
-static _quvi_lua_script_t
-find_util_script(_quvi_t quvi, const char *basename)
+static _quvi_lua_script_t find_util_script(
+  _quvi_t quvi,
+  const char *basename)
 {
   _quvi_llst_node_t curr = quvi->util_scripts;
   while (curr)
@@ -481,11 +484,11 @@ find_util_script(_quvi_t quvi, const char *basename)
   return (NULL);
 }
 
-static QUVIcode
-prep_util_script(_quvi_t quvi,
-                 const char *script_fname,
-                 const char *func_name, lua_State ** pl,
-                 _quvi_lua_script_t *s)
+static QUVIcode prep_util_script(_quvi_t quvi,
+                                 const char *script_fname,
+                                 const char *func_name,
+                                 lua_State **pl,
+                                 _quvi_lua_script_t *s)
 {
   lua_State *l;
 
@@ -842,8 +845,10 @@ static QUVIcode run_parse_func(_quvi_llst_node_t n, _quvi_media_t m)
 
 /* Match host script to the url. */
 
-static _quvi_llst_node_t
-find_host_script_node(_quvi_media_t media, _quvi_ident_t *dst, QUVIcode *rc)
+static _quvi_llst_node_t find_host_script_node(
+  _quvi_media_t media,
+  _quvi_ident_t *dst,
+  QUVIcode *rc)
 {
   _quvi_llst_node_t curr;
   _quvi_t quvi;
@@ -930,6 +935,33 @@ QUVIcode find_host_script_and_query_formats(quvi_media_t m, char **formats)
 
   /* Found a script that handles the URL. */
   return (run_query_formats_func(script, m, formats));
+}
+
+static char version_scripts[256];
+
+char *read_scripts_version()
+{
+  size_t l;
+  FILE *f;
+  char *p;
+
+  memset(&version_scripts, 0, sizeof(version_scripts));
+  p = version_scripts;
+
+  f = fopen(VERSIONFILE, "r");
+  if (!f)
+    return (p);
+
+  fgets(p, sizeof(version_scripts), f);
+  fclose(f);
+
+  l = strlen(p)-1;
+  f = NULL;
+
+  if (l > 0 && p[l] == '\n')
+    p[l] = '\0';
+
+  return (p);
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

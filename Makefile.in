@@ -35,7 +35,6 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 target_triplet = @target@
-@ENABLE_TESTS_TRUE@am__append_1 = tests
 subdir = .
 DIST_COMMON = README $(am__configure_deps) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(srcdir)/config.h.in \
@@ -102,7 +101,7 @@ AM_RECURSIVE_TARGETS = $(RECURSIVE_TARGETS:-recursive=) \
 	distdir dist dist-all distcheck
 ETAGS = etags
 CTAGS = ctags
-DIST_SUBDIRS = src examples share scripts doc tests
+DIST_SUBDIRS = $(SUBDIRS)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -152,12 +151,7 @@ CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
-CXX = @CXX@
-CXXCPP = @CXXCPP@
-CXXDEPMODE = @CXXDEPMODE@
-CXXFLAGS = @CXXFLAGS@
 CYGPATH_W = @CYGPATH_W@
-DATE = @DATE@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
@@ -168,9 +162,7 @@ ECHO_N = @ECHO_N@
 ECHO_T = @ECHO_T@
 EGREP = @EGREP@
 EXEEXT = @EXEEXT@
-EXTRA_LIBQUVI_LDFLAGS = @EXTRA_LIBQUVI_LDFLAGS@
 FGREP = @FGREP@
-GIT = @GIT@
 GREP = @GREP@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
@@ -181,6 +173,9 @@ LD = @LD@
 LDFLAGS = @LDFLAGS@
 LIBICONV = @LIBICONV@
 LIBOBJS = @LIBOBJS@
+LIBQUVI_AGE = @LIBQUVI_AGE@
+LIBQUVI_CURRENT = @LIBQUVI_CURRENT@
+LIBQUVI_REVISION = @LIBQUVI_REVISION@
 LIBS = @LIBS@
 LIBTOOL = @LIBTOOL@
 LIPO = @LIPO@
@@ -209,17 +204,11 @@ PATH_SEPARATOR = @PATH_SEPARATOR@
 PKG_CONFIG = @PKG_CONFIG@
 PKG_CONFIG_LIBDIR = @PKG_CONFIG_LIBDIR@
 PKG_CONFIG_PATH = @PKG_CONFIG_PATH@
-POW_LIB = @POW_LIB@
-PROVE = @PROVE@
-QUVI_AGE = @QUVI_AGE@
-QUVI_CURRENT = @QUVI_CURRENT@
-QUVI_REVISION = @QUVI_REVISION@
 RANLIB = @RANLIB@
 SED = @SED@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 STRIP = @STRIP@
-VALGRIND = @VALGRIND@
 VERSION = @VERSION@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
@@ -227,7 +216,6 @@ abs_top_builddir = @abs_top_builddir@
 abs_top_srcdir = @abs_top_srcdir@
 ac_ct_AR = @ac_ct_AR@
 ac_ct_CC = @ac_ct_CC@
-ac_ct_CXX = @ac_ct_CXX@
 ac_ct_DUMPBIN = @ac_ct_DUMPBIN@
 am__include = @am__include@
 am__leading_dot = @am__leading_dot@
@@ -261,6 +249,8 @@ libdir = @libdir@
 libexecdir = @libexecdir@
 liblua_CFLAGS = @liblua_CFLAGS@
 liblua_LIBS = @liblua_LIBS@
+libquvi_scripts_CFLAGS = @libquvi_scripts_CFLAGS@
+libquvi_scripts_LIBS = @libquvi_scripts_LIBS@
 libsoup_CFLAGS = @libsoup_CFLAGS@
 libsoup_LIBS = @libsoup_LIBS@
 libsoup_gnome_CFLAGS = @libsoup_gnome_CFLAGS@
@@ -287,14 +277,10 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 ACLOCAL_AMFLAGS = -I m4
-EXTRA_DIST = \
-libquvi.pc.in \
-libquvi.ver \
-ChangeLog.pre-gitlog
-
+EXTRA_DIST = libquvi.pc.in gen-ver.sh VERSION
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libquvi.pc
-SUBDIRS = src examples share scripts doc $(am__append_1)
+SUBDIRS = src examples doc
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
@@ -577,6 +563,9 @@ distdir: $(DISTFILES)
 	      || exit 1; \
 	  fi; \
 	done
+	$(MAKE) $(AM_MAKEFLAGS) \
+	  top_distdir="$(top_distdir)" distdir="$(distdir)" \
+	  dist-hook
 	-test -n "$(am__skip_mode_fix)" \
 	|| find "$(distdir)" -type d ! -perm -755 \
 		-exec chmod u+rwx,go+rx {} \; -o \
@@ -801,8 +790,8 @@ uninstall-am: uninstall-pkgconfigDATA
 .PHONY: $(RECURSIVE_CLEAN_TARGETS) $(RECURSIVE_TARGETS) CTAGS GTAGS \
 	all all-am am--refresh check check-am clean clean-generic \
 	clean-libtool ctags ctags-recursive dist dist-all dist-bzip2 \
-	dist-gzip dist-lzma dist-shar dist-tarZ dist-xz dist-zip \
-	distcheck distclean distclean-generic distclean-hdr \
+	dist-gzip dist-hook dist-lzma dist-shar dist-tarZ dist-xz \
+	dist-zip distcheck distclean distclean-generic distclean-hdr \
 	distclean-libtool distclean-tags distcleancheck distdir \
 	distuninstallcheck dvi dvi-am html html-am info info-am \
 	install install-am install-data install-data-am install-dvi \
@@ -816,34 +805,32 @@ uninstall-am: uninstall-pkgconfigDATA
 	uninstall uninstall-am uninstall-pkgconfigDATA
 
 
-@ENABLE_TESTS_TRUE@check: test
-
-@ENABLE_TESTS_TRUE@test:
-@ENABLE_TESTS_TRUE@	@(cd tests; $(MAKE) all test)
-
-.PHONY: doc dist-doc
+.PHONY: doc distdoc ChangeLog VERSION
 doc:
-@HAVE_ND_TRUE@	@test -d $(top_builddir)/doc/quvi-@VERSION@ || \
-@HAVE_ND_TRUE@		mkdir $(top_builddir)/doc/quvi-@VERSION@
+@HAVE_ND_TRUE@	@test -d $(top_builddir)/doc/libquvi-@VERSION@ || \
+@HAVE_ND_TRUE@		mkdir $(top_builddir)/doc/libquvi-@VERSION@
 @HAVE_ND_TRUE@	@test -d $(top_builddir)/doc/nd_temp || \
 @HAVE_ND_TRUE@		mkdir $(top_builddir)/doc/nd_temp
 @HAVE_ND_TRUE@	@@ND@ -i $(top_srcdir)/doc/ -i $(top_srcdir)/src/ \
-@HAVE_ND_TRUE@		-o $(ND_FORMAT) $(top_builddir)/doc/quvi-@VERSION@/ \
-@HAVE_ND_TRUE@		-p $(top_builddir)/doc/nd_temp/ && echo See doc/quvi-@VERSION@
+@HAVE_ND_TRUE@		-o $(ND_FORMAT) $(top_builddir)/doc/libquvi-@VERSION@/ \
+@HAVE_ND_TRUE@		-p $(top_builddir)/doc/nd_temp/ && echo See doc/libquvi-@VERSION@
 @HAVE_ND_FALSE@	@echo "error: configure did not find NaturalDocs" && exit 1
-dist-doc: doc
-	@tar chof - $(top_builddir)/doc/quvi-@VERSION@ | \
-			GZIP=--best gzip -c >quvi-doc-@VERSION@.tar.gz \
-			&& echo Created quvi-doc-@VERSION@.tar.gz
+distdoc: doc
+	@tar chof - $(top_builddir)/doc/libquvi-@VERSION@ | \
+			GZIP=--best gzip -c >libquvi-doc-@VERSION@.tar.gz \
+			&& echo Created libquvi-doc-@VERSION@.tar.gz
 
-ChangeLog:
-	@if test -f $(top_srcdir)/.git/HEAD; then \
-		@GIT@ log --stat --after="Sun Nov 14 11:03:50 2010" > $@; \
+VERSION:
+	@if test -d "$(top_srcdir)/.git" -o -f "$(top_srcdir)/.git"; then \
+		"$(top_srcdir)/gen-ver.sh" "$(top_srcdir)" > $@; \
 	fi
 
-dist: ChangeLog
+ChangeLog:
+	@if test -d "$(top_srcdir)/.git" -o -f "$(top_srcdir)/.git"; then \
+		git log --stat --name-only --date=short --abbrev-commit > $@; \
+	fi
 
-.PHONY: ChangeLog
+dist-hook: ChangeLog VERSION
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

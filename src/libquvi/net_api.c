@@ -1,4 +1,4 @@
-/* quvi
+/* libquvi
  * Copyright (C) 2011  Toni Gundogdu <legatvs@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
@@ -19,11 +19,14 @@
 
 #include "config.h"
 
+#include <string.h>
+
 #include "quvi/quvi.h"
 #include "quvi/net.h"
 #include "quvi/llst.h"
 
 #include "internal.h"
+#include "util.h"
 
 extern const char empty[]; /* quvi_api.c */
 
