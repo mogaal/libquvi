@@ -1,3 +1,9 @@
+libquvi (0.4-1) unstable; urgency=low
+
+  * New upstream release 
+
+ -- Alejandro Garrido Mota <garridomota@gmail.com>  Sun, 23 Oct 2011 22:44:43 -0430
+
 libquvi (0.2.19-1) unstable; urgency=low
 
   [ Alejandro Garrido Mota ]
