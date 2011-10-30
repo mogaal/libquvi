@@ -3,13 +3,13 @@ Section: libs
 Priority: extra
 Maintainer: Alejandro Garrido Mota <garridomota@gmail.com>
 Build-Depends: debhelper (>= 8.1.3~), libcurl4-gnutls-dev | libcurl4-dev,
- liblua5.1-0-dev, naturaldocs
+ liblua5.1-0-dev, naturaldocs, libquvi-scripts
 Standards-Version: 3.9.2
 Vcs-Git: git://github.com/mogaal/libquvi.git
 Vcs-Browser: https://github.com/mogaal/libquvi
 Homepage: http://quvi.sourceforge.net
 
-Package: libquvi6
+Package: libquvi7
 Architecture: any
 Multi-Arch: same
 Pre-Depends: ${misc:Pre-Depends}
@@ -23,7 +23,7 @@ Description: library for parsing video download links (runtime libraries)
 Package: libquvi-dev
 Section: libdevel
 Architecture: any
-Depends: ${misc:Depends}, libquvi6 (= ${binary:Version})
+Depends: ${misc:Depends}, libquvi7 (= ${binary:Version})
 Description: library for parsing video download links (development package)
  Library to parse Adobe flash video download links. It supports Youtube
  and other similar video websites. It provides access to functionality and
@@ -44,11 +44,3 @@ Description: library for parsing video download links (documentation package)
  flash technology.
  .
  This package provides the necessary documentation to make use the library.
-
-Package: quvi
-Section: utils
-Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: command line tool for parsing video download links
- command line tool for parsing video download links. It
- supports Youtube and other similar video websites.
