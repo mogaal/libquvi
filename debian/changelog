@@ -1,7 +1,10 @@
 libquvi (0.4.0-1) unstable; urgency=low
 
   * New upstream release (Closes: #123456) 
-  * d/control: Remove quvi package because upstream author split the project
+  * d/control: 
+      - Remove quvi package because upstream author split the project
+      - Add libc6-dev in BD field for iconv.h dependence
+      - Add libquvi-scripts in BD 
   * d/copyright: 
      - Remove "share/lua/website/quvi/url.lua" and "share/lua/website/*"
        entries. 
@@ -12,7 +15,9 @@ libquvi (0.4.0-1) unstable; urgency=low
   * Rename libquvi6.install to libquvi7.install 
   * Remove quvi.install
   * Add lintian-override in source/lintian-overrides
-  * d/rules: Remove "--enable-nsfw" and add "--with-examples" argument 
+  * d/rules: 
+      - Remove "--enable-nsfw" and add "--with-examples" argument 
+      - Remove override_dh_auto_clean block
 
  -- Alejandro Garrido Mota <garridomota@gmail.com>  Sun, 23 Oct 2011 22:44:43 -0430
 

@@ -9,8 +9,5 @@ override_dh_auto_configure:
 override_dh_auto_build:
 	dh_auto_build -- all doc
 
-override_dh_auto_clean:
-	rm -rf doc/nd_temp doc/quvi-*
-
 override_dh_installchangelogs:
 	dh_installchangelogs NEWS
