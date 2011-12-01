@@ -1,9 +1,8 @@
 libquvi (0.4.0-1) unstable; urgency=low
 
-  * New upstream release (Closes: #123456) 
+  * New upstream release (Closes: #614384, #636591, #615805)
   * d/control: 
       - Remove quvi package because upstream author split the project
-      - Add libc6-dev in BD field for iconv.h dependence
       - Add libquvi-scripts in BD 
   * d/copyright: 
      - Remove "share/lua/website/quvi/url.lua" and "share/lua/website/*"
