@@ -31,6 +31,7 @@ libquvi (0.4.0-1) unstable; urgency=low
     + debian/control: Add build-dep on naturaldocs.
   * No longer include Makefile.* as examples in libquvi-doc.
   * Use xz compression for source and binary packages.
+  * debian/control: Remove soname from libquvi-dev's description.
 
  -- Alejandro Garrido Mota <garridomota@gmail.com>  Sun, 23 Oct 2011 22:44:43 -0430
 

@@ -32,7 +32,7 @@ Description: library for parsing video download links (development package)
  flash technology.
  .
  This package provides the necessary files to compile programs which
- use libquvi6.
+ use libquvi.
 
 Package: libquvi-doc
 Section: doc
