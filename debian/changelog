@@ -1,48 +1,37 @@
 libquvi (0.4.0-1) unstable; urgency=low
 
-  * New upstream release (Closes: #615805)
-  * d/control: 
-      - Remove quvi package because upstream author split the project
-      - Add libquvi-scripts in BD 
-  * d/copyright: 
-     - Remove "share/lua/website/quvi/url.lua" and "share/lua/website/*"
-       entries. 
-     - Removed MIT license (required by url.lua).
+  [ Alejandro Garrido Mota ]
+  * New upstream release.
+    + Supports YouTube again. (Closes: #636591)
+    + Support for more YouTube URLs. (Closes: #615805)
+  * Lua scripts moved to libquvi-scripts. (Closes: #614384)
+  * Add multiarch support.
+  * d/control:
+     - Remove quvi package because upstream author split the project
+     - Add libquvi-scripts to (Build-)Depends.
+     - Add Vcs-* fields.
+  * d/copyright:
+     - Remove "share/*" entries.
      - Change Format URL and Source URL.
      - Adapt fields to properly revision.
-  * Rename and update symbol file from to libquvi7.symbols 
-  * Rename libquvi6.install to libquvi7.install 
+  * Rename and update symbol file from libquvi0.symbols to libquvi7.symbols.
+  * Rename libquvi0.install to libquvi7.install.
   * Remove quvi.install
   * Add lintian-override in source/lintian-overrides
-  * d/rules: 
-      - Remove "--enable-nsfw" and add "--with-examples" argument 
-      - Remove override_dh_auto_clean block
-
- -- Alejandro Garrido Mota <garridomota@gmail.com>  Sun, 23 Oct 2011 22:44:43 -0430
-
-libquvi (0.2.19-1) unstable; urgency=low
-
-  [ Alejandro Garrido Mota ]
-  * New upstream release (Closes: #636591). 
-  * d/rules: Remove override_dh_auto_test in d/rules because NO_INTERNET var is
-    not used anymore.
-  * Add multiarch support.        
-  * Change package name to libquvi6. Rename d/libquvi0.install to 
-    d/libquvi6.install and d/libquvi0.symbols to d/libquvi6.symbols 
-  * Install lua scripts to /usr/share/libquvi6. (Closes: #614384)
+  * d/rules:
+     - Remove "--enable-nsfw" and add "--with-examples" argument
+     - Remove override_dh_auto_clean block
+     - Remove override_dh_auto_test: NO_INTERNET var is not used anymore.
   * Change Architecture for libquvi-doc to all
-  * Update symbol (d/libquvi6.symbols) file 
-  * d/copyright: - Add new copyright holders for a share/lua/website/*
-                 - Add new MIT-licensed file: share/lua/website/quvi/url.lua 
   * d/control: Add Vcs-* fields.
-  * d/watch: use of (\d.*) instead of (.*). 
+  * d/watch: use of (\d.*) instead of (.*).
 
   [ Ansgar Burchardt ]
   * Build and install library documentation.
     + debian/control: Add build-dep on naturaldocs.
   * No longer include Makefile.* as examples in libquvi-doc.
 
- -- Alejandro Garrido Mota <garridomota@gmail.com>  Fri, 01 Jul 2011 12:32:17 -0430
+ -- Alejandro Garrido Mota <garridomota@gmail.com>  Sun, 23 Oct 2011 22:44:43 -0430
 
 libquvi (0.2.15-1) unstable; urgency=low
 
