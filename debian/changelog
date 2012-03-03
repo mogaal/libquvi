@@ -1,3 +1,12 @@
+libquvi (0.4.0-2) unstable; urgency=low
+
+  * Upload to unstable.
+  * Add myself to Uploaders.
+  * Bump Standards-Version to 3.9.3.
+    + Use copyright format 1.0 (no changes besides updated Format field).
+
+ -- Ansgar Burchardt <ansgar@debian.org>  Sat, 03 Mar 2012 23:31:07 +0100
+
 libquvi (0.4.0-1) experimental; urgency=low
 
   [ Alejandro Garrido Mota ]
