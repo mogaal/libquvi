@@ -1,5 +1,4 @@
-Format:
-   http://anonscm.debian.org/viewvc/dep/web/deps/dep5.mdwn?revision=202
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Contact: Toni Gundogdu <legatvs@gmail.com>
 Source: http://quvi.sourceforge.net
 Upstream-Name: libquvi
