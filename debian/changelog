@@ -1,3 +1,10 @@
+libquvi (0.4.1-1) unstable; urgency=low
+
+  * New upstream release.
+  * Drop dirname_from@Base from symbols file.
+
+ -- Ansgar Burchardt <ansgar@debian.org>  Wed, 25 Apr 2012 10:35:08 +0200
+
 libquvi (0.4.0-2) unstable; urgency=low
 
   * Upload to unstable.
