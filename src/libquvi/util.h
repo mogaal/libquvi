@@ -29,7 +29,6 @@ char *strepl(const char *s, const char *what, const char *with);
 int add_media_url(_quvi_llst_node_t * lst, const char *fmt, ...);
 char *unescape(_quvi_t quvi, char *s);
 char *from_html_entities(char *src);
-char *dirname_from(const char *s);
 
 #endif
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

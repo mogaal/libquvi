@@ -22,7 +22,6 @@
 #include <string.h>
 #include <errno.h>
 #include <stdarg.h>
-#include <libgen.h>
 #include <assert.h>
 
 #ifdef HAVE_ICONV
@@ -217,14 +216,6 @@ int add_media_url(_quvi_llst_node_t * lst, const char *fmt, ...)
     }
 
   return (quvi_llst_append((quvi_llst_node_t*)lst, qvl));
-}
-
-char *dirname_from(const char *s)
-{
-  char *t = strdup(s);
-  char *p = strdup(dirname(t));
-  _free(t);
-  return (p);
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */
