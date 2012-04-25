@@ -29,6 +29,7 @@
 #include <unistd.h>
 #endif
 #include <assert.h>
+#include <libgen.h>
 
 #include <lualib.h>
 #include <lauxlib.h>
@@ -414,7 +415,7 @@ int init_lua(_quvi_t quvi)
 {
   QUVIcode rc;
 
-  quvi->lua = (lua_State *) lua_open();
+  quvi->lua = luaL_newstate();
   if (!quvi->lua)
     return (QUVI_LUAINIT);
 
@@ -638,6 +639,12 @@ QUVIcode run_lua_charset_func(_quvi_media_t m, const char *data)
   return (QUVI_OK);
 }
 
+static char *_dirname(const char *s, char **b)
+{
+  *b = strdup(s);
+  return (dirname(*b));
+}
+
 /* Website scripts. */
 
 /* Executes the host script's "ident" function. */
@@ -646,7 +653,6 @@ QUVIcode run_ident_func(_quvi_ident_t ident, _quvi_llst_node_t node)
 {
   static const char *f = "ident";
   _quvi_lua_script_t s;
-  char *script_dir;
   _quvi_t quvi;
   lua_State *l;
   QUVIcode rc;
@@ -683,13 +689,14 @@ QUVIcode run_ident_func(_quvi_ident_t ident, _quvi_llst_node_t node)
       return (QUVI_LUA);
     }
 
-  script_dir = dirname_from(s->path);
-
   lua_newtable(l);
   setfield_s(l, "page_url", ident->url);
-  setfield_s(l, "script_dir", script_dir);
-
-  _free(script_dir);
+  {
+    char *b = NULL;
+    char *d = _dirname(s->path, &b);
+    setfield_s(l, "script_dir", d);
+    _free(b);
+  }
 
   if (lua_pcall(l, 1, 1, 0))
     {

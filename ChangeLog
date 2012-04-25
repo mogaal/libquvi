@@ -1,3 +1,107 @@
+commit dd471b6
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-03-23
+
+    Update NEWS for v0.4.1
+
+NEWS
+
+commit 0d0e8ee
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-03-23
+
+    Bump version to 0.4.1
+    
+     * Bump interface C:R+1:A
+
+m4/version.m4
+
+commit 6de7322
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-03-18
+
+    FIX: Lua 5.2: Use luaL_newstate instead (#89)
+    
+    "lua_open was removed in 5.1, and apparently really removed in 5.2
+    luaL_newstate replaces it, and as libquvi already depends on Lua 5.1
+    just unconditionally replacing the call should work." -- marienz
+    
+      * http://sourceforge.net/apps/trac/quvi/ticket/89
+
+src/libquvi/lua_wrap.c
+
+commit b2f1621
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2011-11-30
+
+    FIX: Use dirname(3) properly
+    
+    dirname(3) returned pointers to null-terminated strings must
+    not be passed to free(3).  dirname(3) may modify the contents.
+    Preserve the pathname by using a temporary copy with dirname(3).
+
+src/libquvi/lua_wrap.c
+src/libquvi/util.c
+src/libquvi/util.h
+
+commit 0c4ff3b
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-03-18
+
+    FIX: Make verify c/b check against correct option
+    
+    Check that the verify callback was set, not the resolve callback.
+
+src/libquvi/net_wrap.c
+
+commit 179d997
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2011-11-30
+
+    Add examples/supported.c
+
+examples/Makefile.am
+examples/supported.c
+
+commit a26f5f6
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2011-11-30
+
+    Add examples/parse.c
+
+examples/Makefile.am
+examples/parse.c
+
+commit 41ead47
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-02-29
+
+    Add gen-new.sh (repo only)
+
+gen-news.sh
+
+commit be85ead
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-02-29
+
+    Add license to misc. scripts
+    
+     * autogen.sh
+     * gen-ver.sh
+
+autogen.sh
+gen-ver.sh
+
+commit 3d2e015
+Author: Toni Gundogdu <legatvs@gmail.com>
+Date:   2012-02-29
+
+    DOC: Replace buzzhumor with gaskrank
+    
+     * buzzhumor.lua was removed in libquvi-scripts 0.4.3
+
+doc/nd/Webscripts/Tutorial.txt
+
 commit 965afaf
 Author: Toni Gundogdu <legatvs@gmail.com>
 Date:   2011-10-05

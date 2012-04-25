@@ -1,3 +1,14 @@
+v0.4.1 (2012-03-23) / Toni Gundogdu
+
+Toni Gundogdu:
+  - Add examples/parse.c [a26f5f6]
+  - Add examples/supported.c [179d997]
+  - DOC: Replace buzzhumor with gaskrank [3d2e015]
+  - FIX: Lua 5.2: Use luaL_newstate instead (#89) [6de7322]
+    - Thanks to Marien Zwart for the fix
+  - FIX: Make verify c/b check against correct option [0c4ff3b]
+  - FIX: Use dirname(3) properly [b2f1621]
+
 
 0.4.0  Wed Oct 05 2011  Toni Gundogdu
 

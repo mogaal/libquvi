@@ -72,7 +72,7 @@ mkdir -p foo/lua/website/ ; cd foo
 cp -r $prefix/share/lua/util/ lua/ ;# any utility scripts that libquvi uses
 cp -r $prefix/share/lua/website/quvi/ lua/website/ ;# importable scripts
 
-cp $prefix/share/lua/website/buzzhumor.lua lua/website/foo.lua
+cp $prefix/share/lua/website/gaskrank.lua lua/website/foo.lua
 
 # foo/ dir should now look like:
 find .
@@ -83,7 +83,7 @@ find .
 ./lua/website/quvi
 ./lua/website/quvi/const.lua
 ./lua/website/quvi/url.lua
-./lua/website/quvi/html.lua ;# added in 0.4.0
+./lua/website/quvi/html.lua ;# (libquvi-scripts 0.4.0+)
 ./lua/website/quvi/util.lua
 ./lua/website/quvi/bit.lua
 ./lua/util
@@ -92,10 +92,10 @@ find .
 ./lua/util/trim.lua
 (end)
 
-And open "foo.lua" in an editor.
+And open "foo.lua".
 
 
-About: Tailoring foo.lua
+About: Editing foo.lua
 
 libquvi scripts use extensively the lua patterns. If you are new to
 lua or the patterns,  you can read more about them from in
@@ -120,7 +120,7 @@ Or, alternatively use the project default.
 Update the domain pattern.
 
 (start code)
--   r.domain  = 'buzzhumor%.com"
+-   r.domain  = 'gaskrank%.tv"
 +   r.domain  = 'foo%.bar'
 (end)
 
@@ -172,11 +172,11 @@ end
 `parse' function:
 
 To keep this tutorial simple, let's go ahead and presume that the 'foo.bar'
-website is identical to that of 'buzzhumor.com'. Start by setting the
+website is identical to that of 'gaskrank.tv'. Start by setting the
 host ID.
 
 (start code)
--   self.host_id = 'buzzhumor'
+-   self.host_id = 'gaskrank'
 +   self.host_id = 'foo'
 (end)
 
@@ -252,9 +252,9 @@ everything as expected.
 Does the website support >1 formats:
 
 If yes, see if you can add support for them all. youtube.lua,
-cbsnews.lua, dailymotion.lua scripts are good examples. Don'
-worry about it though. Support the additional formats can be
-added later, too.
+cbsnews.lua, dailymotion.lua scripts are good examples. Don't
+worry about it, though. Support for the additional formats can
+be added later, too.
 
 Does the parsed title contain extra characters:
  * We want the _media title only_

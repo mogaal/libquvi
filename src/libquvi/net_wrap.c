@@ -283,7 +283,7 @@ QUVIcode verify_wrapper(_quvi_t q, _quvi_llst_node_t l)
 
   freprintf(&n->url, "%s", m->url);
 
-  if (q->resolve_func)
+  if (q->verify_func)
     rc = q->verify_func(n);
   else
     rc = curl_verify(q, n);
