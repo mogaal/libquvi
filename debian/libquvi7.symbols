@@ -6,7 +6,6 @@ libquvi.so.7 libquvi7 #MINVER#
  curl_resolve@Base 0.4.0
  curl_unescape_url@Base 0.4.0
  curl_verify@Base 0.4.0
- dirname_from@Base 0.4.0
  empty@Base 0.4.0
  fetch_wrapper@Base 0.4.0
  find_host_script@Base 0.4.0
