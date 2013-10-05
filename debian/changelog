@@ -1,3 +1,12 @@
+libquvi (0.4.1-2) UNRELEASED; urgency=low
+
+  * debian/watch: Also look for bzip2 and xz compressed tarballs.
+  * debian/watch: Add pgpsigurlmangle option to verify upstream signature.
+    The PGP key used is the one from the last releases. It was not verified
+    further.
+
+ -- Ansgar Burchardt <ansgar@debian.org>  Sat, 05 Oct 2013 14:10:30 +0200
+
 libquvi (0.4.1-1) unstable; urgency=low
 
   * New upstream release.
