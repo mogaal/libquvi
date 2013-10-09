@@ -3,7 +3,8 @@ Section: libs
 Priority: extra
 Maintainer: Alejandro Garrido Mota <garridomota@gmail.com>
 Uploaders: Ansgar Burchardt <ansgar@debian.org>
-Build-Depends: debhelper (>= 8.1.3~), libcurl4-gnutls-dev | libcurl4-dev,
+Build-Depends: debhelper (>= 8.1.3~), dh-autoreconf,
+ libcurl4-gnutls-dev | libcurl4-dev,
  liblua5.1-0-dev, naturaldocs, libquvi-scripts
 Standards-Version: 3.9.3
 Vcs-Git: git://github.com/mogaal/libquvi.git
