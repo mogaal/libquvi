@@ -1,0 +1,14 @@
+
+Title: Help: Development
+
+About: How to get the code
+
+  * libquvi-scripts <gitweb at http://repo.or.cz/w/libquvi-scripts.git>
+  * libquvi <gitweb at http://repo.or.cz/w/libquvi.git>
+  * quvi <gitweb at http://repo.or.cz/w/quvi-tool.git>
+
+And:
+
+  * Legacy quvi <gitweb at http://repo.or.cz/w/quvi.git>
+
+Which contains the pre-0.4 repository.

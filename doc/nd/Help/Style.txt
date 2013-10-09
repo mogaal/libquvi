@@ -1,0 +1,40 @@
+
+Title: Help: Style
+
+C:
+
+The project uses <astyle at http://astyle.sourceforge.net/> to reformat
+the C source code:
+
+(start code)
+astyle --mode=c --style=gnu -c
+(end)
+
+Configure your editor to use the following settings.
+
+ * Set tab width to 2
+ * Insert spaces instead of tabs
+ * Automatic indentation (recommended)
+ * Set right margin to 80 or 72 (preferred)
+
+vim modeline that the project uses with C:
+
+(start code)
+/* vim: set ts=2 sw=2 tw=72 expandtab: */
+(end)
+
+Lua:
+
+astyle is _not_ used to reformat the lua source code, instead
+configure your editor to use the following settings.
+
+ * Set tab width 4
+ * Insert spaces instead of tabs
+ * Automatic indentation (recommended)
+ * Set right margin to 80 or 72 (preferred)
+
+vim modeline that the project uses with lua:
+
+(start code)
+-- vim: set ts=4 sw=4 tw=72 expandtab:
+(end)

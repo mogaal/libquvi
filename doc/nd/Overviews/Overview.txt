@@ -1,0 +1,75 @@
+Title: Overview
+
+About: Return codes
+
+Check the return codes of the libquvi API functions. You can use
+<quvi_strerror> to convert the return codes to more meaningful
+error messages.
+
+About: New session
+
+Every new session starts with <quvi_init>. An application may start using
+libquvi by creating a new session with <quvi_init>. This function returns
+a new session handle which will be used by other API functions.
+
+libquvi uses libcurl (by default) for network all operations, you can
+get the libcurl (easy interface) handle with <quvi_getinfo> and reuse
+it in your application. _Do not_ attempt to release this libcurl handle in
+your application, libquvi will take care of this when you call
+<quvi_close>.
+
+About: Parse URL
+
+To parse an URL to media details, use <quvi_parse>. The session options
+may be manipulated with the <quvi_setopt>. These options must be set
+before calling <quvi_parse> any URLs. The parsed media details may be
+accessed with <quvi_getprop>. When done with the media details, release
+the allocated resources by calling <quvi_parse_close>.
+
+About: Close active session
+
+To end a session, call <quvi_close>. This releases the resources allocated
+previously by <quvi_init>.
+
+About: Example
+
+Basic use, initialize new session and parse URL.
+
+(start code)
+#include <quvi/quvi.h>
+
+#define URL "http://foo.bar/baz"
+
+int main(int argc, char **argv)
+{
+  char *media_title, *media_url;
+  quvi_media_t m;
+  QUVIcode rc;
+  quvi_t q;
+
+  rc = quvi_init(&q);
+  if (rc != QUVI_OK)
+    {
+      fprintf(stderr, "%s\n", quvi_strerror(q,rc));
+      return (rc);
+    }
+
+  rc = quvi_parse(q, URL, &m);
+  if (rc != QUVI_OK)
+    {
+      fprintf(stderr, "%s\n", quvi_strerror(q,rc));
+      quvi_close(&q);
+      return (rc);
+    }
+
+  quvi_getprop(m, QUVIPROP_PAGETITLE, &media_title);
+  quvi_getprop(m, QUVIPROP_MEDIAURL, &media_url);
+  puts(media_title);
+  puts(media_url);
+
+  quvi_parse_close(&m);
+  quvi_close(&q);
+
+  return (rc);
+}
+(end)

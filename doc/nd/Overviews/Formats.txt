@@ -1,0 +1,133 @@
+
+Title: Overview: Formats
+
+
+About: API Functions
+
+Functions that return format lists.
+
+ * <quvi_query_formats> returns a <Dynamic list> of available formats to an URL
+ * <quvi_next_supported_website> returns a <Static list> of formats
+ * <quvi_supported_ident> returns a <Static list> of formats
+
+
+About: Static list
+
+Some <API Functions> return a static list of media formats. Until 0.2.17
+these lists used to contain any number of media format strings that were
+assumed to be available to an URL. As of libquvi 0.2.17 these lists
+hold the value of either 'default' or 'default|best' and should be
+considered to be _deprecated_ and not to be used in applications anymore.
+
+The static lists were originally introduced to give the applications and
+their users some idea what formats were expected to be available to media.
+The problem with the static list is that many websites have only a selected
+number of formats available to their media. For example, one video could
+have a few formats available, whereas another might have several
+additional ones available.
+
+This often lead to some confusion about the available formats and this has
+been addressed with the <Dynamic list> and <quvi_query_formats> that were
+introduced in libquvi 0.2.17.
+
+
+About: Dynamic list
+
+Addresses the issues with the <Static list>. libquvi 0.2.17 adds a new function
+<quvi_query_formats> that creates the list, dynamically, from the data returned
+by the servers.
+
+  * This function *does not* verify the URLs (see also <quvi_parse>,
+    <quvi_setopt> and <QUVIOPT_NOVERIFY>)
+  * It returns a _dynamically_ created list of _available formats_ as
+    reported by the servers
+  * It returns 'default' for "formats" if the webscript supports
+    _only one_ format
+  * It checks whether the library can handle the URL
+
+
+About: 'default' and 'best' formats
+
+'default' and 'best' are not formats. They strings are treated as _constants_
+and indicate
+
+  * 'best (available) format'
+  * 'default format'
+
+It should be noted that the webscripts are expected to fallback to 'default'
+
+  * If they do not recognize the format string
+  * Or if the format is not available
+
+
+About: More about 'default' and 'best'
+
+How these are determined is webscript specific. When a webscript
+supports >1 formats
+
+  * 'default' is determined by comparing the media quality properties
+
+The webscripts typically _default to the lowest (available) quality_.
+
+  * 'best' is determined similarly
+
+The webscripts compare the media quality proeprties and pick the _one
+with the highest quality properties_. Common to both 'default' and
+'best' is that if the media quality property data is not available
+to the webscript, some alternative method is typically used instead
+to determine them.
+
+
+About: Using quvi_query_formats
+
+How to use <quvi_query_formats> as intended.
+
+  * Call <quvi_query_formats> to get a list of available formats to an URL
+  * Pick string from the returned format string list
+  * Set it as <QUVIOPT_FORMAT> with <quvi_setopt>
+  * Call <quvi_parse> to parse the media details
+
+Example:
+
+Error handling omitted for brewity.
+(start code)
+#define URL "http://foo.bar/baz"
+
+char *avail_formats, *get_format;
+quvi_media_t m;
+quvi_t q;
+
+quvi_init(&q);
+quvi_query_formats(q, URL, &avail_formats);
+/*
+ * SKIP for brewity:
+ * - Choose format string from the returned "avail_formats"
+ * - Save the chosen value to "get_format"
+ */
+quvi_setopt(q, QUVIOPT_FORMAT, get_format);
+quvi_parse(q, URL, &m);
+/* SKIP: Do whatever with the parsed media details */
+quvi_free(avail_formats);
+quvi_parse_close(&m);
+quvi_close(&q);
+(end)
+
+About: Tips
+
+Useful tips.
+
+Notes:
+
+  * Use <quvi_query_formats> to get a list of available formats
+  * The 'best' is handled when >1 formats are available
+  * 'default' is the library default for QUVIOPT_FORMAT
+  * The 'default' is handled always
+
+Also good to know:
+
+  * <quvi_query_formats> does not include 'default' or 'best', these are
+    assumed to be handled always
+  * <QUVIOPT_FORMAT> can be of any string value as long as a webscript
+    recognizes it
+  * Webscripts fallback to 'default' if they do not recognize the format
+    string

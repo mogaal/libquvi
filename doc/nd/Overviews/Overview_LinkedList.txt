@@ -1,0 +1,32 @@
+Title: Overview: Linked list
+
+About: About
+
+Some of the libquvi API functions use <Linked list at
+http://en.wikipedia.org/wiki/Linked_list>. You can also use the
+<Linked list API> in your own applications.
+
+About: Example
+
+Basic example, create a linked list, iterate and release.
+
+(start code)
+quvi_llst_node_t curr = NULL;
+quvi_llst_node_t llst = NULL;
+
+quvi_llst_append(&llst, strdup("foo"));
+quvi_llst_append(&llst, strdup("bar"));
+assert(quvi_llst_size(llst) == 2);
+
+curr = llst;
+while (curr)
+  {
+    chars = (char*) quvi_llst_data(curr);
+    assert(s != NULL); 
+    puts(s);
+    curr = quvi_llst_next(curr);
+  }
+
+quvi_llst_free(&llst);
+assert(llst == NULL);
+(end)
