@@ -1,0 +1,17 @@
+/** @page acc_script_prop Accessing script properties
+
+The library provides limited access to the script properties.
+
+@code
+while (quvi_script_next(q, QUVI_SCRIPT_TYPE_MEDIA) == QUVI_TRUE)
+  {
+    char *s = NULL;
+    quvi_script_get(q, QUVI_SCRIPT_PROPERTY_SHA1, &s);
+    puts(s);
+  }
+@endcode
+
+@sa QuviScriptProperty
+@sa @ref glossary_scripts
+@sa QuviScriptType
+*/

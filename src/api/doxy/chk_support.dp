@@ -1,0 +1,39 @@
+/** @page chk_support Checking whether an URL is supported
+
+Checking whether the available @ref m_script or @ref pl_script collection
+accepts the URL may be done either with or without an internet connection.
+
+Note, however, that most checks will return the "no support" error
+with the @ref sh_url and the @ref QUVI_SUPPORTS_MODE_OFFLINE, as this
+would normally require resolving the URL over the Internet, first.
+
+@code
+QuviBoolean r = quvi_supports(q, URL,
+                              QUVI_SUPPORTS_MODE_OFFLINE,
+                              QUVI_SUPPORTS_TYPE_MEDIA);
+@endcode
+
+Similar to the above but do an online check, instead:
+
+@code
+QuviBoolean r = quvi_supports(q, URL,
+                              QUVI_SUPPORTS_MODE_ONLINE,
+                              QUVI_SUPPORTS_TYPE_MEDIA);
+@endcode
+
+The above two examples limit the check to @ref m_script support only.
+The example below tells the library to check the URL against
+@ref m_script and @ref pl_script collections.
+
+@code
+QuviBoolean r = quvi_supports(q, URL,
+                              QUVI_SUPPORTS_MODE_ONLINE,
+                              QUVI_SUPPORTS_TYPE_ANY);
+@endcode
+
+@sa QuviSupportsMode
+@sa QuviSupportsType
+
+The available @ref m_script and @ref pl_script collection determines which
+websites are supported by the library.
+*/

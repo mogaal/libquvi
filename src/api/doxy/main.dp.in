@@ -1,0 +1,28 @@
+/** @mainpage
+
+@author Toni Gundogdu
+@version @VERSION@
+@date @BUILD_TIME@
+
+libquvi is a small C library that can be used to parse ad0be flash media
+stream URLs.
+
+@section programming Programming
+@li @subpage getting_started
+@li @subpage parse_media
+@li @subpage parse_playlist
+
+@section p_advanced Programming: Advanced topics
+@li @subpage scan_media
+@li @subpage chk_support
+@li @subpage parse_subtitle
+@li @subpage acc_script_prop
+@li @subpage select_stream
+@li @subpage http_metainfo
+@li @subpage proxy_support
+
+@section misc Other
+@li @subpage env
+@li @subpage dirs
+@li @subpage glossary
+*/

@@ -1,0 +1,10 @@
+/**
+@defgroup http_metainfo HTTP meta-info property
+@defgroup convenience Convenience functions
+@defgroup playlistprop Playlist property
+@defgroup subprop Subtitle property
+@defgroup mediaprop Media property
+@defgroup scan Scan property
+@defgroup script Scripts
+@defgroup lib Library
+*/

@@ -1,0 +1,113 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Toni Gundogdu
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: libquvi 0.9.3\n"
+"Report-Msgid-Bugs-To: http://quvi.sf.net/bugs/\n"
+"POT-Creation-Date: 2013-09-03 17:32+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/api/errmsg.c:34
+msgid "Not an error"
+msgstr ""
+
+#: src/api/errmsg.c:35
+msgid "Operation aborted by a callback"
+msgstr ""
+
+#: src/api/errmsg.c:36
+msgid "Could not find any subtitle export scripts in the path"
+msgstr ""
+
+#: src/api/errmsg.c:37
+msgid "Could not find any subtitle scripts in the path"
+msgstr ""
+
+#: src/api/errmsg.c:38
+msgid "Could not find any playlist scripts in the path"
+msgstr ""
+
+#: src/api/errmsg.c:39
+msgid "Could not find any media scripts in the path"
+msgstr ""
+
+#: src/api/errmsg.c:40
+msgid "Could not find any scan scripts in the path"
+msgstr ""
+
+#: src/api/errmsg.c:41
+msgid "Could not find any the utility scripts in the path"
+msgstr ""
+
+#: src/api/errmsg.c:42
+msgid "Operation aborted by the \"croak\" keyword"
+msgstr ""
+
+#: src/api/errmsg.c:43
+msgid "An invalid argument to the function"
+msgstr ""
+
+#: src/api/errmsg.c:44
+msgid "libgcrypt version mismatch"
+msgstr ""
+
+#: src/api/errmsg.c:45
+msgid "Initialization of libproxy failed"
+msgstr ""
+
+#: src/api/errmsg.c:46
+msgid "Initialization of libcurl failed"
+msgstr ""
+
+#: src/api/errmsg.c:47
+msgid "Initialization of liblua failed"
+msgstr ""
+
+#: src/api/errmsg.c:50
+msgid "An invalid error code"
+msgstr ""
+
+#: src/curl/fetch.c:49 src/curl/http_metainfo.c:48 src/curl/resolve.c:49
+#, c-format
+msgid "The server responded with the code %03ld"
+msgstr ""
+
+#: src/lua/load_util_script.c:72
+#, c-format
+msgid "Could not the find utility script `%s' in the path"
+msgstr ""
+
+#: src/misc/match_media_script.c:81
+#, c-format
+msgid "No support: %s: Could not find a media script for URL"
+msgstr ""
+
+#: src/misc/match_playlist_script.c:69
+#, c-format
+msgid "No support: %s: Could not find a playlist script for URL"
+msgstr ""
+
+#: src/misc/match_subtitle_export_script.c:72
+#, c-format
+msgid "No support: Could not find a subtitle export script for format `%s'"
+msgstr ""
+
+#: src/misc/match_subtitle_script.c:69
+#, c-format
+msgid "No support: %s: Could not find a subtitle script for URL"
+msgstr ""
+
+#: src/net/http_metainfo.c:115
+#, c-format
+msgid "Failed to parse URL: %s"
+msgstr ""

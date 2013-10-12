@@ -1,19 +1,50 @@
 /* config.h.in.  Generated from configure.ac by autoheader.  */
 
-/* ... */
+/* Define to configure invocation command line options */
+#undef BUILD_OPTS
+
+/* We have build time */
+#undef BUILD_TIME
+
+/* Define to canonical build */
+#undef CANONICAL_BUILD
+
+/* Define to canonical host */
 #undef CANONICAL_HOST
 
-/* ... */
+/* Define to canonical target */
 #undef CANONICAL_TARGET
 
-/* Define to 1 if you have the `asprintf' function. */
-#undef HAVE_ASPRINTF
+/* Define to compiler */
+#undef CC
+
+/* Define to compiler flags */
+#undef CFLAGS
+
+/* Define to 1 if translation of program messages to the user's native
+   language is requested. */
+#undef ENABLE_NLS
+
+/* Define to the gettext package name */
+#undef GETTEXT_PACKAGE
+
+/* Define to 1 if you have the MacOS X function CFLocaleCopyCurrent in the
+   CoreFoundation framework. */
+#undef HAVE_CFLOCALECOPYCURRENT
+
+/* Define to 1 if you have the MacOS X function CFPreferencesCopyAppValue in
+   the CoreFoundation framework. */
+#undef HAVE_CFPREFERENCESCOPYAPPVALUE
+
+/* Define if the GNU dcgettext() function is already present or preinstalled.
+   */
+#undef HAVE_DCGETTEXT
 
 /* Define to 1 if you have the <dlfcn.h> header file. */
 #undef HAVE_DLFCN_H
 
-/* Define to 1 if you have the `getcwd' function. */
-#undef HAVE_GETCWD
+/* Define if the GNU gettext() function is already present or preinstalled. */
+#undef HAVE_GETTEXT
 
 /* Define if you have the iconv() function and it works. */
 #undef HAVE_ICONV
@@ -21,12 +52,8 @@
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
 
-/* Have libsoup-gnome */
-#undef HAVE_LIBSOUP_GNOME
-
-/* Define to 1 if your system has a GNU libc compatible `malloc' function, and
-   to 0 otherwise. */
-#undef HAVE_MALLOC
+/* Define to 1 if you have the <locale.h> header file. */
+#undef HAVE_LOCALE_H
 
 /* Define to 1 if you have the <memory.h> header file. */
 #undef HAVE_MEMORY_H
@@ -34,30 +61,14 @@
 /* Define to 1 if you have the `memset' function. */
 #undef HAVE_MEMSET
 
-/* Define to 1 if the system has the type `ptrdiff_t'. */
-#undef HAVE_PTRDIFF_T
-
-/* Define to 1 if your system has a GNU libc compatible `realloc' function,
-   and to 0 otherwise. */
-#undef HAVE_REALLOC
-
-/* Define to 1 if you have the <stdarg.h> header file. */
-#undef HAVE_STDARG_H
-
-/* Define to 1 if you have the <stddef.h> header file. */
-#undef HAVE_STDDEF_H
+/* Define to 1 if you have the `setlocale' function. */
+#undef HAVE_SETLOCALE
 
 /* Define to 1 if you have the <stdint.h> header file. */
 #undef HAVE_STDINT_H
 
 /* Define to 1 if you have the <stdlib.h> header file. */
 #undef HAVE_STDLIB_H
-
-/* Define to 1 if you have the `strdup' function. */
-#undef HAVE_STRDUP
-
-/* Define to 1 if you have the `strerror' function. */
-#undef HAVE_STRERROR
 
 /* Define to 1 if you have the <strings.h> header file. */
 #undef HAVE_STRINGS_H
@@ -68,9 +79,6 @@
 /* Define to 1 if you have the `strrchr' function. */
 #undef HAVE_STRRCHR
 
-/* Define to 1 if you have the `strstr' function. */
-#undef HAVE_STRSTR
-
 /* Define to 1 if you have the <sys/stat.h> header file. */
 #undef HAVE_SYS_STAT_H
 
@@ -80,15 +88,15 @@
 /* Define to 1 if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H
 
-/* Define to 1 if you have the `vasprintf' function. */
-#undef HAVE_VASPRINTF
-
-/* Define as const if the declaration of iconv() needs const. */
-#undef ICONV_CONST
-
 /* Define to the sub-directory in which libtool stores uninstalled libraries.
    */
 #undef LT_OBJDIR
+
+/* Define for backwards-compatibility with Lua 5.1 */
+#undef LUA_COMPAT_MODULE
+
+/* Define to 1 if your C compiler doesn't accept -c and -o together. */
+#undef NO_MINUS_C_MINUS_O
 
 /* Name of package */
 #undef PACKAGE
@@ -145,6 +153,9 @@
 /* We have versionfile */
 #undef VERSIONFILE
 
+/* Version major/minor */
+#undef VERSION_MM
+
 /* We have version number from gen-ver.sh */
 #undef VN
 
@@ -172,15 +183,6 @@
    <pthread.h>, or <semaphore.h> is not used. If the typedef were allowed, the
    #define below would cause a syntax error. */
 #undef _UINT8_T
-
-/* Define to rpl_malloc if the replacement function should be used. */
-#undef malloc
-
-/* Define to rpl_realloc if the replacement function should be used. */
-#undef realloc
-
-/* Define to `unsigned int' if <sys/types.h> does not define. */
-#undef size_t
 
 /* Define to the type of an unsigned integer type of width exactly 32 bits if
    such a type exists and the standard includes do not define it. */

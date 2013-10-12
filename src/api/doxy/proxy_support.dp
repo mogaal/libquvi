@@ -1,0 +1,45 @@
+/** @page proxy_support Proxy support
+
+@section libcurl Proxy connections with libcurl
+
+libquvi uses libcurl for accessing the Internet.
+
+See the @ref env for notes about libcurl supported proxy environment
+variables. By default, libcurl will use the environment variable values
+if they have been set.
+
+@section autoproxy Autoproxy with libproxy
+
+libquvi may use libproxy to detect the system proxy settings,
+and then set them to be used with libcurl. This feature is not enabled
+by default, the application must set the @ref QUVI_OPTION_AUTOPROXY to
+QUVI_TRUE to enable it.
+
+@section explicit Setting the proxy explicitly
+
+If your application must set the proxy explicitly:
+@li Query the libcurl handle from libquvi
+@li Set the handle to use a new proxy address
+
+@code
+quvi_get(q, QUVI_INFO_CURL_HANDLE, &c);
+curl_easy_setopt(c, CURLOPT_PROXY, "http://foo:1234");
+@endcode
+
+Refer to the libcurl curl_easy_setopt C API reference documentation for
+more details about using this option.
+
+@sa http://curl.haxx.se/libcurl/c/curl_easy_setopt.html#CURLOPTPROXY
+
+@section notes Notes
+
+@li Many desktop environments set the environment values (http_proxy,
+https_proxy, all_proxy, etc.) for a UNIX shell automatically, so in
+these cases, ideally,  your application should not have to set anything
+
+@li Enabling @ref QUVI_OPTION_AUTOPROXY in GUI applications may be the
+best option, unless your choose to set the proxy address explicitly as
+decribed above (@ref explicit)
+
+@sa http://curl.haxx.se/libcurl/c/curl_easy_setopt.html#CURLOPTVERBOSE
+*/

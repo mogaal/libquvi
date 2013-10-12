@@ -1,0 +1,22 @@
+/** @page http_metainfo Querying of HTTP meta-info for an URL
+
+For historical reasons (see @ref verification), the library provides
+a set of functions that may be used to query the HTTP meta-info headers
+(e.g. content-type, content-length) for an URL from the server. The file
+extension is determined from the returned content-type, and at best,
+only a guess.
+
+@code
+quvi_http_metainfo_t qmi;
+char *ct, *fe;
+double cl;
+
+qmi = quvi_http_metainfo_new(q, URL);
+abort_if_error();
+quvi_http_metainfo_get(qmi, QUVI_HTTP_METAINFO_PROPERTY_FILE_EXTENSION, &fe);
+quvi_http_metainfo_get(qmi, QUVI_HTTP_METAINFO_PROPERTY_CONTENT_TYPE, &ct);
+quvi_http_metainfo_get(qmi, QUVI_HTTP_METAINFO_PROPERTY_LENGTH_BYTES, &cl);
+quvi_http_metainfo_free(qmi);
+
+@endcode
+*/

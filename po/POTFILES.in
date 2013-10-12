@@ -1,0 +1,11 @@
+# List of source files which contain translatable strings.
+src/api/errmsg.c
+src/curl/fetch.c
+src/curl/http_metainfo.c
+src/curl/resolve.c
+src/lua/load_util_script.c
+src/misc/match_media_script.c
+src/misc/match_playlist_script.c
+src/misc/match_subtitle_export_script.c
+src/misc/match_subtitle_script.c
+src/net/http_metainfo.c

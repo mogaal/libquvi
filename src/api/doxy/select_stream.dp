@@ -1,0 +1,64 @@
+/** @page select_stream Selecting a media stream 
+
+When the library returns >1 media streams, you can access them using the
+@ref quvi_media_stream_next and @ref quvi_media_get as described in
+@ref parse_media. Alternatively, the convenience functions
+@ref quvi_media_stream_choose_best  and @ref quvi_media_stream_select
+could also be used.
+
+@code
+quvi_media_t qm = quvi_media_new(q, URL);
+abort_if_error();
+{
+  char *m_url;
+  quvi_media_stream_choose_best(qm);
+  quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_URL, &m_url);
+}
+@endcode
+
+In the above example, we tell the library to choose the stream that was
+determined (by the media script) to be of the best quality.
+
+In the example below, we are only interested in a specific
+stream with the specified stream ID ("foo"). If it is not found
+(matched), the library falls back to the default stream.
+
+@code
+quvi_media_t qm = quvi_media_new(q, URL);
+abort_if_error();
+{
+  char *m_url;
+
+  quvi_media_stream_select(qm, "foo");
+  abort_if_error(); /* Always check quvi_ok return value with the above. */
+  quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_URL, &m_url);
+}
+@endcode
+
+Since @ref quvi_media_stream_select takes regular expression patterns,
+the following is also possible:
+
+@code
+quvi_media_stream_select(qm, "\\w+_\\d+p$");
+@endcode
+
+The value may also be a comma-separated list of patterns, e.g.:
+
+@code
+quvi_media_stream_select(qm, "foo,bar,baz,croak");
+abort_if_error(); /* Always check quvi_ok return value with the above. */
+quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_URL, &m_url);
+@endcode
+
+Make a note of the use of the 'croak' keyword. This would cause the
+library to return an error if it was reached, e.g. none of the first
+three patterns matched any of the available @ref m_stream_id. This
+is also the reason why an application should always @ref quvi_ok after
+calling @ref quvi_media_stream_select and handle the error, if any.
+
+Refer to the API documentation of @ref quvi_media_stream_select for more
+details.
+
+@sa quvi_media_stream_select
+@sa @ref m_stream_id
+*/

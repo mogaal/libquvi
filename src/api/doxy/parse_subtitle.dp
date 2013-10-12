@@ -1,0 +1,105 @@
+/** @page parse_subtitle Parsing subtitle properties
+
+libquvi provides basic support for parsing subtitle properties and
+exporting the available subtitles into a specified format, e.g. SubRip.
+
+@note Not all media have subtitles -- with libquvi the application must
+query for the available subtitles per media as shown below
+
+The available @ref sub_script collection determines which websites are
+supported by the library. Each script will return all available @ref
+sub_type and @ref sub_lang.
+
+@code
+quvi_subtitle_t qsub = quvi_subtitle_new(q, URL);
+abort_if_error();
+{
+  quvi_subtitle_type_t qst;
+
+  /* for each subtitle type */
+  while (  (qst = quvi_subtitle_type_next(qsub)) != NULL)
+    {
+      quvi_subtitle_lang_t qsl;
+      double d;
+
+      quvi_subtitle_type_get(qst, QUVI_SUBTITLE_TYPE_PROPERTY_TYPE, &d);
+
+      switch (d)
+      {
+      case QUVI_SUBTITLE_TYPE_TTS:
+        puts("type: tts");
+        break;
+      case QUVI_SUBTITLE_TYPE_CC:
+        puts("type: cc");
+      default:
+        break;
+      }
+
+      /* for each subtitle language (of the type). */
+      while ( (qsl = quvi_subtitle_lang_next(qst)) != NULL)
+        {
+          char *s;
+          quvi_subtitle_lang_get(qsl, QUVI_SUBTITLE_LANG_PROPERTY_ID, &s);
+          puts(s);
+        }
+    }
+}
+quvi_subtitle_free(qsub);
+@endcode
+
+@sa QuviSubtitleTypeProperty
+@sa QuviSubtitleLangProperty
+
+@section sub_select Selecting a language
+
+When the library returns >1 languages, you can access them using the
+@ref quvi_subtitle_type_next, @ref quvi_subtitle_lang_next and
+@ref quvi_subtitle_lang_get.  Alternatively, the convenience function
+@ref quvi_subtitle_select could be used.
+
+The example below asks the library to return the language ID matching
+the "cc_en" pattern.
+
+@code
+quvi_subtitle_t qsub = quvi_subtitle_new(q, URL);
+abort_if_error();
+{
+  quvi_subtitle_lang_t qsl = quvi_subtitle_select(qsub, "cc_en");
+  abort_if_error(); /* Always check quvi_ok return value. */
+}
+@endcode
+
+Similarly to @ref quvi_media_stream_select, @ref quvi_subtitle_select
+takes a comma-separated list of regular expression patterns, so
+the following is perfectly OK:
+
+@code
+qsl = quvi_subtitle_select(qsub, "tts_e?,cc_a?,croak");
+@endcode
+
+If neither "tts_e?" or "cc_a?" matched any of the available subtitles,
+the library would exit with an error (croak). By default, the library
+will return the default (first available type and the first available
+language).
+
+@section sub_export Exporting subtitle languages
+
+libquvi provides basic facility for converting the subtitles from their
+internal subtitle format that the website uses to a more standard-like
+format, e.g. SubRip, the media players support.
+
+@code
+quvi_subtitle_export_t qse = quvi_subtitle_export_new(qsl, "srt");
+abort_if_error();
+puts(quvi_subtitle_export_data(qse));
+quvi_subtitle_export_free(qse);
+@endcode
+
+The available @ref subex_script collection determines which export
+formats are supported by the library. If your application needs to
+know the available export formats, use the @ref script interface for
+querying the @ref QUVI_SCRIPT_PROPERTY_EXPORT_FORMAT.
+
+@sa http://en.wikipedia.org/wiki/SubRip#SubRip_text_file_format
+@sa @ref acc_script_prop
+*/
