@@ -1,0 +1,79 @@
+/** @page parse_media Parsing media properties
+
+libquvi uses a @ref m_script to parse the media properties for a
+@ref m_url. You should make a note of the difference of @ref m_prop
+and @ref ms_prop. There may be >1 of the latter. See the next section
+(@ref qms_properties below) for an example of handling those.
+
+@note The available @ref m_script collection determines which
+websites are supported by the library.
+
+These examples use an abort_if_error function which could do nothing
+more than check @ref quvi_ok return value and exit if the function
+returned QUVI_FALSE. We do not define this function in these examples.
+
+@code
+quvi_media_t qm = quvi_media_new(q, URL);
+abort_if_error();
+{
+  char *m_title, *m_url;
+  quvi_media_get(qm, QUVI_MEDIA_PROPERTY_TITLE, &m_title);
+  quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_URL, &m_url);
+}
+quvi_media_free(qm); /* Release when done using it. */
+qm = NULL;
+@endcode
+
+@sa QuviMediaProperty
+
+@section qms_properties Media stream properties
+
+There may be >1 @ref m_stream available. These may be accessed using the
+quvi_media_stream_* function set. The one exception to this is the
+@ref quvi_media_get function which is used to query the values from the
+library.
+
+@note  Using any of the QUVI_MEDIA_STREAM_PROPERTY_* values
+with @ref quvi_media_get will cause the library to advance to the first
+media stream in the list. This will make @ref quvi_media_stream_next
+function to continue from the second media stream, not the first one
+as one might expect.
+
+For example:
+
+@code
+quvi_media_t qm = quvi_media_new(q, URL);
+abort_if_error();
+{
+  char *m_title, *m_url;
+  quvi_media_get(qm, QUVI_MEDIA_PROPERTY_TITLE, &m_title);
+
+  /* Advances the media stream list, starting from the first. */
+  quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_URL, &m_url);
+
+  /* Would now continue from second stream in the list. */
+  while (quvi_media_stream_next(qm) == QUVI_TRUE)
+    quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_URL, &m_url);
+}
+@endcode
+
+Where as:
+
+@code
+quvi_media_t qm = quvi_media_new(q, URL);
+abort_if_error();
+{
+  char *m_title, *m_url;
+  quvi_media_get(qm, QUVI_MEDIA_PROPERTY_TITLE, &m_title);
+
+  /* Would start from the first stream in the list. */
+  while (quvi_media_stream_next(qm) == QUVI_TRUE)
+    quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_URL, &m_url);
+}
+@endcode
+
+Alternatively, call @ref quvi_media_stream_reset after the @ref
+quvi_media_get call.
+
+@sa @ref select_stream
+*/

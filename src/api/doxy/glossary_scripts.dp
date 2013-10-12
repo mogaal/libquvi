@@ -1,0 +1,64 @@
+/** @page glossary_scripts Glossary: Scripts
+
+@section glossary_scripts Glossary: Scripts
+
+@subsection c_script Common script
+
+A libquvi script that may be imported from a @ref m_script or a
+@ref pl_script. The common scripts reside under the "common/"
+subdirectory in the script tree. These scripts contain the
+reusable Lua code that is being used by the other scripts.
+
+@code
+local C = require 'quvi/const' -- would import 'quvi/const' (of "common") as C
+@endcode
+
+@subsection m_script Media script
+
+A libquvi script written for a website (media/*.lua) that is
+responsible for parsing the media properties.
+
+@note
+  - Media scripts are expected to return >0 streams (qargs.stream[i].url)
+  - All other properties are optional
+
+@sa @ref QuviMediaProperty
+
+@subsection pl_script Playlist script
+
+A libquvi script written for a website (playlist/*.lua) that is
+responsible for parsing the playlist properties.
+
+@note
+  - None of the returned properties are mandatory
+  - Playlist scripts may not return any results
+
+@sa @ref parse_playlist
+
+@subsection scan_script Scan script
+
+A libquvi script written for scanning URL contents for embedded media
+URLs.
+
+@note
+  - None of the returned properties are mandatory
+  - Scan scripts may not return any results
+
+@sa @ref scan_media
+
+@subsection u_script Utility script
+
+libquvi-scripts contain misc. utility scripts, some of which are used
+by the library directly (util/*.lua), some of which may be used
+from the media scripts (lua/common/quvi/*.lua) by importing them first.
+
+@subsection sub_script Subtitle script
+
+A libquvi script written to retrieve the available @ref sub_type and
+@ref sub_lang properties.
+
+@subsection subex_script Subtitle export script
+
+A libquvi script written to export the @ref sub_data into the
+requested format, e.g. SubRip.
+*/

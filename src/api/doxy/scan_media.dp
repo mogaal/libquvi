@@ -1,0 +1,21 @@
+/** @page scan_media Scanning URL for embedded media URLs
+
+libquvi may be used to scan an URL for embedded media URLs. Many
+websites use embedded URLs to media, one such example are the blogs that
+embed YouTube videos.
+
+@code
+quvi_scan_t qs = quvi_scan_new(q, URL);
+abort_if_error();
+{
+  char *s = NULL;
+  while ((s = quvi_scan_next_media_url(qs)) != NULL)
+    puts(s);
+}
+quvi_scan_free(qs);
+qs = NULL;
+@endcode
+
+The available @ref scan_script collection determines which
+embedded URLs may be found by the scan from the URL.
+*/

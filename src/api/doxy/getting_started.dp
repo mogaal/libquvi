@@ -1,0 +1,38 @@
+/** @page getting_started Getting started
+
+Make sure you set the locale early on in your application, otherwise
+some media properties (e.g. title) may be encoded incorrectly.
+
+@code
+int main(int argc, char *argv[])
+{
+  setlocale(LC_ALL, "");
+@endcode
+
+Start by creating a new library handle.
+
+@code
+quvi_t q = quvi_new();
+if (quvi_ok(q) == QUVI_FALSE) /* Check for errors. */
+  {
+    fprintf(stderr, "error: %s\n", quvi_errmsg(q));
+
+    quvi_free(q);
+    q = NULL;
+
+    exit(1);
+  }
+quvi_free(q); /* Release when done using it. */
+q = NULL;
+@endcode
+
+@sa @ref parse_media
+@sa @ref env
+
+Compiling libquvi applications on UNIX:
+@code
+cc foo.c `pkg-config --cflags --libs libquvi-0.9` -o foo
+@endcode
+
+@sa @ref sess_handle
+*/

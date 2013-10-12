@@ -1,0 +1,870 @@
+'\" t
+.\"     Title: quvi-object
+.\"    Author: [see the "Authors" section]
+.\" Generator: DocBook XSL Stylesheets v1.76.1 <http://docbook.sf.net/>
+.\"      Date: 09/03/2013
+.\"    Manual: libquvi Manual
+.\"    Source: libquvi 0.9.3
+.\"  Language: English
+.\"
+.TH "QUVI\-OBJECT" "7" "09/03/2013" "libquvi 0\&.9\&.3" "libquvi Manual"
+.\" -----------------------------------------------------------------
+.\" * Define some portability stuff
+.\" -----------------------------------------------------------------
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.\" http://bugs.debian.org/507673
+.\" http://lists.gnu.org/archive/html/groff/2009-02/msg00013.html
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.ie \n(.g .ds Aq \(aq
+.el       .ds Aq '
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
+.SH "NAME"
+quvi-object \- Overview of the libquvi quvi\-object
+.SH "DESCRIPTION"
+.sp
+\fIquvi\-object\fR is a collection of libquvi functions provided for the \fBlibquvi-scripts\fR(7)\&. These functions vary from HTTP functions to cryptographic functions\&. All of the \fIquvi\-object\fR functions are implemented in C\&.
+.if n \{\
+.sp
+.\}
+.RS 4
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBNote\fR
+.ps -1
+.br
+.sp
+The \fIquvi\-object\fR should not be confused with the \fBquvi-modules\fR(7) which are a selection of importable modules implemented in Lua\&. These modules are intended to be loaded (\fIrequire\fR) from the \fBlibquvi-scripts\fR(7)\&.
+.sp .5v
+.RE
+.SH "OPTIONS"
+.sp
+Each of the quvi\-object functions may be passed a dictionary defining the additional option properties\&. The following options are supported by all of the functions:
+.PP
+qoo_croak_if_error=<boolean>
+.RS 4
+By default the library terminates the process if an error occurs\&. By setting this option to
+\fIfalse\fR, it will register the error and continues execution, leaving the error handling for the script to determine\&. See also "RETURN VALUES"\&.
+.RE
+.sp
+The \fIqoo\fR prefix is short for \fIquvi object option\fR\&. The functions will ignore any unknown options, e\&.g\&. the crypto functions would ignore the HTTP options\&.
+.if n \{\
+.sp
+.\}
+.RS 4
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBNote\fR
+.ps -1
+.br
+.sp
+The options have been defined in the \fIquvi/const\fR of the \fBquvi-modules\fR(7)
+.sp .5v
+.RE
+.SS "Crypto"
+.sp
+These options are specific to the quvi\&.crypto\&.* functions of the quvi\-object\&.
+.PP
+qoo_crypto_algorithm=<value>
+.RS 4
+Specifies the algorithm that should be used\&. The
+\fIvalue\fR
+is expected to be a string, e\&.g\&.
+\fIsha1\fR
+or
+\fIaes256\fR\&.
+.RE
+.PP
+qoo_crypto_cipher_flags=<value>
+.RS 4
+Specifies the cipher flags (bit OR\(cqd, see
+\fBquvi-modules-3rdparty\fR(7)
+for
+\fIbit operations\fR) to be used with the cipher\&. These values are identical to those defined by libgcrypt\&. See the
+\fIquvi/const\fR
+of the
+\fBquvi-modules\fR(7)
+for a complete list of the available cipher flags\&.
+.RE
+.PP
+qoo_crypto_cipher_mode=<value>
+.RS 4
+Specifies the cipher mode to be used\&. These are identical to the values defined by libgcrypt\&. See the
+\fIquvi/const\fR
+of the
+\fBquvi-modules\fR(7)
+for a complete list of the available cipher modes\&.
+.RE
+.PP
+qoo_crypto_cipher_key=<value>
+.RS 4
+Used to specify the cipher key\&. It should be noted that the
+\fIkey\fR
+is expected to be passed in hexadecimal form\&. See
+\fIquvi/hex\fR
+of the
+\fBquvi-modules\fR(7)
+for the conversion functions\&.
+
+NOTE: The key derivation is left for the script to do
+
+NOTE: The key is not a pass{word,phrase}
+
+See also:
+http://www\&.di\-mgt\&.com\&.au/cryptokeys\&.html#passwordpassphraseandkey
+.RE
+.SS "HTTP"
+.sp
+These options are specific to the quvi\&.http\&.* functions of the quvi\-object\&.
+.PP
+qoo_fetch_from_charset=<charset>
+.RS 4
+Instructs the library to convert from this charset to UTF\-8\&. Using this option may be required with the websites that use a specific (non\-UTF8) encoding\&.
+
+The purpose of this option is to make sure that the data is encoded to unicode (UTF\-8) before any of it is parsed and returned to the application using libquvi\&.
+
+By default, libquvi converts the data which is in the encoding used for the strings by the C runtime in the current locale into UTF\-8\&. IF this fails, and the
+\fIfrom charset\fR
+option is set, the library will then try to convert to UTF\-8 using the
+\fIfrom charset\fR
+value\&.
+.RE
+.PP
+qoo_http_cookie_mode=<value>
+.RS 4
+Modify the cookie settings for the libcurl session handle\&. This feature wraps the cookie features provided by
+\fBlibcurl_easy_setopt\fR(3)\&. See the
+\fIquvi/const\fR
+of the
+\fBquvi-modules\fR(7)
+for a complete list of the available cookie modes\&.
+
+See also
+\fBlibcurl-tutorial\fR(3)
+which covers the use of cookies with the library in greater detail\&.
+.RE
+.SH "RETURN VALUES"
+.sp
+Each quvi\-object function will return a dictionary containing the following values:
+.PP
+error_message
+.RS 4
+The error message, or an empty value\&.
+.RE
+.PP
+quvi_code
+.RS 4
+The code returned by the library\&. See also
+\fIquvi/const\fR
+of
+\fBquvi-modules\fR(7)\&.
+.RE
+.sp
+Refer to the function documentation for the information about the additional values returned in the dictionary\&.
+.SH "FUNCTIONS"
+.SS "Base64"
+.PP
+quvi\&.base64\&.encode(<plaintext>[,qoo])
+.RS 4
+Encode the
+\fIplaintext\fR
+to base64 format\&. The
+\fIplaintext\fR
+is expected to be passed in hexadecimal form\&. See
+\fIquvi/hex\fR
+of the
+\fBquvi-modules\fR(7)
+for the conversion functions\&.
+
+The second argument (\fIqoo\fR) is expected to be a dictionary of additional
+\fIquvi object options\fR, if defined at all\&.
+
+The function will return the
+\fIbase64\fR
+value in the dictionary\&.
+.RE
+.PP
+quvi\&.base64\&.decode(<base64>)
+.RS 4
+Decode the
+\fIbase64\fR
+value to plaintext\&.
+
+The function will return the
+\fIplaintext\fR
+value in the dictionary\&. The value is returned in hexadecimal form\&.
+.RE
+.SS "Crypto"
+.sp
+The crypto facility of the quvi\-object wraps the libgcrypt symmetric cryptography and the hash (message digest) functions\&.
+.if n \{\
+.sp
+.\}
+.RS 4
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBNote\fR
+.ps -1
+.br
+.sp
+The availability of the algorithms is determined by libgcrypt, and how it was built
+.sp .5v
+.RE
+.PP
+quvi\&.crypto\&.encrypt(<plaintext>, <qoo>)
+.RS 4
+Encrypt the
+\fIplaintext\fR\&. The
+\fIplaintext\fR
+is expected to be passed in hexadecimal form\&. See
+\fIquvi/hex\fR
+of the
+\fBquvi-modules\fR(7)
+for the conversion functions\&.
+
+The second argument (\fIqoo\fR) is expected to be a dictionary containing the cipher options\&.
+
+The function will return the
+\fIciphertext\fR
+value in the dictionary\&. The value is returned in hexadecimal form\&.
+.RE
+.PP
+quvi\&.crypto\&.decrypt(<ciphertext>, <qoo>)
+.RS 4
+Decrypt the
+\fIciphertext\fR\&. The
+\fIciphertext\fR
+is expected to be passed in hexadecimal form\&. See
+\fIquvi/hex\fR
+of the
+\fBquvi-modules\fR(7)
+for the conversion functions\&.
+
+The second argument (\fIqoo\fR) is expected to be a dictionary containing the cipher options\&.
+
+The function will return the
+\fIplaintext\fR
+value in the dictionary\&. This value is returned in hexadecimal form\&.
+.RE
+.PP
+quvi\&.crypto\&.hash(<value>, <qoo>)
+.RS 4
+Generate a hash from the
+\fIvalue\fR\&. The
+\fIvalue\fR
+is expected to be passed in hexadecimal format\&. See
+\fIquvi/hex\fR
+of the
+\fBquvi-modules\fR(7)
+for the conversion functions\&.
+
+The second argument (\fIqoo\fR) is expected to be a dictionary containing the hash options, e\&.g\&. the algorithm that should be used\&.
+
+The function will return the
+\fIdigest\fR
+value in the dictionary\&. The value is returned in hexadecimal form\&.
+.RE
+.SS "HTTP"
+.sp
+The HTTP functions will return \fIresponse_code\fR along the other "RETURN VALUES", and the values specific to the HTTP function\&.
+.PP
+quvi\&.http\&.cookie(<VALUE>,<qoo>)
+.RS 4
+Modify the libcurl session handle cookie settings that libquvi currently uses\&.
+
+The second argument (\fIqoo\fR) is expected to be a dictionary containing the cookie options, e\&.g\&. the cookie mode that should be used\&.
+
+The complete list of the available cookie modes can be found in the
+\fIquvi/const\fR
+module of the
+\fBquvi-modules\fR(7)\&. The mode names are named after their equivalent CURLOPT_COOKIE{SESSION,FILE,LIST,JAR} variable names\&. For a description of each option, see
+\fBlibcurl_easy_setopt\fR(3)\&.
+
+This function will not return any additional values in the dictionary\&.
+.RE
+.if n \{\
+.sp
+.\}
+.RS 4
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBNote\fR
+.ps -1
+.br
+.sp
+libquvi will ignore any calls to quvi\&.http\&.cookie unless QUVI_OPTION_ALLOW_COOKIES is QUVI_TRUE
+.sp .5v
+.RE
+.if n \{\
+.sp
+.\}
+.RS 4
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBNote\fR
+.ps -1
+.br
+.sp
+libcurl will parse the received cookies and use them in the subsequent HTTP requests only if libquvi QUVI_OPTION_ALLOW_COOKIES is QUVI_TRUE
+.sp .5v
+.RE
+.PP
+quvi\&.http\&.fetch(<URL>[,qoo])
+.RS 4
+Fetch an URL over an HTTP connection\&.
+
+The second argument (\fIqoo\fR) is expected to be a dictionary of additional
+\fIquvi object options\fR, if defined at all\&.
+
+The function will return the
+\fIdata\fR
+value among the values in the returned dictionary\&.
+.RE
+.PP
+quvi\&.http\&.header(<VALUE>[,qoo])
+.RS 4
+Add, remove or replace internally used libcurl HTTP headers\&.
+
+The second argument (\fIqoo\fR) is expected to be a dictionary of additional
+\fIquvi object options\fR, if defined at all\&.
+
+This function essentially wraps CURLOPT_HTTPHEADER, and will not return any additional values in the dictionary\&. See
+\fBcurl_easy_setopt\fR(3)
+for the full description of CURLOPT_HTTPHEADER\&.
+.RE
+.if n \{\
+.sp
+.\}
+.RS 4
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBNote\fR
+.ps -1
+.br
+.sp
+To clear the custom headers, pass "" as the VALUE; the custom headers are also cleared automatically when a support script function \fIparse\fR is called
+.sp .5v
+.RE
+.PP
+quvi\&.http\&.metainfo(<URL>[,qoo])
+.RS 4
+Query the HTTP metainfo for the URL\&.
+
+The second argument (\fIqoo\fR) is expected to be a dictionary of additional
+\fIquvi object options\fR, if defined at all\&.
+
+The function will return the
+\fIcontent_length\fR
+and the
+\fIcontent_type\fR
+values among the values in the returned dictionary\&.
+.RE
+.PP
+quvi\&.http\&.resolve(<URL>[,qoo])
+.RS 4
+Resolve an URL redirection\&.
+
+The second argument (\fIqoo\fR) is expected to be a dictionary of additional
+\fIquvi object options\fR, if defined at all\&.
+
+The function will return the
+\fIresolved_url\fR
+among the values in the returned dictionary\&. If the URL did not redirect to another location, the value of the
+\fIresolved_url\fR
+is left empty\&.
+.RE
+.SH "EXAMPLES"
+.SS "Base64"
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+Base64 encode a string:
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+local H = require \*(Aqquvi/hex\*(Aq
+local s = H\&.to_hex(\*(Aqfoo\*(Aq) \-\- Pass in hexadecimal form
+
+local r = quvi\&.base64\&.encode(s)
+print(r\&.base64)
+.fi
+.if n \{\
+.RE
+.\}
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+Reverse the process:
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+local r = quvi\&.base64\&.decode(r\&.base64)
+local s = H\&.to_str(r\&.plaintext)
+.fi
+.if n \{\
+.RE
+.\}
+.RE
+.SS "Crypto"
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+Encrypt plaintext:
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+local plaintext = \*(Aqf34481ec3cc627bacd5dc3fb08f273e6\*(Aq
+local key = \*(Aq00000000000000000000000000000000\*(Aq
+
+local C = require \*(Aqquvi/const\*(Aq
+local o = {
+  [C\&.qoo_crypto_cipher_mode] = C\&.qoco_cipher_mode_cbc,
+  [C\&.qoo_crypto_algorithm] = \*(Aqaes\*(Aq,
+  [C\&.qoo_crypto_cipher_key = key
+}
+
+local r = quvi\&.crypto\&.encrypt(plaintext, o)
+print(r\&.ciphertext)
+.fi
+.if n \{\
+.RE
+.\}
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+Reverse the process:
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+local r = quvi\&.crypto\&.decrypt(r\&.ciphertext, o)
+print(r\&.plaintext)
+.fi
+.if n \{\
+.RE
+.\}
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+Generate a hash (message digest):
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+local H = require \*(Aqquvi/hex\*(Aq
+local s = H\&.to_hex(\*(Aqfoo\*(Aq) \-\- Pass in hexadecimal form
+
+local C = require \*(Aqquvi/const\*(Aq
+local o = { [C\&.qoo_crypto_algorithm] = \*(Aqsha1\*(Aq }
+
+local r = quvi\&.crypto\&.hash(s, o)
+print(r\&.digest)
+.fi
+.if n \{\
+.RE
+.\}
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+Same as above, but use the shorthand function:
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+local A = require \*(Aqquvi/hash\*(Aq
+local r = A\&.sha1sum(\*(Aqfoo\*(Aq)
+print(r)
+.fi
+.if n \{\
+.RE
+.\}
+.RE
+.SS "HTTP"
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+Dump the cookies in the memory to stdout:
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+local C = require \*(Aqquvi/const\*(Aq
+local o = { [C\&.qoo_http_cookie_mode] = C\&.qohco_mode_jar }
+local r = quvi\&.http\&.cookie(\*(Aq\-\*(Aq, o)
+.fi
+.if n \{\
+.RE
+.\}
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+Identical to the above but use the wrapper module:
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+local K = require \*(Aqquvi/http/cookie\*(Aq
+local r = K\&.jar(\*(Aq\-\*(Aq)
+.fi
+.if n \{\
+.RE
+.\}
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+Fetch an URL:
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+local r = quvi\&.http\&.fetch(\*(Aqhttp://example\&.com\*(Aq)
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+r\&.data would now hold the contents\&. If an error occurred, e\&.g\&. connection failed, the library would exit the process with an error\&.
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+Same as above, but handle the error in the script:
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+local C = require \*(Aqquvi/const\*(Aq
+local o = { [C\&.qoo_croak_if_error] = false }
+
+local r = quvi\&.http\&.fetch(\*(Aqhttp://example\&.com\*(Aq, o)
+if r\&.quvi_code ~= C\&.qerr_ok then
+  local s =
+    string\&.format(\*(Aqquvi\&.http\&.fetch: %s (libquvi=%d, http/%d)\*(Aq,
+                  r\&.error_message, r\&.quvi_code, r\&.response_code)
+  error(s)
+end
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+By setting qoo_croak_if_error to
+\fIfalse\fR, we tell the library to only register that an error occurred and return the control to the script\&. Handling of the error is then left for the script to do\&.
+.if n \{\
+.sp
+.\}
+.RS 4
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBNote\fR
+.ps -1
+.br
+Typically, the scripts would not need to handle the error
+.sp .5v
+.RE
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+Force conversion from ISO\-8859\-1 to UTF\-8:
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+local C = require \*(Aqquvi/const\*(Aq
+local o = { [C\&.qoo_fetch_from_charset] = \*(AqISO\-8859\-1\*(Aq }
+local r = quvi\&.http\&.fetch(\*(Aqhttp://example\&.com\*(Aq, o)
+.fi
+.if n \{\
+.RE
+.\}
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+Override user\-agent header in the HTTP request:
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+local r = quvi\&.http\&.header(\*(AqUser\-Agent: foo/1\&.0\*(Aq)
+r = quvi\&.http\&.fetch(\&.\&.\&.)
+.fi
+.if n \{\
+.RE
+.\}
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+Disable an internal header in the HTTP request:
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+local r = quvi\&.http\&.header(\*(AqAccept:\*(Aq)
+r = quvi\&.http\&.fetch(\&.\&.\&.)
+.fi
+.if n \{\
+.RE
+.\}
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+Send a cookie in the HTTP request:
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+local r = quvi\&.http\&.header(\*(AqCookie: foo=1\*(Aq)
+r = quvi\&.http\&.fetch(\&.\&.\&.)
+.fi
+.if n \{\
+.RE
+.\}
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+Query metainfo for an URL:
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+local r = quvi\&.http\&.metainfo(\*(Aqhttp://is\&.gd/SKyg8m\*(Aq)
+print(r\&.content_length, r\&.content_type)
+.fi
+.if n \{\
+.RE
+.\}
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+Resolve URL redirection:
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+local r = quvi\&.http\&.resolve(\*(Aqhttp://is\&.gd/SKyg8m\*(Aq)
+if #r\&.resolved_url >0 then
+  print(\*(Aqnew location:\*(Aq, r\&.resolved_url)
+end
+.fi
+.if n \{\
+.RE
+.\}
+.RE
+.SH "SEE ALSO"
+.sp
+\fBlibquvi-scripts\fR(7), \fBlibquvi\fR(3), \fBquvi-modules\fR(7), \fBquvi-modules-3rdparty\fR(7)
+.SH "FURTHER RESOURCES"
+.PP
+Home
+.RS 4
+
+http://quvi\&.sourceforge\&.net/
+.RE
+.PP
+Development code
+.RS 4
+
+git://repo\&.or\&.cz/libquvi\&.git
+.RE
+.PP
+gitweb
+.RS 4
+
+http://repo\&.or\&.cz/w/libquvi\&.git
+.RE
+.PP
+C API reference
+.RS 4
+The latest C API reference documentation may be viewed online at
+http://quvi\&.sf\&.net/doc/\&.
+.RE
+.PP
+GLib
+.RS 4
+
+http://developer\&.gnome\&.org/glib/stable/glib\-Base64\-Encoding\&.html
+.RE
+.PP
+libcurl
+.RS 4
+
+http://curl\&.haxx\&.se/libcurl/c/curl_easy_setopt\&.html#CURLOPTUSERAGENT
+http://curl\&.haxx\&.se/libcurl/c/curl_easy_setopt\&.html#CURLOPTCOOKIE
+.RE
+.PP
+libgcrypt reference manual
+.RS 4
+
+http://www\&.gnupg\&.org/documentation/manuals/gcrypt/
+.RE
+.SH "AUTHORS"
+.PP
+Toni Gundogdu <legatvs@gmail\&.com>
+.RS 4
+Author\&.
+.RE
+.SH "REPORTING BUGS"
+.sp
+Report bugs to the quvi\-devel mailing list <quvi\-devel@lists\&.sourceforge\&.net> where the development and the maintenance is primarily done\&. You do not have to be subscribed to the list to send a message there\&.
+.SH "LICENSE"
+.sp
+libquvi is Free Software licensed under the GNU Affero GPLv3+
+.SH "LIBQUVI"
+.sp
+Part of the \fBlibquvi\fR(3) suite

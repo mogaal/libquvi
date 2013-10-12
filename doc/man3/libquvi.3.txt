@@ -1,0 +1,53 @@
+libquvi(3)
+==========
+
+NAME
+----
+libquvi - Overview of the library
+
+DESCRIPTION
+-----------
+libquvi is a cross-platform library with C API for parsing adobe
+flash media properties. "quvi" is an acronym for "query video".
+
+ENVIRONMENT
+-----------
+
+LIBQUVI_EXCLUSIVE_SCRIPTS_DIR::
+  When defined, the library will *only* use those scripts found at the
+  directories specified by the LIBQUVI_SCRIPTS_DIR.
++
+NOTE: Useful, for example, when the current set of the scripts at
+      $top_srcdir/share/ (of libquvi-scripts) are being tested by the
+      testsuite of the libquvi-scripts.  The library would, otherwise,
+      include the scripts from the libquvi-scripts instance built with
+      the library and likely interfere with the tests.
+
+LIBQUVI_SCRIPTS_DIR::
+  The library will additionally look in the colon-separated list of
+  directories specified by the LIBQUVI_SCRIPTS_DIR environment variable.
+
+LIBQUVI_SCRIPTS_VERBOSE::
+  When defined, enables the output from any libquvi scripts using the
+  debug facility ('quvi/debug' module).
+
+LIBQUVI_SHOW_DIR::
+  When defined, the library will output the paths of the searched
+  directories to the stderr.
+
+LIBQUVI_SHOW_SCRIPT::
+  When defined, the library will output the file names of the found
+  scripts to stderr. The output will also indicate whether the script
+  was accepted by the library.
+
+Proxy::
+  libquvi uses linkman:libcurl[3]. See the libcurl documentation (C API
+  and/or linkman:curl[1]) for a complete list of the supported proxy
+  environment variables.
+
+SEE ALSO
+--------
+linkman:libquvi-scripts[7], linkman:quvi[1], linkman:quvi-object[7],
+linkman:quvi-modules[7], linkman:quvi-modules-3rdparty[7]
+
+include::../footer.txt[]

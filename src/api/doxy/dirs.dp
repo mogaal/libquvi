@@ -1,0 +1,26 @@
+/** @page dirs Directories
+
+The library searches the following directories (in the following order):
+- @ref LIBQUVI_SCRIPTS_DIR
+- Current working directory
+
+And, either:
+- $prefix/share/libquvi-scripts/x.y/
+
+Or, if the library was compiled with the --with-scriptsdir=DIR option:
+- $DIR/x.y/
+
+The library will search the following subdirectories of the above
+directories for the scripts identified as the libquvi scripts:
+- common/
+- media/
+- playlist/
+- scan/
+- subtitle/
+- subtitle/export/
+- util/
+
+The process will ignore identical (with the same sha1 hash) scripts.
+
+@sa @ref env
+*/

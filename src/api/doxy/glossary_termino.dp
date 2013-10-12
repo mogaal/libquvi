@@ -1,0 +1,198 @@
+/** @page glossary_termino Glossary: Terminology
+
+@section sess_handle libcURL session handle
+
+Calling @ref quvi_new creates a libcURL session handle. This handle is
+reused by libquvi to access the Internet until @ref quvi_free is called.
+libcURL sets most of the initial values for the handle when it is
+created by calling curl_easy_init(3). libquvi will, additionally, make
+the following changes to the handle when @ref quvi_new is called:
+
+- CURLOPT_COOKIELIST is set to "ALL" (clear cookies in memory -- *when* @ref
+  QUVI_OPTION_ALLOW_COOKIES is QUVI_TRUE)
+- CURLOPT_COOKIEFILE is set to "" (enable cookies -- *when* @ref
+  QUVI_OPTION_ALLOW_COOKIES is QUVI_TRUE)
+- CURLOPT_HTTPHEADER is set to NULL (clear custom headers)
+- CURLOPT_FOLLOWLOCATION is set to 1L (enabled)
+- CURLOPT_USERAGENT is set to "Mozilla/5.0"
+- CURLOPT_NOBODY is set to 0L (disabled)
+
+The scripts (e.g. @ref m_script) may modify the cookie and HTTP header
+settings dynamically which may be required in order to access some of
+the resources, e.g. @ref m_stream. For this reason, it may be necessary
+for the 3rd party applications using libquvi to reuse the current
+session handle in order to access these sources. The session handle may
+be queried using the @ref quvi_get function.
+
+The following functions will reset the session handle to its initial
+state when they are called:
+
+- @ref quvi_media_new
+- @ref quvi_playlist_new
+- @ref quvi_scan_new
+- @ref quvi_subtitle_new
+
+Any cookie and header settings that were set by any of the scripts
+previously, will be lost when those functions are called.
+
+@section media_sect Media
+
+@subsection m_prop Media property
+
+A property that belongs to a medium, e.g. title. These are parsed and
+returned by a @ref m_script.
+
+@sa QuviMediaProperty
+@sa quvi_get
+
+@subsection m_stream_id Media stream ID
+
+A string value that is used to identify the @ref m_stream. They are
+generated for each available media stream. They may vary per website.
+
+The @ref m_stream_id typically consists of:
+@li Media container (e.g. "WebM")
+@li Media quality (e.g. "hd720")
+@li Video encoding (e.g. "VP8")
+@li Video height (e.g. "720")
+
+A typical ID could look like:
+@verbatim
+$quality_$container_$encoding_$height(p)
+@endverbatim
+
+Whether they are used in the @ref m_stream_id depends on whether the
+website has made the data available, and whether the @ref m_script parses
+the properties and uses them.
+
+Sometimes these IDs may as simple as "hd" or "sd", although as of
+libquvi(-scripts) 0.9 the media scripts are expected to use the
+"standardized representation of the stream ID" whenever possible.
+
+Example: Dailymotion
+@verbatim
+hq_mp4_h264_480p
+@endverbatim
+
+Example: YouTube
+
+Similar, but uses the container value instead of the video
+encoding value. It also uses the 'itag' value, which is specific to
+YouTube.
+@verbatim
+hd720_webm_i45_720p
+@endverbatim
+
+@sa @ref parse_media
+
+@subsection ms_prop Media stream property
+
+A @ref m_prop that is specific to a @ref m_stream. Like with
+@ref m_prop, these are parsed and returned by a @ref m_script.
+
+@sa QuviMediaProperty
+@sa quvi_get
+
+@subsection m_stream Media stream
+
+A stream of media, e.g. multimedia. Some websites provide >1 media
+streams for the hosted content, in which case the @ref m_script will
+usually try to parse the URLs to these streams and return them to the
+library.
+
+@sa quvi_media_stream_select
+@sa QuviMediaProperty
+@sa @ref m_stream_url
+@sa quvi_get
+
+@subsection m_stream_best Media stream: Best quality
+
+The best quality stream is determined and flagged as such by
+a @ref m_script when there are >1 streams available.
+How the best quality stream is determined depends on the website and
+the @ref m_script.
+
+The library uses the keyword 'best' with @ref quvi_media_stream_select
+to identify this stream.
+
+@sa @ref select_stream
+
+@subsection m_stream_default Media stream: Default quality
+
+This is whatever the @ref m_script returns as the first stream. This
+stream is returned always.
+
+@subsection sub_data Subtitle data
+
+The subtitle data format varies per website, e.g. YouTube uses
+a custom timed-text (TT) format for CCs and TTSes. Generally speaking,
+the applications may ignore this format as the API has been designed
+so that the library provides the data in the requested format.
+
+@sa @ref subex_script
+
+@subsection sub_lang Subtitle language
+
+An available subtitle language. Each @ref sub_type consists of
+(available) languages.
+
+@sa @ref sub_type
+
+@subsection sub_lang_id Subtitle language ID
+
+A string value that is used to identify the @ref sub_lang. They are
+generated for each available language.
+
+@subsection sub_type Subtitle type
+
+Either a closed-caption (CC) or a text-to-speech (TTS, sometimes
+referred to as "automatic captions"). Each subtitle consists of a
+varying number of available languages.
+
+@sa @ref sub_lang
+
+@subsection m_url Media URL
+
+An Internet address to the media, e.g. "http://youtube.com/watch?v=foo".
+This URL should not be confused with @ref m_stream_url.
+
+@note This value is accessible to the scripts as "qargs.input_url"
+
+@subsection m_stream_url Media stream URL
+
+An Internet address to the @ref m_stream.
+This URL should not be confused with @ref m_url.
+
+@section plist Playlist
+
+A collection of @ref m_url s.
+
+@section script_property Script property
+
+A property of a script, that may be of either
+a @ref m_script, a @ref pl_script, a @ref scan_script or
+an @ref u_script.
+
+@sa QuviScriptProperty
+
+@section sh_url Shortened URL
+
+An URL that has been "compressed", or "shortened", by a service such as
+is.gd or bit.ly .
+
+@section verification Verification of an URL
+
+A step, previously until libquvi 0.9, was called a "media stream URL
+verification process", during which the library would send an HTTP HEAD
+request to the server to query the content-type and the content-length.
+This step would also try to guess the file extension to the media from
+the content-type. This step took place immediately after returning a
+@ref m_stream_url from a @ref m_script.
+
+The verification process step was removed in libquvi 0.9, but an
+additional function set was added to allow to querying this
+meta-info if necessary.
+
+@note Works with HTTP(S) URLs only
+@sa http_metainfo
+*/

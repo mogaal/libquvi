@@ -1,0 +1,83 @@
+/** @page parse_playlist Parsing playlist properties
+
+libquvi supports parsing a playlist properties (e.g. media URLs), these
+may be accessed using the @ref playlistprop functions.
+
+The available @ref pl_script collection determines which
+websites are supported by the library.
+
+@note Using any of the QUVI_PLAYLIST_MEDIA_PROPERTY_* values
+with @ref quvi_playlist_get will cause the library to advance to the first
+media item in the list.  This will make @ref quvi_playlist_media_next
+function to continue from the second media stream, not the first one
+as one might expect.
+
+For example:
+
+@code
+quvi_playlist_t qp = quvi_playlist_new(q, URL);
+abort_if_error();
+{
+  char *p_id, *m_url;
+  quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_ID, &p_id);
+
+  /* Advances the playlist media list, starting from the first. */
+  quvi_playlist_get(qp, QUVI_PLAYLIST_MEDIA_PROPERTY_URL, &m_url);
+
+  /* Would now continue from second media item in the list. */
+  while (quvi_playlist_media_next(qp) == QUVI_TRUE)
+    quvi_playlist_get(qp, QUVI_PLAYLIST_MEDIA_PROPERTY_URL, &m_url);
+}
+@endcode
+
+Where as:
+
+@code
+quvi_playlist_t qp = quvi_playlist_new(q, URL);
+abort_if_error();
+{
+  char *p_id, *m_url;
+  quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_ID, &p_id);
+
+  /* Would start from the first stream in the list. */
+  while (quvi_playlist_media_next(qp) == QUVI_TRUE)
+    quvi_playlist_get(qp, QUVI_PLAYLIST_MEDIA_PROPERTY_URL, &m_url);
+}
+@endcode
+
+Alternatively, call @ref quvi_playlist_media_reset after the @ref
+quvi_playlist_get call.
+
+@section parse_media_example Example
+
+This example parses a playlist, then queries the media properties for
+each found media URL.
+
+@code
+quvi_playlist_t qp = quvi_playlist_new(q, URL);
+abort_if_error();
+{
+  char *s;
+  quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_ID, &s);
+
+  while (quvi_playlist_media_next(qp) == QUVI_TRUE)
+    {
+      quvi_playlist_get(qp, QUVI_PLAYLIST_MEDIA_PROPERTY_URL, &s);
+      abort_if_error();
+      {
+        quvi_media_t qm = quvi_media_new(q, s);
+        abort_if_error();
+        /* ... */
+        quvi_media_free(qm);
+        qm = NULL;
+      }
+      quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_TITLE, &s);
+    }
+}
+quvi_playlist_free(qp); /* Release when done using it. */
+qp = NULL;
+@endcode
+
+@sa @ref parse_media
+@sa QuviPlaylistProperty
+*/
