@@ -12,7 +12,7 @@ Vcs-Git: git://github.com/mogaal/libquvi.git
 Vcs-Browser: https://github.com/mogaal/libquvi
 Homepage: http://quvi.sourceforge.net
 
-Package: libquvi7
+Package: libquvi-0.9-0.9.3
 Architecture: any
 Multi-Arch: same
 Pre-Depends: ${misc:Pre-Depends}, dpkg (>= 1.15.6)
@@ -23,11 +23,11 @@ Description: library for parsing video download links (runtime libraries)
  data through an API, and does not enable or require the use of the 
  flash technology.
 
-Package: libquvi-dev
+Package: libquvi-0.9-dev
 Section: libdevel
 Architecture: any
 Pre-Depends: dpkg (>= 1.15.6)
-Depends: ${misc:Depends}, libquvi7 (= ${binary:Version})
+Depends: ${misc:Depends}, libquvi-0.9-0.9.3 (= ${binary:Version})
 Description: library for parsing video download links (development package)
  Library to parse Adobe flash video download links. It supports Youtube
  and other similar video websites. It provides access to functionality and
@@ -37,7 +37,7 @@ Description: library for parsing video download links (development package)
  This package provides the necessary files to compile programs which
  use libquvi.
 
-Package: libquvi-doc
+Package: libquvi-0.9-doc
 Section: doc
 Architecture: all
 Pre-Depends: dpkg (>= 1.15.6)
