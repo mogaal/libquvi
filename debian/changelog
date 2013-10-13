@@ -9,6 +9,9 @@ libquvi (0.9.3-1) experimental; urgency=low
   * Remove symbols file until there is a stable API.
   * libquvi-0.9-dev.install: There is no longer a static library.
   * libquvi-0.9-doc.install: Update location of doxygen documentation.
+  * Disable the searchengine in doxygen's HTML output to avoid an embedded
+    copy of jquery.js to be pulled in.
+    + new patch: doxygen.patch
 
  -- Ansgar Burchardt <ansgar@debian.org>  Sun, 13 Oct 2013 16:04:10 +0200
 
