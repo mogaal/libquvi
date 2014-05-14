@@ -1,0 +1,110 @@
+Title: Overview: Network
+
+About: Network Interface
+
+Allows overriding the default use of <libcurl at http://curl.haxx.se/libcurl/c/>
+in libquvi. For example, an application could use <libsoup at
+http://live.gnome.org/LibSoup> instead of libcurl.
+
+About: Requirements
+
+An application must set the necessary properties in its corresponding
+callbacks. Besides the <Common properties>, each callback is expected to
+set any additional properties listed below.
+
+About: Common properties
+
+(start code)
+quvi_net_setprop(net_handle, QUVI_NET_PROPERTY_RESPONSECODE, resp_code);
+(end)
+
+Common properties that are expected to be set by all callbacks.
+
+  * <QUVI_NET_PROPERTY_RESPONSECODE>
+
+About: quvi_callback_fetch
+
+(start code)
+quvi_setopt(session_handle, QUVIOPT_FETCHFUNCTION, &fetch_callback_func);
+(end)
+
+In addition to the <Common properties>, must set
+  * <QUVI_NET_PROPERTY_CONTENT>
+
+Return:
+  * Either <QUVI_OK> or <QUVI_CALLBACK> if an error occurred
+
+About: quvi_callback_resolve
+
+(start code)
+quvi_setopt(session_handle, QUVIOPT_RESOLVEFUNCTION, &resolve_callback_func);
+(end)
+
+In addition to the <Common properties> -- *if* a redirection to another
+location was found, *then* must set
+  * <QUVI_NET_PROPERTY_REDIRECTURL>
+
+Notes:
+
+This callback should return <QUVI_CALLBACK> *only* if an
+unrecoverable error occurred, e.g. a network error. Return <QUVI_OK> in
+all other cases, including those in which a redirection URL was not
+found.
+
+Return:
+  * Either <QUVI_OK> or <QUVI_CALLBACK> if an (e.g. network) error occurred
+  * Return <QUVI_OK> even if a redirection URL was not found
+
+About: quvi_callback_verify
+
+(start code)
+quvi_setopt(session_handle, QUVIOPT_VERIFYFUNCTION, &verify_callback_func);
+(end)
+
+In addition to the <Common properties>, must set
+  * <QUVI_NET_PROPERTY_CONTENTTYPE>
+  * <QUVI_NET_PROPERTY_CONTENTLENGTH>
+
+Return:
+  * Either <QUVI_OK> or <QUVI_CALLBACK> if an error occurred
+
+About: Example
+
+Basic example. This example assumes that a fictional `do_fetch' function
+fetches the data over the network. The callback then relays the data
+and any errors back to libquvi. Some error checks omitted for brewity.
+
+(start code)
+static QUVIcode fetch_callback(quvi_net_t net_handle)
+{
+  char *url, *reason, *content;
+  long resp_code;
+  int fetch_ok;
+
+  quvi_net_getprop(net_handle, QUVI_NET_PROPERTY_URL, &url);
+
+  fetch_ok = do_fetch(url, &content, &resp_code, &reason);
+
+  quvi_net_setprop(net_handle, QUVI_NET_PROPERTY_RESPONSECODE, resp_code);
+
+  if (fetch_ok)
+    {
+      quvi_net_setprop(net_handle, QUVI_NET_PROPERTY_CONTENT, content);
+      return (QUVI_OK);
+    }
+
+  quvi_net_seterr(net_handle, "%s (http/%d)", reason, resp_code);
+
+  return (QUVI_CALLBACK); /* Tell the library an error occurred */
+}
+
+int main(int argc, char **argv)
+{
+  quvi_t q;
+  quvi_init(&q);
+  quvi_setopt(q, QUVIOPT_FETCHFUNCTION, &fetch_callback);
+  quvi_parse(...);
+  quvi_close(&q);
+  return (0);
+}
+(end)

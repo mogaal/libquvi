@@ -1,36 +1,28 @@
 ACLOCAL_AMFLAGS=-I m4
-EXTRA_DIST=libquvi-0.9.pc.in gen-ver.sh VERSION
+EXTRA_DIST=	libquvi.pc.in gen-ver.sh VERSION
 
 pkgconfigdir=	$(libdir)/pkgconfig
-pkgconfig_DATA=	libquvi-0.9.pc
+pkgconfig_DATA=	libquvi.pc
 
-SUBDIRS=po src examples doc tests
+SUBDIRS=	src examples doc
 
-.PHONY: doc distdoc distdoc-html distdoc-latex distdoc-pdf ChangeLog VERSION test test-mem
-
-check: test
-
-test: all
-	@(cd tests ; $(MAKE) test)
-
-test-mem: all
-	@(cd tests ; $(MAKE) test-mem)
-
+.PHONY: doc distdoc ChangeLog VERSION
 doc:
-	@make -C $(top_builddir)/doc/dox/ doc
-	@make -C $(top_builddir)/doc/man3/ doc
-	@make -C $(top_builddir)/doc/man7/ doc
-
-distdoc-html:
-	@make -C $(top_builddir)/doc/dox/ distdoc-html
-
-distdoc-latex:
-	@make -C $(top_builddir)/doc/dox/ distdoc-latex
-
-distdoc-pdf:
-	@make -C $(top_builddir)/doc/dox/ distdoc-pdf
-
-distdoc: distdoc-html distdoc-latex distdoc-pdf
+if HAVE_ND
+	@test -d $(top_builddir)/doc/libquvi-@VERSION@ || \
+		mkdir $(top_builddir)/doc/libquvi-@VERSION@
+	@test -d $(top_builddir)/doc/nd_temp || \
+		mkdir $(top_builddir)/doc/nd_temp
+	@@ND@ -i $(top_srcdir)/doc/ -i $(top_srcdir)/src/ \
+		-o $(ND_FORMAT) $(top_builddir)/doc/libquvi-@VERSION@/ \
+		-p $(top_builddir)/doc/nd_temp/ && echo See doc/libquvi-@VERSION@
+else
+	@echo "error: configure did not find NaturalDocs" && exit 1
+endif
+distdoc: doc
+	@tar chof - $(top_builddir)/doc/libquvi-@VERSION@ | \
+			GZIP=--best gzip -c >libquvi-doc-@VERSION@.tar.gz \
+			&& echo Created libquvi-doc-@VERSION@.tar.gz
 
 VERSION:
 	@if test -d "$(top_srcdir)/.git" -o -f "$(top_srcdir)/.git"; then \
@@ -43,5 +35,3 @@ ChangeLog:
 	fi
 
 dist-hook: ChangeLog VERSION
-
-# vim: set ts=2 sw=2 tw=72 expandtab:

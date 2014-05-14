@@ -1,0 +1,131 @@
+
+Title: Webscript: Guidelines
+
+About: ident function
+
+Identifies the webscript to the library.
+
+About: ident: Required fields
+
+Must set the following fields.
+
+ * self.domain      (pattern, e.g. "video.google.")
+ * self.formats     ('default' or 'default|best' if >1 formats)
+ * self.categories  (protocol category of script)
+ * self.handles     (whether script can handle the URL)
+
+
+About: query_formats function
+
+Queries the available formats to an URL.
+
+About: query_formats: Required fields
+
+Must set the following fields.
+
+ * self.formats ('default' or a dynamically created if >1 formats)
+
+See youtube.lua, cbsnews.lua, dailymotion.lua and vimeo.lua for
+examples of >1 formats.
+
+About: query_formats: Errors
+
+Parsing errors should raise an error.
+
+
+About: parse function
+
+Parses the media details.
+
+About: parse: Required fields
+
+Must set the following fields.
+
+ * self.host_id
+ * self.title
+ * self.id
+ * self.url (NOTE: an array of URLs)
+
+About: parse: Optional fields
+
+Set these if data is available or otherwise applicable.
+
+ * self.thumbnail_url    (see youtube.lua)
+ * self.redirect_url     (academicearth.lua)
+ * self.start_time       (youtube.lua)
+ * self.duration         (soundcloud.lua)
+
+About: parse: Notes
+
+Important notes.
+
+ * Fallback to 'default' if self.requested_format value is not recognized
+
+About: parse: Errors
+
+Parsing (e.g. no match) should call lua's error function. Note however
+that format parsing is exception to this rule:
+
+ * Script must fallback to 'default' format and only if that fails too,
+    exit with an error
+
+About: General Tips
+
+Useful tips.
+
+quvi.fetch:
+ * Use sparingly
+ * Set fetch_type only if fetching other than 'page' (default)
+ * Set arbitrary_cookie only when absolutely necessary (dailymotion.lua)
+ * Set user_agent only when absolutely necessary (globo.lua)
+
+quvi.resolve:
+ * Use sparingly (see blip.lua)
+
+About: Additional modules
+
+Additional modules with functions. These can be imported in your script.
+Use them sparingly.
+
+(start code)
+local U = require 'quvi/util'
+local bar = U.unescape(foo)
+(end)
+
+See the quvi/ subdir in the website/ directory for the other modules.
+
+
+About: Idioms
+
+Useful lua idioms.
+
+(start code)
+/* Consider the following in C */
+b = (a == 1) 0:1;
+(end)
+
+(start code)
+-- Equivalent in lua:
+b = (a == 1) and 0 or 1
+(end)
+
+Armed with this knowledge, consider the following.
+(start code)
+local foo
+if bar == 'baz' then
+    foo = 'foo'
+else
+    foo = 'bar'
+end
+(end)
+
+Could also be written like this.
+(start code)
+local foo = (bar == 'baz') and 'foo' or 'bar'
+(end)
+
+About: See also
+
+Related pages.
+
+ * <Overview: Formats>

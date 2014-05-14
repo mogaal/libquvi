@@ -1,81 +1,72 @@
 #!/bin/sh
 #
-# libquvi
-# Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+# gen-ver.sh for libquvi
+# Copyright (C) 2011  Toni Gundogdu
 #
-# This file is part of libquvi <http://quvi.sourceforge.net/>.
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2.1 of the License, or (at your option) any later version.
 #
-# This program is free software: you can redistribute it and/or
-# modify it under the terms of the GNU Affero General Public
-# License as published by the Free Software Foundation, either
-# version 3 of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
+# This library is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
 #
-# You should have received a copy of the GNU Affero General
-# Public License along with this program.  If not, see
-# <http://www.gnu.org/licenses/>.
+# You should have received a copy of the GNU Lesser General Public
+# License along with this library; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+# 02110-1301  USA
 #
-dir=`dirname $0`
-o=
-# flags:
-m= # dump major and minor only
-c= # strip off the 'v' prefix
+set -e
 
-# VERSION file is part of the dist tarball.
-from_VERSION_file()
+from_file()
 {
-  o=`cat "$dir/VERSION" 2>/dev/null`
+  VN=`cat $1 2>/dev/null`
+  if test -n "$VN"; then
+    echo $VN
+    exit 0
+  fi
 }
 
-from_git_describe()
+gen_version() # $1=path to top source dir
 {
-  [ -d "$dir/.git" -o -f "$dir/.git" ] && {
-    o=`git describe --match "v[0-9]*" --abbrev=4 HEAD 2>/dev/null`
-  }
-}
+  path=$1 ; [ -z $path ] && path=.
 
-make_vn_mm()
-{
-  j=`expr "$o" : 'v\([0-9]\)'`
-  n=`expr "$o" : 'v[0-9]\.\([0-9]*[0-9]\)'`
-  o="v$j.$n"
-}
+  # First check if the version file exists and use its value
+  versionfn="$path/VERSION"
+  [ -f "$versionfn" ]  && from_file "$versionfn"
 
-dump_vn()
-{
-  [ -n "$m" ] && make_vn_mm
-  [ -n "$c" ] && o=${o#v} # strip off the 'v' prefix.
-  echo $o
-  exit 0
+  # If that file is not found, or fails (e.g. empty), parse from m4/version.m4
+  m4="$path/m4/version.m4"
+  VN=`perl -ne'/(\d+)\.(\d+)\.(\d+)/ && print "$1.$2.$3"' < "$m4"`
+  [ -z $VN ] && exit $?
+
+  # Use the "git describe" instead, if .git is present
+  if test -d "$path/.git" -o -f "$path/.git" ; then
+    _VN=`git describe --match "v[0-9]*" --abbrev=4 HEAD 2>/dev/null`
+    [ -n "$_VN" ] && VN=$_VN
+  fi
+
+  echo $VN
 }
 
 help()
 {
-  echo "$0 [OPTIONS]
+  echo "Usage: $0 [-h] [top_srcdir]
 -h  Show this help and exit
--c  Strip off the 'v' prefix from the output
--m  Output the major.minor -pair only"
+Run without options to print version. Define top_srcdir if run outside
+the top source directory."
   exit 0
 }
 
 while [ $# -gt 0 ]
 do
   case "$1" in
-    -m) m=1;;
-    -c) c=1;;
     -h) help;;
-     *) break;;
+    *) break;;
   esac
   shift
 done
 
-from_VERSION_file
-[ -z "$o" ] && from_git_describe
-[ -n "$o" ] && dump_vn
-exit 1
-
-# vim: set ts=2 sw=2 tw=72 expandtab:
+gen_version $1

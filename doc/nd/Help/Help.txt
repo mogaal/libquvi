@@ -1,0 +1,16 @@
+
+Title: Help
+
+Report bugs:
+
+To our <Trac at http://sourceforge.net/apps/trac/quvi/>. Please search
+the Trac for any duplicate reports first -- the issue may have been
+addressed already.
+
+Send patches (enhancements, bugfixes):
+
+Visit the <MailingLists at http://sourceforge.net/apps/trac/quvi/wiki/MailingLists> page.
+
+Write support for additional websites:
+
+See above and read <Webscript>.

@@ -1,0 +1,49 @@
+
+Title: Help: Patches
+
+About: Before you submit patches
+
+Checklist.
+
+License:
+
+You agree to put your changes and new code under the same license
+quvi, libquvi and libquvi-scripts are using already unless stated
+and agreed otherwise.
+
+Webscripts:
+
+If you are submitting a new website script, please include a test
+JSON file with it.
+
+(start code)
+quvi -q $TEST_URL > foo.json
+(end)
+
+Please set the "url" field to *empty* ("") in the JSON. The test
+suite ignores this value because many websites generate unique URLs
+rather than use static ones. Omitting these URLs from the test data,
+helps keep the test suite uncluttered.
+
+Style:
+
+Read also <Help: Style>.
+
+
+About: Creating a patch
+
+Whenever possible, please submit your contributions in the <patch at
+http://en.wikipedia.org/wiki/Patch_%28Unix%29> format.
+
+If you create your patches with <git at http://git-scm.com/>
+
+  * Check for unnecessary whitespace with "git diff --check" and fix them
+  * Use "git format-patch -M" to create the patch
+  * Or send a pull request to the mailing list (see <Help>)
+
+If you use diff(1) instead, make sure you use the "-u" switch.
+
+
+About: Where to submit
+
+See <Help> for the mailing list.

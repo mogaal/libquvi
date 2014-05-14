@@ -1,0 +1,16 @@
+Title: Webscript
+
+About: About
+
+libquvi runs "webscripts" (or "website scripts") to parse the media
+details. These details are then returned to the applications using
+libquvi. The scripts are written in <lua at http://www.lua.org/about.html>.
+There is a corresponding script for each supported website, although some
+exceptions to this rule exist.
+
+About: Contributing
+
+If you are interested in contributing new scripts to the project,
+please see <Help>, <Webscript: Tutorial> and <Webscript: Guidelines>.
+Patches (fixing or otherwise) are always welcome and appreciated, see
+<Help: Patches> for the notes.
