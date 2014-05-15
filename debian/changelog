@@ -1,6 +1,8 @@
 libquvi (0.4.1-3) unstable; urgency=medium
 
   * Add pkg-config to BD in d/control (Closes: #747798) 
+  * Update Standards-Version field.
+  * Register documentation in doc-base, added d/libquvi-doc.base-doc
 
  -- Alejandro Garrido Mota <alejandro@debian.org>  Wed, 14 May 2014 09:50:44 -0430
 
