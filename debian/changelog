@@ -1,3 +1,15 @@
+libquvi (0.4.1-2.1) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Add build-dependency on pkg-config (Closes: #747798)
+  * Switch build-dependency from liblua5.1-0-dev to liblua5.2-dev
+  * Add debian/patches/lua52.patch
+    - make configure.ac check for lua5.2.pc
+  * Add Breaks: mpv (<< 0.3.10-2~) which uses both libquvi and lua5.1
+    - Alessandro Ghedini (ghedo@) will take care of fixing mpv
+
+ -- Andreas Henriksson <andreas@fatal.se>  Thu, 22 May 2014 15:56:20 +0200
+
 libquvi (0.4.1-2) unstable; urgency=low
 
   * Use dh-autoreconf. This also updates config.{guess,sub} at build time.

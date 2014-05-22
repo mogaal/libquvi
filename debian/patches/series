@@ -1,1 +1,2 @@
 configure.ac-add-missing-AM-macros.patch
+lua52.patch

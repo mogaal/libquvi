@@ -1,0 +1,11 @@
+--- a/configure.ac
++++ b/configure.ac
+@@ -47,7 +47,7 @@
+ # Checks for libraries.
+ PKG_CHECK_MODULES([liblua], [lua >= 5.1], [], [
+   PKG_CHECK_MODULES([liblua], [lua51 >= 5.1], [], [
+-    PKG_CHECK_MODULES([liblua], [lua5.1 >= 5.1], [], [
++    PKG_CHECK_MODULES([liblua], [lua5.2 >= 5.1], [], [
+       PKG_CHECK_MODULES(liblua, [lua-5.1 >= 5.1])])
+   ])
+ ])
