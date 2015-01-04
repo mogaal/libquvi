@@ -1,3 +1,11 @@
+libquvi (0.4.1-3) unstable; urgency=medium
+
+  * Do not look for Lua helper scripts below current directory.
+    (Closes: #774555)
+    + new patch: lua-scripts-below-cwd.patch
+
+ -- Ansgar Burchardt <ansgar@debian.org>  Sun, 04 Jan 2015 12:52:34 +0100
+
 libquvi (0.4.1-2.1) unstable; urgency=medium
 
   * Non-maintainer upload.
