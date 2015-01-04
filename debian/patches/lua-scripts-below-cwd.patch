@@ -1,0 +1,23 @@
+From: Ansgar Burchardt <ansgar@debian.org>
+Subject: Do not look for Lua helper scripts below current directory
+Date: Sun, 04 Jan 2015 12:39:12 +0100
+
+Bug-Debian: https://bugs.debian.org/774555
+--- a/src/libquvi/lua_wrap.c
++++ b/src/libquvi/lua_wrap.c
+@@ -367,15 +367,6 @@
+       return (QUVI_OK);
+     }
+ 
+-  /* Current working directory */
+-  buf = getcwd(NULL,0);
+-  if (!buf)
+-    return(QUVI_MEM);
+-
+-  asprintf(&path, "%s/%s", buf, spath);
+-  _free(buf);
+-  _scan;
+-
+   /* Home directory */
+   homedir = getenv("HOME");
+   if (homedir)
