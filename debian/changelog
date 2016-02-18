@@ -1,3 +1,10 @@
+libquvi (0.9.3-1.1) unstable; urgency=medium
+
+  * Non-maintainer upload with maintainer permission.
+  * Upload to unstable.
+
+ -- Andreas Henriksson <andreas@fatal.se>  Thu, 18 Feb 2016 16:55:07 +0100
+
 libquvi (0.9.3-1) experimental; urgency=low
 
   * New upstream release.
